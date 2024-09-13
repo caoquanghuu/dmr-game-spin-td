@@ -1,0 +1,12 @@
+[
+    {
+        "name":"preLoad",
+        "assets": [
+            {
+                "name": "logo",
+                "srcs": "assets/units/logo.png"
+            }
+            
+        ]
+    }
+]
