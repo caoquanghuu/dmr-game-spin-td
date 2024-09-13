@@ -3,8 +3,8 @@
         "name":"preLoad",
         "assets": [
             {
-                "name": "logo",
-                "srcs": "assets/units/logo.png"
+                "alias": "logo",
+                "src": "assets/units/logo.png"
             }
             
         ]
