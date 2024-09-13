@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+      /* Basic Options */
+      "target": "ES6",
+      "module": "commonjs",
+      // "rootDir": "./src",
+      "moduleResolution": "node",
+      // Required for importing 3rd-party dependencies like EventEmitter3
+      "esModuleInterop": true,
+        "sourceMap": true,
+      // decorators
+      "experimentalDecorators": true,
+      "allowJs": false,
+      // Loaders needs this to use the more strict mini-signal types
+      "paths": {
+        "mini-signals": [
+          "node_modules/resource-loader/typings/mini-signals.d.ts"
+        ]
+      },
+      "baseUrl": "./",
+      "resolveJsonModule": true,
+    },
+    "exclude": [
+      "dist",
+      "node_modules",
+      "webpack.config.*.js",
+      "script/*.js",
+    ]
+  }

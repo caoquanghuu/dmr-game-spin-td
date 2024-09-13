@@ -1,0 +1,43 @@
+{
+  "name": "pixi_demo_v8",
+  "description": "",
+  "version": "8.4.0",
+  "title": "Pixi Spin Tower Defend ",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "webpack serve --env mode=debug --mode=development",
+    "start-ip": "yarn start --host 0.0.0.0",
+    "build": "yarn clean & webpack --env mode=production"
+  },
+  "license": "ISC",
+  "author": "caoquanghuu@gmail.com",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.20.0",
+    "event-emitter": "^0.3.5",
+    "lodash": "^4.17.21",
+    "pixi.js": "^8.4.0"
+  },
+  "devDependencies": {
+    "@types/events": "^3.0.0",
+    "@types/lodash": "^4.14.202",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "esbuild-loader": "2.21.0",
+    "eslint": "^7.32.0",
+    "postcss": "7.0.39",
+    "postcss-loader": "^6.2.1",
+    "serve": "14.2.0",
+    "short-uuid": "^4.2.0",
+    "style-loader": "3.3.1",
+    "terser-webpack-plugin": "5.3.6",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.89.0",
+    "webpack-bundle-analyzer": "4.7.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "4.11.1",
+    "webpack-merge": "5.8.0",
+    "webpack-preprocessor-loader": "1.2.0"
+  }
+}
