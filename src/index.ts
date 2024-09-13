@@ -1,5 +1,8 @@
-import { Application, Assets, Container, Sprite } from 'pixi.js';
+import { Application } from 'pixi.js';
 import { AppConstants } from './GameScene/Constants';
+import { AssetsLoader } from './AssetsLoader';
+import bundles from './bundles.json';
+import { GameScene } from './GameScene/GameScene';
 
 // Asynchronous IIFE
 (async () => {
@@ -18,8 +21,14 @@ import { AppConstants } from './GameScene/Constants';
             document.body.appendChild(app.canvas);
         });
 
+    new AssetsLoader();
+    await AssetsLoader.loadBundle(bundles);
 
-    app.ticker.add(() => {
+    const gameScene = new GameScene();
+    app.stage.addChild(gameScene);
 
+
+    app.ticker.add((sticker) => {
+        gameScene.update(sticker.deltaMS);
     });
 })();
