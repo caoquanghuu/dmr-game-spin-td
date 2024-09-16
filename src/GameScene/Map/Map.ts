@@ -15,6 +15,10 @@ export class GameMap extends Container {
                     graphics.rect(idxX * AppConstants.matrixSize.width, idxY * AppConstants.matrixSize.height, AppConstants.matrixSize.width, AppConstants.matrixSize.height);
                     graphics.fill('bb94b5');
                 }
+                if (value === 0) {
+                    graphics.rect(idxX * AppConstants.matrixSize.width, idxY * AppConstants.matrixSize.height, AppConstants.matrixSize.width, AppConstants.matrixSize.height);
+                    graphics.fill('f39589');
+                }
 
                 if (value === 2) {
                     const grc = new Graphics();
@@ -23,6 +27,8 @@ export class GameMap extends Container {
                     grc.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
                     this.addChild(grc);
                 }
+
+
             });
         });
 
