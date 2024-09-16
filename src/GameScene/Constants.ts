@@ -10,7 +10,7 @@ export namespace AppConstants {
         height: 32
     };
     export const mapSize = {
-        width: matrixSize.width * (appWidth / matrixSize.width) * (5 / 6),
+        width: appWidth,
         height: matrixSize.width * (appHeight / matrixSize.width) * (4 / 5),
     };
     export const UISize = {
@@ -18,8 +18,8 @@ export namespace AppConstants {
         height: appHeight - mapSize.height
     };
     export const SpinSize = {
-        width: appWidth - mapSize.width,
-        height: appHeight - UISize.height
+        width: appWidth / 2,
+        height: appHeight / 2
     };
 
     export const textureName = {
