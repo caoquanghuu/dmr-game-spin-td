@@ -1,14 +1,15 @@
 import { Container, Graphics, Sprite } from 'pixi.js';
-import { AssetsLoader } from '../AssetsLoader';
 import { AppConstants } from './Constants';
 import { GameMap } from './Map/Map';
 import { UIController } from './UI/UI Controller';
 import { SpinController } from './Spin/SpinController';
+import { ObjectPool } from '../ObjectsPool/ObjectPool';
 
 export class GameScene extends Container {
     private _map: GameMap;
     private _UIController: UIController;
     private _spinController: SpinController;
+    private _objectPool: ObjectPool;
 
     constructor() {
         super();
@@ -23,6 +24,7 @@ export class GameScene extends Container {
         this._spinController = new SpinController();
         this._spinController.position = { x: AppConstants.mapSize.width, y: 0 };
         this.addChild(this._map, this._UIController, this._spinController);
+        this._objectPool = new ObjectPool();
 
     }
 

@@ -1,4 +1,4 @@
-import { EffectArena, EffectType, TowerType } from 'src/Type';
+import { EffectType, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { PointData } from 'pixi.js';
 

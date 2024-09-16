@@ -1,6 +1,6 @@
-import { TowerType } from 'src/Type';
+import { TowerType } from '../../Type';
 import { Tower } from './Tower';
-import { AppConstants } from 'src/GameScene/Constants';
+import { AppConstants } from '../../GameScene/Constants';
 
 export class CrystalMaiden extends Tower {
     constructor() {

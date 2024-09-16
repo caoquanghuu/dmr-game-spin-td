@@ -1,6 +1,6 @@
-import { EnemiesType } from 'src/Type';
+import { EnemiesType } from '../../Type';
 import { BaseObject } from '../BaseObject';
-import { BaseEngine } from 'src/MoveEngine/BaseEngine';
+import { BaseEngine } from '../../MoveEngine/BaseEngine';
 
 export class Enemies extends BaseObject {
     private _HP: number;

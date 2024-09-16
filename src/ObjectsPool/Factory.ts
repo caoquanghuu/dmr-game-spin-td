@@ -1,11 +1,10 @@
-import { BulletType, EnemiesType, TowerType } from 'src/Type';
-import { Bullet } from './Bullet';
-import { AppConstants } from 'src/GameScene/Constants';
-import { Tower } from './Tower/Tower';
-import { CrystalMaiden } from './Tower/CrystalMaiden';
-import { Mirana } from './Tower/Mirana';
-import { Tinker } from './Tower/Tinker';
-import { Enemies } from './Enemies/Enemies';
+import { BulletType, EnemiesType, TowerType } from '../Type';
+import { Bullet } from '../ObjectsPool/Bullet';
+import { Tower } from '../ObjectsPool/Tower/Tower';
+import { CrystalMaiden } from '../ObjectsPool/Tower/CrystalMaiden';
+import { Mirana } from '../ObjectsPool/Tower/Mirana';
+import { Tinker } from '../ObjectsPool/Tower/Tinker';
+import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 
 export default class Factory {
     public static instance: Factory;

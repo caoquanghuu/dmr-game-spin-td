@@ -1,6 +1,6 @@
-import { BulletType } from 'src/Type';
-import { BaseObject } from './BaseObject';
-import { BaseEngine } from 'src/MoveEngine/BaseEngine';
+import { BulletType } from '../Type';
+import { BaseObject } from '../ObjectsPool/BaseObject';
+import { BaseEngine } from '../MoveEngine/BaseEngine';
 
 export class Bullet extends BaseObject {
     private _dame: number;

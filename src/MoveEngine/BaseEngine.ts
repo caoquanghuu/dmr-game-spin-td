@@ -1,4 +1,4 @@
-import { Direction } from 'src/Type';
+import { Direction } from '../Type';
 
 export class BaseEngine {
     private _direction: Direction | number;

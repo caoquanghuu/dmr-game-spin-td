@@ -1,9 +1,9 @@
-import { BulletType, EnemiesType, TowerType } from 'src/Type';
-import { Bullet } from './Bullet';
-import { Enemies } from './Enemies/Enemies';
-import { Tower } from './Tower/Tower';
-import { AppConstants } from 'src/GameScene/Constants';
-import Factory from './Factory';
+import { BulletType, EnemiesType, TowerType } from '../Type';
+import { Bullet } from '../ObjectsPool/Bullet';
+import { Enemies } from '../ObjectsPool/Enemies/Enemies';
+import { Tower } from '../ObjectsPool/Tower/Tower';
+import { AppConstants } from '../GameScene/Constants';
+import Factory from '../ObjectsPool/Factory';
 
 export class ObjectPool {
     public static inst: ObjectPool;

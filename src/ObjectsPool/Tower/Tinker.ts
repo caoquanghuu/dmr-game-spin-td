@@ -1,6 +1,6 @@
-import { TowerType } from 'src/Type';
-import { Tower } from './Tower';
-import { AppConstants } from 'src/GameScene/Constants';
+import { TowerType } from '../../Type';
+import { Tower } from '../Tower/Tower';
+import { AppConstants } from '../../GameScene/Constants';
 
 export class Tinker extends Tower {
     constructor() {

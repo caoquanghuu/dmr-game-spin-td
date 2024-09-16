@@ -1,8 +1,8 @@
 import { PointData, Sprite } from 'pixi.js';
-import { AssetsLoader } from 'src/AssetsLoader';
-import { BaseEngine } from 'src/MoveEngine/BaseEngine';
-import { Direction } from 'src/Type';
-import { switchFn } from 'src/Util';
+import { AssetsLoader } from '../AssetsLoader';
+import { BaseEngine } from '../MoveEngine/BaseEngine';
+import { Direction } from '../Type';
+import { switchFn } from '../Util';
 
 export class BaseObject {
     private _image: Sprite;
