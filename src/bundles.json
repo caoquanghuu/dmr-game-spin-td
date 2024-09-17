@@ -5,6 +5,14 @@
             {
                 "alias": "logo",
                 "src": "assets/units/logo.png"
+            },
+            {
+                "alias": "laser-tower-1",
+                "src": "assets/units/laser-tower1.png"
+            },
+            {
+                "alias": "laser-tower-2",
+                "src": "assets/units/laser-tower2.png"
             }
             
         ]

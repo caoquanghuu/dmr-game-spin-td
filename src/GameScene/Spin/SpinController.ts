@@ -7,7 +7,7 @@ export class SpinController extends Container {
         super();
 
         const graphics = new Graphics();
-        graphics.rect(0,0, AppConstants.SpinSize.width, AppConstants.SpinSize.height);
+        graphics.rect(0, 0, AppConstants.SpinSize.width, AppConstants.SpinSize.height);
         graphics.fill('f49fe7');
         this.addChild(graphics);
     }

@@ -1,8 +1,10 @@
 import { Container, Graphics } from 'pixi.js';
 import { AppConstants } from '../Constants';
 import map from './mapMatrix.json';
+import { Tinker } from '../../ObjectsPool/Tower/Tinker';
 
 export class GameMap extends Container {
+    private _towers: Tinker[] = []
     constructor() {
         super();
         const graphics = new Graphics();
@@ -26,11 +28,23 @@ export class GameMap extends Container {
                     grc.fill('abbb94');
                     grc.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
                     this.addChild(grc);
+                    const tower = new Tinker();
+                    this.addChild(tower.image);
+                    tower.image.width = 32;
+                    tower.image.height = 64;
+                    tower.position = { x: idxX * 32 + 16, y: idxY * 32 -8}
+                    this._towers.push(tower);
                 }
 
 
             });
         });
 
+    }
+
+    public update(dt) {
+        this._towers.forEach(tower => {
+            tower.update(dt);
+        })
     }
 }

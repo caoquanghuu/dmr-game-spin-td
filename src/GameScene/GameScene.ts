@@ -38,7 +38,7 @@ export class GameScene extends Container {
 
 
     public update(dt: number) {
-
+        this._map.update(dt);
 
     }
 

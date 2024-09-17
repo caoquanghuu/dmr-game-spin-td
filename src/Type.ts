@@ -22,7 +22,7 @@ export interface EffectArena {
 export enum TowerType {
     CRYSTAL_MAIDEN = 'crystal-maiden',
     MIRANA = 'mirana',
-    TINKER = 'tinker'
+    TINKER = 'laser-tower-1'
 }
 
 export enum EnemiesType {
