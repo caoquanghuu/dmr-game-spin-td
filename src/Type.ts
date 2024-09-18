@@ -26,15 +26,15 @@ export interface EffectArena {
 }
 
 export enum TowerType {
-    CRYSTAL_MAIDEN = 'crystal-maiden',
-    MIRANA = 'mirana',
-    TINKER = 'laser-tower-1'
+    crystal_maiden = 'crystal_maiden',
+    mirana = 'mirana',
+    tinker = 'tinker'
 }
 
 export enum EnemiesType {
-    TANK1 = 'tank-1',
-    TANK2 = 'tank2',
-    TANK3 = 'tank3'
+    tank_1 = 'tank_1',
+    tank_2 = 'tank_2',
+    tank_3 = 'tank_3'
 
 }
 
@@ -44,9 +44,9 @@ export enum EffectType {
 }
 
 export enum BulletType {
-    LASER = 'laser',
-    ROCKET = 'rocket',
-    ICE = 'ice'
+    laser = 'laser',
+    rocket = 'rocket',
+    ice = 'ice'
 
 }
 

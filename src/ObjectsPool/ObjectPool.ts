@@ -34,13 +34,13 @@ export class ObjectPool {
         // init tower pool
         for (const [key, value] of Object.entries(TowerType)) {
             this._towerPool[key] = [];
-
             for (let i = 0; i < AppConstants.bulletCount; i++) {
                 const tower = Factory.createTower(value);
                 this._towerPool[key].push(tower);
             }
         }
     }
+
     public getBulletFromPool(bulletType: string): Bullet {
         if (this._bulletPool[bulletType]?.length <= 0) {
             const bullet = Factory.createBullet(bulletType);
@@ -49,11 +49,12 @@ export class ObjectPool {
             return this._bulletPool[bulletType].pop() as Bullet;
         }
     }
-    public getTowerFromPool(towerType: string): Tower {
+    public getTowerFromPool(towerType: TowerType): Tower {
         if (this._towerPool[towerType]?.length <= 0) {
             const tower = Factory.createTower(towerType);
             return tower;
         } else {
+
             return this._towerPool[towerType].pop() as Tower;
         }
     }

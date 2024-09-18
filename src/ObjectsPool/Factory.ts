@@ -18,36 +18,38 @@ export default class Factory {
         Factory.objectId++;
 
         switch (type) {
-            case BulletType.LASER:
-                const laserBullet = new Bullet(BulletType.LASER);
+            case BulletType.laser:
+                const laserBullet = new Bullet(BulletType.laser);
                 laserBullet.id = objectId;
                 return laserBullet;
 
-            case BulletType.ROCKET:
-                const rocketBullet = new Bullet(BulletType.ROCKET);
+            case BulletType.rocket:
+                const rocketBullet = new Bullet(BulletType.rocket);
                 rocketBullet.id = objectId;
                 return rocketBullet;
-
+            case BulletType.ice:
+                const iceBullet = new Bullet(BulletType.ice);
+                iceBullet.id = objectId;
             default:
         }
     }
 
-    public static createTower(type: string): Tower {
+    public static createTower(type: TowerType): Tower {
         const objectId = Factory.objectId;
         Factory.objectId++;
 
         switch (type) {
-            case TowerType.CRYSTAL_MAIDEN:
+            case TowerType.crystal_maiden:
                 const CM = new CrystalMaiden();
                 CM.id = objectId;
                 return CM;
 
-            case TowerType.MIRANA:
+            case TowerType.mirana:
                 const mirana = new Mirana();
                 mirana.id = objectId;
                 return mirana;
 
-            case TowerType.TINKER:
+            case TowerType.tinker:
                 const tinker = new Tinker();
                 tinker.id = objectId;
                 return tinker;
@@ -61,18 +63,18 @@ export default class Factory {
         Factory.objectId++;
 
         switch (type) {
-            case EnemiesType.TANK1:
-                const tank1 = new Enemies(EnemiesType.TANK1);
+            case EnemiesType.tank_1:
+                const tank1 = new Enemies(EnemiesType.tank_1);
                 tank1.id = objectId;
                 return tank1;
 
-            case EnemiesType.TANK2:
-                const tank2 = new Enemies(EnemiesType.TANK2);
+            case EnemiesType.tank_2:
+                const tank2 = new Enemies(EnemiesType.tank_2);
                 tank2.id = objectId;
                 return tank2;
 
-            case EnemiesType.TANK3:
-                const tank3 = new Enemies(EnemiesType.TANK3);
+            case EnemiesType.tank_3:
+                const tank3 = new Enemies(EnemiesType.tank_3);
                 tank3.id = objectId;
                 return tank3;
             default:
