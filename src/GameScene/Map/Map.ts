@@ -16,32 +16,42 @@ export class GameMap extends Container {
         super();
         const graphics = new Graphics();
         graphics.rect (0, 0, AppConstants.mapSize.width, AppConstants.mapSize.height);
-        graphics.fill('e5f293');
+        graphics.fill('ceaeaa');
         this.addChild(graphics);
         GameMap.mapMatrix = map;
         map.forEach((val, idxX) => {
             val.forEach((value, idxY) => {
                 if (value === 1) {
-                    graphics.rect(idxX * AppConstants.matrixSize.width, idxY * AppConstants.matrixSize.height, AppConstants.matrixSize.width, AppConstants.matrixSize.height);
-                    graphics.fill('bb94b5');
+                    const grass = new Sprite(AssetsLoader.getTexture('grass-1'));
+                    grass.width = 32,
+                    grass.height = 32,
+                    grass.anchor = 0.5;
+                    grass.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
+                    this.addChild(grass);
                 }
                 if (value === 0) {
-                    graphics.rect(idxX * AppConstants.matrixSize.width, idxY * AppConstants.matrixSize.height, AppConstants.matrixSize.width, AppConstants.matrixSize.height);
-                    graphics.fill('f39589');
+                    const tree = new Sprite(AssetsLoader.getTexture('tree-1'));
+                    tree.width = 32,
+                    tree.height = 32;
+                    tree.anchor.set(0.5);
+                    this.addChild(tree);
+                    tree.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
                 }
 
                 if (value === 2) {
-                    const grc = new Graphics();
-                    grc.circle(0, 0, AppConstants.matrixSize.width / 2);
-                    grc.fill('abbb94');
-                    grc.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
-                    this.addChild(grc);
-                    const tower = new Tinker();
-                    this.addChild(tower.image);
-                    tower.image.width = 40;
-                    tower.image.height = 80;
-                    tower.position = { x: idxX * 32 + 16, y: idxY * 32 - 12 };
-                    this._towers.push(tower);
+                    const towerBase = new Sprite(AssetsLoader.getTexture('tower-base'));
+                    towerBase.anchor.set(0.5);
+                    towerBase.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
+                    towerBase.width = 32;
+                    towerBase.height = 32;
+                    this.addChild(towerBase);
+
+                    // const tower = new Tinker();
+                    // this.addChild(tower.image);
+                    // tower.image.width = 32;
+                    // tower.image.height = 60;
+                    // tower.position = { x: idxX * 32 + 16, y: idxY * 32 - 4 };
+                    // this._towers.push(tower);
                 }
 
 
@@ -49,9 +59,9 @@ export class GameMap extends Container {
         });
 
         const ene = new Enemies();
-        ene.position = { x: 15 * 32, y: -100 };
-        ene.image.width = 40;
-        ene.image.height = 40;
+        ene.position = { x: 15 * 32 + 16, y: -100 };
+        ene.image.width = 32;
+        ene.image.height = 32;
         ene.image.angle = 180;
         this._enemies.push(ene);
         ene.isMoving = true;

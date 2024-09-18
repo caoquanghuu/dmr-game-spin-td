@@ -55,19 +55,19 @@ export class Enemies extends BaseObject {
         this.move(dt);
         switch (this.direction) {
             case Direction.DOWN:
-                if (this.position.y >= this._target.y) this._getNextMove();
+                if (this.position.y - 16 >= this._target.y) this._getNextMove();
                 this.image.angle = 180;
                 break;
             case Direction.UP:
-                if (this.position.y <= this._target.y) this._getNextMove();
+                if (this.position.y - 16 <= this._target.y) this._getNextMove();
                 this.image.angle = 0;
                 break;
             case Direction.RIGHT:
-                if (this.position.x >= this._target.x) this._getNextMove();
+                if (this.position.x - 16 >= this._target.x) this._getNextMove();
                 this.image.angle = 90;
                 break;
             case Direction.LEFT:
-                if (this.position.x <= this._target.x) this._getNextMove();
+                if (this.position.x - 16 <= this._target.x) this._getNextMove();
                 this.image.angle = 270;
                 break;
             default:
