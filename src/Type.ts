@@ -1,3 +1,5 @@
+import { PointData } from 'pixi.js';
+
 export enum Direction {
     UP,
     DOWN,
@@ -42,3 +44,13 @@ export enum BulletType {
     ROCKET = 'rocket'
 
 }
+
+export type BSFMove = {
+    directions: PointData[],
+    path: PointData[]
+};
+
+export type BSFNextMove = {
+    directions: PointData,
+    path: PointData
+};
