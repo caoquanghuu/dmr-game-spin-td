@@ -4,13 +4,15 @@ import map from './mapMatrix.json';
 import { Tinker } from '../../ObjectsPool/Tower/Tinker';
 
 export class GameMap extends Container {
-    private _towers: Tinker[] = []
+
+    public static mapMatrix: any;
     constructor() {
         super();
         const graphics = new Graphics();
         graphics.rect (0, 0, AppConstants.mapSize.width, AppConstants.mapSize.height);
         graphics.fill('e5f293');
         this.addChild(graphics);
+        GameMap.mapMatrix = map;
         map.forEach((val, idxX) => {
             val.forEach((value, idxY) => {
                 if (value === 1) {
