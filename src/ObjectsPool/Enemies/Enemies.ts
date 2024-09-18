@@ -14,7 +14,7 @@ export class Enemies extends BaseObject {
     constructor() {
         super('tank-1');
         this._enemiesType = EnemiesType.TANK1;
-        this.speed = 100;
+        this.speed = 500;
         this.moveEngine = new BaseEngine(true);
         this._bfsMoveEngine = new BSFMoveEngine();
         this._getNextMove();
@@ -78,6 +78,10 @@ export class Enemies extends BaseObject {
     private _getNextMove() {
 
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
+        if (nextMove === undefined) {
+            this.isMoving = false;
+            return;
+        }
         this.moveEngine.direction = nextMove.directions;
 
         this._target = nextMove.path;

@@ -15,8 +15,9 @@ export class BSFMoveEngine {
         this._bsfMove = this._bfs(this._headPoint);
     }
 
-    get bsfNextMove(): BSFNextMove {
+    get bsfNextMove(): BSFNextMove | undefined {
         const direction = this._bsfMove.directions.shift();
+        if (direction === undefined) return undefined;
         const nextPath = this._bsfMove.path.splice(1, 1);
         let nextDirection: Direction;
         if (direction.x === 0 && direction.y === -1) nextDirection = Direction.UP;
