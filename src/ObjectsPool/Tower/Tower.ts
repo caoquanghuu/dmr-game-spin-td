@@ -11,7 +11,7 @@ export class Tower extends BaseObject {
     private _dame: number;
     private _goldCost: number;
     private _upGradeCost: number;
-    private _fireTimeCd: number;
+    private _fireTimeCd: number = 1000;
     private _level: number = 1;
     private _item: BaseObject[] = [];
 
@@ -20,8 +20,11 @@ export class Tower extends BaseObject {
         super(towerType);
 
         this._towerType = towerType;
+        this.speed = 100;
+        this.image.width = 32;
+        this.image.height = 60;
 
-        if (towerType === TowerType.CRYSTAL_MAIDEN) this._effectType = EffectType.SLOW;
+        if (towerType === TowerType.crystal_maiden) this._effectType = EffectType.SLOW;
     }
 
     get effectArena(): number {
@@ -73,9 +76,11 @@ export class Tower extends BaseObject {
     }
 
     public fire(target: PointData) {
-        // use eventemitter fire bullet
+
         const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: this.dame, speed: this.speed, effectType: this._effectType };
         Emitter.emit(AppConstants.event.fireBullet, option);
+       
+
     }
 
     private _changeTextureFollowDirection() {
@@ -85,11 +90,7 @@ export class Tower extends BaseObject {
     }
 
     public update(dt: number): void {
-        this._fireTimeCd += dt;
-        if (this._fireTimeCd > 3000) {
-            // cd fire of tower
-            this._fireTimeCd = 0;
-        }
+        this._fireTimeCd -= dt;
 
         this._changeTextureFollowDirection();
     }

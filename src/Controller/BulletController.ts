@@ -1,7 +1,7 @@
 import { BulletType, FireBulletOption, GetBulletFromPoolFn, ReturnBulletToPoolFn, TowerType } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
-import Emitter from 'src/Util';
-import { AppConstants } from 'src/GameScene/Constants';
+import Emitter from '../Util';
+import { AppConstants } from '../GameScene/Constants';
 
 
 export class BulletController {
@@ -36,17 +36,17 @@ export class BulletController {
 
         let bullet: Bullet;
         switch (towerFiredType) {
-            case TowerType.CRYSTAL_MAIDEN:
-                bullet = this._getBulletFromPool(BulletType.ICE);
+            case TowerType.crystal_maiden:
+                bullet = this._getBulletFromPool(BulletType.ice);
                 bullet.dame = 0;
 
                 break;
-            case TowerType.TINKER:
-                bullet = this._getBulletFromPool(BulletType.LASER);
+            case TowerType.tinker:
+                bullet = this._getBulletFromPool(BulletType.laser);
                 bullet.dame = option.dame;
                 break;
-            case TowerType.MIRANA:
-                bullet = this._getBulletFromPool(BulletType.ROCKET);
+            case TowerType.mirana:
+                bullet = this._getBulletFromPool(BulletType.rocket);
                 bullet.dame = option.dame;
             default:
                 break;

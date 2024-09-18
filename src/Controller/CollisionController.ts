@@ -64,5 +64,6 @@ export class CollisionController {
 
     public update(dt: number) {
         this._assignObject();
+        this._checkCollisionBetweenObjects();
     }
 }

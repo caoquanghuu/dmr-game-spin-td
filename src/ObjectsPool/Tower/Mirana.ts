@@ -4,7 +4,7 @@ import { AppConstants } from '../../GameScene/Constants';
 
 export class Mirana extends Tower {
     constructor() {
-        super(TowerType.MIRANA);
+        super(TowerType.mirana);
         this.dame = AppConstants.dame.Mirana;
         this.effectArena = AppConstants.effectArena.Mirana;
         this.goldCost = AppConstants.goldCost.Mirana;

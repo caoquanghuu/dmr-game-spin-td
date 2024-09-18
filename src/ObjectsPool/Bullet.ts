@@ -16,6 +16,8 @@ export class Bullet extends BaseObject {
         super(bulletType);
         this._bulletType = bulletType;
         this.moveEngine = new BaseEngine(false);
+        this.image.width = 16;
+        this.image.height = 64;
     }
 
     get dame(): number {

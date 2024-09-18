@@ -6,7 +6,7 @@ import { AssetsLoader } from '../../AssetsLoader';
 export class Tinker extends Tower {
     private _time: number = 0;
     constructor() {
-        super(TowerType.TINKER);
+        super(TowerType.tinker);
         this.dame = AppConstants.dame.Tinker;
         this.effectArena = AppConstants.effectArena.Tinker;
         this.goldCost = AppConstants.goldCost.Tinker;

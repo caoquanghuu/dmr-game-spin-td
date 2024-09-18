@@ -15,7 +15,7 @@
                 "src": "assets/units/laser-tower2.png"
             },
             {
-                "alias": "tank-1",
+                "alias": "tank_1",
                 "src":"assets/units/tank-1.png"
             },
             {
@@ -29,6 +29,10 @@
             {
                 "alias": "tower-base",
                 "src": "assets/units/tower-base.png"
+            },
+            {
+                "alias": "laser",
+                "src": "assets/units/laser.png"
             }
             
         ]

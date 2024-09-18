@@ -11,10 +11,12 @@ export class Enemies extends BaseObject {
     private _bfsMoveEngine: BSFMoveEngine;
     private _isMoving: boolean = false;
     private _target: PointData;
-    constructor() {
-        super('tank-1');
-        this._enemiesType = EnemiesType.TANK1;
-        this.speed = 500;
+    constructor(enemyType: EnemiesType) {
+        super(enemyType);
+        this._enemiesType = enemyType;
+        this.speed = 100;
+        this.image.width = 32;
+        this.image.height = 32;
         this.moveEngine = new BaseEngine(true);
         this._bfsMoveEngine = new BSFMoveEngine();
         this._getNextMove();
