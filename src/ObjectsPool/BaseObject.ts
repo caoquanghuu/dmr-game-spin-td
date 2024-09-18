@@ -68,13 +68,14 @@ export class BaseObject {
 
     protected move(dt: number) {
         if (!this._moveEngine) return;
-        const isAngleDirection = typeof this._direction === 'number';
+
+        const isAngleDirection = this.moveEngine.isMoveByEnumDirection;
 
         // if object move by angle
-        if (isAngleDirection) {
-            this._image.x = this._image.x - Math.cos((this._moveEngine.direction * Math.PI) / 180) * ((this._speed * dt) / 1000);
+        if (!isAngleDirection) {
+            this._image.x = this._image.x + Math.cos((this._moveEngine.direction * Math.PI) / 180) * ((this._speed * dt) / 1000);
 
-            this._image.y = this._image.y - Math.sin((this._moveEngine.direction * Math.PI) / 180) * ((this._speed * dt) / 1000);
+            this._image.y = this._image.y + Math.sin((this._moveEngine.direction * Math.PI) / 180) * ((this._speed * dt) / 1000);
 
             // rotate image direction
             this._image.angle = this._moveEngine.direction;

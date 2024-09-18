@@ -11,7 +11,7 @@ export class Tower extends BaseObject {
     private _dame: number;
     private _goldCost: number;
     private _upGradeCost: number;
-    private _fireTimeCd: number = 1000;
+    protected _fireTimeCd: number = 2000;
     private _level: number = 1;
     private _item: BaseObject[] = [];
 
@@ -76,10 +76,10 @@ export class Tower extends BaseObject {
     }
 
     public fire(target: PointData) {
-
+        if (this._fireTimeCd > 0) return;
         const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: this.dame, speed: this.speed, effectType: this._effectType };
         Emitter.emit(AppConstants.event.fireBullet, option);
-       
+        this._fireTimeCd = 2000;
 
     }
 
@@ -91,6 +91,8 @@ export class Tower extends BaseObject {
 
     public update(dt: number): void {
         this._fireTimeCd -= dt;
+        console.log(this._fireTimeCd);
+
 
         this._changeTextureFollowDirection();
     }

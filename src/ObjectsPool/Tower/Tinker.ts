@@ -24,6 +24,7 @@ export class Tinker extends Tower {
         }
     }
     public update(dt: number): void {
+        this._fireTimeCd -=dt;
         this._animateTexture(dt);
     }
 }

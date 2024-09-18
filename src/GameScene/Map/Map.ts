@@ -116,7 +116,7 @@ export class GameMap extends Container {
     private _returnBulletToPool(bullet: Bullet): void {
         this._objectPool.returnBullet(bullet);
     }
-    public update(dt) {
+    public update(dt: number) {
         this._towers.forEach(tower => {
             tower.update(dt);
         });
