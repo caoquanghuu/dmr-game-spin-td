@@ -62,6 +62,7 @@ export class GameMap extends Container {
         ene.image.width = 32;
         ene.image.height = 32;
         ene.image.angle = 180;
+        ene.HP = 10;
         this._enemies.push(ene);
         ene.isMoving = true;
         this.addChild(ene.image);

@@ -39,6 +39,7 @@ export class BulletController {
             case TowerType.CRYSTAL_MAIDEN:
                 bullet = this._getBulletFromPool(BulletType.ICE);
                 bullet.dame = 0;
+
                 break;
             case TowerType.TINKER:
                 bullet = this._getBulletFromPool(BulletType.LASER);
@@ -49,6 +50,10 @@ export class BulletController {
                 bullet.dame = option.dame;
             default:
                 break;
+        }
+
+        if (option.effectType) {
+            bullet.effectType = option.effectType;
         }
 
         // set property follow option

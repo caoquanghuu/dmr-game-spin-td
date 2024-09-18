@@ -69,9 +69,15 @@ export type FireBulletOption = {
     effectType?: EffectType
 };
 
+export type Circle = {
+    position: PointData,
+    radius: number
+};
+
 export type GetTowerFromPoolFn = (towerType: TowerType) => Tower;
 export type GetEnemiesFromPoolFn = (enemyType: EnemiesType) => Enemies;
 export type GetBulletFromPoolFn = (bulletType: BulletType) => Bullet;
 export type ReturnTowerToPoolFn = (tower: Tower) => void;
 export type ReturnEnemiesToPoolFn = (enemy: Enemies) => void;
 export type ReturnBulletToPoolFn = (bullet: Bullet) => void;
+export type GetObjectFromGameSceneFn = () => {towers: Tower[], bullets: Bullet[], enemies: Enemies[]};

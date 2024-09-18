@@ -20,6 +20,8 @@ export class Tower extends BaseObject {
         super(towerType);
 
         this._towerType = towerType;
+
+        if (towerType === TowerType.CRYSTAL_MAIDEN) this._effectType = EffectType.SLOW;
     }
 
     get effectArena(): number {
@@ -72,7 +74,7 @@ export class Tower extends BaseObject {
 
     public fire(target: PointData) {
         // use eventemitter fire bullet
-        const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: this.dame, speed: this.speed };
+        const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: this.dame, speed: this.speed, effectType: this._effectType };
         Emitter.emit(AppConstants.event.fireBullet, option);
     }
 
