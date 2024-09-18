@@ -57,6 +57,14 @@ export class BaseObject {
         return this._id;
     }
 
+    get speed(): number {
+        return this._speed;
+    }
+
+    set speed(sp: number) {
+        this._speed = sp;
+    }
+
 
     protected move(dt: number) {
         if (!this._moveEngine) return;
@@ -106,10 +114,10 @@ export class BaseObject {
             };
 
             const moveList = {
-                1 : moveUp,
-                2 : moveDown,
-                3 : moveLeft,
-                4 : moveRight,
+                0 : moveUp,
+                1 : moveDown,
+                2 : moveLeft,
+                3 : moveRight,
                 'default' : () => {}
             };
 

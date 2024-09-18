@@ -1,9 +1,8 @@
 import { BaseEngine } from './BaseEngine';
-import map from '../GameScene/Map/mapMatrix.json';
 import { PointData } from 'pixi.js';
 import { AppConstants } from 'src/GameScene/Constants';
-import { GameMap } from 'src/GameScene/Map/Map';
-import { BSFMove, BSFNextMove } from 'src/Type';
+import { GameMap } from '../GameScene/Map/Map';
+import { BSFMove, BSFNextMove, Direction } from '../Type';
 export class BSFMoveEngine {
     private _mapMatrix: any;
     private _headPoint: PointData;
@@ -17,8 +16,14 @@ export class BSFMoveEngine {
     }
 
     get bsfNextMove(): BSFNextMove {
-        const nextMove: BSFNextMove = { directions: this._bsfMove.directions.shift(), path: this._bsfMove.path.shift() };
-        return nextMove;
+        const direction = this._bsfMove.directions.shift();
+        const nextPath = this._bsfMove.path.splice(1, 1);
+        let nextDirection: Direction;
+        if (direction.x === 0 && direction.y === -1) nextDirection = Direction.UP;
+        if (direction.x === 0 && direction.y === 1) nextDirection = Direction.DOWN;
+        if (direction.x === 1 && direction.y === 0) nextDirection = Direction.RIGHT;
+        if (direction.x === -1 && direction.y === 0) nextDirection = Direction.LEFT;
+        return { directions: nextDirection, path: { x: nextPath[0].x * 32, y: nextPath[0].y * 32 } };
     }
 
     private _bfs(headPoint: PointData): BSFMove {
@@ -62,20 +67,29 @@ export class BSFMoveEngine {
                     y: current.y + dir.y
                 };
 
+                // console.log(next);
+                const isPositionAvailable: boolean = this._checkNextMove(next);
+
 
                 if (
-                    next.x >= 0 &&
+                    isPositionAvailable &&
+                    next.x > 0 &&
                     next.x < 30 &&
-                    next.y >= 0 &&
-                    next.y <= 16 &&
+                    next.y > 0 &&
+                    next.y < 16 &&
                     !visited.has(`${next.x},${next.y}`)
                 ) {
-                    if (this._mapMatrix[next.x][next.y] != 1) return;
                     queue.push(next);
                     visited.add(`${next.x},${next.y}`);
                     parent[`${next.x},${next.y}`] = current;
                 }
             });
         }
+    }
+
+    private _checkNextMove(point: PointData): boolean {
+        if (this._mapMatrix[point.x][point.y] === 2) return false;
+        if (this._mapMatrix[point.x][point.y] === 0) return false;
+        return true;
     }
 }

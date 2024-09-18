@@ -1,9 +1,15 @@
-import { Container, Graphics } from 'pixi.js';
+import { Container, Graphics, Sprite } from 'pixi.js';
 import { AppConstants } from '../Constants';
 import map from './mapMatrix.json';
 import { Tinker } from '../../ObjectsPool/Tower/Tinker';
+import { Tower } from '../../ObjectsPool/Tower/Tower';
+import { Enemies } from '../../ObjectsPool/Enemies/Enemies';
+import { EnemiesType } from '../../Type';
+import { AssetsLoader } from '../../AssetsLoader';
 
 export class GameMap extends Container {
+    private _towers: Tower[] = [];
+    private _enemies: Enemies[] = [];
 
     public static mapMatrix: any;
     constructor() {
@@ -32,9 +38,9 @@ export class GameMap extends Container {
                     this.addChild(grc);
                     const tower = new Tinker();
                     this.addChild(tower.image);
-                    tower.image.width = 32;
-                    tower.image.height = 64;
-                    tower.position = { x: idxX * 32 + 16, y: idxY * 32 -8}
+                    tower.image.width = 40;
+                    tower.image.height = 80;
+                    tower.position = { x: idxX * 32 + 16, y: idxY * 32 - 12 };
                     this._towers.push(tower);
                 }
 
@@ -42,11 +48,24 @@ export class GameMap extends Container {
             });
         });
 
+        const ene = new Enemies();
+        ene.position = { x: 15 * 32, y: -100 };
+        ene.image.width = 40;
+        ene.image.height = 40;
+        ene.image.angle = 180;
+        this._enemies.push(ene);
+        ene.isMoving = true;
+        this.addChild(ene.image);
+
     }
 
     public update(dt) {
         this._towers.forEach(tower => {
             tower.update(dt);
-        })
+        });
+
+        this._enemies.forEach(ene => {
+            ene.update(dt);
+        });
     }
 }

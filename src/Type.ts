@@ -28,7 +28,7 @@ export enum TowerType {
 }
 
 export enum EnemiesType {
-    TANK1 = 'tank1',
+    TANK1 = 'tank-1',
     TANK2 = 'tank2',
     TANK3 = 'tank3'
 
@@ -51,6 +51,6 @@ export type BSFMove = {
 };
 
 export type BSFNextMove = {
-    directions: PointData,
+    directions: Direction,
     path: PointData
 };

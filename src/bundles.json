@@ -13,6 +13,10 @@
             {
                 "alias": "laser-tower-2",
                 "src": "assets/units/laser-tower2.png"
+            },
+            {
+                "alias": "tank-1",
+                "src":"assets/units/tank-1.png"
             }
             
         ]
