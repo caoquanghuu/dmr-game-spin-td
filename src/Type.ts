@@ -1,4 +1,8 @@
+/* eslint-disable no-unused-vars */
 import { PointData } from 'pixi.js';
+import { Tower } from '../src/ObjectsPool/Tower/Tower';
+import { Enemies } from '../src/ObjectsPool/Enemies/Enemies';
+import { Bullet } from '../src/ObjectsPool/Bullet';
 
 export enum Direction {
     UP,
@@ -54,3 +58,17 @@ export type BSFNextMove = {
     directions: Direction,
     path: PointData
 };
+
+export type FireBulletOption = {
+    position: PointData,
+    towerType: TowerType,
+    dame: number,
+    speed: number
+};
+
+export type GetTowerFromPoolFn = (towerType: TowerType) => Tower;
+export type GetEnemiesFromPoolFn = (enemyType: EnemiesType) => Enemies;
+export type GetBulletFromPoolFn = (bulletType: BulletType) => Bullet;
+export type ReturnTowerToPoolFn = (tower: Tower) => void;
+export type ReturnEnemiesToPoolFn = (enemy: Enemies) => void;
+export type ReturnBulletToPoolFn = (bullet: Bullet) => void;

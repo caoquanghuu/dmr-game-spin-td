@@ -10,6 +10,7 @@ export class Tower extends BaseObject {
     private _goldCost: number;
     private _upGradeCost: number;
     private _fireTimeCd: number;
+    private _level: number = 1;
     private _item: BaseObject[] = [];
 
 
@@ -53,6 +54,18 @@ export class Tower extends BaseObject {
 
     get upGradeCost(): number {
         return this._upGradeCost;
+    }
+
+    public reset() {
+        // reset property of tower to default when it return to pool
+    }
+
+    public upgrade() {
+        this._level += 1;
+        this._dame = this._dame * this._level;
+        this.speed = this.speed * this._level;
+        this.effectArena += 15;
+        this._upGradeCost = this._goldCost * this._level;
     }
 
     private _fire(position: PointData, direction: number) {

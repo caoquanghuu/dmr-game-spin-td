@@ -63,4 +63,11 @@ export namespace AppConstants {
         tank2: 2,
         tank3: 3
     };
+
+    export const event = {
+        fireBullet: 'fire-bullet',
+        createBullet: 'create-bullet',
+        createTower: 'create-tower',
+        destroyTower: 'destroy-tower'
+    };
 }
