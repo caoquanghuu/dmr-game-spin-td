@@ -67,7 +67,10 @@ export namespace AppConstants {
     export const event = {
         fireBullet: 'fire-bullet',
         createBullet: 'create-bullet',
+        removeBullet: 'remove-bullet',
         createTower: 'create-tower',
-        destroyTower: 'destroy-tower'
+        destroyTower: 'destroy-tower',
+        addChildToScene: 'add-child-to-scene',
+        removeChildFromScene: 'remove-child-from-scene'
     };
 }

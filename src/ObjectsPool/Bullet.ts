@@ -27,6 +27,22 @@ export class Bullet extends BaseObject {
         return this._bulletType;
     }
 
+    get isMoving(): boolean {
+        return this._isMoving;
+    }
+
+    set isMoving(isMv: boolean) {
+        this._isMoving = isMv;
+    }
+
+    get target(): PointData {
+        return this._target;
+    }
+
+    set target(target: PointData) {
+        this._target = target;
+    }
+
     private _updateDirection() {
         const newDirection = calculateAngleOfVector(this.position, this._target);
         this.image.angle = newDirection;

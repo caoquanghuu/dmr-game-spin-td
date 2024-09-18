@@ -2,6 +2,7 @@ import Emitter from '../../Util';
 import { EffectType, FireBulletOption, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { AppConstants } from '../../GameScene/Constants';
+import { PointData } from 'pixi.js';
 
 export class Tower extends BaseObject {
     private _effectArena: number;
@@ -69,9 +70,9 @@ export class Tower extends BaseObject {
         this._upGradeCost = this._goldCost * this._level;
     }
 
-    public fire() {
+    public fire(target: PointData) {
         // use eventemitter fire bullet
-        const option: FireBulletOption = { position: this.position, towerType: this.towerType, dame: this.dame, speed: this.speed };
+        const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: this.dame, speed: this.speed };
         Emitter.emit(AppConstants.event.fireBullet, option);
     }
 

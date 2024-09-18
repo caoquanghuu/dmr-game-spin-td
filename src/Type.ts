@@ -45,7 +45,8 @@ export enum EffectType {
 
 export enum BulletType {
     LASER = 'laser',
-    ROCKET = 'rocket'
+    ROCKET = 'rocket',
+    ICE = 'ice'
 
 }
 
@@ -61,6 +62,7 @@ export type BSFNextMove = {
 
 export type FireBulletOption = {
     position: PointData,
+    target: PointData,
     towerType: TowerType,
     dame: number,
     speed: number,
