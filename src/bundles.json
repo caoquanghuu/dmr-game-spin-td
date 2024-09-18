@@ -17,6 +17,18 @@
             {
                 "alias": "tank-1",
                 "src":"assets/units/tank-1.png"
+            },
+            {
+                "alias": "tree-1",
+                "src": "assets/units/tree1.png"   
+            },
+            {
+                "alias": "grass-1",
+                "src": "assets/units/grass-1.jpg"
+            },
+            {
+                "alias": "tower-base",
+                "src": "assets/units/tower-base.png"
             }
             
         ]
