@@ -1,6 +1,7 @@
-import { EffectType, TowerType } from '../../Type';
+import Emitter from '../../Util';
+import { EffectType, FireBulletOption, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
-import { PointData } from 'pixi.js';
+import { AppConstants } from '../../GameScene/Constants';
 
 export class Tower extends BaseObject {
     private _effectArena: number;
@@ -68,10 +69,10 @@ export class Tower extends BaseObject {
         this._upGradeCost = this._goldCost * this._level;
     }
 
-    private _fire(position: PointData, direction: number) {
-        const firePosition: PointData = { x: position.x, y: position.y };
-        const fireDirection = direction;
+    public fire() {
         // use eventemitter fire bullet
+        const option: FireBulletOption = { position: this.position, towerType: this.towerType, dame: this.dame, speed: this.speed };
+        Emitter.emit(AppConstants.event.fireBullet, option);
     }
 
     private _changeTextureFollowDirection() {
@@ -83,7 +84,8 @@ export class Tower extends BaseObject {
     public update(dt: number): void {
         this._fireTimeCd += dt;
         if (this._fireTimeCd > 3000) {
-            this._fire(this.position, this.direction);
+            // cd fire of tower
+            this._fireTimeCd = 0;
         }
 
         this._changeTextureFollowDirection();

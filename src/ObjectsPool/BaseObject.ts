@@ -135,5 +135,6 @@ export class BaseObject {
         }
     }
     public update(dt: number) {
+        //
     }
 }

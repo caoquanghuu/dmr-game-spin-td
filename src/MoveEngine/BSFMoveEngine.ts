@@ -1,6 +1,4 @@
-import { BaseEngine } from './BaseEngine';
 import { PointData } from 'pixi.js';
-import { AppConstants } from 'src/GameScene/Constants';
 import { GameMap } from '../GameScene/Map/Map';
 import { BSFMove, BSFNextMove, Direction } from '../Type';
 export class BSFMoveEngine {

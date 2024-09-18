@@ -63,7 +63,8 @@ export type FireBulletOption = {
     position: PointData,
     towerType: TowerType,
     dame: number,
-    speed: number
+    speed: number,
+    effectType?: EffectType
 };
 
 export type GetTowerFromPoolFn = (towerType: TowerType) => Tower;

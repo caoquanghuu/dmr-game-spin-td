@@ -4,7 +4,6 @@ import map from './mapMatrix.json';
 import { Tinker } from '../../ObjectsPool/Tower/Tinker';
 import { Tower } from '../../ObjectsPool/Tower/Tower';
 import { Enemies } from '../../ObjectsPool/Enemies/Enemies';
-import { EnemiesType } from '../../Type';
 import { AssetsLoader } from '../../AssetsLoader';
 
 export class GameMap extends Container {
@@ -16,7 +15,7 @@ export class GameMap extends Container {
         super();
         const graphics = new Graphics();
         graphics.rect (0, 0, AppConstants.mapSize.width, AppConstants.mapSize.height);
-        graphics.fill('ceaeaa');
+        graphics.fill('506147');
         this.addChild(graphics);
         GameMap.mapMatrix = map;
         map.forEach((val, idxX) => {
@@ -46,12 +45,12 @@ export class GameMap extends Container {
                     towerBase.height = 32;
                     this.addChild(towerBase);
 
-                    // const tower = new Tinker();
-                    // this.addChild(tower.image);
-                    // tower.image.width = 32;
-                    // tower.image.height = 60;
-                    // tower.position = { x: idxX * 32 + 16, y: idxY * 32 - 4 };
-                    // this._towers.push(tower);
+                    const tower = new Tinker();
+                    this.addChild(tower.image);
+                    tower.image.width = 32;
+                    tower.image.height = 60;
+                    tower.position = { x: idxX * 32 + 16, y: idxY * 32 - 4 };
+                    this._towers.push(tower);
                 }
 
 

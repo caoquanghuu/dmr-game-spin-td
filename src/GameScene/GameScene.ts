@@ -1,4 +1,4 @@
-import { Container, Graphics, Sprite } from 'pixi.js';
+import { Container } from 'pixi.js';
 import { AppConstants } from './Constants';
 import { GameMap } from './Map/Map';
 import { UIController } from './UI/UI Controller';

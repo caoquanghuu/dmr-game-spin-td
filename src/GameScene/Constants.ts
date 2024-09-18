@@ -1,4 +1,4 @@
-import { TowerType } from 'src/Type';
+
 
 /* eslint-disable @typescript-eslint/no-namespace */
 export namespace AppConstants {

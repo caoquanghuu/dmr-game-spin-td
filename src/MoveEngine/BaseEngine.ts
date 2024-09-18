@@ -18,7 +18,5 @@ export class BaseEngine {
     set direction(direction: Direction | number) {
         this._direction = direction;
     }
-    public update(dt: number) {
 
-    }
 }
