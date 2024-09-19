@@ -72,6 +72,8 @@ export namespace AppConstants {
         destroyTower: 'destroy-tower',
         addChildToScene: 'add-child-to-scene',
         removeChildFromScene: 'remove-child-from-scene',
-        destroyBullet: 'destroy-bullet'
+        destroyBullet: 'destroy-bullet',
+        createEnemy: 'create-enemy',
+        removeEnemy: 'remove-enemy'
     };
 }
