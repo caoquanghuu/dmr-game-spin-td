@@ -47,6 +47,10 @@ export class Enemies extends BaseObject {
         this._isMoving = isMoving;
     }
 
+    public getUpdatedPosition(): PointData {
+        return this.image.position;
+    }
+
     private _checkEnemyStage() {
         if (this._HP === 0) {
             // send info that this was die.

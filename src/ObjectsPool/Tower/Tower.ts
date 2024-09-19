@@ -77,7 +77,7 @@ export class Tower extends BaseObject {
 
     public fire(target: PointData) {
         if (this._fireTimeCd > 0) return;
-        const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: this.dame, speed: this.speed, effectType: this._effectType };
+        const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: this.dame, speed: this.speed * 3, effectType: this._effectType };
         Emitter.emit(AppConstants.event.fireBullet, option);
         this._fireTimeCd = 2000;
 

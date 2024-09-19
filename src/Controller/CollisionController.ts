@@ -41,7 +41,7 @@ export class CollisionController {
 
                 const isCollision = this._isCollision(c1, c2);
                 if (isCollision) {
-                    tower.fire(ene.position);
+                    tower.fire(ene.getUpdatedPosition());
                 }
             });
         });
