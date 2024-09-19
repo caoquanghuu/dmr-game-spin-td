@@ -84,7 +84,7 @@ export class GameMap extends Container {
     }
 
     private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Enemies[]} {
-        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._enemies };
+        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._enemiesController.enemies };
     }
 
     private _useEventEffect() {

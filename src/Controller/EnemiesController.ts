@@ -15,6 +15,10 @@ export class EnemiesController {
         this._useEventEffect();
     }
 
+    get enemies(): Enemies[] {
+        return this._enemies;
+    }
+
     private _useEventEffect() {
         Emitter.on(AppConstants.event.createEnemy, (option: { position: PointData, enemyType: EnemiesType}) => {
             this._createEnemies(option.enemyType, option.position);
