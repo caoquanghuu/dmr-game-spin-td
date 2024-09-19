@@ -49,7 +49,7 @@ export class Bullet extends BaseObject {
     }
 
     get effectType(): EffectType {
-        return this.effectType;
+        return this._effectType;
     }
 
     set effectType(ef: EffectType) {
@@ -58,18 +58,19 @@ export class Bullet extends BaseObject {
 
     public destroy() {
         // send event to controller tell it remove this
-        Emitter.emit(AppConstants.event.destroyBullet, this.id);
+        Emitter.emit(AppConstants.event.removeBullet, this.id);
     }
 
     private _updateDirection() {
-        const newDirection = calculateAngleOfVector(this.position, this._target);
+        const newDirection = calculateAngleOfVector(this.image.position, this._target);
         this.image.angle = newDirection;
-        this.direction = newDirection;
+        this.moveEngine.direction = newDirection;
     }
 
     public update(dt: number): void {
         if (!this._isMoving) return;
-        this._updateDirection();
+
         this.move(dt);
+        this._updateDirection();
     }
 }

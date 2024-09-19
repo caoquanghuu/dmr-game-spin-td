@@ -52,14 +52,12 @@ export class BulletController {
                 break;
         }
 
-        if (option.effectType) {
-            bullet.effectType = option.effectType;
-        }
 
         // set property follow option
         bullet.speed = option.speed;
-        bullet.position = option.position;
+        bullet.position = { x: option.position.x, y: option.position.y };
         bullet.target = option.target;
+        bullet.effectType = option.effectType;
 
         this._bullets.push(bullet);
 
@@ -70,10 +68,11 @@ export class BulletController {
 
     private _removeBullet(bulletId: number) {
         const i = this._bullets.findIndex(bullet => {
-            bullet.id === bulletId;
+            return bullet.id === bulletId;
         });
 
         const bullet = this.bullets[i];
+
         bullet.isMoving = false;
         this._returnBulletToPool(bullet);
 
