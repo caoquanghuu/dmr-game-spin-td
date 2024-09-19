@@ -2,7 +2,7 @@ import { BulletType, Circle, EffectType } from '../Type';
 import { BaseObject } from '../ObjectsPool/BaseObject';
 import { BaseEngine } from '../MoveEngine/BaseEngine';
 import { PointData } from 'pixi.js';
-import Emitter, { isCollision, calculateAngleOfVector, isCollision } from '../Util';
+import Emitter, { calculateAngleOfVector, isCollision } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 
 export class Bullet extends BaseObject {
