@@ -24,6 +24,7 @@ export class CollisionController {
 
                 const isCollision = this._isCollision(c1, c2);
 
+
                 if (isCollision) {
                     ene.HP -= bullet.dame;
                     if (bullet.effectType === EffectType.SLOW) {

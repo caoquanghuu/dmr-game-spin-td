@@ -1,8 +1,8 @@
-import { BulletType, EffectType } from '../Type';
+import { BulletType, Circle, EffectType } from '../Type';
 import { BaseObject } from '../ObjectsPool/BaseObject';
 import { BaseEngine } from '../MoveEngine/BaseEngine';
 import { PointData } from 'pixi.js';
-import Emitter, { calculateAngleOfVector } from '../Util';
+import Emitter, { isCollision, calculateAngleOfVector, isCollision } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 
 export class Bullet extends BaseObject {
@@ -61,6 +61,16 @@ export class Bullet extends BaseObject {
         Emitter.emit(AppConstants.event.removeBullet, this.id);
     }
 
+    // handle remove bullet in case target die before bullet reach
+    private _checkBulletMove() {
+        const c1: Circle = { position: this.target, radius: 3 };
+        const c2: Circle = { position: this.position, radius: 3 };
+
+        if (isCollision(c1, c2)) {
+            this.destroy();
+        }
+    }
+
     private _updateDirection() {
         const newDirection = calculateAngleOfVector(this.image.position, this._target);
         this.image.angle = newDirection;
@@ -72,5 +82,7 @@ export class Bullet extends BaseObject {
 
         this.move(dt);
         this._updateDirection();
+
+        this._checkBulletMove();
     }
 }

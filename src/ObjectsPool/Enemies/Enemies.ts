@@ -3,6 +3,8 @@ import { BaseObject } from '../BaseObject';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BSFMoveEngine } from '../../MoveEngine/BSFMoveEngine';
 import { PointData } from 'pixi.js';
+import Emitter from '../../Util';
+import { AppConstants } from '../../GameScene/Constants';
 
 export class Enemies extends BaseObject {
     private _HP: number;
@@ -52,8 +54,8 @@ export class Enemies extends BaseObject {
     }
 
     private _checkEnemyStage() {
-        if (this._HP === 0) {
-            // send info that this was die.
+        if (this._HP <= 0) {
+            Emitter.emit(AppConstants.event.removeEnemy, this.id);
         }
     }
 

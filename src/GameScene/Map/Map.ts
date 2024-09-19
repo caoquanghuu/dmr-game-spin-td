@@ -1,7 +1,6 @@
 import { Container, Graphics, Sprite } from 'pixi.js';
 import { AppConstants } from '../Constants';
 import map from '../Map/mapMatrix.json';
-import { Tinker } from '../../ObjectsPool/Tower/Tinker';
 import { Tower } from '../../ObjectsPool/Tower/Tower';
 import { Enemies } from '../../ObjectsPool/Enemies/Enemies';
 import { AssetsLoader } from '../../AssetsLoader';
@@ -77,9 +76,8 @@ export class GameMap extends Container {
 
             });
         });
-        // this._towerController._createTower({ position: { x: 32 * 10, y: 32 * 10 }, towerType: TowerType.tinker });
 
-        Emitter.emit(AppConstants.event.createEnemy, { position: { x: 15 * 32, y: -100 }, enemyType: EnemiesType.tank_1 });
+        this._startGame();
 
     }
 
@@ -94,6 +92,15 @@ export class GameMap extends Container {
         Emitter.on(AppConstants.event.removeChildFromScene, (sprite: Sprite) => {
             this.removeChild(sprite);
         });
+    }
+
+    // method to create enemies
+    private _startGame() {
+        let y = -100;
+        for (let i = 0; i < 10; i++) {
+            Emitter.emit(AppConstants.event.createEnemy, { position: { x: 15 * 32, y: y }, enemyType: EnemiesType.tank_1 });
+            y -= 100;
+        }
     }
 
     private _getTowerFromPool(towerType: TowerType): Tower {

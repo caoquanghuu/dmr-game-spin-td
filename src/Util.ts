@@ -1,4 +1,5 @@
 import { EventEmitter, PointData } from 'pixi.js';
+import { Circle } from './Type';
 
 export const switchFn = (lookupObject, defaultCase = '_default') => expression => (lookupObject[expression] || lookupObject[defaultCase])();
 
@@ -20,3 +21,11 @@ const Emitter = {
 };
 Object.freeze(Emitter);
 export default Emitter;
+
+export function isCollision(c1: Circle, c2: Circle): boolean {
+    const r = c1.radius + c2.radius;
+    const distance = Math.sqrt((c1.position.x - c2.position.x) * (c1.position.x - c2.position.x) + (c1.position.y - c2.position.y) * ((c1.position.y - c2.position.y)));
+    if (distance <= r) return true;
+
+    return false;
+}
