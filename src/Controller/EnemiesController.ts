@@ -1,8 +1,8 @@
 import { EnemiesType, GetEnemiesFromPoolFn, ReturnEnemiesToPoolFn } from 'src/Type';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { PointData } from 'pixi.js';
-import Emitter from 'src/Util';
-import { AppConstants } from 'src/GameScene/Constants';
+import Emitter from '../Util';
+import { AppConstants } from '../GameScene/Constants';
 
 export class EnemiesController {
     private _enemies: Enemies[] = [];
@@ -12,10 +12,11 @@ export class EnemiesController {
     constructor(getEnemiesFromPoolCB: GetEnemiesFromPoolFn, returnEnemiesToPoolCB: ReturnEnemiesToPoolFn) {
         this._getEnemiesFromPool = getEnemiesFromPoolCB;
         this._returnEnemiesToPool = returnEnemiesToPoolCB;
+        this._useEventEffect();
     }
 
     private _useEventEffect() {
-        Emitter.on(AppConstants.event.createEnemy, (option: {enemyType: EnemiesType, position: PointData}) => {
+        Emitter.on(AppConstants.event.createEnemy, (option: { position: PointData, enemyType: EnemiesType}) => {
             this._createEnemies(option.enemyType, option.position);
         });
         Emitter.on(AppConstants.event.removeEnemy, (id: number) => {

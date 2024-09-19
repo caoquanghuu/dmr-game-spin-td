@@ -12,6 +12,7 @@ import { ObjectPool } from '../../ObjectsPool/ObjectPool';
 import { Bullet } from '../../ObjectsPool/Bullet';
 import { BulletType, EnemiesType, TowerType } from '../../Type';
 import Emitter from '../../Util';
+import { EnemiesController } from '../../Controller/EnemiesController';
 
 export class GameMap extends Container {
     private _towers: Tower[] = [];
@@ -19,6 +20,7 @@ export class GameMap extends Container {
     private _bulletController: BulletController;
     private _collisionController: CollisionController;
     private _towerController: TowerController;
+    private _enemiesController: EnemiesController;
     private _objectPool: ObjectPool;
 
     public static mapMatrix: any;
@@ -33,6 +35,7 @@ export class GameMap extends Container {
         this._objectPool = new ObjectPool();
 
         this._towerController = new TowerController(this._getTowerFromPool.bind(this), this._returnTowerToPool.bind(this));
+        this._enemiesController = new EnemiesController(this._getEnemiesFromPool.bind(this), this._returnEnemiesToPool.bind(this));
         this._bulletController = new BulletController(this._getBulletFromPool.bind(this), this._returnBulletToPool.bind(this));
         this._collisionController = new CollisionController(this._getObject.bind(this));
 
@@ -76,15 +79,7 @@ export class GameMap extends Container {
         });
         // this._towerController._createTower({ position: { x: 32 * 10, y: 32 * 10 }, towerType: TowerType.tinker });
 
-        const ene = new Enemies(EnemiesType.tank_1);
-        ene.position = { x: 15 * 32 + 16, y: -100 };
-        ene.image.width = 32;
-        ene.image.height = 32;
-        ene.image.angle = 180;
-        ene.HP = 10;
-        this._enemies.push(ene);
-        ene.isMoving = true;
-        this.addChild(ene.image);
+        Emitter.emit(AppConstants.event.createEnemy, { position: { x: 15 * 32, y: -100 }, enemyType: EnemiesType.tank_1 });
 
     }
 
@@ -116,6 +111,14 @@ export class GameMap extends Container {
     private _returnBulletToPool(bullet: Bullet): void {
         this._objectPool.returnBullet(bullet);
     }
+
+    private _getEnemiesFromPool(eneType: EnemiesType): Enemies {
+        return this._objectPool.getEnemies(eneType);
+    }
+
+    private _returnEnemiesToPool(ene: Enemies): void {
+        this._objectPool.returnEnemies(ene);
+    }
     public update(dt: number) {
         this._towers.forEach(tower => {
             tower.update(dt);
@@ -128,5 +131,6 @@ export class GameMap extends Container {
         this._towerController.update(dt);
         this._bulletController.update(dt);
         this._collisionController.update(dt);
+        this._enemiesController.update(dt);
     }
 }

@@ -58,7 +58,7 @@ export class ObjectPool {
             return this._towerPool[towerType].pop() as Tower;
         }
     }
-    public getEnemies(enemiesType: string): Enemies {
+    public getEnemies(enemiesType: EnemiesType): Enemies {
         if (this._enemiesPool[enemiesType]?.length <= 0) {
             const enemies = Factory.createEnemies(enemiesType);
             return enemies;
