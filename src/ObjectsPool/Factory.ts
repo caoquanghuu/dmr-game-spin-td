@@ -30,6 +30,11 @@ export default class Factory {
             case BulletType.ice:
                 const iceBullet = new Bullet(BulletType.ice);
                 iceBullet.id = objectId;
+                return iceBullet;
+            case BulletType.lightning:
+                const lightningBullet = new Bullet(BulletType.lightning);
+                lightningBullet.id = objectId;
+                return lightningBullet;
             default:
         }
     }

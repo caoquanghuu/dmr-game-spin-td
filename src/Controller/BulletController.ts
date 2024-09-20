@@ -46,7 +46,7 @@ export class BulletController {
                 bullet.dame = option.dame;
                 break;
             case TowerType.mirana:
-                bullet = this._getBulletFromPool(BulletType.rocket);
+                bullet = this._getBulletFromPool(BulletType.lightning);
                 bullet.dame = option.dame;
             default:
                 break;

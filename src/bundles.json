@@ -49,6 +49,10 @@
             {
                 "alias": "mirana-3",
                 "src": "assets/units/mirana-tower-3.png"
+            },
+            {
+                "alias": "lightning",
+                "src": "assets/units/lightning.png"
             }
             
         ]

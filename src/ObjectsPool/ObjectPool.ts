@@ -41,8 +41,9 @@ export class ObjectPool {
         }
     }
 
-    public getBulletFromPool(bulletType: string): Bullet {
+    public getBulletFromPool(bulletType: BulletType): Bullet {
         if (this._bulletPool[bulletType]?.length <= 0) {
+
             const bullet = Factory.createBullet(bulletType);
             return bullet;
         } else {

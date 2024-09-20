@@ -16,8 +16,8 @@ export class Bullet extends BaseObject {
         super(bulletType);
         this._bulletType = bulletType;
         this.moveEngine = new BaseEngine(false);
-        this.image.width = 16;
-        this.image.height = 64;
+        this.image.width = 15;
+        this.image.height = 30;
     }
 
     get dame(): number {
@@ -73,7 +73,7 @@ export class Bullet extends BaseObject {
 
     private _updateDirection() {
         const newDirection = calculateAngleOfVector(this.image.position, this._target);
-        this.image.angle = newDirection;
+        this.image.angle = newDirection + 90;
         this.moveEngine.direction = newDirection;
     }
 
