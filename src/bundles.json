@@ -13,7 +13,11 @@
             {
                 "alias": "laser-tower-2",
                 "src": "assets/units/laser-tower2.png"
-            },
+            },{
+                "alias": "tinker-icon",
+                "src": "assets/units/laser-tower-icon.jpg"
+            }
+            ,
             {
                 "alias": "tank_1",
                 "src":"assets/units/tank-1.png"
