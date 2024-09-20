@@ -26,6 +26,11 @@ export class AssetsLoader {
         });
     }
 
+    static async loadBitmapText() {
+        await Assets.load('../assets/bitmapText/desyrel.xml');
+        await Assets.load('../assets/bitmapText/font_number.fnt');
+    }
+
     // static function get a texture
     static getTexture(name: string) {
         return AssetsLoader._resources[name];
