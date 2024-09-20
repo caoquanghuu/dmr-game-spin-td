@@ -52,6 +52,9 @@ export class EnemiesController {
         Emitter.emit(AppConstants.event.removeChildFromScene, ene.image);
 
         this._enemies.splice(i, 1);
+
+        // send event plus gold for player
+        Emitter.emit(AppConstants.event.plusGold, ene.goldReward)
     }
 
 

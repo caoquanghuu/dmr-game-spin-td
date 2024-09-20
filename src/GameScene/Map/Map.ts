@@ -15,6 +15,7 @@ import { EnemiesController } from '../../Controller/EnemiesController';
 
 export class GameMap extends Container {
     private _towers: Tower[] = [];
+    private _towerBase: Sprite[] = [];
     private _enemies: Enemies[] = [];
     private _bulletController: BulletController;
     private _collisionController: CollisionController;
@@ -64,6 +65,8 @@ export class GameMap extends Container {
                     towerBase.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
                     towerBase.width = 32;
                     towerBase.height = 32;
+
+                    this._towerBase.push(towerBase);
                     this.addChild(towerBase);
 
                     const rd = Math.random() * 10;
@@ -79,6 +82,18 @@ export class GameMap extends Container {
 
         this._startGame();
 
+        this._init();
+
+    }
+
+    private _init() {
+        this._towerBase.forEach(base => {
+            base.eventMode = 'static';
+            base.cursor = 'pointer';
+            base.on('pointerdown', () => {
+                Emitter.emit(AppConstants.event.selectTowerBase, base.position);
+            });
+        });
     }
 
     private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Enemies[]} {

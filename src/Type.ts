@@ -83,3 +83,4 @@ export type ReturnBulletToPoolFn = (bullet: Bullet) => void;
 export type GetObjectFromGameSceneFn = () => {towers: Tower[], bullets: Bullet[], enemies: Enemies[]};
 export type AddToBoardFn= (board: Container) => void;
 export type RemoveFromBoardFb = (board: Container) => void;
+export type GetPlayerGoldFn = () => number;

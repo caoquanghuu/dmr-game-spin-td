@@ -77,7 +77,11 @@ export namespace AppConstants {
         createEnemy: 'create-enemy',
         removeEnemy: 'remove-enemy',
         addToUIBoard: 'add-to-ui-board',
-        removeFromUiBoard: 'remove-from-ui-board'
+        removeFromUiBoard: 'remove-from-ui-board',
+        selectTowerBase:'select-tower-base',
+        plusGold: 'plus-gold',
+        reduceGold: 'reduce-gold',
+        resetBoard: 'reset-board'
     };
 
     export const position = {
@@ -145,6 +149,12 @@ export namespace AppConstants {
                 fontSize: 30,
             }
         },
+    };
+
+    export const towerPrice = {
+        tinker: 20,
+        mirana: 30,
+        cm: 30
     };
 
 }

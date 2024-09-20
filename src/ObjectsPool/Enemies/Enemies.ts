@@ -13,6 +13,7 @@ export class Enemies extends BaseObject {
     private _bfsMoveEngine: BSFMoveEngine;
     private _isMoving: boolean = false;
     private _target: PointData;
+    private _goldReward: number = 10;
     constructor(enemyType: EnemiesType) {
         super(enemyType);
         this._enemiesType = enemyType;
@@ -47,6 +48,14 @@ export class Enemies extends BaseObject {
 
     set isMoving(isMoving: boolean) {
         this._isMoving = isMoving;
+    }
+
+    get goldReward(): number {
+        return this._goldReward;
+    }
+
+    set goldReward(gold: number) {
+        this._goldReward = gold;
     }
 
     public getUpdatedPosition(): PointData {
