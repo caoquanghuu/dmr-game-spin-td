@@ -23,6 +23,7 @@ import { GameScene } from './GameScene/GameScene';
 
     new AssetsLoader();
     await AssetsLoader.loadBundle(bundles);
+    await AssetsLoader.loadBitmapText();
 
     const gameScene = new GameScene();
     app.stage.addChild(gameScene);

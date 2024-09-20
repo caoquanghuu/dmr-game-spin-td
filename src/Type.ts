@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { PointData } from 'pixi.js';
+import { Container, PointData } from 'pixi.js';
 import { Tower } from '../src/ObjectsPool/Tower/Tower';
 import { Enemies } from '../src/ObjectsPool/Enemies/Enemies';
 import { Bullet } from '../src/ObjectsPool/Bullet';
@@ -81,3 +81,5 @@ export type ReturnTowerToPoolFn = (tower: Tower) => void;
 export type ReturnEnemiesToPoolFn = (enemy: Enemies) => void;
 export type ReturnBulletToPoolFn = (bullet: Bullet) => void;
 export type GetObjectFromGameSceneFn = () => {towers: Tower[], bullets: Bullet[], enemies: Enemies[]};
+export type AddToBoardFn= (board: Container) => void;
+export type RemoveFromBoardFb = (board: Container) => void;

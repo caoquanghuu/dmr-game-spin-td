@@ -1,3 +1,4 @@
+import { TextOptions } from 'pixi.js';
 
 
 /* eslint-disable @typescript-eslint/no-namespace */
@@ -26,7 +27,7 @@ export namespace AppConstants {
         tower: {
             crystalMaiden: 'crystal-maiden',
             mirana: 'mirana',
-            tinker: 'tiner'
+            tinker: 'tinker'
         }
     };
 
@@ -74,6 +75,76 @@ export namespace AppConstants {
         removeChildFromScene: 'remove-child-from-scene',
         destroyBullet: 'destroy-bullet',
         createEnemy: 'create-enemy',
-        removeEnemy: 'remove-enemy'
+        removeEnemy: 'remove-enemy',
+        addToUIBoard: 'add-to-ui-board',
+        removeFromUiBoard: 'remove-from-ui-board'
     };
+
+    export const position = {
+        wave: { x: 30, y: 35 },
+        waveNumber: { x: 150, y: 35 },
+        gold: { x: 30, y: 70 },
+        goldNumber: { x: 150, y: 70 },
+        baseHp: { x: 30, y: 0 },
+        baseNumber: { x: 150, y: 0 },
+        spin: { x: 800, y: 35 },
+    };
+
+    export const text: {[text: string]: TextOptions} = {
+        wave: {
+            text: 'wave:',
+
+            style: {
+                fontFamily: 'Desyrel',
+                fontSize: 30,
+            }
+
+
+        },
+        waveNumber: {
+            text: 0,
+            style: {
+                fontFamily: 'font_number',
+                fontSize: 30,
+            }
+        }
+        ,
+        gold: {
+            text: 'gold:',
+            style: {
+                fontFamily: 'Desyrel',
+                fontSize: 30,
+            }
+        },
+        goldNumber: {
+            text: 0,
+            style: {
+                fontFamily: 'font_number',
+                fontSize: 30,
+            }
+        }
+        ,
+        baseHp: {
+            text: 'base HP:',
+            style: {
+                fontFamily: 'Desyrel',
+                fontSize: 30,
+            }
+        },
+        baseHpNumber: {
+            text: 0,
+            style: {
+                fontFamily: 'font_number',
+                fontSize: 30,
+            } }
+        ,
+        spin: {
+            text: 'spin',
+            style: {
+                fontFamily: 'Desyrel',
+                fontSize: 30,
+            }
+        },
+    };
+
 }
