@@ -154,5 +154,6 @@ export class GameMap extends Container {
         this._bulletController.update(dt);
         this._collisionController.update(dt);
         this._enemiesController.update(dt);
+
     }
 }

@@ -33,7 +33,20 @@ export class BuildTowerBoard extends Container {
             }
         });
         towerPriceText.position = { x: 90, y: 70 };
-        this.addChild(towerPriceText);
+        const exitText = new BitmapText({
+            text: 'x',
+            style: {
+                fontFamily: 'Desyrel',
+                fontSize: 30,
+            }
+        });
+        exitText.position = { x: 900, y:  10 };
+        exitText.eventMode = 'static';
+        exitText.cursor = 'pointer';
+        exitText.on('pointerdown', () => {
+            Emitter.emit(AppConstants.event.resetBoard, null);
+        });
+        this.addChild(towerPriceText, exitText);
         this._init();
     }
 
