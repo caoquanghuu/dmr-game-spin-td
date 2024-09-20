@@ -12,13 +12,13 @@ export class Tower extends BaseObject {
     private _goldCost: number;
     private _upGradeCost: number;
     protected _fireTimeCd: number = 2000;
+    public time: number;
     private _level: number = 1;
     private _item: BaseObject[] = [];
 
 
     constructor(towerType: TowerType) {
         super(towerType);
-
         this._towerType = towerType;
         this.speed = 100;
         this.image.width = 32;

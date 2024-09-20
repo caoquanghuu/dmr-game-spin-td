@@ -37,6 +37,18 @@
             {
                 "alias": "laser",
                 "src": "assets/units/laser.png"
+            },
+            {
+                "alias": "mirana",
+                "src": "assets/units/mirana-tower-1.png"
+            },
+            {
+                "alias": "mirana-2",
+                "src": "assets/units/mirana-tower-2.png"
+            },
+            {
+                "alias": "mirana-3",
+                "src": "assets/units/mirana-tower-3.png"
             }
             
         ]
