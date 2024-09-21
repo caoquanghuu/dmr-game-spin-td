@@ -12,27 +12,8 @@ export class BuildTowerBoard extends Container {
     constructor(getPlayerGoldCb: GetPlayerGoldFn) {
         super();
         this._getPlayerGoldFn = getPlayerGoldCb;
-        const towerIcon = new Sprite(AssetsLoader.getTexture('tinker-icon'));
-        towerIcon.width = 65;
-        towerIcon.height = 65;
-        towerIcon.anchor = 0.5;
-        this.addChild(towerIcon);
-        towerIcon.position = { x: 100, y:60 };
-        towerIcon.eventMode = 'static';
-        towerIcon.cursor = 'pointer';
-        towerIcon.on('pointerdown', () => {
-            this.createTower(TowerType.tinker);
-        });
-        this._towerCanBuildIcon.push(towerIcon);
 
-        const towerPriceText = new BitmapText({
-            text: `${AppConstants.towerPrice.tinker}`,
-            style: {
-                fontFamily: 'font_number',
-                fontSize: 15,
-            }
-        });
-        towerPriceText.position = { x: 90, y: 70 };
+        // create exit button
         const exitText = new BitmapText({
             text: 'x',
             style: {
@@ -46,8 +27,39 @@ export class BuildTowerBoard extends Container {
         exitText.on('pointerdown', () => {
             Emitter.emit(AppConstants.event.resetBoard, null);
         });
-        this.addChild(towerPriceText, exitText);
-        this._init();
+        this.addChild(exitText);
+
+        const positionXInContainerRatio = AppConstants.appWidth / (Object.keys(TowerType).length + 1);
+        const firstIconPosition: PointData = { x: positionXInContainerRatio, y : 65 };
+        for (const [key, value] of Object.entries(TowerType)) {
+            console.log(key);
+            const towerIcon = new Sprite(AssetsLoader.getTexture(`${value}-icon`));
+            towerIcon.width = 65;
+            towerIcon.height = 65;
+            towerIcon.anchor = 0.5;
+            towerIcon.position = { x: firstIconPosition.x, y: firstIconPosition.y};
+            towerIcon.eventMode = 'static';
+            towerIcon.cursor = 'pointer';
+            towerIcon.on('pointerdown', () => {
+                this.createTower(value);
+            });
+            this.addChild(towerIcon);
+
+            this._towerCanBuildIcon.push(towerIcon);
+
+            const towerPriceText = new BitmapText({
+                text: `${AppConstants.towerPrice[key]}`,
+                style: {
+                    fontFamily: 'font_number',
+                    fontSize: 15,
+                }
+            });
+            towerPriceText.anchor = 0.5;
+            towerPriceText.position = { x: firstIconPosition.x, y: 85 };
+            this.addChild(towerPriceText);
+
+            firstIconPosition.x += positionXInContainerRatio;
+        }
     }
 
     get towerPosition(): PointData {
@@ -92,21 +104,6 @@ export class BuildTowerBoard extends Container {
         Emitter.emit(AppConstants.event.reduceGold, goldCost);
         Emitter.emit(AppConstants.event.resetBoard, null);
     }
-    private _init() {
-        // Object.keys(TowerType).forEach((key, value) => {
-        //     const towerIcon = new Sprite(AssetsLoader.getTexture(`${value}-icon`));
-        //     towerIcon.width = 96;
-        //     towerIcon.height = 96;
-        //     towerIcon.anchor = 0.5;
-        //     this._towerCanBuildIcon.push(towerIcon);
-        // });
-
-        // const positionXInContainerRatio = AppConstants.appWidth / this._towerCanBuildIcon.length;
-        // const firstIconPosition: PointData = { x: positionXInContainerRatio, y : 37 };
-        // this._towerCanBuildIcon.forEach(icon => {
-        //     icon.position = { x: firstIconPosition.x, y: firstIconPosition.y };
-        //     this.addChild(icon);
-        //     firstIconPosition.x += positionXInContainerRatio;
-        // });
+    private async _init() {
     }
 }
