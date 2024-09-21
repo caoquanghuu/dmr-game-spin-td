@@ -21,6 +21,10 @@
             {
                 "alias": "mirana-icon",
                 "src": "assets/units/mirana-icon.jpg"
+            },
+            {
+                "alias": "clockwerk-icon",
+                "src": "assets/units/clockwerk-icon.png"
             }
             ,
             {
@@ -58,6 +62,10 @@
             {
                 "alias": "lightning",
                 "src": "assets/units/lightning.png"
+            },
+            {
+                "alias": "clockwerk",
+                "src": "assets/units/rocket-1.png"
             }
             
         ]

@@ -31,8 +31,10 @@ export class BuildTowerBoard extends Container {
 
         const positionXInContainerRatio = AppConstants.appWidth / (Object.keys(TowerType).length + 1);
         const firstIconPosition: PointData = { x: positionXInContainerRatio, y : 65 };
+
+        // loop tower type
         for (const [key, value] of Object.entries(TowerType)) {
-            console.log(key);
+            // create tower icon as tower type
             const towerIcon = new Sprite(AssetsLoader.getTexture(`${value}-icon`));
             towerIcon.width = 65;
             towerIcon.height = 65;
@@ -47,6 +49,7 @@ export class BuildTowerBoard extends Container {
 
             this._towerCanBuildIcon.push(towerIcon);
 
+            // create tower price
             const towerPriceText = new BitmapText({
                 text: `${AppConstants.towerPrice[key]}`,
                 style: {
