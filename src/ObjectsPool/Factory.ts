@@ -5,6 +5,7 @@ import { CrystalMaiden } from '../ObjectsPool/Tower/CrystalMaiden';
 import { Mirana } from '../ObjectsPool/Tower/Mirana';
 import { Tinker } from '../ObjectsPool/Tower/Tinker';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
+import { ClockWerk } from '../ObjectsPool/Tower/ClockWerk';
 
 export default class Factory {
     public static instance: Factory;
@@ -43,6 +44,8 @@ export default class Factory {
         const objectId = Factory.objectId;
         Factory.objectId++;
 
+   
+
         switch (type) {
             case TowerType.crystal_maiden:
                 const CM = new CrystalMaiden();
@@ -58,7 +61,10 @@ export default class Factory {
                 const tinker = new Tinker();
                 tinker.id = objectId;
                 return tinker;
-
+            case TowerType.clockwerk:
+                const clockwerk = new ClockWerk();
+                clockwerk.id = objectId;
+                return clockwerk;
             default:
         }
     }

@@ -28,7 +28,8 @@ export interface EffectArena {
 export enum TowerType {
     crystal_maiden = 'crystal_maiden',
     mirana = 'mirana',
-    tinker = 'tinker'
+    tinker = 'tinker',
+    clockwerk = 'clockwerk',
 }
 
 export enum EnemiesType {
@@ -40,7 +41,8 @@ export enum EnemiesType {
 
 export enum EffectType {
     SLOW,
-    STUN
+    STUN,
+    BLAST
 }
 
 export enum BulletType {

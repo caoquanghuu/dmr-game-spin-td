@@ -6,12 +6,13 @@ import { PointData } from 'pixi.js';
 
 export class Tower extends BaseObject {
     private _effectArena: number;
-    private _effectType: EffectType;
+    public effectType: EffectType;
     private _towerType: TowerType;
     private _dame: number;
     private _goldCost: number;
     private _upGradeCost: number;
     protected _fireTimeCd: number = 2000;
+    protected target: PointData;
     public time: number;
     private _level: number = 1;
     private _item: BaseObject[] = [];
@@ -24,7 +25,6 @@ export class Tower extends BaseObject {
         this.image.width = 32;
         this.image.height = 60;
 
-        if (towerType === TowerType.crystal_maiden) this._effectType = EffectType.SLOW;
     }
 
     get effectArena(): number {
@@ -77,8 +77,9 @@ export class Tower extends BaseObject {
 
     public fire(target: PointData) {
         if (this._fireTimeCd > 0) return;
-        const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: this.dame, speed: this.speed * 3, effectType: this._effectType };
+        const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: this.dame, speed: this.speed * 3, effectType: this.effectType };
         Emitter.emit(AppConstants.event.fireBullet, option);
+        this.target = option.position;
         this._fireTimeCd = 2000;
 
     }

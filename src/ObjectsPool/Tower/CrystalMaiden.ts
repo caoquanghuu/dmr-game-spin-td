@@ -4,7 +4,7 @@ import { AppConstants } from '../../GameScene/Constants';
 
 export class CrystalMaiden extends Tower {
     constructor() {
-        super(TowerType.CRYSTAL_MAIDEN);
+        super(TowerType.crystal_maiden);
         this.dame = AppConstants.dame.CM;
         this.effectArena = AppConstants.effectArena.CM;
         this.goldCost = AppConstants.goldCost.CM;

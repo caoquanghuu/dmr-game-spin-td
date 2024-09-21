@@ -1,4 +1,5 @@
 import { TextOptions } from 'pixi.js';
+import { ClockWerk } from 'src/ObjectsPool/Tower/ClockWerk';
 
 
 /* eslint-disable @typescript-eslint/no-namespace */
@@ -38,19 +39,22 @@ export namespace AppConstants {
     export const dame = {
         CM: 0,
         Mirana: 1,
-        Tinker: 2
+        Tinker: 2,
+        ClockWerk: 3
     };
 
     export const goldCost = {
         CM: 50,
         Mirana: 70,
-        Tinker: 100
+        Tinker: 100,
+        ClockWerk: 150
     };
 
     export const effectArena = {
         CM: 200,
         Mirana: 200,
-        Tinker: 200
+        Tinker: 200,
+        ClockWerk: 300,
     };
 
     export const enemiesHp = {
