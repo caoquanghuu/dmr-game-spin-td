@@ -58,6 +58,11 @@ export class Enemies extends BaseObject {
         this._goldReward = gold;
     }
 
+    public resetMove() {
+        this._bfsMoveEngine.reset();
+        this._getNextMove();
+    }
+
     public getUpdatedPosition(): PointData {
         return this.image.position;
     }

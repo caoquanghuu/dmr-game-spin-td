@@ -25,6 +25,10 @@ export class BSFMoveEngine {
         return { directions: nextDirection, path: { x: nextPath[0].x * 32, y: nextPath[0].y * 32 } };
     }
 
+    public reset() {
+        this._bsfMove = this._bfs(this._headPoint);
+    }
+
     private _bfs(headPoint: PointData): BSFMove {
         const queue = [headPoint];
         const visited = new Set();

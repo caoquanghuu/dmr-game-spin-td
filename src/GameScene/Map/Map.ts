@@ -124,6 +124,10 @@ export class GameMap extends Container {
         }
     }
 
+    private _spawnWave() {
+        if (this._enemiesController.enemies.length === 0) this._startGame();
+    }
+
     private _getTowerFromPool(towerType: TowerType): Tower {
         return this._objectPool.getTowerFromPool(towerType);
     }
@@ -160,6 +164,8 @@ export class GameMap extends Container {
         this._bulletController.update(dt);
         this._collisionController.update(dt);
         this._enemiesController.update(dt);
+
+        this._spawnWave();
 
     }
 }

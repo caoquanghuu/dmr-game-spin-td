@@ -33,6 +33,7 @@ export class EnemiesController {
         ene.position = position;
         ene.HP = 10;
         ene.dameDeal = 1;
+        ene.resetMove();
         ene.isMoving = true;
 
         Emitter.emit(AppConstants.event.addChildToScene, ene.image);
