@@ -76,28 +76,12 @@ export class BuildTowerBoard extends Container {
     public createTower(towerType: TowerType) {
         // get player gold
         const playerGold = this._getPlayerGoldFn();
-        let isEnoughGold: boolean = false;
-        let goldCost: number = 0;
+       
+        let goldCost: number = AppConstants.towerPrice[towerType];
 
-        // compare player gold with price of tower
-        switch (towerType) {
-            case TowerType.tinker:
-                if (playerGold >= AppConstants.towerPrice.tinker) isEnoughGold = true;
-                goldCost = AppConstants.towerPrice.tinker;
-                break;
-            case TowerType.mirana:
-                if (playerGold >= AppConstants.towerPrice.mirana) isEnoughGold = true;
-                goldCost = AppConstants.towerPrice.mirana;
-                break;
-            case TowerType.crystal_maiden:
-                if (playerGold >= AppConstants.towerPrice.cm) isEnoughGold = true;
-                goldCost = AppConstants.towerPrice.cm;
-                break;
-            default:
-        }
-
+    
         // in case not enough
-        if (!isEnoughGold) {
+        if (playerGold < goldCost) {
             // set animate not enough gold
             return;
         }
