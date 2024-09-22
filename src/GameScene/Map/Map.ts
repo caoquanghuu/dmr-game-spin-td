@@ -73,9 +73,9 @@ export class GameMap extends Container {
                     if (rd < 2) {
                         const rd = Math.random() * 10;
                         if (rd < 5) {
-                            Emitter.emit(AppConstants.event.createTower, { position: { x: idxX * 32 + 16, y: idxY * 32 - 10 }, towerType: TowerType.tinker });
+                            Emitter.emit(AppConstants.event.createTower, { position: { x: idxX * 32 + 16, y: idxY * 32 - 10 }, towerType: TowerType.clockwerk });
                         } else {
-                            Emitter.emit(AppConstants.event.createTower, { position: { x: idxX * 32 + 16, y: idxY * 32 - 10 }, towerType: TowerType.mirana });
+                            Emitter.emit(AppConstants.event.createTower, { position: { x: idxX * 32 + 16, y: idxY * 32 - 10 }, towerType: TowerType.clockwerk });
                         }
 
                     }
