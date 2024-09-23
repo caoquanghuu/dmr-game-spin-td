@@ -73,7 +73,7 @@ export class GameMap extends Container {
                     if (rd < 2) {
                         const rd = Math.random() * 10;
                         if (rd < 5) {
-                            // Emitter.emit(AppConstants.event.createTower, { position: { x: idxX * 32 + 16, y: idxY * 32 - 10 }, towerType: TowerType.clockwerk });
+                            // Emitter.emit(AppConstants.event.createTower, { position: { x: idxX * 32 + 16, y: idxY * 32 - 10 }, towerType: TowerType.tinker });
                         } else {
                             // Emitter.emit(AppConstants.event.createTower, { position: { x: idxX * 32 + 16, y: idxY * 32 - 10 }, towerType: TowerType.clockwerk });
                         }
@@ -97,7 +97,7 @@ export class GameMap extends Container {
             base.eventMode = 'static';
             base.cursor = 'pointer';
             base.on('pointerdown', () => {
-                Emitter.emit(AppConstants.event.selectTowerBase, base.position);
+                Emitter.emit(AppConstants.event.selectTowerBase, base);
             });
         });
     }

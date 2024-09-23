@@ -5,7 +5,7 @@ import { AppConstants } from '../Constants';
 import Emitter from '../../Util';
 
 export class BuildTowerBoard extends Container {
-    private _towerPosition: PointData;
+    private _baseTower: Sprite;
     private _towerCanBuildIcon: Sprite[] = [];
     private _getPlayerGoldFn: GetPlayerGoldFn;
 
@@ -39,7 +39,7 @@ export class BuildTowerBoard extends Container {
             towerIcon.width = 65;
             towerIcon.height = 65;
             towerIcon.anchor = 0.5;
-            towerIcon.position = { x: firstIconPosition.x, y: firstIconPosition.y};
+            towerIcon.position = { x: firstIconPosition.x, y: firstIconPosition.y };
             towerIcon.eventMode = 'static';
             towerIcon.cursor = 'pointer';
             towerIcon.on('pointerdown', () => {
@@ -65,21 +65,21 @@ export class BuildTowerBoard extends Container {
         }
     }
 
-    get towerPosition(): PointData {
-        return this._towerPosition;
+    get baseTower(): Sprite {
+        return this._baseTower;
     }
 
-    set towerPosition(pos: PointData) {
-        this._towerPosition = { x: pos.x, y: pos.y };
+    set baseTower(baseTW: Sprite) {
+        this._baseTower = baseTW;
     }
 
     public createTower(towerType: TowerType) {
         // get player gold
         const playerGold = this._getPlayerGoldFn();
-       
-        let goldCost: number = AppConstants.towerPrice[towerType];
 
-    
+        const goldCost: number = AppConstants.towerPrice[towerType];
+
+
         // in case not enough
         if (playerGold < goldCost) {
             // set animate not enough gold
@@ -87,7 +87,7 @@ export class BuildTowerBoard extends Container {
         }
 
         // in case enough gold
-        Emitter.emit(AppConstants.event.createTower, { towerType: towerType, position: { x: this.towerPosition.x, y: this.towerPosition.y - 25 } });
+        Emitter.emit(AppConstants.event.createTower, { towerType: towerType, baseTower: this._baseTower });
         Emitter.emit(AppConstants.event.reduceGold, goldCost);
         Emitter.emit(AppConstants.event.resetBoard, null);
     }

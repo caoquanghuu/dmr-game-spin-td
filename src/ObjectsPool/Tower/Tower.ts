@@ -2,7 +2,7 @@ import Emitter from '../../Util';
 import { EffectType, FireBulletOption, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { AppConstants } from '../../GameScene/Constants';
-import { PointData } from 'pixi.js';
+import { PointData, Sprite } from 'pixi.js';
 
 export class Tower extends BaseObject {
     private _effectArena: number;
@@ -15,6 +15,7 @@ export class Tower extends BaseObject {
     protected target: PointData;
     public time: number;
     private _level: number = 1;
+    public baseTower: Sprite;
     private _item: BaseObject[] = [];
 
 
@@ -61,6 +62,14 @@ export class Tower extends BaseObject {
 
     get upGradeCost(): number {
         return this._upGradeCost;
+    }
+
+    get level(): number {
+        return this._level;
+    }
+
+    set level(lv: number) {
+        this._level = lv;
     }
 
     public reset() {

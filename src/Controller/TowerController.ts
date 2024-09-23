@@ -1,6 +1,6 @@
-import { FireBulletOption, GetTowerFromPoolFn, ReturnTowerToPoolFn, TowerType } from '../Type';
+import { FireBulletOption, GetTowerFromPoolFn, ReturnTowerToPoolFn, TowerInformation, TowerType } from '../Type';
 import { Tower } from '../ObjectsPool/Tower/Tower';
-import { PointData } from 'pixi.js';
+import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 
@@ -18,9 +18,16 @@ export class TowerController {
         return this._towers;
     }
 
-    public _createTower(option: {position: PointData, towerType: TowerType}): void {
+    public _createTower(option: {towerType: TowerType, baseTower: Sprite}): void {
         const tower = this._getTowerFromPool(option.towerType);
-        tower.position = { x: option.position.x, y: option.position.y };
+        tower.position = { x: option.baseTower.x, y: option.baseTower.y - 25 };
+        tower.baseTower = option.baseTower;
+        tower.baseTower.removeAllListeners();
+        tower.baseTower.on('pointerdown', () => {
+            // send tower info to ui controller
+            const info: TowerInformation = { towerType: tower.towerType, speed: tower.speed, dame: tower.dame, level: tower.level };
+            Emitter.emit(AppConstants.event.displayTowerInfo, info);
+        });
         this._towers.push(tower);
 
         // use event emitter add tower to game
@@ -56,7 +63,7 @@ export class TowerController {
         Emitter.on(AppConstants.event.fireBullet, (option: FireBulletOption) => {
             this._fireBullet(option);
         });
-        Emitter.on(AppConstants.event.createTower, (option: {position: PointData, towerType: TowerType}) => {
+        Emitter.on(AppConstants.event.createTower, (option: {towerType: TowerType, baseTower: Sprite}) => {
             this._createTower(option);
         });
         Emitter.on(AppConstants.event.destroyTower, (towerID: number) => {

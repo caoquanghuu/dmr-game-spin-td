@@ -77,6 +77,13 @@ export type Circle = {
     radius: number
 };
 
+export type TowerInformation = {
+    level: number,
+    towerType: TowerType,
+    speed: number,
+    dame: number,
+};
+
 export type GetTowerFromPoolFn = (towerType: TowerType) => Tower;
 export type GetEnemiesFromPoolFn = (enemyType: EnemiesType) => Enemies;
 export type GetBulletFromPoolFn = (bulletType: BulletType) => Bullet;

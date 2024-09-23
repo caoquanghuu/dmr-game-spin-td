@@ -3,7 +3,8 @@ import { AppConstants } from '../GameScene/Constants';
 import { BasicBoard } from '../GameScene/UI/BasicBoard';
 import { AddToBoardFn, RemoveFromBoardFb } from '../Type';
 import Emitter from '../Util';
-import { PointData } from 'pixi.js';
+import { PointData, Sprite } from 'pixi.js';
+import { InformationBoard } from '../GameScene/UI/InformationBoard';
 
 export class UIController {
     private _playerGold: number;
@@ -11,6 +12,7 @@ export class UIController {
     private _wave: number;
     private _basicBoard: BasicBoard;
     private _buildTowerBoard: BuildTowerBoard;
+    private _infoTowerBoard: InformationBoard;
     private _addToBoardFn: AddToBoardFn;
     private _removeFromBoardFn: RemoveFromBoardFb;
 
@@ -28,17 +30,23 @@ export class UIController {
         this._buildTowerBoard = new BuildTowerBoard(this._getPlayerGold.bind(this));
         this._buildTowerBoard.scale = 1;
 
+        this._infoTowerBoard = new InformationBoard();
+
+
         this._addToBoardFn(this._basicBoard);
         this._addToBoardFn(this._buildTowerBoard);
+        this._addToBoardFn(this._infoTowerBoard);
         this._buildTowerBoard.renderable = false;
+        this._basicBoard.renderable = false;
         this._useEventEffect();
     }
 
     private _useEventEffect() {
-        Emitter.on(AppConstants.event.selectTowerBase, (position: PointData) => {
+        Emitter.on(AppConstants.event.selectTowerBase, (baseSprite: Sprite) => {
             this._basicBoard.renderable = false;
+            this._infoTowerBoard.renderable = false;
             this._buildTowerBoard.renderable = true;
-            this._buildTowerBoard.towerPosition = position;
+            this._buildTowerBoard.baseTower = baseSprite;
         });
 
         Emitter.on(AppConstants.event.plusGold, (goldPlus: number) => {
@@ -54,6 +62,14 @@ export class UIController {
         Emitter.on(AppConstants.event.resetBoard, () => {
             this._basicBoard.renderable = true;
             this._buildTowerBoard.renderable = false;
+            this._infoTowerBoard.renderable = false;
+        });
+
+        Emitter.on(AppConstants.event.displayTowerInfo, (option) => {
+            this._buildTowerBoard.renderable = false;
+            this._basicBoard.renderable = false;
+            this._infoTowerBoard.renderable = true;
+
         });
     }
 

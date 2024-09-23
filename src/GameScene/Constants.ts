@@ -85,7 +85,8 @@ export namespace AppConstants {
         selectTowerBase:'select-tower-base',
         plusGold: 'plus-gold',
         reduceGold: 'reduce-gold',
-        resetBoard: 'reset-board'
+        resetBoard: 'reset-board',
+        displayTowerInfo: 'displayTowerInfo'
     };
 
     export const position = {
@@ -96,6 +97,17 @@ export namespace AppConstants {
         baseHp: { x: 30, y: 0 },
         baseNumber: { x: 150, y: 0 },
         spin: { x: 800, y: 35 },
+    };
+
+    export const infoBoardPosition = {
+        dame: { x: 30, y: 0 },
+        dameNumber: { x: 150, y: 0 },
+        speed: { x: 30, y: 35 },
+        speedNumber : { x: 150, y: 35 },
+        level: { x: 350, y: 0 },
+        levelNumber : { x: 470, y: 0 },
+        effect: { x: 350, y: 35 },
+        effectType: { x: 470, y: 35 }
     };
 
     export const text: {[text: string]: TextOptions} = {
