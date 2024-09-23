@@ -66,6 +66,11 @@
             {
                 "alias": "clockwerk",
                 "src": "assets/units/rocket-1.png"
+            },
+            { 
+
+            "alias": "missile",
+            "src": "assets/units/missile.png"
             }
             
         ]

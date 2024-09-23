@@ -48,6 +48,11 @@ export class BulletController {
             case TowerType.mirana:
                 bullet = this._getBulletFromPool(BulletType.lightning);
                 bullet.dame = option.dame;
+                break;
+            case TowerType.clockwerk:
+                bullet = this._getBulletFromPool(BulletType.missile);
+                bullet.dame = option.dame;
+                break;
             default:
                 break;
         }

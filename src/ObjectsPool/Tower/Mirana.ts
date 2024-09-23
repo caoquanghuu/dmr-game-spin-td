@@ -26,7 +26,7 @@ export class Mirana extends Tower {
 
     public update(dt: number) {
         this.time += dt;
-        this._fireTimeCd -= dt;
+        super.update(dt);
         this._animateTexture();
     }
 }

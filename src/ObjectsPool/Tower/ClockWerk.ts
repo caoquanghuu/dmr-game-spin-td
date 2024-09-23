@@ -1,7 +1,7 @@
-import { EffectType, TowerType } from "../../Type";
-import { Tower } from "./Tower";
-import { AppConstants } from "../../GameScene/Constants";
-import { calculateAngleOfVector } from "../../Util";
+import { EffectType, TowerType } from '../../Type';
+import { Tower } from '../Tower/Tower';
+import { AppConstants } from '../../GameScene/Constants';
+import { calculateAngleOfVector } from '../../Util';
 
 export class ClockWerk extends Tower {
     constructor() {
@@ -19,12 +19,12 @@ export class ClockWerk extends Tower {
     private _rotateTowerFollowTarget() {
         if (!this.target) return;
         const direction = calculateAngleOfVector(this.position, this.target) + 90;
-        // console.log(direction);
+        console.log(direction);
         // console.log(this.position);
     }
 
     public update(dt: number): void {
-        this._fireTimeCd -= dt;
+        super.update(dt);
         this._rotateTowerFollowTarget();
     }
 }

@@ -47,7 +47,7 @@ export enum EffectType {
 
 export enum BulletType {
     laser = 'laser',
-    rocket = 'rocket',
+    missile = 'missile',
     ice = 'ice',
     lightning = 'lightning'
 

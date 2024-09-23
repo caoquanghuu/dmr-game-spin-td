@@ -66,6 +66,7 @@ export class TowerController {
 
     private _fireBullet(option: FireBulletOption) {
         Emitter.emit(AppConstants.event.createBullet, option);
+
     }
 
     public update(dt: number) {
