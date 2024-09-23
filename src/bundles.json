@@ -67,6 +67,18 @@
                 "alias": "clockwerk",
                 "src": "assets/units/rocket-1.png"
             },
+            {
+                "alias": "clockwerk-2",
+                "src": "assets/units/rocket-2.png"
+            },
+            {
+                "alias": "clockwerk-3",
+                "src": "assets/units/rocket-3.png"
+            },
+            {
+                "alias": "clockwerk-4",
+                "src": "assets/units/rocket-4.png"
+            },
             { 
 
             "alias": "missile",

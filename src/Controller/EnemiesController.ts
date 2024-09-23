@@ -31,7 +31,7 @@ export class EnemiesController {
     private _createEnemies(enemyType: EnemiesType, position: PointData) {
         const ene = this._getEnemiesFromPool(enemyType);
         ene.position = position;
-        ene.HP = 10;
+        ene.HP = 5;
         ene.dameDeal = 1;
         ene.resetMove();
         ene.isMoving = true;
@@ -55,7 +55,7 @@ export class EnemiesController {
         this._enemies.splice(i, 1);
 
         // send event plus gold for player
-        Emitter.emit(AppConstants.event.plusGold, ene.goldReward)
+        Emitter.emit(AppConstants.event.plusGold, ene.goldReward);
     }
 
 
