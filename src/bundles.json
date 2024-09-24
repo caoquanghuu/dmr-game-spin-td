@@ -83,7 +83,23 @@
 
             "alias": "missile",
             "src": "assets/units/missile.png"
+            },
+            { 
+
+            "alias": "crystal_maiden",
+            "src": "assets/units/crystal-maiden.png"
+            },
+            { 
+
+            "alias": "crystal_maiden-icon",
+            "src": "assets/units/crystal-maiden-icon.png"
+            },
+            { 
+
+            "alias": "ice",
+            "src": "assets/units/ice.png"
             }
+            
             
         ]
     }

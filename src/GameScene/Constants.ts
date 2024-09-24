@@ -170,7 +170,7 @@ export namespace AppConstants {
     export const towerPrice = {
         tinker: 20,
         mirana: 30,
-        cm: 30,
+        crystal_maiden: 30,
         clockwerk: 40
     };
 

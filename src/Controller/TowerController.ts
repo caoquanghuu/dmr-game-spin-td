@@ -29,6 +29,7 @@ export class TowerController {
             Emitter.emit(AppConstants.event.displayTowerInfo, info);
         });
         this._towers.push(tower);
+        tower.image.zIndex = tower.position.y;
 
         // use event emitter add tower to game
         Emitter.emit(AppConstants.event.addChildToScene, tower.image);

@@ -1,4 +1,4 @@
-import { BulletType, FireBulletOption, GetBulletFromPoolFn, ReturnBulletToPoolFn, TowerType } from '../Type';
+import { BulletType, EffectType, FireBulletOption, GetBulletFromPoolFn, ReturnBulletToPoolFn, TowerType } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
@@ -39,19 +39,23 @@ export class BulletController {
             case TowerType.crystal_maiden:
                 bullet = this._getBulletFromPool(BulletType.ice);
                 bullet.dame = 0;
+                bullet.effectArena = 100;
 
                 break;
             case TowerType.tinker:
                 bullet = this._getBulletFromPool(BulletType.laser);
                 bullet.dame = option.dame;
+                bullet.effectArena = 10;
                 break;
             case TowerType.mirana:
                 bullet = this._getBulletFromPool(BulletType.lightning);
                 bullet.dame = option.dame;
+                bullet.effectArena = 10;
                 break;
             case TowerType.clockwerk:
                 bullet = this._getBulletFromPool(BulletType.missile);
                 bullet.dame = option.dame;
+                bullet.effectArena = 5;
                 break;
             default:
                 break;

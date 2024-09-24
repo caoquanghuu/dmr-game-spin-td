@@ -11,6 +11,7 @@ export class Bullet extends BaseObject {
     private _target: PointData;
     private _isMoving: boolean = false;
     private _effectType: EffectType;
+    private _effectArena: number;
 
     constructor(bulletType: BulletType) {
         super(bulletType);
@@ -54,6 +55,14 @@ export class Bullet extends BaseObject {
 
     set effectType(ef: EffectType) {
         this._effectType = ef;
+    }
+
+    get effectArena(): number {
+        return this._effectArena;
+    }
+
+    set effectArena(ef: number) {
+        this._effectArena = ef;
     }
 
     public destroy() {

@@ -1,4 +1,4 @@
-import { TowerType } from '../../Type';
+import { EffectType, TowerType } from '../../Type';
 import { Tower } from './Tower';
 import { AppConstants } from '../../GameScene/Constants';
 
@@ -7,6 +7,10 @@ export class CrystalMaiden extends Tower {
         super(TowerType.crystal_maiden);
         this.dame = AppConstants.dame.CM;
         this.effectArena = AppConstants.effectArena.CM;
+        this.effectType = EffectType.SLOW;
         this.goldCost = AppConstants.goldCost.CM;
+        this.image.width = 26;
+        this.image.height = 32;
+        this.image.anchor.set(0.5, 0.2);
     }
 }

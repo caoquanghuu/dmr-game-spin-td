@@ -18,25 +18,6 @@ export class CollisionController {
 
             // check ene vs bullet
             const c1: Circle = { position: ene.position, radius: ene.image.width / 2 };
-
-            this._bullets.forEach(bullet => {
-                const c2: Circle = { position: bullet.position, radius: bullet.image.width / 2 };
-
-                const isCollision = this._isCollision(c1, c2);
-
-
-                if (isCollision) {
-                    ene.HP -= bullet.dame;
-                    if (bullet.effectType === EffectType.SLOW) {
-                        ene.speed = ene.speed / 2;
-                        setTimeout(() => {
-                            ene.speed = ene.speed * 2;
-                        }, 3000);
-                    }
-                    bullet.destroy();
-                }
-            });
-
             this._towers.forEach(tower => {
                 const c2: Circle = { position: tower.position, radius: tower.effectArena };
 
@@ -45,6 +26,37 @@ export class CollisionController {
                     tower.fire(ene.getUpdatedPosition());
                 }
             });
+        });
+
+        this._bullets.forEach(bullet => {
+            const c2: Circle = { position: bullet.position, radius: bullet.effectArena };
+
+            const c3: Circle = { position: bullet.position, radius: bullet.image.width / 2 };
+
+            const c1: Circle = { position: bullet.target, radius: bullet.image.width / 2 };
+
+            const isBulletReachToTarget = this._isCollision(c1, c3);
+            if (isBulletReachToTarget) {
+                bullet.destroy();
+                this._enemies.forEach(ene => {
+                    const cEne: Circle = { position: ene.position, radius: ene.image.width / 2 };
+                    const isCollisionWithBullet = this._isCollision(cEne, c2);
+
+
+                    if (isCollisionWithBullet) {
+                        ene.HP -= bullet.dame;
+                        if (bullet.effectType === EffectType.SLOW) {
+                            ene.speed = ene.speed / 5;
+                            setTimeout(() => {
+                                ene.speed = ene.speed * 5;
+                            }, 3000);
+                        }
+                    }
+
+                });
+            }
+
+
         });
     }
 
