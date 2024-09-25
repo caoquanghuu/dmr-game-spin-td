@@ -3,6 +3,7 @@ import { EffectType, FireBulletOption, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { AppConstants } from '../../GameScene/Constants';
 import { Graphics, PointData, Sprite } from 'pixi.js';
+import { AssetsLoader } from '../../AssetsLoader';
 
 export class Tower extends BaseObject {
     private _effectArena: number;
@@ -16,7 +17,7 @@ export class Tower extends BaseObject {
     public time: number;
     private _level: number = 1;
     public baseTower: Sprite;
-    public effectArenaImage: Graphics;
+    public circleImage: Sprite;
     private _item: BaseObject[] = [];
 
 
@@ -26,7 +27,9 @@ export class Tower extends BaseObject {
         this.speed = 100;
         this.image.width = 32;
         this.image.height = 60;
-
+        this.circleImage = new Sprite(AssetsLoader.getTexture('circle'));
+        this.circleImage.anchor = 0.5;
+        this.circleImage.alpha = 50;
     }
 
     get effectArena(): number {
@@ -77,31 +80,13 @@ export class Tower extends BaseObject {
         this._level = lv;
     }
 
-    public drawArenaStroke() {
-        if (this.effectArenaImage) {
-            // remove old child if have
-            this.effectArenaImage.clear();
-
-            //drawn new circle
-            this.effectArenaImage.circle(0, 0, this.effectArena);
-            this.effectArenaImage.stroke({ width: 2, color: 0xfeeb77 });
-            // setTimeout(() => {
-            //     this.toggleArenaStroke(false);
-            // }, 1000);
-        } else {
-            this.effectArenaImage = new Graphics();
-            this.effectArenaImage.circle(0, 0, this.effectArena);
-            this.effectArenaImage.stroke({ width: 2, color: 0xfeeb77 });
-            this.effectArenaImage.position = this.image.position;
-        }
-    }
-
-    public toggleArenaStroke(isVisible: boolean): void {
-        this.effectArenaImage.visible = isVisible;
-    }
 
     public reset() {
         // reset property of tower to default when it return to pool
+    }
+
+    public toggleCircle(isVisible: boolean) {
+        this.circleImage.visible = isVisible;
     }
 
     public upgrade() {
@@ -123,5 +108,9 @@ export class Tower extends BaseObject {
 
     public update(dt: number): void {
         this.fireTimeCd -= dt;
+        if (this.circleImage) {
+            this.circleImage.angle += 1;
+
+        }
     }
 }

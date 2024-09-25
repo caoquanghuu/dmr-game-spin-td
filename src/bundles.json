@@ -98,6 +98,11 @@
 
             "alias": "ice",
             "src": "assets/units/ice.png"
+            },
+            { 
+
+            "alias": "circle",
+            "src": "assets/units/circle.png"
             }
             
             

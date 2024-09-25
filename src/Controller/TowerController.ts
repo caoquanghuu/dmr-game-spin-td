@@ -21,26 +21,31 @@ export class TowerController {
     public _createTower(option: {towerType: TowerType, baseTower: Sprite}): void {
         const tower = this._getTowerFromPool(option.towerType);
         tower.position = { x: option.baseTower.x, y: option.baseTower.y - 25 };
+        tower.circleImage.position = { x: option.baseTower.x, y: option.baseTower.y };
+        tower.circleImage.width = tower.effectArena * 2;
+        tower.circleImage.height = tower.effectArena * 2;
         tower.baseTower = option.baseTower;
         tower.baseTower.removeAllListeners();
         tower.baseTower.on('pointerdown', () => {
             // send tower info to ui controller
             const info: TowerInformation = { towerType: tower.towerType, speed: tower.speed, dame: tower.dame, level: tower.level, goldUpgrade: tower.upGradeCost, towerId: tower.id };
             Emitter.emit(AppConstants.event.displayTowerInfo, info);
-            tower.toggleArenaStroke(true);
+        });
+
+        tower.baseTower.on('mouseenter', () => {
+            tower.toggleCircle(true);
+        });
+        tower.baseTower.on('mouseleave', () => {
+            tower.toggleCircle(false);
         });
 
         this._towers.push(tower);
         tower.image.zIndex = tower.position.y;
-        tower.drawArenaStroke();
-
-        setTimeout(() => {
-            tower.toggleArenaStroke(false);
-        }, 3000);
 
         // use event emitter add tower to game
         Emitter.emit(AppConstants.event.addChildToScene, tower.image);
-        Emitter.emit(AppConstants.event.addChildToScene, tower.effectArenaImage);
+        Emitter.emit(AppConstants.event.addChildToScene, tower.circleImage);
+        tower.toggleCircle(false);
     }
 
     private _removeTower(towerId: number): void {
@@ -73,9 +78,7 @@ export class TowerController {
                 return tower.id === towerId;
             });
             if (tower) {
-                console.log('tower found');
                 tower.upgrade();
-                tower.drawArenaStroke();
             } else {
                 console.log('tower not found');
             }
