@@ -1,4 +1,4 @@
-import { Container, Graphics, Sprite } from 'pixi.js';
+import { AnimatedSprite, Container, Graphics, Sprite } from 'pixi.js';
 import { AppConstants } from '../Constants';
 import map from '../Map/mapMatrix.json';
 import { Tower } from '../../ObjectsPool/Tower/Tower';
@@ -100,6 +100,10 @@ export class GameMap extends Container {
                 Emitter.emit(AppConstants.event.selectTowerBase, base);
             });
         });
+
+        // const animationSprite = new AnimatedSprite(AssetsLoader._explosion.texture, true);
+        // this.addChild(animationSprite);
+        // animationSprite.play();
     }
 
     private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Enemies[]} {
@@ -107,10 +111,10 @@ export class GameMap extends Container {
     }
 
     private _useEventEffect() {
-        Emitter.on(AppConstants.event.addChildToScene, (sprite: Sprite) => {
+        Emitter.on(AppConstants.event.addChildToScene, (sprite: Sprite | AnimatedSprite) => {
             this.addChild(sprite);
         });
-        Emitter.on(AppConstants.event.removeChildFromScene, (sprite: Sprite) => {
+        Emitter.on(AppConstants.event.removeChildFromScene, (sprite: Sprite | AnimatedSprite) => {
             this.removeChild(sprite);
         });
     }

@@ -3,6 +3,7 @@ import { get } from 'lodash';
 
 export class AssetsLoader {
     private static _resources: any = null;
+    public static _explosion: any;
 
     constructor() {
         if (AssetsLoader._resources) {
@@ -24,11 +25,20 @@ export class AssetsLoader {
 
             });
         });
+
+
     }
 
     static async loadBitmapText() {
         await Assets.load('../assets/bitmapText/desyrel.xml');
         await Assets.load('../assets/bitmapText/font_number.fnt');
+        await Assets.load({
+            alias: 'explosion',
+            src: '../assets/animation/blast-explosion/explosion.json'
+        }).then(data => {
+            AssetsLoader._explosion = data;
+            console.log(AssetsLoader._explosion);
+        });
     }
 
     // static function get a texture

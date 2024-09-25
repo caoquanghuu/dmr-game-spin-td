@@ -2,6 +2,10 @@ import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { Circle, EffectType, GetObjectFromGameSceneFn } from '../Type';
+import { AnimatedSprite, Texture } from 'pixi.js';
+import { AssetsLoader } from '../AssetsLoader';
+import Emitter from '../Util';
+import { AppConstants } from '../GameScene/Constants';
 
 export class CollisionController {
     private _towers: Tower[] = [];
@@ -35,9 +39,26 @@ export class CollisionController {
 
             const c1: Circle = { position: bullet.target, radius: bullet.image.width / 2 };
 
+            if (!bullet.target) {
+                bullet.destroy();
+                return;
+            }
+
             const isBulletReachToTarget = this._isCollision(c1, c3);
             if (isBulletReachToTarget) {
                 bullet.destroy();
+                const a = new AnimatedSprite(AssetsLoader._explosion.animations['tile']);
+                a.position = bullet.target;
+                Emitter.emit(AppConstants.event.addChildToScene, a);
+                a.width = 50;
+                a.height = 50;
+                a.anchor = 0.5;
+                a.loop = false;
+                a.play();
+                a.onComplete = () => {
+                    Emitter.emit(AppConstants.event.removeChildFromScene, a);
+                };
+
                 this._enemies.forEach(ene => {
                     const cEne: Circle = { position: ene.position, radius: ene.image.width / 2 };
                     const isCollisionWithBullet = this._isCollision(cEne, c2);
@@ -45,10 +66,11 @@ export class CollisionController {
 
                     if (isCollisionWithBullet) {
                         ene.HP -= bullet.dame;
+
                         if (bullet.effectType === EffectType.SLOW) {
-                            ene.speed = ene.speed / 5;
+                            ene.speed = ene.speed / 2;
                             setTimeout(() => {
-                                ene.speed = ene.speed * 5;
+                                ene.speed = ene.speed * 2;
                             }, 3000);
                         }
                     }
