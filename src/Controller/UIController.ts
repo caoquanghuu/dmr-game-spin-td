@@ -30,14 +30,15 @@ export class UIController {
         this._buildTowerBoard = new BuildTowerBoard(this._getPlayerGold.bind(this));
         this._buildTowerBoard.scale = 1;
 
-        this._infoTowerBoard = new InformationBoard();
+        this._infoTowerBoard = new InformationBoard(this._getPlayerGold.bind(this));
 
 
         this._addToBoardFn(this._basicBoard);
         this._addToBoardFn(this._buildTowerBoard);
         this._addToBoardFn(this._infoTowerBoard);
         this._buildTowerBoard.renderable = false;
-        this._basicBoard.renderable = false;
+        this._infoTowerBoard.renderable = false;
+        this._basicBoard.renderable = true;
         this._useEventEffect();
     }
 

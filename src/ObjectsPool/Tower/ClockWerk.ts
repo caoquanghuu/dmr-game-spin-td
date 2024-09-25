@@ -9,7 +9,8 @@ export class ClockWerk extends Tower {
         super(TowerType.clockwerk);
         this.dame = AppConstants.dame.ClockWerk;
         this.effectArena = AppConstants.effectArena.ClockWerk;
-        this.goldCost = AppConstants.goldCost.ClockWerk;
+        this.goldCost = AppConstants.towerPrice.clockwerk;
+        this.upGradeCost = this.goldCost * 3;
         this.effectType = EffectType.BLAST;
         this.image.width = 25;
         this.image.height = 40;

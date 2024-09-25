@@ -25,14 +25,22 @@ export class TowerController {
         tower.baseTower.removeAllListeners();
         tower.baseTower.on('pointerdown', () => {
             // send tower info to ui controller
-            const info: TowerInformation = { towerType: tower.towerType, speed: tower.speed, dame: tower.dame, level: tower.level };
+            const info: TowerInformation = { towerType: tower.towerType, speed: tower.speed, dame: tower.dame, level: tower.level, goldUpgrade: tower.upGradeCost, towerId: tower.id };
             Emitter.emit(AppConstants.event.displayTowerInfo, info);
+            tower.toggleArenaStroke(true);
         });
+
         this._towers.push(tower);
         tower.image.zIndex = tower.position.y;
+        tower.drawArenaStroke();
+
+        setTimeout(() => {
+            tower.toggleArenaStroke(false);
+        }, 3000);
 
         // use event emitter add tower to game
         Emitter.emit(AppConstants.event.addChildToScene, tower.image);
+        Emitter.emit(AppConstants.event.addChildToScene, tower.effectArenaImage);
     }
 
     private _removeTower(towerId: number): void {
@@ -49,17 +57,6 @@ export class TowerController {
         this._towers.splice(i, 1);
     }
 
-    private _upgradeTower(towerId: number): void {
-        const i = this._towers.findIndex(tower => tower.id === towerId);
-        if (i === -1) {
-            console.log(`tower have id ${towerId} not found`);
-            return;
-        }
-
-        const tower = this._towers[i];
-        tower.upgrade();
-    }
-
     private _useEventEffect() {
         Emitter.on(AppConstants.event.fireBullet, (option: FireBulletOption) => {
             this._fireBullet(option);
@@ -69,6 +66,19 @@ export class TowerController {
         });
         Emitter.on(AppConstants.event.destroyTower, (towerID: number) => {
             this._removeTower(towerID);
+        });
+
+        Emitter.on(AppConstants.event.upgradeTower, (towerId: number) => {
+            const tower = this.towers.find(tower => {
+                return tower.id === towerId;
+            });
+            if (tower) {
+                console.log('tower found');
+                tower.upgrade();
+                tower.drawArenaStroke();
+            } else {
+                console.log('tower not found');
+            }
         });
     }
 

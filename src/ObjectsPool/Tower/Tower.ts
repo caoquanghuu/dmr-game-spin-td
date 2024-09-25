@@ -2,7 +2,7 @@ import Emitter from '../../Util';
 import { EffectType, FireBulletOption, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { AppConstants } from '../../GameScene/Constants';
-import { PointData, Sprite } from 'pixi.js';
+import { Graphics, PointData, Sprite } from 'pixi.js';
 
 export class Tower extends BaseObject {
     private _effectArena: number;
@@ -16,6 +16,7 @@ export class Tower extends BaseObject {
     public time: number;
     private _level: number = 1;
     public baseTower: Sprite;
+    public effectArenaImage: Graphics;
     private _item: BaseObject[] = [];
 
 
@@ -64,12 +65,39 @@ export class Tower extends BaseObject {
         return this._upGradeCost;
     }
 
+    set upGradeCost(cost: number) {
+        this._upGradeCost = cost;
+    }
+
     get level(): number {
         return this._level;
     }
 
     set level(lv: number) {
         this._level = lv;
+    }
+
+    public drawArenaStroke() {
+        if (this.effectArenaImage) {
+            // remove old child if have
+            this.effectArenaImage.clear();
+
+            //drawn new circle
+            this.effectArenaImage.circle(0, 0, this.effectArena);
+            this.effectArenaImage.stroke({ width: 2, color: 0xfeeb77 });
+            // setTimeout(() => {
+            //     this.toggleArenaStroke(false);
+            // }, 1000);
+        } else {
+            this.effectArenaImage = new Graphics();
+            this.effectArenaImage.circle(0, 0, this.effectArena);
+            this.effectArenaImage.stroke({ width: 2, color: 0xfeeb77 });
+            this.effectArenaImage.position = this.image.position;
+        }
+    }
+
+    public toggleArenaStroke(isVisible: boolean): void {
+        this.effectArenaImage.visible = isVisible;
     }
 
     public reset() {

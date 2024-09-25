@@ -8,9 +8,11 @@ export class CrystalMaiden extends Tower {
         this.dame = AppConstants.dame.CM;
         this.effectArena = AppConstants.effectArena.CM;
         this.effectType = EffectType.SLOW;
-        this.goldCost = AppConstants.goldCost.CM;
+        this.goldCost = AppConstants.towerPrice.crystal_maiden;
+        this.upGradeCost = this.goldCost * 2;
         this.image.width = 26;
         this.image.height = 32;
         this.image.anchor.set(0.5, 0.2);
+
     }
 }

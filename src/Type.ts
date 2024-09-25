@@ -82,6 +82,8 @@ export type TowerInformation = {
     towerType: TowerType,
     speed: number,
     dame: number,
+    goldUpgrade: number,
+    towerId: number
 };
 
 export type GetTowerFromPoolFn = (towerType: TowerType) => Tower;

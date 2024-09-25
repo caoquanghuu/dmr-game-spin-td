@@ -111,10 +111,10 @@ export class GameMap extends Container {
     }
 
     private _useEventEffect() {
-        Emitter.on(AppConstants.event.addChildToScene, (sprite: Sprite | AnimatedSprite) => {
+        Emitter.on(AppConstants.event.addChildToScene, (sprite: Sprite | AnimatedSprite | Graphics) => {
             this.addChild(sprite);
         });
-        Emitter.on(AppConstants.event.removeChildFromScene, (sprite: Sprite | AnimatedSprite) => {
+        Emitter.on(AppConstants.event.removeChildFromScene, (sprite: Sprite | AnimatedSprite | Graphics) => {
             this.removeChild(sprite);
         });
     }

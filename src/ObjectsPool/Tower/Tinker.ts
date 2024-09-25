@@ -9,7 +9,8 @@ export class Tinker extends Tower {
         super(TowerType.tinker);
         this.dame = AppConstants.dame.Tinker;
         this.effectArena = AppConstants.effectArena.Tinker;
-        this.goldCost = AppConstants.goldCost.Tinker;
+        this.goldCost = AppConstants.towerPrice.tinker;
+        this.upGradeCost = this.goldCost * 2;
         this.time = 0;
     }
 

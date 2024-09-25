@@ -8,7 +8,8 @@ export class Mirana extends Tower {
         super(TowerType.mirana);
         this.dame = AppConstants.dame.Mirana;
         this.effectArena = AppConstants.effectArena.Mirana;
-        this.goldCost = AppConstants.goldCost.Mirana;
+        this.goldCost = AppConstants.towerPrice.mirana;
+        this.upGradeCost = this.goldCost * 2;
         this.image.width = 25;
         this.time = 0;
     }

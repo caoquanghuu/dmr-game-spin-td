@@ -54,6 +54,7 @@ export class CollisionController {
                 a.height = 50;
                 a.anchor = 0.5;
                 a.loop = false;
+                a.alpha = 20;
                 a.play();
                 a.onComplete = () => {
                     Emitter.emit(AppConstants.event.removeChildFromScene, a);

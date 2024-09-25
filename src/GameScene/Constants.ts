@@ -86,7 +86,9 @@ export namespace AppConstants {
         plusGold: 'plus-gold',
         reduceGold: 'reduce-gold',
         resetBoard: 'reset-board',
-        displayTowerInfo: 'displayTowerInfo'
+        displayTowerInfo: 'displayTowerInfo',
+        upgradeTower: 'upgrade-tower',
+
     };
 
     export const position = {
@@ -107,7 +109,10 @@ export namespace AppConstants {
         level: { x: 350, y: 0 },
         levelNumber : { x: 470, y: 0 },
         effect: { x: 350, y: 35 },
-        effectType: { x: 470, y: 35 }
+        effectType: { x: 470, y: 35 },
+        upgrade: { x: 650, y: 35 },
+        upgradeNumber: { x: 800, y: 35 },
+        exit: { x: 900, y: 0 }
     };
 
     export const text: {[text: string]: TextOptions} = {
