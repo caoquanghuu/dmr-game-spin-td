@@ -103,6 +103,21 @@
 
             "alias": "circle",
             "src": "assets/units/circle.png"
+            },
+            { 
+
+            "alias": "upgrade-level-2",
+            "src": "assets/units/upgrade-level-2.png"
+            },
+            { 
+
+            "alias": "upgrade-level-3",
+            "src": "assets/units/upgrade-level-3.png"
+            },
+            { 
+
+            "alias": "upgrade-level-4",
+            "src": "assets/units/upgrade-level-4.png"
             }
             
             

@@ -19,7 +19,7 @@ export class UIController {
     constructor(addToBoardCb: AddToBoardFn, removeFromBoardCb: RemoveFromBoardFb) {
         this._addToBoardFn = addToBoardCb;
         this._removeFromBoardFn = removeFromBoardCb;
-        this._playerGold = 100;
+        this._playerGold = 10000;
         this._playerHp = 50;
         this._wave = 0;
         this._basicBoard = new BasicBoard();

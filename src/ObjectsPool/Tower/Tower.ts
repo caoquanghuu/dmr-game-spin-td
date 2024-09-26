@@ -12,12 +12,13 @@ export class Tower extends BaseObject {
     private _dame: number;
     private _goldCost: number;
     private _upGradeCost: number;
-    protected fireTimeCd: number = 2000;
+    protected fireTimeCd: {fireTimeConstant: number, fireTimeCount} = { fireTimeConstant: 3000, fireTimeCount: 0 };
     protected target: PointData;
     public time: number;
     private _level: number = 1;
     public baseTower: Sprite;
     public circleImage: Sprite;
+    private _upgradeLevelImage: Sprite;
     private _item: BaseObject[] = [];
 
 
@@ -29,7 +30,7 @@ export class Tower extends BaseObject {
         this.image.height = 60;
         this.circleImage = new Sprite(AssetsLoader.getTexture('circle'));
         this.circleImage.anchor = 0.5;
-        this.circleImage.alpha = 50;
+        this.circleImage.alpha = 25;
     }
 
     get effectArena(): number {
@@ -91,26 +92,40 @@ export class Tower extends BaseObject {
 
     public upgrade() {
         this._level += 1;
+        if (this._upgradeLevelImage) {
+            this._upgradeLevelImage.texture = AssetsLoader.getTexture(`upgrade-level-${this._level}`);
+        } else {
+            this._upgradeLevelImage = new Sprite(AssetsLoader.getTexture('upgrade-level-2'));
+            this._upgradeLevelImage.width = 15;
+            this._upgradeLevelImage.height = 15;
+            this._upgradeLevelImage.position = this.image.position;
+            this._upgradeLevelImage.anchor.set(0.2, -0.2);
+            this._upgradeLevelImage.alpha = 50;
+            this._upgradeLevelImage.zIndex = this.image.y + 1;
+
+            Emitter.emit(AppConstants.event.addChildToScene, this._upgradeLevelImage);
+        }
         this._dame = this._dame * this._level;
-        this.speed = this.speed * this._level;
+        this.fireTimeCd.fireTimeConstant -= this.fireTimeCd.fireTimeConstant / 3 ;
         this.effectArena += 15;
-        this._upGradeCost = this._goldCost * this._level;
+        this.circleImage.width = this.effectArena * 2;
+        this.circleImage.height = this.effectArena * 2;
+        this._upGradeCost = this._goldCost * 2 * this._level;
     }
 
     public fire(target: PointData) {
-        if (this.fireTimeCd > 0) return;
+        if (this.fireTimeCd.fireTimeCount > 0) return;
         const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: this.dame, speed: this.speed * 3, effectType: this.effectType };
         Emitter.emit(AppConstants.event.fireBullet, option);
         this.target = { x: target.x, y: target.y };
-        this.fireTimeCd = 2000;
+        this.fireTimeCd.fireTimeCount = this.fireTimeCd.fireTimeConstant;
 
     }
 
     public update(dt: number): void {
-        this.fireTimeCd -= dt;
-        if (this.circleImage) {
-            this.circleImage.angle += 1;
-
+        this.fireTimeCd.fireTimeCount -= dt;
+        if (this.circleImage && this.circleImage.visible === true) {
+            this.circleImage.angle += 0.5;
         }
     }
 }

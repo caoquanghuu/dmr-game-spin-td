@@ -133,6 +133,7 @@ export class InformationBoard extends Container {
         // check player gold
         const playerGold = this._getPlayerGoldFn();
         if (playerGold < this._goldUpgrade) return;
+        if (this._levelNumber.text === '4') return;
 
         Emitter.emit(AppConstants.event.upgradeTower, this._towerId);
         Emitter.emit(AppConstants.event.reduceGold, this._goldUpgrade);

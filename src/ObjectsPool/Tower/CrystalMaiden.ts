@@ -15,4 +15,8 @@ export class CrystalMaiden extends Tower {
         this.image.anchor.set(0.5, 0.2);
 
     }
+
+    public update(dt: number): void {
+        super.update(dt);
+    }
 }
