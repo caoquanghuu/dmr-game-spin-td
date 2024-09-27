@@ -66,14 +66,21 @@ export class CollisionController {
 
 
                     if (isCollisionWithBullet) {
-                        ene.reduceHp(bullet.dame);
-
                         if (bullet.effectType === EffectType.SLOW) {
                             ene.speed = ene.speed / 2;
                             setTimeout(() => {
                                 ene.speed = ene.speed * 2;
                             }, 3000);
+                            return;
                         }
+
+                        if (bullet.effectType === EffectType.BLAST) {
+                            ene.reduceHp(bullet.dame);
+                            return;
+                        }
+                        ene.reduceHp(bullet.dame);
+
+
                     }
 
                 });
