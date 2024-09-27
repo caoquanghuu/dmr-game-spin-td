@@ -24,6 +24,8 @@ export class TowerController {
         tower.circleImage.position = { x: option.baseTower.x, y: option.baseTower.y };
         tower.circleImage.width = tower.effectArena * 2;
         tower.circleImage.height = tower.effectArena * 2;
+        tower.circleImage.zIndex = 7;
+        tower.image.zIndex = 7;
         tower.baseTower = option.baseTower;
         tower.baseTower.removeAllListeners();
         tower.baseTower.on('pointerdown', () => {

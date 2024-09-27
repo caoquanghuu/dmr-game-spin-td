@@ -25,7 +25,7 @@ export class Tower extends BaseObject {
     constructor(towerType: TowerType) {
         super(towerType);
         this._towerType = towerType;
-        this.speed = 100;
+        this.speed = 200;
         this.image.width = 32;
         this.image.height = 60;
         this.circleImage = new Sprite(AssetsLoader.getTexture('circle'));

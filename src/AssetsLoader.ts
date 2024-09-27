@@ -4,6 +4,7 @@ import { get } from 'lodash';
 export class AssetsLoader {
     private static _resources: any = null;
     public static _explosion: any;
+    public static _nuclearBase: any;
 
     constructor() {
         if (AssetsLoader._resources) {
@@ -37,7 +38,12 @@ export class AssetsLoader {
             src: '../assets/animation/blast-explosion/explosion.json'
         }).then(data => {
             AssetsLoader._explosion = data;
-            console.log(AssetsLoader._explosion);
+        });
+        await Assets.load({
+            alias: 'nuclear-base',
+            src: '../assets/animation/nuclear-base/nuclear-base.json'
+        }).then(data => {
+            AssetsLoader._nuclearBase = data;
         });
     }
 

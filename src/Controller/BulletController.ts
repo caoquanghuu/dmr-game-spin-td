@@ -67,6 +67,7 @@ export class BulletController {
         bullet.position = { x: option.position.x, y: option.position.y };
         bullet.target = option.target;
         bullet.effectType = option.effectType;
+        bullet.image.zIndex = 6;
 
         this._bullets.push(bullet);
 

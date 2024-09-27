@@ -180,4 +180,8 @@ export namespace AppConstants {
         clockwerk: 40
     };
 
+    export const objectZIndex = {
+        
+    }
+
 }

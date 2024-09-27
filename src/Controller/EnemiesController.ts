@@ -41,6 +41,8 @@ export class EnemiesController {
         const ene = this._getEnemiesFromPool();
         ene.image.texture = AssetsLoader.getTexture(`${option.name}`);
         ene.position = position;
+        ene.image.zIndex = 4;
+        ene.hpBar.zIndex = 5;
         ene.HP = option.HP;
         ene.dameDeal = option.dame;
         ene.speed = option.speed;

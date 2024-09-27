@@ -70,6 +70,7 @@ export class GameMap extends Container {
                     grass.anchor = 0.5;
                     grass.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
                     this.addChild(grass);
+                    grass.zIndex = 1;
                 }
                 if (value === 0) {
 
@@ -82,12 +83,31 @@ export class GameMap extends Container {
                     tree.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
                 }
 
+                if (value === 3) {
+                    const nuclearBase = new AnimatedSprite(AssetsLoader._nuclearBase.animations['building']);
+                    nuclearBase.anchor = 0.5;
+                    nuclearBase.position = { x: idxX * 32 + 32, y: idxY * 32 - 8 };
+
+                    nuclearBase.width = 150;
+                    nuclearBase.height = 150;
+                    nuclearBase.animationSpeed = 0.1;
+                    nuclearBase.zIndex = 2;
+                    nuclearBase.loop = false;
+                    this.addChild(nuclearBase);
+                    nuclearBase.play();
+                    nuclearBase.onComplete = () => {
+                        nuclearBase.gotoAndStop(15);
+                    };
+
+                }
+
                 if (value === 2) {
                     const towerBase = new Sprite(AssetsLoader.getTexture('tower-base'));
                     towerBase.anchor.set(0.5);
                     towerBase.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
                     towerBase.width = 32;
                     towerBase.height = 32;
+                    towerBase.zIndex = 3;
 
                     this._towerBase.push(towerBase);
                     this.addChild(towerBase);

@@ -1,0 +1,159 @@
+{"frames": {
+
+"building_01.gif":
+{
+	"frame": {"x":0,"y":0,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_02.gif":
+{
+	"frame": {"x":238,"y":0,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_03.gif":
+{
+	"frame": {"x":476,"y":0,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_04.gif":
+{
+	"frame": {"x":714,"y":0,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_05.gif":
+{
+	"frame": {"x":952,"y":0,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_06.gif":
+{
+	"frame": {"x":1190,"y":0,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_07.gif":
+{
+	"frame": {"x":1428,"y":0,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_08.gif":
+{
+	"frame": {"x":1666,"y":0,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_09.gif":
+{
+	"frame": {"x":0,"y":202,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_10.gif":
+{
+	"frame": {"x":238,"y":202,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_11.gif":
+{
+	"frame": {"x":476,"y":202,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_12.gif":
+{
+	"frame": {"x":714,"y":202,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_13.gif":
+{
+	"frame": {"x":952,"y":202,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_14.gif":
+{
+	"frame": {"x":1190,"y":202,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_15.gif":
+{
+	"frame": {"x":1428,"y":202,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"building_16.gif":
+{
+	"frame": {"x":1666,"y":202,"w":238,"h":202},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":202},
+	"sourceSize": {"w":238,"h":202},
+	"anchor": {"x":0.5,"y":0.5}
+}},
+"animations": {
+	"building": ["building_01.gif","building_02.gif","building_03.gif","building_04.gif","building_05.gif","building_06.gif","building_07.gif","building_08.gif","building_09.gif","building_10.gif","building_11.gif","building_12.gif","building_13.gif","building_14.gif","building_15.gif","building_16.gif"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.1",
+	"image": "nuclear-base.png",
+	"format": "RGBA8888",
+	"size": {"w":1904,"h":404},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:59a5efd3b6a9bb86b9f4a831a54633b6:cf547638ec9b6ba1cff7d0df9698aec0:617dbfe70f9284405300fcb405341118$"
+}
+}
