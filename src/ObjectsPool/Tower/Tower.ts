@@ -92,6 +92,8 @@ export class Tower extends BaseObject {
 
     public upgrade() {
         this._level += 1;
+
+        // change or add upgrade image for tower
         if (this._upgradeLevelImage) {
             this._upgradeLevelImage.texture = AssetsLoader.getTexture(`upgrade-level-${this._level}`);
         } else {

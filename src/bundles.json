@@ -118,7 +118,62 @@
 
             "alias": "upgrade-level-4",
             "src": "assets/units/upgrade-level-4.png"
+            },
+            { 
+
+            "alias": "hp-bar-1",
+            "src": "assets/units/hp-1.png"
+            },
+            { 
+
+            "alias": "hp-bar-2",
+            "src": "assets/units/hp-2.png"
+            },
+            { 
+
+            "alias": "hp-bar-3",
+            "src": "assets/units/hp-3.png"
             }
+            ,
+            { 
+
+            "alias": "hp-bar-4",
+            "src": "assets/units/hp-4.png"
+            },
+            { 
+
+            "alias": "hp-bar-5",
+            "src": "assets/units/hp-5.png"
+            }
+            ,
+            { 
+
+            "alias": "hp-bar-6",
+            "src": "assets/units/hp-6.png"
+            },
+            { 
+
+            "alias": "hp-bar-7",
+            "src": "assets/units/hp-7.png"
+            },
+            { 
+
+            "alias": "hp-bar-8",
+            "src": "assets/units/hp-8.png"
+            }
+            ,
+            { 
+
+            "alias": "hp-bar-9",
+            "src": "assets/units/hp-9.png"
+            },
+            { 
+
+            "alias": "hp-bar-10",
+            "src": "assets/units/hp-10.png"
+            }
+
+
             
             
         ]

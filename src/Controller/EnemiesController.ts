@@ -31,12 +31,13 @@ export class EnemiesController {
     private _createEnemies(enemyType: EnemiesType, position: PointData) {
         const ene = this._getEnemiesFromPool(enemyType);
         ene.position = position;
-        ene.HP = 5;
+        ene.HP = 10;
         ene.dameDeal = 1;
         ene.resetMove();
         ene.isMoving = true;
 
         Emitter.emit(AppConstants.event.addChildToScene, ene.image);
+        Emitter.emit(AppConstants.event.addChildToScene, ene.hpBar);
 
         this._enemies.push(ene);
     }
@@ -51,6 +52,7 @@ export class EnemiesController {
         this._returnEnemiesToPool(ene);
 
         Emitter.emit(AppConstants.event.removeChildFromScene, ene.image);
+        Emitter.emit(AppConstants.event.removeChildFromScene, ene.hpBar);
 
         this._enemies.splice(i, 1);
 

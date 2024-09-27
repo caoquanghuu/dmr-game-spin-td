@@ -2,12 +2,14 @@ import { BSFNextMove, Direction, EnemiesType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BSFMoveEngine } from '../../MoveEngine/BSFMoveEngine';
-import { PointData } from 'pixi.js';
+import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../../Util';
 import { AppConstants } from '../../GameScene/Constants';
+import { AssetsLoader } from '../../AssetsLoader';
 
 export class Enemies extends BaseObject {
-    private _HP: number;
+    private _HP: {hpConst: number, hpCount: number} = { hpConst: 0, hpCount: 0 };
+    private _hpBar: Sprite;
     private _dameDeal: number;
     private _enemiesType: EnemiesType;
     private _bfsMoveEngine: BSFMoveEngine;
@@ -23,15 +25,21 @@ export class Enemies extends BaseObject {
         this.moveEngine = new BaseEngine(true);
         this._bfsMoveEngine = new BSFMoveEngine();
         this._getNextMove();
+        this._hpBar = new Sprite(AssetsLoader.getTexture('hp-bar-10'));
+        this._hpBar.width = 32;
+        this._hpBar.height = 5;
+        this._hpBar.anchor.set(0.5, 4);
 
     }
 
     get HP(): number {
-        return this._HP;
+        return this._HP.hpCount;
     }
 
     set HP(newHp: number) {
-        this._HP = newHp;
+        this._HP.hpConst = newHp;
+        this._HP.hpCount = newHp;
+        this.reduceHp(0);
     }
 
     get dameDeal(): number {
@@ -58,6 +66,10 @@ export class Enemies extends BaseObject {
         this._goldReward = gold;
     }
 
+    get hpBar(): Sprite {
+        return this._hpBar;
+    }
+
     public resetMove() {
         this._bfsMoveEngine.reset();
         this._getNextMove();
@@ -67,10 +79,23 @@ export class Enemies extends BaseObject {
         return this.image.position;
     }
 
-    private _checkEnemyStage() {
-        if (this._HP <= 0) {
+    // private _checkEnemyStage() {
+    //     if (this._HP.hpCount <= 0) {
+
+    //     }
+    // }
+
+    public reduceHp(hpReDuce: number) {
+        this._HP.hpCount -= hpReDuce;
+
+        const hpRate = Math.round(this._HP.hpCount / (this._HP.hpConst / 10));
+        if (hpRate <= 0) {
             Emitter.emit(AppConstants.event.removeEnemy, this.id);
+            return;
         }
+        this._hpBar.texture = AssetsLoader.getTexture(`hp-bar-${hpRate}`);
+
+
     }
 
     private _moveByBsf(dt: number) {
@@ -114,6 +139,6 @@ export class Enemies extends BaseObject {
     public update(dt: number): void {
         if (!this._isMoving) return;
         this._moveByBsf(dt);
-        this._checkEnemyStage();
+        this._hpBar.position = this.image.position;
     }
 }

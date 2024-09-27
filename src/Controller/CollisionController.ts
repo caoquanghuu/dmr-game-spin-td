@@ -66,7 +66,7 @@ export class CollisionController {
 
 
                     if (isCollisionWithBullet) {
-                        ene.HP -= bullet.dame;
+                        ene.reduceHp(bullet.dame);
 
                         if (bullet.effectType === EffectType.SLOW) {
                             ene.speed = ene.speed / 2;
