@@ -15,7 +15,7 @@ export class Enemies extends BaseObject {
     private _bfsMoveEngine: BSFMoveEngine;
     private _isMoving: boolean = false;
     private _target: PointData;
-    private _goldReward: number = 10;
+    private _goldReward: number = 2;
     constructor(enemyType: EnemiesType) {
         super(enemyType);
         this._enemiesType = enemyType;

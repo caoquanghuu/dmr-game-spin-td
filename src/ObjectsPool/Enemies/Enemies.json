@@ -16,11 +16,66 @@
             "eneCount": 12
         },
         {
-            "name": "tank-2",
-            "HP": 3,
+            "name": "tank-3",
+            "HP": 7,
             "speed": 200,
             "dame": 1,
             "eneCount": 15
+        },
+        {
+            "name": "tank-4",
+            "HP": 15,
+            "speed": 100,
+            "dame": 2,
+            "eneCount": 20
+        }, {
+            "name": "tank-5",
+            "HP": 20,
+            "speed": 100,
+            "dame": 2,
+            "eneCount": 20
+        },
+        {
+            "name": "tank-6",
+            "HP": 25,
+            "speed": 100,
+            "dame": 2,
+            "eneCount": 20
+        },
+        {
+            "name": "tank-7",
+            "HP": 30,
+            "speed": 100,
+            "dame": 2,
+            "eneCount": 20
+        },
+        {
+            "name": "tank-8",
+            "HP": 40,
+            "speed": 100,
+            "dame": 2,
+            "eneCount": 20
+        },
+        {
+            "name": "tank-9",
+            "HP": 60,
+            "speed": 100,
+            "dame": 2,
+            "eneCount": 20
+        },
+        {
+            "name": "tank-9",
+            "HP": 70,
+            "speed": 100,
+            "dame": 2,
+            "eneCount": 20
+        },
+        {
+            "name": "tank-3",
+            "HP": 15,
+            "speed": 100,
+            "dame": 2,
+            "eneCount": 20
         },
         {
             "name": "tank-3",
