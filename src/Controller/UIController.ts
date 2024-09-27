@@ -64,6 +64,15 @@ export class UIController {
             this._infoTowerBoard.renderable = false;
         });
 
+        Emitter.on(AppConstants.event.reduceBaseHp, (reduceCount: number) => {
+            this._playerHp -= reduceCount;
+            if (this._playerHp < 1) {
+                //end game
+                console.log('game over');
+            }
+            this._basicBoard.displayBaseHp(this._playerHp);
+        });
+
         Emitter.on(AppConstants.event.displayTowerInfo, (option) => {
             this._buildTowerBoard.renderable = false;
             this._basicBoard.renderable = false;

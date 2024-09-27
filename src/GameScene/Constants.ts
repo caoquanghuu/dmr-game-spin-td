@@ -89,6 +89,7 @@ export namespace AppConstants {
         displayTowerInfo: 'displayTowerInfo',
         upgradeTower: 'upgrade-tower',
         displayWave: 'display-wave',
+        reduceBaseHp: 'reduce-base-hp'
 
     };
 
@@ -181,7 +182,7 @@ export namespace AppConstants {
     };
 
     export const objectZIndex = {
-        
-    }
+
+    };
 
 }

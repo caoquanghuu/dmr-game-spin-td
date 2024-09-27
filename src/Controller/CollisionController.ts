@@ -2,7 +2,7 @@ import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { Circle, EffectType, GetObjectFromGameSceneFn } from '../Type';
-import { AnimatedSprite, Texture } from 'pixi.js';
+import { AnimatedSprite, PointData, Texture } from 'pixi.js';
 import { AssetsLoader } from '../AssetsLoader';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
@@ -11,6 +11,7 @@ export class CollisionController {
     private _towers: Tower[] = [];
     private _bullets: Bullet[] = [];
     private _enemies: Enemies[] = [];
+    private _nuclearBasePosition: PointData;
     private _getObjectsFromGameScene: GetObjectFromGameSceneFn;
 
     constructor(getObjectsFromGameSceneCB: GetObjectFromGameSceneFn) {
@@ -20,7 +21,7 @@ export class CollisionController {
     private _checkCollisionBetweenObjects() {
         this._enemies.forEach(ene => {
 
-            // check ene vs bullet
+            // check ene vs tower
             const c1: Circle = { position: ene.position, radius: ene.image.width / 2 };
             this._towers.forEach(tower => {
                 const c2: Circle = { position: tower.position, radius: tower.effectArena };
@@ -30,6 +31,18 @@ export class CollisionController {
                     tower.fire(ene.getUpdatedPosition());
                 }
             });
+
+            // check ene vs their target
+            const c2: Circle = { position: this._nuclearBasePosition, radius: 10 };
+
+            const isCollision = this._isCollision(c1, c2);
+            if (isCollision) {
+                // remove enemy cause it reached to base
+                Emitter.emit(AppConstants.event.removeEnemy, ene.id);
+
+                // send event to ui controller
+                Emitter.emit(AppConstants.event.reduceBaseHp, ene.dameDeal);
+            }
         });
 
         this._bullets.forEach(bullet => {
@@ -89,6 +102,10 @@ export class CollisionController {
 
 
         });
+    }
+
+    set nuclearPosition(position: PointData) {
+        this._nuclearBasePosition = { x: position.x, y: position.y };
     }
 
     private _assignObject() {

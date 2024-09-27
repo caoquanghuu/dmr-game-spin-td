@@ -23,6 +23,7 @@ export class GameMap extends Container {
     private _enemiesController: EnemiesController;
     private _objectPool: ObjectPool;
     private _time: number = 0;
+    private _nuclearBase: AnimatedSprite;
     // wave is define to current hard level
     private _wave: number = 1;
 
@@ -84,20 +85,22 @@ export class GameMap extends Container {
                 }
 
                 if (value === 3) {
-                    const nuclearBase = new AnimatedSprite(AssetsLoader._nuclearBase.animations['building']);
-                    nuclearBase.anchor = 0.5;
-                    nuclearBase.position = { x: idxX * 32 + 32, y: idxY * 32 - 8 };
-
-                    nuclearBase.width = 150;
-                    nuclearBase.height = 150;
-                    nuclearBase.animationSpeed = 0.1;
-                    nuclearBase.zIndex = 2;
-                    nuclearBase.loop = false;
-                    this.addChild(nuclearBase);
-                    nuclearBase.play();
-                    nuclearBase.onComplete = () => {
-                        nuclearBase.gotoAndStop(15);
+                    this._nuclearBase = new AnimatedSprite(AssetsLoader._nuclearBase.animations['building']);
+                    this._nuclearBase.anchor = 0.5;
+                    this._nuclearBase.position = { x: idxX * 32 + 32, y: idxY * 32 - 8 };
+                    this._nuclearBase.width = 150;
+                    this._nuclearBase.height = 150;
+                    this._nuclearBase.animationSpeed = 0.1;
+                    this._nuclearBase.zIndex = 2;
+                    this._nuclearBase.loop = false;
+                    this.addChild(this._nuclearBase);
+                    this._nuclearBase.play();
+                    this._nuclearBase.onComplete = () => {
+                        this._nuclearBase.gotoAndStop(15);
                     };
+
+                    // set target for collision
+                    this._collisionController.nuclearPosition = this._nuclearBase.position;
 
                 }
 
