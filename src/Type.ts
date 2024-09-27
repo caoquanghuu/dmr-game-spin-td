@@ -86,8 +86,16 @@ export type TowerInformation = {
     towerId: number
 };
 
+export interface CreateEnemiesOption {
+    name: string,
+    HP: number,
+    speed: number,
+    dame: number,
+    eneCount?: number
+}
+
 export type GetTowerFromPoolFn = (towerType: TowerType) => Tower;
-export type GetEnemiesFromPoolFn = (enemyType: EnemiesType) => Enemies;
+export type GetEnemiesFromPoolFn = () => Enemies;
 export type GetBulletFromPoolFn = (bulletType: BulletType) => Bullet;
 export type ReturnTowerToPoolFn = (tower: Tower) => void;
 export type ReturnEnemiesToPoolFn = (enemy: Enemies) => void;

@@ -1,8 +1,10 @@
-import { EnemiesType, GetEnemiesFromPoolFn, ReturnEnemiesToPoolFn } from 'src/Type';
+import { CreateEnemiesOption, GetEnemiesFromPoolFn, ReturnEnemiesToPoolFn } from 'src/Type';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { PointData } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
+import EnemiesOption from '../ObjectsPool/Enemies/Enemies.json';
+import { AssetsLoader } from '../AssetsLoader';
 
 export class EnemiesController {
     private _enemies: Enemies[] = [];
@@ -20,19 +22,28 @@ export class EnemiesController {
     }
 
     private _useEventEffect() {
-        Emitter.on(AppConstants.event.createEnemy, (option: { position: PointData, enemyType: EnemiesType}) => {
-            this._createEnemies(option.enemyType, option.position);
-        });
         Emitter.on(AppConstants.event.removeEnemy, (id: number) => {
             this._removeEnemies(id);
         });
     }
 
-    private _createEnemies(enemyType: EnemiesType, position: PointData) {
-        const ene = this._getEnemiesFromPool(enemyType);
+    public spawnWave(wave: number, position: PointData) {
+        // create enemies, set position, hp, move speed , texture base on current wave
+        const enemiesOption = EnemiesOption.alias[wave - 1];
+        const enePosition: PointData = { x: position.x, y: position.y };
+        for (let i = 0; i <= enemiesOption.eneCount; i ++) {
+            this._createEnemies(enemiesOption, enePosition);
+            enePosition.y -= 100;
+        }
+    }
+
+    private _createEnemies(option: CreateEnemiesOption, position: PointData) {
+        const ene = this._getEnemiesFromPool();
+        ene.image.texture = AssetsLoader.getTexture(`${option.name}`);
         ene.position = position;
-        ene.HP = 10;
-        ene.dameDeal = 1;
+        ene.HP = option.HP;
+        ene.dameDeal = option.dame;
+        ene.speed = option.speed;
         ene.resetMove();
         ene.isMoving = true;
 

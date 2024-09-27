@@ -1,6 +1,7 @@
 import { BitmapText, Container, Sprite, Text } from 'pixi.js';
 import { BaseObject } from 'src/ObjectsPool/BaseObject';
 import { AppConstants } from '../Constants';
+import Emitter from '../../Util';
 
 export class BasicBoard extends Container {
     private _wave: BitmapText;
@@ -15,6 +16,7 @@ export class BasicBoard extends Container {
     constructor() {
         super();
         this._init();
+        this._useEventEffect();
 
     }
 
@@ -50,6 +52,12 @@ export class BasicBoard extends Container {
 
         this.addChild(this._wave, this._waveNumber, this._baseHp, this._baseHpNumber, this._playerGold, this._playerGoldNumber, this._spin);
 
+    }
+
+    private _useEventEffect() {
+        Emitter.on(AppConstants.event.displayWave, (wave: number) => {
+            this.displayWaveNumber(wave);
+        });
     }
 
     public displayWaveNumber(wave: number | string): void {

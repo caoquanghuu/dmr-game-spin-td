@@ -22,27 +22,48 @@ export class GameMap extends Container {
     private _towerController: TowerController;
     private _enemiesController: EnemiesController;
     private _objectPool: ObjectPool;
+    private _time: number = 0;
+    // wave is define to current hard level
+    private _wave: number = 1;
 
     public static mapMatrix: any;
     constructor() {
         super();
+        // get matrix map from map file json file
         GameMap.mapMatrix = map;
+
+        // assign event emitter
         this._useEventEffect();
+
+        // drawn basic graphics to know position of objects
         const graphics = new Graphics();
         graphics.rect (0, 0, AppConstants.mapSize.width, AppConstants.mapSize.height);
         graphics.fill('506147');
         this.addChild(graphics);
+
+        // create pool
         this._objectPool = new ObjectPool();
 
+        // create controllers
         this._towerController = new TowerController(this._getTowerFromPool.bind(this), this._returnTowerToPool.bind(this));
         this._enemiesController = new EnemiesController(this._getEnemiesFromPool.bind(this), this._returnEnemiesToPool.bind(this));
         this._bulletController = new BulletController(this._getBulletFromPool.bind(this), this._returnBulletToPool.bind(this));
         this._collisionController = new CollisionController(this._getObject.bind(this));
 
+        this._init();
 
+        this._startGame();
+
+
+    }
+
+    private _init() {
+        // create const objects base on matrix map
         map.forEach((val, idxX) => {
             val.forEach((value, idxY) => {
                 if (value === 1) {
+
+                    // create grass on map
                     const grass = new Sprite(AssetsLoader.getTexture('grass-1'));
                     grass.width = 32,
                     grass.height = 32,
@@ -51,6 +72,8 @@ export class GameMap extends Container {
                     this.addChild(grass);
                 }
                 if (value === 0) {
+
+                    // create tree con border of map
                     const tree = new Sprite(AssetsLoader.getTexture('tree-1'));
                     tree.width = 32,
                     tree.height = 32;
@@ -69,6 +92,7 @@ export class GameMap extends Container {
                     this._towerBase.push(towerBase);
                     this.addChild(towerBase);
 
+                    // test space for create multi tower to debug
                     const rd = Math.random() * 10;
                     if (rd < 2) {
                         const rd = Math.random() * 10;
@@ -86,13 +110,7 @@ export class GameMap extends Container {
             });
         });
 
-        this._startGame();
-
-        this._init();
-
-    }
-
-    private _init() {
+        // set event for tower base, end event to ui controller display build tower option
         this._towerBase.forEach(base => {
             base.eventMode = 'static';
             base.cursor = 'pointer';
@@ -100,10 +118,6 @@ export class GameMap extends Container {
                 Emitter.emit(AppConstants.event.selectTowerBase, base);
             });
         });
-
-        // const animationSprite = new AnimatedSprite(AssetsLoader._explosion.texture, true);
-        // this.addChild(animationSprite);
-        // animationSprite.play();
     }
 
     private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Enemies[]} {
@@ -121,17 +135,23 @@ export class GameMap extends Container {
 
     // method to create enemies
     private _startGame() {
-        let y = -100;
-        for (let i = 0; i < 10; i++) {
-            Emitter.emit(AppConstants.event.createEnemy, { position: { x: 15 * 32, y: y }, enemyType: EnemiesType.tank_1 });
-            y -= 100;
+        this._enemiesController.spawnWave(this._wave, { x: 15 * 32, y: -100 });
+    }
+
+    private _checkWave(dt: number) {
+        if (this._enemiesController.enemies.length > 0) return;
+
+        this._time += dt;
+        if (this._time >= 10000) {
+            this._wave += 1;
+            // send event to ui basic board display new wave
+            Emitter.emit(AppConstants.event.displayWave, this._wave);
+            this._enemiesController.spawnWave(this._wave, { x: 15 * 32, y: -100 });
         }
+
     }
 
-    private _spawnWave() {
-        if (this._enemiesController.enemies.length === 0) this._startGame();
-    }
-
+    // methods get and return object to controllers
     private _getTowerFromPool(towerType: TowerType): Tower {
         return this._objectPool.getTowerFromPool(towerType);
     }
@@ -148,13 +168,15 @@ export class GameMap extends Container {
         this._objectPool.returnBullet(bullet);
     }
 
-    private _getEnemiesFromPool(eneType: EnemiesType): Enemies {
-        return this._objectPool.getEnemies(eneType);
+    private _getEnemiesFromPool(): Enemies {
+        return this._objectPool.getEnemies();
     }
 
     private _returnEnemiesToPool(ene: Enemies): void {
         this._objectPool.returnEnemies(ene);
     }
+
+    // update function
     public update(dt: number) {
         this._towers.forEach(tower => {
             tower.update(dt);
@@ -169,7 +191,6 @@ export class GameMap extends Container {
         this._collisionController.update(dt);
         this._enemiesController.update(dt);
 
-        this._spawnWave();
-
+        this._checkWave(dt);
     }
 }

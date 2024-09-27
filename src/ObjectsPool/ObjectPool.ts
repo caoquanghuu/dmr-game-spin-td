@@ -1,4 +1,4 @@
-import { BulletType, EnemiesType, TowerType } from '../Type';
+import { BulletType, TowerType } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { Tower } from '../ObjectsPool/Tower/Tower';
@@ -8,7 +8,7 @@ import Factory from '../ObjectsPool/Factory';
 export class ObjectPool {
     public static inst: ObjectPool;
     private _bulletPool: {[bulletType: string]: Bullet[]} = {};
-    private _enemiesPool: {[enemiesType: string]: Enemies[]} = {};
+    private _enemiesPool: Enemies[] = [];
     private _towerPool: {[towerType: string]: Tower[]} = {};
     constructor() {
         ObjectPool.inst = this;
@@ -23,13 +23,9 @@ export class ObjectPool {
         }
 
         // init enemies pool
-        for (const [key, value] of Object.entries(EnemiesType)) {
-            this._enemiesPool[key] = [];
-
-            for (let i = 0; i < AppConstants.bulletCount; i++) {
-                const enemies = Factory.createEnemies(value);
-                this._enemiesPool[key].push(enemies);
-            }
+        for (let i = 0; i <= 10; i ++) {
+            const ene = Factory.createEnemies();
+            this._enemiesPool.push(ene);
         }
         // init tower pool
         for (const [key, value] of Object.entries(TowerType)) {
@@ -59,12 +55,12 @@ export class ObjectPool {
             return this._towerPool[towerType].pop() as Tower;
         }
     }
-    public getEnemies(enemiesType: EnemiesType): Enemies {
-        if (this._enemiesPool[enemiesType]?.length <= 0) {
-            const enemies = Factory.createEnemies(enemiesType);
+    public getEnemies(): Enemies {
+        if (this._enemiesPool.length <= 0) {
+            const enemies = Factory.createEnemies();
             return enemies;
         } else {
-            return this._enemiesPool[enemiesType].pop() as Enemies;
+            return this._enemiesPool.pop() as Enemies;
         }
     }
 
@@ -77,7 +73,7 @@ export class ObjectPool {
     }
 
     public returnEnemies(enemies: Enemies): void {
-        this._enemiesPool[enemies.enemiesType].push(enemies);
+        this._enemiesPool.push(enemies);
     }
 
 

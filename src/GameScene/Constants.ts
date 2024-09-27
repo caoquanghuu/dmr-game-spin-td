@@ -88,6 +88,7 @@ export namespace AppConstants {
         resetBoard: 'reset-board',
         displayTowerInfo: 'displayTowerInfo',
         upgradeTower: 'upgrade-tower',
+        displayWave: 'display-wave',
 
     };
 

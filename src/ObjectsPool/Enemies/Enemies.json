@@ -1,0 +1,33 @@
+{
+    "name": "enemy-type",
+    "alias": [
+        {
+            "name": "tank-1",
+            "HP": 5,
+            "speed": 100,
+            "dame": 1,
+            "eneCount": 10
+        },
+        {
+            "name": "tank-2",
+            "HP": 10,
+            "speed": 60,
+            "dame": 1,
+            "eneCount": 12
+        },
+        {
+            "name": "tank-2",
+            "HP": 3,
+            "speed": 200,
+            "dame": 1,
+            "eneCount": 15
+        },
+        {
+            "name": "tank-3",
+            "HP": 15,
+            "speed": 100,
+            "dame": 2,
+            "eneCount": 20
+        }
+    ]
+}

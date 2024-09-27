@@ -71,26 +71,30 @@ export default class Factory {
         }
     }
 
-    public static createEnemies(type: string): Enemies {
+    public static createEnemies(): Enemies {
         const objectId = Factory.objectId;
         Factory.objectId++;
 
-        switch (type) {
-            case EnemiesType.tank_1:
-                const tank1 = new Enemies(EnemiesType.tank_1);
-                tank1.id = objectId;
-                return tank1;
+        const enemies = new Enemies(EnemiesType.tank_1);
+        enemies.id = objectId;
+        return enemies;
 
-            case EnemiesType.tank_2:
-                const tank2 = new Enemies(EnemiesType.tank_2);
-                tank2.id = objectId;
-                return tank2;
+        // switch (type) {
+        //     case EnemiesType.tank_1:
+        //         const tank1 = new Enemies(EnemiesType.tank_1);
+        //         tank1.id = objectId;
+        //         return tank1;
 
-            case EnemiesType.tank_3:
-                const tank3 = new Enemies(EnemiesType.tank_3);
-                tank3.id = objectId;
-                return tank3;
-            default:
-        }
+        //     case EnemiesType.tank_2:
+        //         const tank2 = new Enemies(EnemiesType.tank_2);
+        //         tank2.id = objectId;
+        //         return tank2;
+
+        //     case EnemiesType.tank_3:
+        //         const tank3 = new Enemies(EnemiesType.tank_3);
+        //         tank3.id = objectId;
+        //         return tank3;
+        //     default:
+        // }
     }
 }

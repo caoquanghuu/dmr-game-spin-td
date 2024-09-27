@@ -8,8 +8,7 @@ import { InformationBoard } from '../GameScene/UI/InformationBoard';
 
 export class UIController {
     private _playerGold: number;
-    private _playerHp: number;
-    private _wave: number;
+    private _playerHp: number;;
     private _basicBoard: BasicBoard;
     private _buildTowerBoard: BuildTowerBoard;
     private _infoTowerBoard: InformationBoard;
@@ -21,12 +20,11 @@ export class UIController {
         this._removeFromBoardFn = removeFromBoardCb;
         this._playerGold = 10000;
         this._playerHp = 50;
-        this._wave = 0;
         this._basicBoard = new BasicBoard();
         this._basicBoard.scale = 1;
         this._basicBoard.displayBaseHp(this._playerHp);
         this._basicBoard.displayGoldNumber(this._playerGold);
-        this._basicBoard.displayWaveNumber(this._wave);
+        this._basicBoard.displayWaveNumber(1);
         this._buildTowerBoard = new BuildTowerBoard(this._getPlayerGold.bind(this));
         this._buildTowerBoard.scale = 1;
 

@@ -28,8 +28,12 @@
             }
             ,
             {
-                "alias": "tank_1",
+                "alias": "tank-1",
                 "src":"assets/units/tank-1.png"
+            },
+            {
+                "alias": "tank-2",
+                "src":"assets/units/tank-2.png"
             },
             {
                 "alias": "tree-1",
