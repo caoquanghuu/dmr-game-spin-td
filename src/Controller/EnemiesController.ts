@@ -32,12 +32,12 @@ export class EnemiesController {
         const enemiesOption = EnemiesOption.alias[wave - 1];
         const enePosition: PointData = { x: position.x, y: position.y };
         for (let i = 0; i <= enemiesOption.eneCount; i ++) {
-            this._createEnemies(enemiesOption, enePosition);
+            this._createEnemies(enemiesOption, enePosition, wave);
             enePosition.y -= 100;
         }
     }
 
-    private _createEnemies(option: CreateEnemiesOption, position: PointData) {
+    private _createEnemies(option: CreateEnemiesOption, position: PointData, wave: number) {
         const ene = this._getEnemiesFromPool();
         ene.image.texture = AssetsLoader.getTexture(`${option.name}`);
         ene.position = position;
@@ -46,6 +46,7 @@ export class EnemiesController {
         ene.HP = option.HP;
         ene.dameDeal = option.dame;
         ene.speed = option.speed;
+        ene.goldReward = wave;
         ene.resetMove();
         ene.isMoving = true;
 

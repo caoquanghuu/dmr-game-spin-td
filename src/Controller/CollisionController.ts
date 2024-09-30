@@ -1,7 +1,7 @@
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
-import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
+import { BulletType, Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
 import { AnimatedSprite, PointData, Texture } from 'pixi.js';
 import { AssetsLoader } from '../AssetsLoader';
 import Emitter from '../Util';
@@ -22,7 +22,7 @@ export class CollisionController {
         this._returnExplosionToPool = returnExplosionToPoolCB;
     }
 
-    private _checkCollisionBetweenObjects() {
+    private async _checkCollisionBetweenObjects() {
         this._enemies.forEach(ene => {
 
             // check ene vs tower
@@ -50,27 +50,30 @@ export class CollisionController {
         });
 
         this._bullets.forEach(bullet => {
-            const c2: Circle = { position: bullet.position, radius: bullet.effectArena };
+
 
             const c3: Circle = { position: bullet.position, radius: bullet.image.width / 2 };
 
             const c1: Circle = { position: bullet.target, radius: bullet.image.width / 2 };
 
-            if (!bullet.target) {
-                bullet.destroy();
-                return;
-            }
+            // if (!bullet.target) {
+            //     bullet.destroy();
+            //     return;
+            // }
 
             const isBulletReachToTarget = this._isCollision(c1, c3);
             if (isBulletReachToTarget) {
-                bullet.destroy();
+
                 const explosion = this._getExplosionFromPool();
-                explosion.position = bullet.target; 
-                explosion.width = 50;
-                explosion.height = 50;
+                explosion.position = bullet.target;
+                explosion.width = bullet.effectArena;
+                explosion.height = bullet.effectArena;
+                if (bullet.bulletType === BulletType.ice) {
+                    explosion.tint = '0092fe';
+                } else {
+                    explosion.tint = 'white';
+                }
                 explosion.gotoAndPlay(0);
-
-
                 Emitter.emit(AppConstants.event.addChildToScene, explosion);
                 explosion.onComplete = () => {
 
@@ -78,31 +81,29 @@ export class CollisionController {
 
                     Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
                 };
-
+                const eneCollisionWithBullet: Enemies[] = [];
                 this._enemies.forEach(ene => {
+                    const c2: Circle = { position: bullet.position, radius: bullet.effectArena };
                     const cEne: Circle = { position: ene.position, radius: ene.image.width / 2 };
                     const isCollisionWithBullet = this._isCollision(cEne, c2);
 
 
                     if (isCollisionWithBullet) {
-                        if (bullet.effectType === EffectType.SLOW) {
-                            ene.speed = ene.speed / 2;
-                            setTimeout(() => {
-                                ene.speed = ene.speed * 2;
-                            }, 3000);
-                            return;
-                        }
-
-                        if (bullet.effectType === EffectType.BLAST) {
-                            ene.reduceHp(bullet.dame);
-                            return;
-                        }
-                        ene.reduceHp(bullet.dame);
-
-
+                        eneCollisionWithBullet.push(ene);
                     }
-
                 });
+                eneCollisionWithBullet.forEach(ene => {
+                    if (bullet.effectType === EffectType.SLOW) {
+                        ene.speed = ene.speed / 2;
+                        setTimeout(() => {
+                            ene.speed = ene.speed * 2;
+                        }, 3000);
+                    } else {
+                        ene.reduceHp(bullet.dame);
+                    }
+                })
+
+                bullet.destroy();
             }
 
 

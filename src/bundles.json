@@ -211,6 +211,10 @@
             {
                 "alias": "explosion",
             "src": "assets/animation/blast-explosion/explosion.json"
+            },
+            {
+                "alias": "thunder",
+                "src": "assets/animation/electric/thunder.json"
             }
 
 
