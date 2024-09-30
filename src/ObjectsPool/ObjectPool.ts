@@ -32,10 +32,8 @@ export class ObjectPool {
 
             // init animation sprite
             const explosion = new AnimatedSprite(AssetsLoader.getTexture('explosion').animations['tile']);
-            explosion.width = 50;
-            explosion.height = 50;
-            explosion.anchor = 0.5;
             explosion.loop = false;
+            explosion.anchor = 0.5;
             explosion.alpha = 20;
             explosion.zIndex = 7;
             this._explosionAnimation.push(explosion);
@@ -81,7 +79,11 @@ export class ObjectPool {
 
     public getExplosion(): AnimatedSprite {
         if (this._explosionAnimation.length <= 0) {
-            const explosion = new AnimatedSprite(AssetsLoader.getTexture('explosion').animations['tile ']);
+            const explosion = new AnimatedSprite(AssetsLoader.getTexture('explosion').animations['tile']);
+            explosion.loop = false;
+            explosion.anchor = 0.5;
+            explosion.alpha = 20;
+            explosion.zIndex = 7;
             return explosion;
         } else {
             return this._explosionAnimation.pop() as AnimatedSprite;

@@ -1,7 +1,8 @@
-import { BitmapText, Container } from 'pixi.js';
+import { BitmapText, Container, Sprite } from 'pixi.js';
 import { AppConstants } from '../Constants';
 import Emitter from '../../Util';
 import { GetPlayerGoldFn, TowerInformation } from '../../Type';
+import { AssetsLoader } from '../../AssetsLoader';
 
 export class InformationBoard extends Container {
     private _dameNumber: BitmapText;
@@ -11,6 +12,7 @@ export class InformationBoard extends Container {
     private _goldUpgradeNumber: BitmapText;
     private _goldUpgrade: number;
     private _towerId: number;
+    private _towerIcon: Sprite;
     private _getPlayerGoldFn: GetPlayerGoldFn;
     constructor(getPlayerGoldCb: GetPlayerGoldFn) {
         super();
@@ -26,6 +28,13 @@ export class InformationBoard extends Container {
             fontFamily: 'Desyrel',
             fontSize: 30
         };
+
+        this._towerIcon = new Sprite();
+        this._towerIcon.width = 100;
+        this._towerIcon.height = 100;
+        this._towerIcon.anchor = 0.5;
+        this._towerIcon.position = { x: AppConstants.infoBoardPosition.towerIcon.x, y:AppConstants.infoBoardPosition.towerIcon.y };
+        this.addChild(this._towerIcon);
 
 
         const dameText: BitmapText = new BitmapText({
@@ -64,6 +73,19 @@ export class InformationBoard extends Container {
             this._upGradeTower();
         });
 
+        const sellText = new BitmapText({
+            text: 'sell:',
+            style: style1
+        });
+        sellText.position = { x: AppConstants.infoBoardPosition.sell.x, y: AppConstants.infoBoardPosition.sell.y };
+        sellText.eventMode = 'static';
+        sellText.cursor = 'pointer';
+        sellText.on('pointerdown', () => {
+            // send event sell tower to ui controller plus gold for player and tower controller remove tower
+            Emitter.emit(AppConstants.event.destroyTower, this._towerId);
+            Emitter.emit(AppConstants.event.plusGold, Math.floor(this._goldUpgrade / 3));
+        });
+
         const exitText = new BitmapText({
             text: 'exit',
             style: style1,
@@ -75,7 +97,7 @@ export class InformationBoard extends Container {
             Emitter.emit(AppConstants.event.resetBoard, null);
         });
 
-        this.addChild(dameText, speedText, levelText, effectText, upgradeText, exitText);
+        this.addChild(dameText, speedText, levelText, effectText, upgradeText, exitText, sellText);
 
 
         // create number:
@@ -126,6 +148,7 @@ export class InformationBoard extends Container {
             this._goldUpgradeNumber.text = option.goldUpgrade;
             this._goldUpgrade = option.goldUpgrade;
             this._towerId = option.towerId;
+            this._towerIcon.texture = AssetsLoader.getTexture(`${option.towerType}-icon`);
         });
     }
 

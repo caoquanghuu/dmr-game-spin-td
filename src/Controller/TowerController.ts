@@ -58,9 +58,14 @@ export class TowerController {
         }
 
         const tower = this._towers[i];
+        tower.baseTower.removeAllListeners();
+        tower.baseTower.on('pointerdown', () => {
+            Emitter.emit(AppConstants.event.selectTowerBase, tower.baseTower);
+        });
         tower.reset();
         this._returnTowerToPool(tower);
-        // use event emitter to remove tower from game
+        Emitter.emit(AppConstants.event.removeChildFromScene, tower.image);
+        Emitter.emit(AppConstants.event.removeChildFromScene, tower.circleImage);
         this._towers.splice(i, 1);
     }
 

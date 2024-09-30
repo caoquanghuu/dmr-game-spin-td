@@ -65,12 +65,17 @@ export class CollisionController {
             if (isBulletReachToTarget) {
                 bullet.destroy();
                 const explosion = this._getExplosionFromPool();
-                explosion.position = bullet.target;
-                Emitter.emit(AppConstants.event.addChildToScene, explosion);
+                explosion.position = bullet.target; 
+                explosion.width = 50;
+                explosion.height = 50;
+                explosion.gotoAndPlay(0);
 
-                explosion.play();
+
+                Emitter.emit(AppConstants.event.addChildToScene, explosion);
                 explosion.onComplete = () => {
+
                     this._returnExplosionToPool(explosion);
+
                     Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
                 };
 

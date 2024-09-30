@@ -12,7 +12,7 @@ export class Tower extends BaseObject {
     private _dame: number;
     private _goldCost: number;
     private _upGradeCost: number;
-    protected fireTimeCd: {fireTimeConstant: number, fireTimeCount} = { fireTimeConstant: 3000, fireTimeCount: 0 };
+    protected fireTimeCd: {fireTimeConstant: number, fireTimeCount: number} = { fireTimeConstant: 3000, fireTimeCount: 0 };
     protected target: PointData;
     public time: number;
     private _level: number = 1;

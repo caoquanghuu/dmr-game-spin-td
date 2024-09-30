@@ -104,17 +104,20 @@ export namespace AppConstants {
     };
 
     export const infoBoardPosition = {
-        dame: { x: 30, y: 0 },
-        dameNumber: { x: 150, y: 0 },
-        speed: { x: 30, y: 35 },
-        speedNumber : { x: 150, y: 35 },
+        dame: { x: 350, y: 35 },
+        dameNumber: { x: 470, y: 35 },
+        speed: { x: 350, y: 70 },
+        speedNumber : { x: 470, y: 70 },
         level: { x: 350, y: 0 },
         levelNumber : { x: 470, y: 0 },
-        effect: { x: 350, y: 35 },
-        effectType: { x: 470, y: 35 },
+        effect: { x: 650, y: 0 },
+        effectType: { x: 750, y: 0 },
         upgrade: { x: 650, y: 35 },
-        upgradeNumber: { x: 800, y: 35 },
-        exit: { x: 900, y: 0 }
+        upgradeNumber: { x: 780, y: 35 },
+        sell: { x: 650, y: 70 },
+        sellNumber: { x: 750, y: 70 },
+        exit: { x: 900, y: 0 },
+        towerIcon: { x: 150, y: 60 }
     };
 
     export const text: {[text: string]: TextOptions} = {

@@ -79,6 +79,8 @@ export class UIController {
             this._infoTowerBoard.renderable = true;
 
         });
+
+        //
     }
 
     private _getPlayerGold(): number {
