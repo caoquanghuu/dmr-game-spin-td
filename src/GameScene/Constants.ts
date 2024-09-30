@@ -1,5 +1,4 @@
 import { TextOptions } from 'pixi.js';
-import { ClockWerk } from 'src/ObjectsPool/Tower/ClockWerk';
 
 
 /* eslint-disable @typescript-eslint/no-namespace */

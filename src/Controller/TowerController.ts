@@ -1,6 +1,6 @@
 import { FireBulletOption, GetTowerFromPoolFn, ReturnTowerToPoolFn, TowerInformation, TowerType } from '../Type';
 import { Tower } from '../ObjectsPool/Tower/Tower';
-import { PointData, Sprite } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 

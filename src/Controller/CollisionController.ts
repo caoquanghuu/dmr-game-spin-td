@@ -2,8 +2,7 @@ import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { BulletType, Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
-import { AnimatedSprite, PointData, Texture } from 'pixi.js';
-import { AssetsLoader } from '../AssetsLoader';
+import { PointData } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 
@@ -101,8 +100,7 @@ export class CollisionController {
                     } else {
                         ene.reduceHp(bullet.dame);
                     }
-                })
-
+                });
                 bullet.destroy();
             }
 
@@ -129,7 +127,7 @@ export class CollisionController {
         return false;
     }
 
-    public update(dt: number) {
+    public update() {
         this._assignObject();
         this._checkCollisionBetweenObjects();
     }

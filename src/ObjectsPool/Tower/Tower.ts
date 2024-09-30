@@ -2,7 +2,7 @@ import Emitter from '../../Util';
 import { EffectType, FireBulletOption, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { AppConstants } from '../../GameScene/Constants';
-import { Graphics, PointData, Sprite } from 'pixi.js';
+import { PointData, Sprite } from 'pixi.js';
 import { AssetsLoader } from '../../AssetsLoader';
 
 export class Tower extends BaseObject {

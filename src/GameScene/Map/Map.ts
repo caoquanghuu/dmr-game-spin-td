@@ -9,7 +9,7 @@ import { CollisionController } from '../../Controller/CollisionController';
 import { TowerController } from '../../Controller/TowerController';
 import { ObjectPool } from '../../ObjectsPool/ObjectPool';
 import { Bullet } from '../../ObjectsPool/Bullet';
-import { BulletType, EnemiesType, TowerType } from '../../Type';
+import { BulletType, TowerType } from '../../Type';
 import Emitter from '../../Util';
 import { EnemiesController } from '../../Controller/EnemiesController';
 
@@ -219,7 +219,7 @@ export class GameMap extends Container {
 
         this._towerController.update(dt);
         this._bulletController.update(dt);
-        this._collisionController.update(dt);
+        this._collisionController.update();
         this._enemiesController.update(dt);
 
         this._checkWave(dt);

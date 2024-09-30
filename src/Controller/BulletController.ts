@@ -1,4 +1,4 @@
-import { BulletType, EffectType, FireBulletOption, GetBulletFromPoolFn, ReturnBulletToPoolFn, TowerType } from '../Type';
+import { BulletType, FireBulletOption, GetBulletFromPoolFn, ReturnBulletToPoolFn, TowerType } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';

@@ -3,7 +3,7 @@ import { AppConstants } from '../GameScene/Constants';
 import { BasicBoard } from '../GameScene/UI/BasicBoard';
 import { AddToBoardFn, RemoveFromBoardFb } from '../Type';
 import Emitter from '../Util';
-import { PointData, Sprite } from 'pixi.js';
+import { Sprite } from 'pixi.js';
 import { InformationBoard } from '../GameScene/UI/InformationBoard';
 
 export class UIController {
@@ -73,7 +73,7 @@ export class UIController {
             this._basicBoard.displayBaseHp(this._playerHp);
         });
 
-        Emitter.on(AppConstants.event.displayTowerInfo, (option) => {
+        Emitter.on(AppConstants.event.displayTowerInfo, () => {
             this._buildTowerBoard.renderable = false;
             this._basicBoard.renderable = false;
             this._infoTowerBoard.renderable = true;
