@@ -179,9 +179,9 @@ export namespace AppConstants {
 
     export const towerPrice = {
         tinker: 20,
-        mirana: 30,
-        crystal_maiden: 30,
-        clockwerk: 40
+        mirana: 10,
+        crystal_maiden: 100,
+        clockwerk: 80
     };
 
     export const objectZIndex = {

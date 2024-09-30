@@ -1,0 +1,57 @@
+{
+  "resources": [
+    "./assets/sounds/sounds_sprite.mp3"
+  ],
+  "spritemap": {
+    "base-under-atacked": {
+      "start": 0,
+      "end": 1.8688208616780044,
+      "loop": false
+    },
+    "battle-control-online": {
+      "start": 3,
+      "end": 4.555351473922903,
+      "loop": false
+    },
+    "building-complete": {
+      "start": 6,
+      "end": 7.346371882086168,
+      "loop": false
+    },
+    "building-selected": {
+      "start": 9,
+      "end": 10.973310657596372,
+      "loop": false
+    },
+    "mission-fail": {
+      "start": 12,
+      "end": 13.163514739229026,
+      "loop": false
+    },
+    "not-enough-gold": {
+      "start": 15,
+      "end": 16.059024943310657,
+      "loop": false
+    },
+    "nuclear-missle-lauch": {
+      "start": 18,
+      "end": 19.999433106575964,
+      "loop": false
+    },
+    "sold-tower": {
+      "start": 21,
+      "end": 22.37249433106576,
+      "loop": false
+    },
+    "tower-upgraded": {
+      "start": 24,
+      "end": 25.006780045351473,
+      "loop": false
+    },
+    "victory": {
+      "start": 27,
+      "end": 28.450861678004536,
+      "loop": false
+    }
+  }
+}

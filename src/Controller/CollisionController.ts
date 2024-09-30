@@ -65,8 +65,8 @@ export class CollisionController {
 
                 const explosion = this._getExplosionFromPool();
                 explosion.position = bullet.target;
-                explosion.width = bullet.effectArena;
-                explosion.height = bullet.effectArena;
+                explosion.width = bullet.effectArena * 2;
+                explosion.height = bullet.effectArena * 2;
                 if (bullet.bulletType === BulletType.ice) {
                     explosion.tint = '0092fe';
                 } else {
