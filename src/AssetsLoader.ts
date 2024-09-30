@@ -30,6 +30,10 @@ export class AssetsLoader {
 
     }
 
+    static async loadSound() {
+        await Assets.load({ 'alias': 'game-sound', 'src':'../assets/sounds/soundsAtlas/sounds_sprite.json' });
+    }
+
     static async loadBitmapText() {
         await Assets.load('../assets/bitmapText/desyrel.xml');
         await Assets.load('../assets/bitmapText/font_number.fnt');

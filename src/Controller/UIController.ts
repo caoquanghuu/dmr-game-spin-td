@@ -5,6 +5,7 @@ import { AddToBoardFn, RemoveFromBoardFb } from '../Type';
 import Emitter from '../Util';
 import { Sprite } from 'pixi.js';
 import { InformationBoard } from '../GameScene/UI/InformationBoard';
+import { sound } from '@pixi/sound';
 
 export class UIController {
     private _playerGold: number;
@@ -19,7 +20,7 @@ export class UIController {
         this._addToBoardFn = addToBoardCb;
         this._removeFromBoardFn = removeFromBoardCb;
         this._playerGold = 100;
-        this._playerHp = 1;
+        this._playerHp = 20;
         this._basicBoard = new BasicBoard();
         this._basicBoard.scale = 1;
         this._basicBoard.displayBaseHp(this._playerHp);
@@ -66,9 +67,11 @@ export class UIController {
 
         Emitter.on(AppConstants.event.reduceBaseHp, (reduceCount: number) => {
             this._playerHp -= reduceCount;
+            sound.play('my-sound', { sprite: 'base-under-atacked' });
             if (this._playerHp < 1) {
                 //end game
                 Emitter.emit(AppConstants.event.gameOver, null);
+                sound.play('my-sound', { sprite: 'mission-fail' });
                 console.log('game over');
             }
             this._basicBoard.displayBaseHp(this._playerHp);

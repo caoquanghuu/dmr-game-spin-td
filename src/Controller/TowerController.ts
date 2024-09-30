@@ -3,6 +3,7 @@ import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Sprite } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
+import { sound } from '@pixi/sound';
 
 export class TowerController {
     private _towers: Tower[] = [];
@@ -32,6 +33,7 @@ export class TowerController {
             // send tower info to ui controller
             const info: TowerInformation = { towerType: tower.towerType, speed: tower.speed, dame: tower.dame, level: tower.level, goldUpgrade: tower.upGradeCost, towerId: tower.id };
             Emitter.emit(AppConstants.event.displayTowerInfo, info);
+            sound.play('my-sound', { sprite: 'building-selected' });
         });
 
         tower.baseTower.on('mouseenter', () => {
@@ -48,6 +50,9 @@ export class TowerController {
         Emitter.emit(AppConstants.event.addChildToScene, tower.image);
         Emitter.emit(AppConstants.event.addChildToScene, tower.circleImage);
         tower.toggleCircle(false);
+
+        // play sound
+        sound.play('my-sound', { sprite:'building-complete' });
     }
 
     private _removeTower(towerId: number): void {
@@ -61,6 +66,7 @@ export class TowerController {
         tower.baseTower.removeAllListeners();
         tower.baseTower.on('pointerdown', () => {
             Emitter.emit(AppConstants.event.selectTowerBase, tower.baseTower);
+            sound.play('my-sound', { sprite: 'building-selected' });
         });
         tower.reset();
         this._returnTowerToPool(tower);
@@ -68,6 +74,9 @@ export class TowerController {
         Emitter.emit(AppConstants.event.removeChildFromScene, tower.circleImage);
         Emitter.emit(AppConstants.event.removeChildFromScene, tower.upGradeImage);
         this._towers.splice(i, 1);
+
+        // play sound
+        sound.play('my-sound', { sprite: 'sold-tower' });
     }
 
     private _useEventEffect() {
@@ -87,6 +96,7 @@ export class TowerController {
             });
             if (tower) {
                 tower.upgrade();
+                sound.play('my-sound', { sprite: 'tower-upgraded' });
             } else {
                 console.log('tower not found');
             }

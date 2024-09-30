@@ -32,7 +32,7 @@ async function createAudioSprite(dirName) {
           console.error(`Error creating audio sprite for directory ${dirName}:`, error);
           return;
         }
-        obj.resources[0] = `./assets/sounds/sounds_sprite.mp3`;
+        obj.resources[0] = `./assets/sounds/soundsAtlas/sounds_sprite.mp3`;
         const jsonFile = JSON.stringify(obj, null, 2);
         const jsonPath = `${outputFilePath}.json`;
         fs.writeFileSync(jsonPath, jsonFile);

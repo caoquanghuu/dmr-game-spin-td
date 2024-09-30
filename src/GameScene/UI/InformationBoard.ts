@@ -3,6 +3,7 @@ import { AppConstants } from '../Constants';
 import Emitter from '../../Util';
 import { GetPlayerGoldFn, TowerInformation } from '../../Type';
 import { AssetsLoader } from '../../AssetsLoader';
+import { sound } from '@pixi/sound';
 
 export class InformationBoard extends Container {
     private _dameNumber: BitmapText;
@@ -155,7 +156,10 @@ export class InformationBoard extends Container {
     private _upGradeTower() {
         // check player gold
         const playerGold = this._getPlayerGoldFn();
-        if (playerGold < this._goldUpgrade) return;
+        if (playerGold < this._goldUpgrade) {
+            sound.play('my-sound', { sprite: 'not-enough-gold' });
+            return;
+        }
         if (this._levelNumber.text === '4') return;
 
         Emitter.emit(AppConstants.event.upgradeTower, this._towerId);

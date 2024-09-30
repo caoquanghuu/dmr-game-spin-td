@@ -3,6 +3,7 @@ import { GetPlayerGoldFn, TowerType } from '../../Type';
 import { AssetsLoader } from '../../AssetsLoader';
 import { AppConstants } from '../Constants';
 import Emitter from '../../Util';
+import { sound } from '@pixi/sound';
 
 export class BuildTowerBoard extends Container {
     private _baseTower: Sprite;
@@ -83,6 +84,7 @@ export class BuildTowerBoard extends Container {
         // in case not enough
         if (playerGold < goldCost) {
             // set animate not enough gold
+            sound.play('my-sound', { sprite: 'not-enough-gold' });
             return;
         }
 

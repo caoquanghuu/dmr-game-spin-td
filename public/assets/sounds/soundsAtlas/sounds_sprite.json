@@ -1,6 +1,6 @@
 {
   "resources": [
-    "./assets/sounds/sounds_sprite.mp3"
+    "./assets/sounds/soundsAtlas/sounds_sprite.mp3"
   ],
   "spritemap": {
     "base-under-atacked": {
@@ -23,34 +23,39 @@
       "end": 10.973310657596372,
       "loop": false
     },
-    "mission-fail": {
+    "main-music": {
       "start": 12,
-      "end": 13.163514739229026,
+      "end": 235.88680272108843,
+      "loop": false
+    },
+    "mission-fail": {
+      "start": 237,
+      "end": 238.16351473922902,
       "loop": false
     },
     "not-enough-gold": {
-      "start": 15,
-      "end": 16.059024943310657,
+      "start": 240,
+      "end": 241.05902494331065,
       "loop": false
     },
     "nuclear-missle-lauch": {
-      "start": 18,
-      "end": 19.999433106575964,
+      "start": 243,
+      "end": 244.99943310657596,
       "loop": false
     },
     "sold-tower": {
-      "start": 21,
-      "end": 22.37249433106576,
+      "start": 246,
+      "end": 247.37249433106575,
       "loop": false
     },
     "tower-upgraded": {
-      "start": 24,
-      "end": 25.006780045351473,
+      "start": 249,
+      "end": 250.00678004535146,
       "loop": false
     },
     "victory": {
-      "start": 27,
-      "end": 28.450861678004536,
+      "start": 252,
+      "end": 253.45086167800454,
       "loop": false
     }
   }

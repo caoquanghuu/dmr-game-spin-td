@@ -12,6 +12,7 @@ import { Bullet } from '../../ObjectsPool/Bullet';
 import { BulletType, TowerType } from '../../Type';
 import Emitter from '../../Util';
 import { EnemiesController } from '../../Controller/EnemiesController';
+import { sound } from '@pixi/sound';
 
 export class GameMap extends Container {
     private _towers: Tower[] = [];
@@ -139,6 +140,7 @@ export class GameMap extends Container {
             base.cursor = 'pointer';
             base.on('pointerdown', () => {
                 Emitter.emit(AppConstants.event.selectTowerBase, base);
+                sound.play('my-sound', { sprite: 'building-selected' });
             });
         });
     }
@@ -167,6 +169,10 @@ export class GameMap extends Container {
         this._time += dt;
         if (this._time >= 5000) {
             this._wave += 1;
+            if (this._wave > 15) {
+                sound.play('my-sound', { sprite: 'victory' });
+                sound.play('my-sound', { sprite: 'nuclear-missle-lauch' });
+            }
             // send event to ui basic board display new wave
             Emitter.emit(AppConstants.event.displayWave, this._wave);
             this._enemiesController.spawnWave(this._wave, { x: 15 * 32, y: -100 });

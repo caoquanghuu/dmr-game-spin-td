@@ -1,9 +1,10 @@
-import { Container, Sprite } from 'pixi.js';
+import { Assets, Container, Sprite } from 'pixi.js';
 import { AppConstants } from './Constants';
 import { GameMap } from './Map/Map';
 import { UIBoard } from './UI/UIBoard';
 import { ObjectPool } from '../ObjectsPool/ObjectPool';
 import { AssetsLoader } from '../AssetsLoader';
+import { sound } from '@pixi/sound';
 import Emitter from '../Util';
 
 export class GameScene extends Container {
@@ -24,6 +25,14 @@ export class GameScene extends Container {
             this._UIBoard.renderable = true;
             this._map.renderable = true;
             this._isGameStart = true;
+
+            sound.add('my-sound', { url: `${Assets.get('game-sound').resources[0]}`, sprites: Assets.get('game-sound').spritemap });
+            sound.play('my-sound', { sprite: 'battle-control-online' });
+            sound.play('my-sound', { sprite: 'main-music', loop: true });
+
+            logo.eventMode = 'none';
+
+
         });
         this.addChild(logo);
 
