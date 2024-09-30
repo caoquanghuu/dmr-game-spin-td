@@ -203,6 +203,14 @@
 
             "alias": "hp-bar-10",
             "src": "assets/units/hp-10.png"
+            },
+            {
+                "alias": "nuclear-base",
+                "src": "assets/animation/nuclear-base/nuclear-base.json"
+            },
+            {
+                "alias": "explosion",
+            "src": "assets/animation/blast-explosion/explosion.json"
             }
 
 

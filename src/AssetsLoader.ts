@@ -33,18 +33,6 @@ export class AssetsLoader {
     static async loadBitmapText() {
         await Assets.load('../assets/bitmapText/desyrel.xml');
         await Assets.load('../assets/bitmapText/font_number.fnt');
-        await Assets.load({
-            alias: 'explosion',
-            src: '../assets/animation/blast-explosion/explosion.json'
-        }).then(data => {
-            AssetsLoader._explosion = data;
-        });
-        await Assets.load({
-            alias: 'nuclear-base',
-            src: '../assets/animation/nuclear-base/nuclear-base.json'
-        }).then(data => {
-            AssetsLoader._nuclearBase = data;
-        });
     }
 
     // static function get a texture

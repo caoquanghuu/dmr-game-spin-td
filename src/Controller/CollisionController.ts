@@ -1,7 +1,7 @@
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
-import { Circle, EffectType, GetObjectFromGameSceneFn } from '../Type';
+import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
 import { AnimatedSprite, PointData, Texture } from 'pixi.js';
 import { AssetsLoader } from '../AssetsLoader';
 import Emitter from '../Util';
@@ -13,9 +13,13 @@ export class CollisionController {
     private _enemies: Enemies[] = [];
     private _nuclearBasePosition: PointData;
     private _getObjectsFromGameScene: GetObjectFromGameSceneFn;
+    private _getExplosionFromPool: GetExplosionFromPoolFn;
+    private _returnExplosionToPool: ReturnExplosionToPoolFn;
 
-    constructor(getObjectsFromGameSceneCB: GetObjectFromGameSceneFn) {
+    constructor(getObjectsFromGameSceneCB: GetObjectFromGameSceneFn, getExplosionFromPoolCB: GetExplosionFromPoolFn, returnExplosionToPoolCB: ReturnExplosionToPoolFn) {
         this._getObjectsFromGameScene = getObjectsFromGameSceneCB;
+        this._getExplosionFromPool = getExplosionFromPoolCB;
+        this._returnExplosionToPool = returnExplosionToPoolCB;
     }
 
     private _checkCollisionBetweenObjects() {
@@ -60,18 +64,14 @@ export class CollisionController {
             const isBulletReachToTarget = this._isCollision(c1, c3);
             if (isBulletReachToTarget) {
                 bullet.destroy();
-                const a = new AnimatedSprite(AssetsLoader._explosion.animations['tile']);
-                a.position = bullet.target;
-                Emitter.emit(AppConstants.event.addChildToScene, a);
-                a.width = 50;
-                a.height = 50;
-                a.anchor = 0.5;
-                a.loop = false;
-                a.alpha = 20;
-                a.zIndex = 7;
-                a.play();
-                a.onComplete = () => {
-                    Emitter.emit(AppConstants.event.removeChildFromScene, a);
+                const explosion = this._getExplosionFromPool();
+                explosion.position = bullet.target;
+                Emitter.emit(AppConstants.event.addChildToScene, explosion);
+
+                explosion.play();
+                explosion.onComplete = () => {
+                    this._returnExplosionToPool(explosion);
+                    Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
                 };
 
                 this._enemies.forEach(ene => {

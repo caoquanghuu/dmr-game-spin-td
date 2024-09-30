@@ -49,7 +49,7 @@ export class GameMap extends Container {
         this._towerController = new TowerController(this._getTowerFromPool.bind(this), this._returnTowerToPool.bind(this));
         this._enemiesController = new EnemiesController(this._getEnemiesFromPool.bind(this), this._returnEnemiesToPool.bind(this));
         this._bulletController = new BulletController(this._getBulletFromPool.bind(this), this._returnBulletToPool.bind(this));
-        this._collisionController = new CollisionController(this._getObject.bind(this));
+        this._collisionController = new CollisionController(this._getObject.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this));
 
         this._init();
 
@@ -85,7 +85,7 @@ export class GameMap extends Container {
                 }
 
                 if (value === 3) {
-                    this._nuclearBase = new AnimatedSprite(AssetsLoader._nuclearBase.animations['building']);
+                    this._nuclearBase = new AnimatedSprite(AssetsLoader.getTexture('nuclear-base').animations['building']);
                     this._nuclearBase.anchor = 0.5;
                     this._nuclearBase.position = { x: idxX * 32 + 32, y: idxY * 32 - 8 };
                     this._nuclearBase.width = 150;
@@ -197,6 +197,14 @@ export class GameMap extends Container {
 
     private _returnEnemiesToPool(ene: Enemies): void {
         this._objectPool.returnEnemies(ene);
+    }
+
+    private _getExplosionFromPool(): AnimatedSprite {
+        return this._objectPool.getExplosion();
+    }
+
+    private _returnExplosionToPool(ex: AnimatedSprite) {
+        this._objectPool.returnExplosion(ex);
     }
 
     // update function

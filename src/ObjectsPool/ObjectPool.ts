@@ -4,12 +4,15 @@ import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { AppConstants } from '../GameScene/Constants';
 import Factory from '../ObjectsPool/Factory';
+import { AnimatedSprite } from 'pixi.js';
+import { AssetsLoader } from '../AssetsLoader';
 
 export class ObjectPool {
     public static inst: ObjectPool;
     private _bulletPool: {[bulletType: string]: Bullet[]} = {};
     private _enemiesPool: Enemies[] = [];
     private _towerPool: {[towerType: string]: Tower[]} = {};
+    private _explosionAnimation: AnimatedSprite[] = [];
     constructor() {
         ObjectPool.inst = this;
         //init bullet pool
@@ -22,10 +25,20 @@ export class ObjectPool {
             }
         }
 
-        // init enemies pool
+        // init enemies pool and explosion animation sprite
         for (let i = 0; i <= 10; i ++) {
             const ene = Factory.createEnemies();
             this._enemiesPool.push(ene);
+
+            // init animation sprite
+            const explosion = new AnimatedSprite(AssetsLoader.getTexture('explosion').animations['tile']);
+            explosion.width = 50;
+            explosion.height = 50;
+            explosion.anchor = 0.5;
+            explosion.loop = false;
+            explosion.alpha = 20;
+            explosion.zIndex = 7;
+            this._explosionAnimation.push(explosion);
         }
         // init tower pool
         for (const [key, value] of Object.entries(TowerType)) {
@@ -35,6 +48,8 @@ export class ObjectPool {
                 this._towerPool[key].push(tower);
             }
         }
+
+
     }
 
     public getBulletFromPool(bulletType: BulletType): Bullet {
@@ -64,6 +79,15 @@ export class ObjectPool {
         }
     }
 
+    public getExplosion(): AnimatedSprite {
+        if (this._explosionAnimation.length <= 0) {
+            const explosion = new AnimatedSprite(AssetsLoader.getTexture('explosion').animations['tile ']);
+            return explosion;
+        } else {
+            return this._explosionAnimation.pop() as AnimatedSprite;
+        }
+    }
+
     public returnBullet(bullet: Bullet): void {
         this._bulletPool[bullet.bulletType].push(bullet);
     }
@@ -74,6 +98,10 @@ export class ObjectPool {
 
     public returnEnemies(enemies: Enemies): void {
         this._enemiesPool.push(enemies);
+    }
+
+    public returnExplosion(ex: AnimatedSprite) {
+        this._explosionAnimation.push(ex);
     }
 
 
