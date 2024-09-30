@@ -66,6 +66,7 @@ export class TowerController {
         this._returnTowerToPool(tower);
         Emitter.emit(AppConstants.event.removeChildFromScene, tower.image);
         Emitter.emit(AppConstants.event.removeChildFromScene, tower.circleImage);
+        Emitter.emit(AppConstants.event.removeChildFromScene, tower.upGradeImage);
         this._towers.splice(i, 1);
     }
 

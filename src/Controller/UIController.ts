@@ -19,7 +19,7 @@ export class UIController {
         this._addToBoardFn = addToBoardCb;
         this._removeFromBoardFn = removeFromBoardCb;
         this._playerGold = 100;
-        this._playerHp = 50;
+        this._playerHp = 1;
         this._basicBoard = new BasicBoard();
         this._basicBoard.scale = 1;
         this._basicBoard.displayBaseHp(this._playerHp);
@@ -68,6 +68,7 @@ export class UIController {
             this._playerHp -= reduceCount;
             if (this._playerHp < 1) {
                 //end game
+                Emitter.emit(AppConstants.event.gameOver, null);
                 console.log('game over');
             }
             this._basicBoard.displayBaseHp(this._playerHp);

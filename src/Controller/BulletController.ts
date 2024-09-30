@@ -55,7 +55,7 @@ export class BulletController {
             case TowerType.clockwerk:
                 bullet = this._getBulletFromPool(BulletType.missile);
                 bullet.dame = option.dame;
-                bullet.effectArena = 200;
+                bullet.effectArena = 100;
                 break;
             default:
                 break;

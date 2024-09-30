@@ -94,10 +94,10 @@ export class GameMap extends Container {
                     this._nuclearBase.zIndex = 2;
                     this._nuclearBase.loop = false;
                     this.addChild(this._nuclearBase);
-                    this._nuclearBase.play();
-                    this._nuclearBase.onComplete = () => {
-                        this._nuclearBase.gotoAndStop(15);
-                    };
+                    this._nuclearBase.gotoAndStop(0);
+                    // this._nuclearBase.onComplete = () => {
+                    //     this._nuclearBase.gotoAndStop(15);
+                    // };
 
                     // set target for collision
                     this._collisionController.nuclearPosition = this._nuclearBase.position;
@@ -165,11 +165,14 @@ export class GameMap extends Container {
         if (this._enemiesController.enemies.length > 0) return;
 
         this._time += dt;
-        if (this._time >= 10000) {
+        if (this._time >= 5000) {
             this._wave += 1;
             // send event to ui basic board display new wave
             Emitter.emit(AppConstants.event.displayWave, this._wave);
             this._enemiesController.spawnWave(this._wave, { x: 15 * 32, y: -100 });
+            // change texture of nuclear base
+            this._nuclearBase.gotoAndStop(this._wave - 1);
+            this._time = 0;
         }
 
     }

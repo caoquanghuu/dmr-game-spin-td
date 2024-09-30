@@ -81,6 +81,14 @@ export class Tower extends BaseObject {
         this._level = lv;
     }
 
+    get upGradeImage(): Sprite {
+        return this._upgradeLevelImage;
+    }
+
+    set upGradeImage(img: Sprite) {
+        this._upgradeLevelImage = img;
+    }
+
 
     public reset() {
         // reset property of tower to default when it return to pool
