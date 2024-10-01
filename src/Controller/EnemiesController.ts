@@ -50,7 +50,7 @@ export class EnemiesController {
         ene.HP = option.HP;
         ene.dameDeal = option.dame;
         ene.speed = option.speed;
-        ene.goldReward = wave;
+        ene.goldReward = wave + 1;
         ene.resetMove();
         ene.isMoving = true;
 
