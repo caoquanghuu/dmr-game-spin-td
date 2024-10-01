@@ -85,6 +85,7 @@ export class InformationBoard extends Container {
             // send event sell tower to ui controller plus gold for player and tower controller remove tower
             Emitter.emit(AppConstants.event.destroyTower, this._towerId);
             Emitter.emit(AppConstants.event.plusGold, Math.floor(this._goldUpgrade / 3));
+            Emitter.emit(AppConstants.event.resetBoard, null);
         });
 
         const exitText = new BitmapText({

@@ -23,8 +23,6 @@ export class TowerController {
         const tower = this._getTowerFromPool(option.towerType);
         tower.position = { x: option.baseTower.x, y: option.baseTower.y - 25 };
         tower.circleImage.position = { x: option.baseTower.x, y: option.baseTower.y };
-        tower.circleImage.width = tower.effectArena * 2;
-        tower.circleImage.height = tower.effectArena * 2;
         tower.circleImage.zIndex = 7;
         tower.image.zIndex = 7;
         tower.baseTower = option.baseTower;
