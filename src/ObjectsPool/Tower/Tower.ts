@@ -4,6 +4,7 @@ import { BaseObject } from '../BaseObject';
 import { AppConstants } from '../../GameScene/Constants';
 import { PointData, Sprite } from 'pixi.js';
 import { AssetsLoader } from '../../AssetsLoader';
+import { sound } from '@pixi/sound';
 
 export class Tower extends BaseObject {
     private _effectArena: number;
@@ -143,11 +144,11 @@ export class Tower extends BaseObject {
 
         this._dame.max = this._dame.max * this._level;
         this._dame.min = this._dame.min * this._level;
-        this.fireTimeCd.fireTimeConst -= this.fireTimeCd.fireTimeConst / 3 ;
+        this.fireTimeCd.fireTimeConst -= this.fireTimeCd.fireTimeConst / 10 ;
         this.effectArena += 15;
         this.circleImage.width = this.effectArena * 2;
         this.circleImage.height = this.effectArena * 2;
-        this._upGradeCost = this._goldCost * 2 * this._level;
+        this._upGradeCost = this._goldCost * 4 * this._level;
     }
 
     public fire(target: PointData) {
@@ -157,6 +158,8 @@ export class Tower extends BaseObject {
         Emitter.emit(AppConstants.event.fireBullet, option);
         this.target = { x: target.x, y: target.y };
         this.fireTimeCd.fireTimeCount = this.fireTimeCd.fireTimeConst;
+        // play sound
+        sound.play('my-sound', { sprite: `${this.towerType}`, volume: 0.3 });
 
     }
 

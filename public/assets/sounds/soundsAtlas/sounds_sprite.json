@@ -23,39 +23,59 @@
       "end": 10.973310657596372,
       "loop": false
     },
-    "main-music": {
+    "clockwerk": {
       "start": 12,
-      "end": 235.88680272108843,
+      "end": 14.136009070294785,
+      "loop": false
+    },
+    "crystal_maiden": {
+      "start": 16,
+      "end": 18.376009070294785,
+      "loop": false
+    },
+    "main-music": {
+      "start": 20,
+      "end": 243.88680272108843,
+      "loop": false
+    },
+    "mirana": {
+      "start": 245,
+      "end": 246.50439909297052,
       "loop": false
     },
     "mission-fail": {
-      "start": 237,
-      "end": 238.16351473922902,
+      "start": 248,
+      "end": 249.16351473922902,
       "loop": false
     },
     "not-enough-gold": {
-      "start": 240,
-      "end": 241.05902494331065,
+      "start": 251,
+      "end": 252.05902494331065,
       "loop": false
     },
     "nuclear-missle-lauch": {
-      "start": 243,
-      "end": 244.99943310657596,
+      "start": 254,
+      "end": 255.99943310657596,
       "loop": false
     },
     "sold-tower": {
-      "start": 246,
-      "end": 247.37249433106575,
+      "start": 257,
+      "end": 258.37249433106575,
+      "loop": false
+    },
+    "tinker": {
+      "start": 260,
+      "end": 261.63120181405895,
       "loop": false
     },
     "tower-upgraded": {
-      "start": 249,
-      "end": 250.00678004535146,
+      "start": 263,
+      "end": 264.0067800453515,
       "loop": false
     },
     "victory": {
-      "start": 252,
-      "end": 253.45086167800454,
+      "start": 266,
+      "end": 267.4508616780045,
       "loop": false
     }
   }
