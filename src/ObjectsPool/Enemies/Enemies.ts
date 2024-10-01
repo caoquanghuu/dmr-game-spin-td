@@ -19,15 +19,14 @@ export class Enemies extends BaseObject {
     constructor(enemyType: EnemiesType) {
         super(enemyType);
         this._enemiesType = enemyType;
-        this.speed = 100;
-        this.image.width = 32;
-        this.image.height = 32;
+        this.image.width = AppConstants.matrixSize;
+        this.image.height = AppConstants.matrixSize;
         this.moveEngine = new BaseEngine(true);
         this._bfsMoveEngine = new BSFMoveEngine();
         this._getNextMove();
         this._hpBar = new Sprite(AssetsLoader.getTexture('hp-bar-10'));
-        this._hpBar.width = 32;
-        this._hpBar.height = 5;
+        this._hpBar.width = AppConstants.matrixSize;
+        this._hpBar.height = AppConstants.matrixSize / 6;
         this._hpBar.anchor.set(0.5, 4);
 
     }
@@ -70,7 +69,7 @@ export class Enemies extends BaseObject {
         return this._hpBar;
     }
 
-    public resetMove() {
+    public resetMove(): void {
         this._bfsMoveEngine.reset();
         this._getNextMove();
     }
@@ -79,13 +78,7 @@ export class Enemies extends BaseObject {
         return this.image.position;
     }
 
-    // private _checkEnemyStage() {
-    //     if (this._HP.hpCount <= 0) {
-
-    //     }
-    // }
-
-    public reduceHp(hpReDuce: number) {
+    public reduceHp(hpReDuce: number): void {
         this._HP.hpCount -= hpReDuce;
 
         const hpRate = Math.round(this._HP.hpCount / (this._HP.hpConst / 10));
@@ -102,19 +95,19 @@ export class Enemies extends BaseObject {
         this.move(dt);
         switch (this.direction) {
             case Direction.DOWN:
-                if (this.position.y - 16 >= this._target.y) this._getNextMove();
+                if (this.position.y - AppConstants.matrixSize / 2 >= this._target.y) this._getNextMove();
                 this.image.angle = 180;
                 break;
             case Direction.UP:
-                if (this.position.y - 16 <= this._target.y) this._getNextMove();
+                if (this.position.y - AppConstants.matrixSize / 2 <= this._target.y) this._getNextMove();
                 this.image.angle = 0;
                 break;
             case Direction.RIGHT:
-                if (this.position.x - 16 >= this._target.x) this._getNextMove();
+                if (this.position.x - AppConstants.matrixSize / 2 >= this._target.x) this._getNextMove();
                 this.image.angle = 90;
                 break;
             case Direction.LEFT:
-                if (this.position.x - 16 <= this._target.x) this._getNextMove();
+                if (this.position.x - AppConstants.matrixSize / 2 <= this._target.x) this._getNextMove();
                 this.image.angle = 270;
                 break;
             default:

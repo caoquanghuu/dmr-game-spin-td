@@ -2,13 +2,14 @@ import { EffectType, TowerType } from '../../Type';
 import { Tower } from '../Tower/Tower';
 import { calculateAngleOfVector } from '../../Util';
 import { AssetsLoader } from '../../AssetsLoader';
+import { AppConstants } from '../../GameScene/Constants';
 
 export class ClockWerk extends Tower {
     constructor() {
         super(TowerType.clockwerk);
         this.effectType = EffectType.BLAST;
-        this.image.width = 25;
-        this.image.height = 40;
+        this.image.width = 0.7 * AppConstants.matrixSize;
+        this.image.height = 1.25 * AppConstants.matrixSize;
         this.image.anchor.set(0.5, 0.3);
         this.init();
     }

@@ -27,11 +27,11 @@ export class Tower extends BaseObject {
         super(towerType);
         this._towerType = towerType;
         this.speed = 200;
-        this.image.width = 32;
-        this.image.height = 60;
+        this.image.width = AppConstants.matrixSize;
+        this.image.height = AppConstants.matrixSize * 1.9;
         this.circleImage = new Sprite(AssetsLoader.getTexture('circle'));
         this.circleImage.anchor = 0.5;
-        this.circleImage.alpha = 25;
+        this.circleImage.alpha = AppConstants.imageAlpha.towerCircle;
 
 
     }
@@ -134,10 +134,10 @@ export class Tower extends BaseObject {
 
         this._upgradeLevelImage.texture = AssetsLoader.getTexture(`upgrade-level-${this._level}`);
         this._upgradeLevelImage.position = this.image.position;
-        this._upgradeLevelImage.width = 15;
-        this._upgradeLevelImage.height = 15;
+        this._upgradeLevelImage.width = AppConstants.matrixSize / 2;
+        this._upgradeLevelImage.height = AppConstants.matrixSize / 2;
         this._upgradeLevelImage.anchor.set(0.2, -0.2);
-        this._upgradeLevelImage.alpha = 50;
+        this._upgradeLevelImage.alpha = AppConstants.imageAlpha.towerUpGradeIcon;
         this._upgradeLevelImage.zIndex = this.image.y + 1;
         Emitter.emit(AppConstants.event.addChildToScene, this._upgradeLevelImage);
 
@@ -145,7 +145,7 @@ export class Tower extends BaseObject {
         this._dame.max += this._dame.max;
         this._dame.min += this._dame.max - 50;
         this.fireTimeCd.fireTimeConst -= this.fireTimeCd.fireTimeConst / 10 ;
-        this.effectArena += 15;
+        this.effectArena += this.effectArena / 10;
         this.circleImage.width = this.effectArena * 2;
         this.circleImage.height = this.effectArena * 2;
         this._upGradeCost = this._goldCost * 4 * this._level;
@@ -159,7 +159,7 @@ export class Tower extends BaseObject {
         this.target = { x: target.x, y: target.y };
         this.fireTimeCd.fireTimeCount = this.fireTimeCd.fireTimeConst;
         // play sound
-        sound.play('my-sound', { sprite: `${this.towerType}`, volume: 0.3 });
+        sound.play(AppConstants.soundName.mainSound, { sprite: `${this.towerType}`, volume: 0.3 });
 
     }
 

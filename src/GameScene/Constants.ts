@@ -40,6 +40,8 @@ export namespace AppConstants {
 
     export const imageAlpha = {
         towerBase: 0.8,
+        towerCircle: 25,
+        towerUpGradeIcon: 50
     };
 
     export const textureName = {
@@ -61,8 +63,11 @@ export namespace AppConstants {
         missionFail: 'mission-fail',
         nuclearMissileAlert: 'nuclear-missile-alert',
         nuclearMissileLaunch: 'nuclear-missile-launch',
-        victory: 'victory'
+        victory: 'victory',
+        notEnoughGold: 'not-enough-gold'
     };
+
+    export const maxLevelOfTower = 4;
 
     export const time = {
         delayWhenCreateEne: 1000,

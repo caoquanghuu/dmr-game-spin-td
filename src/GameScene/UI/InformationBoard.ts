@@ -31,8 +31,8 @@ export class InformationBoard extends Container {
         };
 
         this._towerIcon = new Sprite();
-        this._towerIcon.width = 100;
-        this._towerIcon.height = 100;
+        this._towerIcon.width = AppConstants.matrixSize * 3;
+        this._towerIcon.height = AppConstants.matrixSize * 3;
         this._towerIcon.anchor = 0.5;
         this._towerIcon.position = { x: AppConstants.infoBoardPosition.towerIcon.x, y:AppConstants.infoBoardPosition.towerIcon.y };
         this.addChild(this._towerIcon);
@@ -158,10 +158,10 @@ export class InformationBoard extends Container {
         // check player gold
         const playerGold = this._getPlayerGoldFn();
         if (playerGold < this._goldUpgrade) {
-            sound.play('my-sound', { sprite: 'not-enough-gold' });
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.notEnoughGold });
             return;
         }
-        if (this._levelNumber.text === '4') return;
+        if (this._levelNumber.text === `${AppConstants.maxLevelOfTower}`) return;
 
         Emitter.emit(AppConstants.event.upgradeTower, this._towerId);
         Emitter.emit(AppConstants.event.reduceGold, this._goldUpgrade);

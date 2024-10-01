@@ -16,13 +16,13 @@ export class BuildTowerBoard extends Container {
 
         // create exit button
         const exitText = new BitmapText({
-            text: 'x',
+            text: 'exit',
             style: {
                 fontFamily: 'Desyrel',
                 fontSize: 30,
             }
         });
-        exitText.position = { x: 900, y:  10 };
+        exitText.position = { x: AppConstants.matrixSize * 28, y:  10 };
         exitText.eventMode = 'static';
         exitText.cursor = 'pointer';
         exitText.on('pointerdown', () => {
@@ -31,14 +31,14 @@ export class BuildTowerBoard extends Container {
         this.addChild(exitText);
 
         const positionXInContainerRatio = AppConstants.appWidth / (Object.keys(TowerType).length + 1);
-        const firstIconPosition: PointData = { x: positionXInContainerRatio, y : 65 };
+        const firstIconPosition: PointData = { x: positionXInContainerRatio, y : AppConstants.matrixSize * 2 };
 
         // loop tower type
         for (const [key, value] of Object.entries(TowerType)) {
             // create tower icon as tower type
             const towerIcon = new Sprite(AssetsLoader.getTexture(`${value}-icon`));
-            towerIcon.width = 65;
-            towerIcon.height = 65;
+            towerIcon.width = AppConstants.matrixSize * 2;
+            towerIcon.height = AppConstants.matrixSize * 2;
             towerIcon.anchor = 0.5;
             towerIcon.position = { x: firstIconPosition.x, y: firstIconPosition.y };
             towerIcon.eventMode = 'static';
@@ -59,7 +59,7 @@ export class BuildTowerBoard extends Container {
                 }
             });
             towerPriceText.anchor = 0.5;
-            towerPriceText.position = { x: firstIconPosition.x, y: 85 };
+            towerPriceText.position = { x: firstIconPosition.x, y: AppConstants.matrixSize * 3 };
             this.addChild(towerPriceText);
 
             firstIconPosition.x += positionXInContainerRatio;
@@ -84,7 +84,7 @@ export class BuildTowerBoard extends Container {
         // in case not enough
         if (playerGold < goldCost) {
             // set animate not enough gold
-            sound.play('my-sound', { sprite: 'not-enough-gold' });
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.notEnoughGold });
             return;
         }
 
@@ -92,7 +92,5 @@ export class BuildTowerBoard extends Container {
         Emitter.emit(AppConstants.event.createTower, { towerType: towerType, baseTower: this._baseTower });
         Emitter.emit(AppConstants.event.reduceGold, goldCost);
         Emitter.emit(AppConstants.event.resetBoard, null);
-    }
-    private async _init() {
     }
 }
