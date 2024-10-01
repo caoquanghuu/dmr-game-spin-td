@@ -6,13 +6,10 @@ export namespace AppConstants {
     export const appWidth: number = 960;
     export const appHeight: number = 640;
     export const appColor: string = '#1099bb';
-    export const matrixSize = {
-        width: 32,
-        height: 32
-    };
+    export const matrixSize = appWidth / 30;
     export const mapSize = {
         width: appWidth,
-        height: matrixSize.width * (appHeight / matrixSize.width) * (4 / 5),
+        height: matrixSize * (appHeight / matrixSize) * (4 / 5),
     };
     export const UISize = {
         width: appWidth,
@@ -31,7 +28,9 @@ export namespace AppConstants {
         bullet: 6,
         enemy: 4,
         enemyHpBar: 5,
-        tower: 7
+        tower: 7,
+        nuclearBase: 2,
+        towerBase: 3
     };
 
     export const playerBasicProperty = {
@@ -39,8 +38,17 @@ export namespace AppConstants {
         playerHp: 30
     };
 
+    export const imageAlpha = {
+        towerBase: 0.8,
+    };
+
     export const textureName = {
-        tankExplosionAnimation: 'tank'
+        tankExplosionAnimation: 'tank',
+        grass: 'grass-1',
+        tree: 'tree-1',
+        nuclearBase: 'nuclear-base',
+        nuclearBaseAnimation: 'building',
+        towerBase: 'tower-base'
     };
 
     export const soundName = {
@@ -50,12 +58,21 @@ export namespace AppConstants {
         soldTower: 'sold-tower',
         towerUpgraded: 'tower-upgraded',
         baseBeAttacked: 'base-under-attacked',
-        missionFail: 'mission-fail'
+        missionFail: 'mission-fail',
+        nuclearMissileAlert: 'nuclear-missile-alert',
+        nuclearMissileLaunch: 'nuclear-missile-launch',
+        victory: 'victory'
     };
 
     export const time = {
         delayWhenCreateEne: 1000,
+        delayBetweenWaves: 5000,
+        delayVictorySound: 8000
     };
+
+    export const limitWaveNumber = 15;
+
+    export const goldPlusPerWave = 10;
 
     export const dame = {
         crystal_maiden: { min: 0, max: 0 },

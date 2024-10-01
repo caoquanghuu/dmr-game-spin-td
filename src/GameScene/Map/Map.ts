@@ -37,12 +37,6 @@ export class GameMap extends Container {
         // assign event emitter
         this._useEventEffect();
 
-        // drawn basic graphics to know position of objects
-        const graphics = new Graphics();
-        graphics.rect (0, 0, AppConstants.mapSize.width, AppConstants.mapSize.height);
-        graphics.fill('506147');
-        this.addChild(graphics);
-
         // create pool
         this._objectPool = new ObjectPool();
 
@@ -63,43 +57,38 @@ export class GameMap extends Container {
         // create const objects base on matrix map
         map.forEach((val, idxX) => {
             val.forEach((value, idxY) => {
-                const grass = new Sprite(AssetsLoader.getTexture('grass-1'));
-                grass.width = 32,
-                grass.height = 32,
-                grass.anchor = 0.5;
-                grass.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
+                const grass = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.grass));
+                grass.width = AppConstants.matrixSize,
+                grass.height = AppConstants.matrixSize,
+
+                grass.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
                 this.addChild(grass);
                 grass.zIndex = 0;
                 if (value === 1) {
 
-                    // create grass on map
+                    // where ene can go
 
                 }
                 if (value === 0) {
 
                     // create tree con border of map
-                    const tree = new Sprite(AssetsLoader.getTexture('tree-1'));
-                    tree.width = 32,
-                    tree.height = 32;
-                    tree.anchor.set(0.5);
+                    const tree = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.tree));
+                    tree.width = AppConstants.matrixSize,
+                    tree.height = AppConstants.matrixSize;
+                    tree.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
                     this.addChild(tree);
-                    tree.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
                 }
 
                 if (value === 3) {
-                    this._nuclearBase = new AnimatedSprite(AssetsLoader.getTexture('nuclear-base').animations['building']);
+                    this._nuclearBase = new AnimatedSprite(AssetsLoader.getTexture(AppConstants.textureName.nuclearBase).animations[AppConstants.textureName.nuclearBaseAnimation]);
                     this._nuclearBase.anchor = 0.5;
-                    this._nuclearBase.position = { x: idxX * 32 + 32, y: idxY * 32 - 8 };
-                    this._nuclearBase.width = 150;
-                    this._nuclearBase.height = 150;
-                    this._nuclearBase.animationSpeed = 0.1;
-                    this._nuclearBase.zIndex = 2;
-                    this._nuclearBase.loop = false;
+                    this._nuclearBase.position = { x: idxX * AppConstants.matrixSize + AppConstants.matrixSize, y: idxY * AppConstants.matrixSize - AppConstants.matrixSize / 3 };
+                    this._nuclearBase.width = AppConstants.matrixSize * 4;
+                    this._nuclearBase.height = AppConstants.matrixSize * 4;
+                    this._nuclearBase.zIndex = AppConstants.zIndex.nuclearBase;
                     this.addChild(this._nuclearBase);
                     this._nuclearBase.gotoAndStop(0);
-                    // this._nuclearBase.onComplete = () => {
-                    //     this._nuclearBase.gotoAndStop(15);
-                    // };
+
 
                     // set target for collision
                     this._collisionController.nuclearPosition = this._nuclearBase.position;
@@ -107,30 +96,17 @@ export class GameMap extends Container {
                 }
 
                 if (value === 2) {
-                    const towerBase = new Sprite(AssetsLoader.getTexture('tower-base'));
+                    const towerBase = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.towerBase));
                     towerBase.anchor.set(0.5);
-                    towerBase.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
-                    towerBase.width = 32;
-                    towerBase.height = 32;
-                    towerBase.zIndex = 3;
-                    towerBase.alpha = 0.8;
-                    // towerBase.tint = 'f7f28d';
+                    towerBase.position = { x: idxX * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: idxY * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                    towerBase.width = AppConstants.matrixSize;
+                    towerBase.height = AppConstants.matrixSize;
+                    towerBase.zIndex = AppConstants.zIndex.towerBase;
+                    towerBase.alpha = AppConstants.imageAlpha.towerBase;
+
 
                     this._towerBase.push(towerBase);
                     this.addChild(towerBase);
-
-                    // test space for create multi tower to debug
-                    const rd = Math.random() * 10;
-                    if (rd < 2) {
-                        const rd = Math.random() * 10;
-                        if (rd < 5) {
-                            // Emitter.emit(AppConstants.event.createTower, { position: { x: idxX * 32 + 16, y: idxY * 32 - 10 }, towerType: TowerType.tinker });
-                        } else {
-                            // Emitter.emit(AppConstants.event.createTower, { position: { x: idxX * 32 + 16, y: idxY * 32 - 10 }, towerType: TowerType.clockwerk });
-                        }
-
-                    }
-
                 }
 
 
@@ -143,7 +119,7 @@ export class GameMap extends Container {
             base.cursor = 'pointer';
             base.on('pointerdown', () => {
                 Emitter.emit(AppConstants.event.selectTowerBase, base);
-                sound.play('my-sound', { sprite: 'building-selected' });
+                sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.selectedBuilding });
             });
         });
     }
@@ -163,20 +139,21 @@ export class GameMap extends Container {
 
     // method to create enemies
     private _startGame() {
-        this._enemiesController.spawnWave(this._wave, { x: 15 * 32, y: -100 });
+        // position spawn enemy game get on matrix map
+        this._enemiesController.spawnWave(this._wave, { x: 15 * AppConstants.matrixSize, y: -100 });
     }
 
     private _checkWave(dt: number) {
         if (this._enemiesController.enemies.length > 0) return;
 
         this._time += dt;
-        if (this._time >= 5000) {
+        if (this._time >= AppConstants.time.delayBetweenWaves) {
             this._wave += 1;
-            if (this._wave > 15) {
-                sound.play('my-sound', { sprite: 'nuclear-missile-alert' });
-                sound.play('my-sound', { sprite: 'nuclear-missile-launch' });
+            if (this._wave > AppConstants.limitWaveNumber) {
+                sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.nuclearMissileAlert });
+                sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.nuclearMissileLaunch });
                 Emitter.emit(AppConstants.event.gameOver, true);
-                setTimeout(() => { sound.play('my-sound', { sprite: 'victory' }); }, 8000);
+                setTimeout(() => { sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.victory }); }, AppConstants.time.delayVictorySound);
 
                 return;
 
@@ -184,8 +161,8 @@ export class GameMap extends Container {
             // send event to ui basic board display new wave
             Emitter.emit(AppConstants.event.displayWave, this._wave);
             // plus gold for player at new wave
-            Emitter.emit(AppConstants.event.plusGold, (10 + this._wave));
-            this._enemiesController.spawnWave(this._wave, { x: 15 * 32, y: -100 });
+            Emitter.emit(AppConstants.event.plusGold, (AppConstants.goldPlusPerWave + this._wave));
+            this._enemiesController.spawnWave(this._wave, { x: 15 * AppConstants.matrixSize, y: -100 });
             // change texture of nuclear base
             this._nuclearBase.gotoAndStop(this._wave - 1);
             this._time = 0;
