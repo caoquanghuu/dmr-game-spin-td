@@ -20,7 +20,7 @@
             "HP": 800,
             "speed": 200,
             "dame": 1,
-            "eneCount": 15
+            "eneCount": 10
         },
         {
             "name": "tank-4",
@@ -68,7 +68,7 @@
             "HP": 3000,
             "speed": 200,
             "dame": 2,
-            "eneCount": 30
+            "eneCount": 23
         },
         {
             "name": "tank-4",

@@ -142,8 +142,8 @@ export class Tower extends BaseObject {
         Emitter.emit(AppConstants.event.addChildToScene, this._upgradeLevelImage);
 
 
-        this._dame.max = this._dame.max * this._level;
-        this._dame.min = this._dame.min * this._level;
+        this._dame.max += this._dame.max;
+        this._dame.min += this._dame.max - 50;
         this.fireTimeCd.fireTimeConst -= this.fireTimeCd.fireTimeConst / 10 ;
         this.effectArena += 15;
         this.circleImage.width = this.effectArena * 2;

@@ -63,16 +63,17 @@ export class GameMap extends Container {
         // create const objects base on matrix map
         map.forEach((val, idxX) => {
             val.forEach((value, idxY) => {
+                const grass = new Sprite(AssetsLoader.getTexture('grass-1'));
+                grass.width = 32,
+                grass.height = 32,
+                grass.anchor = 0.5;
+                grass.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
+                this.addChild(grass);
+                grass.zIndex = 0;
                 if (value === 1) {
 
                     // create grass on map
-                    const grass = new Sprite(AssetsLoader.getTexture('grass-1'));
-                    grass.width = 32,
-                    grass.height = 32,
-                    grass.anchor = 0.5;
-                    grass.position = { x: idxX * 32 + 16, y: idxY * 32 + 16 };
-                    this.addChild(grass);
-                    grass.zIndex = 1;
+
                 }
                 if (value === 0) {
 
@@ -112,7 +113,8 @@ export class GameMap extends Container {
                     towerBase.width = 32;
                     towerBase.height = 32;
                     towerBase.zIndex = 3;
-                    towerBase.tint = 'f7f28d';
+                    towerBase.alpha = 0.8;
+                    // towerBase.tint = 'f7f28d';
 
                     this._towerBase.push(towerBase);
                     this.addChild(towerBase);
@@ -176,6 +178,8 @@ export class GameMap extends Container {
             }
             // send event to ui basic board display new wave
             Emitter.emit(AppConstants.event.displayWave, this._wave);
+            // plus gold for player at new wave
+            Emitter.emit(AppConstants.event.plusGold, (10 + this._wave));
             this._enemiesController.spawnWave(this._wave, { x: 15 * 32, y: -100 });
             // change texture of nuclear base
             this._nuclearBase.gotoAndStop(this._wave - 1);

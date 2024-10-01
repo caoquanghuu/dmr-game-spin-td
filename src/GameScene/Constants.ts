@@ -37,9 +37,9 @@ export namespace AppConstants {
 
     export const dame = {
         crystal_maiden: { min: 0, max: 0 },
-        mirana: { min: 100, max: 120 },
-        tinker: { min: 200, max: 220 },
-        clockwerk: { min: 200, max: 230 }
+        mirana: { min: 100, max: 140 },
+        tinker: { min: 200, max: 240 },
+        clockwerk: { min: 200, max: 250 }
     };
 
     export const fireTimeCd = {
