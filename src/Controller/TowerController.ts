@@ -23,15 +23,15 @@ export class TowerController {
         const tower = this._getTowerFromPool(option.towerType);
         tower.position = { x: option.baseTower.x, y: option.baseTower.y - 25 };
         tower.circleImage.position = { x: option.baseTower.x, y: option.baseTower.y };
-        tower.circleImage.zIndex = 7;
-        tower.image.zIndex = 7;
+        tower.circleImage.zIndex = AppConstants.zIndex.tower;
+        tower.image.zIndex = AppConstants.zIndex.tower;
         tower.baseTower = option.baseTower;
         tower.baseTower.removeAllListeners();
         tower.baseTower.on('pointerdown', () => {
             // send tower info to ui controller
             const info: TowerInformation = { towerType: tower.towerType, speed: Math.floor(tower.fireTimeColdDown), dame: tower.dame.min, level: tower.level, goldUpgrade: tower.upGradeCost, towerId: tower.id };
             Emitter.emit(AppConstants.event.displayTowerInfo, info);
-            sound.play('my-sound', { sprite: 'building-selected' });
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.selectedBuilding });
         });
 
         tower.baseTower.on('mouseenter', () => {
@@ -50,7 +50,7 @@ export class TowerController {
         tower.toggleCircle(false);
 
         // play sound
-        sound.play('my-sound', { sprite:'building-complete' });
+        sound.play(AppConstants.soundName.mainSound, { sprite:AppConstants.soundName.buildingCompleted });
     }
 
     private _removeTower(towerId: number): void {
@@ -64,7 +64,7 @@ export class TowerController {
         tower.baseTower.removeAllListeners();
         tower.baseTower.on('pointerdown', () => {
             Emitter.emit(AppConstants.event.selectTowerBase, tower.baseTower);
-            sound.play('my-sound', { sprite: 'building-selected' });
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.selectedBuilding });
         });
         tower.reset();
         this._returnTowerToPool(tower);
@@ -74,7 +74,7 @@ export class TowerController {
         this._towers.splice(i, 1);
 
         // play sound
-        sound.play('my-sound', { sprite: 'sold-tower' });
+        sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.soldTower });
     }
 
     private _useEventEffect() {
@@ -94,7 +94,7 @@ export class TowerController {
             });
             if (tower) {
                 tower.upgrade();
-                sound.play('my-sound', { sprite: 'tower-upgraded' });
+                sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.towerUpgraded });
             } else {
                 console.log('tower not found');
             }

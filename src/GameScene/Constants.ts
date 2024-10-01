@@ -30,12 +30,21 @@ export namespace AppConstants {
     export const zIndex = {
         bullet: 6,
         enemy: 4,
-        enemyHpBar: 5
+        enemyHpBar: 5,
+        tower: 7
     };
 
     export const textureName = {
         tankExplosionAnimation: 'tank'
-    }
+    };
+
+    export const soundName = {
+        mainSound: 'my-sound',
+        selectedBuilding: 'building-selected',
+        buildingCompleted: 'building-complete',
+        soldTower: 'sold-tower',
+        towerUpgraded: 'tower-upgraded'
+    };
 
     export const time = {
         delayWhenCreateEne: 1000,
