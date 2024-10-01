@@ -35,9 +35,12 @@ export class EnemiesController {
         // create enemies, set position, hp, move speed , texture base on current wave
         const enemiesOption = EnemiesOption.alias[wave - 1];
         const enePosition: PointData = { x: position.x, y: position.y };
+        let time = AppConstants.time.delayWhenCreateEne;
         for (let i = 0; i <= enemiesOption.eneCount; i ++) {
-            this._createEnemies(enemiesOption, enePosition, wave);
-            enePosition.y -= 100;
+            setTimeout(() => {
+                this._createEnemies(enemiesOption, enePosition, wave);
+            }, time);
+            time += AppConstants.time.delayWhenCreateEne;
         }
     }
 
@@ -45,8 +48,8 @@ export class EnemiesController {
         const ene = this._getEnemiesFromPool();
         ene.image.texture = AssetsLoader.getTexture(`${option.name}`);
         ene.position = position;
-        ene.image.zIndex = 4;
-        ene.hpBar.zIndex = 5;
+        ene.image.zIndex = AppConstants.zIndex.enemy;
+        ene.hpBar.zIndex = AppConstants.zIndex.enemyHpBar;
         ene.HP = option.HP;
         ene.dameDeal = option.dame;
         ene.speed = option.speed;
@@ -70,7 +73,7 @@ export class EnemiesController {
         this._returnEnemiesToPool(ene);
 
         // create animation explosion
-        const explosion: AnimatedSprite = this._getExplosionFromPool('tank');
+        const explosion: AnimatedSprite = this._getExplosionFromPool(AppConstants.textureName.tankExplosionAnimation);
         explosion.position = ene.position;
         explosion.width = ene.image.width * 2;
         explosion.height = ene.image.height * 2;
@@ -79,7 +82,7 @@ export class EnemiesController {
         Emitter.emit(AppConstants.event.addChildToScene, explosion);
         explosion.onComplete = () => {
 
-            this._returnExplosionToPool(explosion, 'tank');
+            this._returnExplosionToPool(explosion, AppConstants.textureName.tankExplosionAnimation);
 
             Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
         };

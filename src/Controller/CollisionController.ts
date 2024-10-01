@@ -1,7 +1,7 @@
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
-import { BulletType, Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
+import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
 import { AnimatedSprite, PointData } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
@@ -89,14 +89,17 @@ export class CollisionController {
                 });
                 eneCollisionWithBullet.forEach(ene => {
                     if (bullet.effectType === EffectType.SLOW) {
-                        ene.speed = ene.speed / 2;
+                        // speed of enemy will be reduce
+                        ene.speed = ene.speed / 3;
                         setTimeout(() => {
-                            ene.speed = ene.speed * 2;
-                        }, 3000);
+                            ene.speed = ene.speed * 3;
+                        }, 2000);
                     } else {
                         ene.reduceHp(bullet.dame);
                     }
                 });
+
+                // destroy bullet
                 bullet.destroy();
             }
 

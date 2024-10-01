@@ -39,27 +39,29 @@ export class BulletController {
             case TowerType.crystal_maiden:
                 bullet = this._getBulletFromPool(BulletType.ice);
                 bullet.dame = 0;
-                bullet.effectArena = 50;
+
 
                 break;
             case TowerType.tinker:
                 bullet = this._getBulletFromPool(BulletType.laser);
                 bullet.dame = option.dame;
-                bullet.effectArena = 10;
+
                 break;
             case TowerType.mirana:
                 bullet = this._getBulletFromPool(BulletType.lightning);
                 bullet.dame = option.dame;
-                bullet.effectArena = 10;
+
                 break;
             case TowerType.clockwerk:
                 bullet = this._getBulletFromPool(BulletType.missile);
                 bullet.dame = option.dame;
-                bullet.effectArena = 100;
+
                 break;
             default:
                 break;
         }
+
+        bullet.effectArena = AppConstants.bulletEffectArena[bullet.bulletType];
 
 
         // set property follow option
@@ -67,7 +69,7 @@ export class BulletController {
         bullet.position = { x: option.position.x, y: option.position.y };
         bullet.target = option.target;
         bullet.effectType = option.effectType;
-        bullet.image.zIndex = 6;
+        bullet.image.zIndex = AppConstants.zIndex.bullet;
 
         this._bullets.push(bullet);
 

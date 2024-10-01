@@ -23,17 +23,23 @@ export namespace AppConstants {
         height: appHeight / 2
     };
 
-    export const textureName = {
-        tower: {
-            crystalMaiden: 'crystal-maiden',
-            mirana: 'mirana',
-            tinker: 'tinker'
-        }
-    };
-
     export const bulletCount = 5;
     export const towerCount = 5;
     export const enemiesCount = 5;
+
+    export const zIndex = {
+        bullet: 6,
+        enemy: 4,
+        enemyHpBar: 5
+    };
+
+    export const textureName = {
+        tankExplosionAnimation: 'tank'
+    }
+
+    export const time = {
+        delayWhenCreateEne: 1000,
+    };
 
     export const dame = {
         crystal_maiden: { min: 0, max: 0 },
@@ -54,6 +60,13 @@ export namespace AppConstants {
         mirana: 200,
         tinker: 200,
         clockwerk: 300,
+    };
+
+    export const bulletEffectArena = {
+        ice: 70,
+        laser: 10,
+        lightning: 10,
+        missile: 100
     };
 
     export const enemiesHp = {
