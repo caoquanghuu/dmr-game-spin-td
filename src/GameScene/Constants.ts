@@ -36,24 +36,24 @@ export namespace AppConstants {
     export const enemiesCount = 5;
 
     export const dame = {
-        CM: 0,
-        Mirana: 1,
-        Tinker: 2,
-        ClockWerk: 3
+        crystal_maiden: { min: 0, max: 0 },
+        mirana: { min: 100, max: 120 },
+        tinker: { min: 200, max: 220 },
+        clockwerk: { min: 200, max: 230 }
     };
 
-    export const goldCost = {
-        CM: 50,
-        Mirana: 70,
-        Tinker: 100,
-        ClockWerk: 150
+    export const fireTimeCd = {
+        crystal_maiden: { fireTimeConst: 3000, fireTimeCount: 3000 },
+        mirana: { fireTimeConst: 2000, fireTimeCount: 2000 },
+        tinker: { fireTimeConst: 3000, fireTimeCount: 3000 },
+        clockwerk: { fireTimeConst: 3000, fireTimeCount: 3000 }
     };
 
     export const effectArena = {
-        CM: 200,
-        Mirana: 200,
-        Tinker: 200,
-        ClockWerk: 300,
+        crystal_maiden: 200,
+        mirana: 200,
+        tinker: 200,
+        clockwerk: 300,
     };
 
     export const enemiesHp = {

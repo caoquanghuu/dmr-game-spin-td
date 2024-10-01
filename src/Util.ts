@@ -29,3 +29,9 @@ export function isCollision(c1: Circle, c2: Circle): boolean {
 
     return false;
 }
+
+export function getRandomArbitrary(option: {min: number, max: number}): number {
+    const min = Math.ceil(option.min);
+    const max = Math.floor(option.max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}

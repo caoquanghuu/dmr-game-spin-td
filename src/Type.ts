@@ -86,6 +86,16 @@ export type TowerInformation = {
     towerId: number
 };
 
+export type MinMax = {
+    min: number,
+    max: number
+};
+
+export type FireTime = {
+    fireTimeConst: number,
+    fireTimeCount: number
+};
+
 export interface CreateEnemiesOption {
     name: string,
     HP: number,

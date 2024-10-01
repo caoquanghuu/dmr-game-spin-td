@@ -1,5 +1,5 @@
-import Emitter from '../../Util';
-import { EffectType, FireBulletOption, TowerType } from '../../Type';
+import Emitter, { getRandomArbitrary } from '../../Util';
+import { EffectType, FireBulletOption, FireTime, MinMax, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { AppConstants } from '../../GameScene/Constants';
 import { PointData, Sprite } from 'pixi.js';
@@ -9,12 +9,12 @@ export class Tower extends BaseObject {
     private _effectArena: number;
     public effectType: EffectType;
     private _towerType: TowerType;
-    private _dame: number;
+    private _dame: MinMax = { min: 0, max: 0 };
     private _goldCost: number;
     private _upGradeCost: number;
-    protected fireTimeCd: {fireTimeConstant: number, fireTimeCount: number} = { fireTimeConstant: 3000, fireTimeCount: 0 };
+    protected fireTimeCd: FireTime= { fireTimeConst: 0, fireTimeCount: 0 };
     protected target: PointData;
-    public time: number;
+    public time: number = 0;
     private _level: number = 1;
     public baseTower: Sprite;
     public circleImage: Sprite;
@@ -31,6 +31,8 @@ export class Tower extends BaseObject {
         this.circleImage = new Sprite(AssetsLoader.getTexture('circle'));
         this.circleImage.anchor = 0.5;
         this.circleImage.alpha = 25;
+
+
     }
 
     get effectArena(): number {
@@ -49,12 +51,13 @@ export class Tower extends BaseObject {
         this._towerType = towerType;
     }
 
-    get dame(): number {
+    get dame(): MinMax {
         return this._dame;
     }
 
-    set dame(dame: number) {
-        this._dame = dame;
+    set dame(dame: MinMax) {
+        this._dame.max = dame.max;
+        this._dame.min = dame.min;
     }
 
     get goldCost(): number {
@@ -89,9 +92,34 @@ export class Tower extends BaseObject {
         this._upgradeLevelImage = img;
     }
 
+    get fireTimeColdDown(): number {
+        return this.fireTimeCd.fireTimeConst;
+    }
+
+    protected init() {
+        this._level = 1;
+        this._dame = { min: AppConstants.dame[`${this._towerType}`].min, max: AppConstants.dame[`${this._towerType}`].max };
+        this.fireTimeCd.fireTimeConst = AppConstants.fireTimeCd[`${this._towerType}`].fireTimeConst;
+        this._goldCost = AppConstants.towerPrice[`${this._towerType}`];
+        this._upGradeCost = this._goldCost * 2;
+        this._effectArena = AppConstants.effectArena[`${this._towerType}`];
+        this.circleImage.width = this._effectArena * 2;
+        this.circleImage.height = this._effectArena * 2;
+        this.upGradeImage = new Sprite();
+
+    }
+
 
     public reset() {
         // reset property of tower to default when it return to pool
+        this._level = 1;
+        this._dame = { min: AppConstants.dame[`${this._towerType}`].min, max: AppConstants.dame[`${this._towerType}`].max };
+        this.fireTimeCd.fireTimeConst = AppConstants.fireTimeCd[`${this._towerType}`].fireTimeConst;
+        this._goldCost = AppConstants.towerPrice[`${this._towerType}`];
+        this._upGradeCost = this._goldCost * 2;
+        this._effectArena = AppConstants.effectArena[`${this._towerType}`];
+        this.circleImage.width = this._effectArena * 2;
+        this.circleImage.height = this._effectArena * 2;
     }
 
     public toggleCircle(isVisible: boolean) {
@@ -102,21 +130,20 @@ export class Tower extends BaseObject {
         this._level += 1;
 
         // change or add upgrade image for tower
-        if (this._upgradeLevelImage) {
-            this._upgradeLevelImage.texture = AssetsLoader.getTexture(`upgrade-level-${this._level}`);
-        } else {
-            this._upgradeLevelImage = new Sprite(AssetsLoader.getTexture('upgrade-level-2'));
-            this._upgradeLevelImage.width = 15;
-            this._upgradeLevelImage.height = 15;
-            this._upgradeLevelImage.position = this.image.position;
-            this._upgradeLevelImage.anchor.set(0.2, -0.2);
-            this._upgradeLevelImage.alpha = 50;
-            this._upgradeLevelImage.zIndex = this.image.y + 1;
 
-            Emitter.emit(AppConstants.event.addChildToScene, this._upgradeLevelImage);
-        }
-        this._dame = this._dame * this._level;
-        this.fireTimeCd.fireTimeConstant -= this.fireTimeCd.fireTimeConstant / 3 ;
+        this._upgradeLevelImage.texture = AssetsLoader.getTexture(`upgrade-level-${this._level}`);
+        this._upgradeLevelImage.position = this.image.position;
+        this._upgradeLevelImage.width = 15;
+        this._upgradeLevelImage.height = 15;
+        this._upgradeLevelImage.anchor.set(0.2, -0.2);
+        this._upgradeLevelImage.alpha = 50;
+        this._upgradeLevelImage.zIndex = this.image.y + 1;
+        Emitter.emit(AppConstants.event.addChildToScene, this._upgradeLevelImage);
+
+
+        this._dame.max = this._dame.max * this._level;
+        this._dame.min = this._dame.min * this._level;
+        this.fireTimeCd.fireTimeConst -= this.fireTimeCd.fireTimeConst / 3 ;
         this.effectArena += 15;
         this.circleImage.width = this.effectArena * 2;
         this.circleImage.height = this.effectArena * 2;
@@ -125,10 +152,11 @@ export class Tower extends BaseObject {
 
     public fire(target: PointData) {
         if (this.fireTimeCd.fireTimeCount > 0) return;
-        const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: this.dame, speed: this.speed * 3, effectType: this.effectType };
+        const dameDeal = getRandomArbitrary(this._dame);
+        const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: dameDeal, speed: this.speed * 3, effectType: this.effectType };
         Emitter.emit(AppConstants.event.fireBullet, option);
         this.target = { x: target.x, y: target.y };
-        this.fireTimeCd.fireTimeCount = this.fireTimeCd.fireTimeConstant;
+        this.fireTimeCd.fireTimeCount = this.fireTimeCd.fireTimeConst;
 
     }
 

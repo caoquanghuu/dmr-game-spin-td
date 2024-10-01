@@ -31,7 +31,7 @@ export class TowerController {
         tower.baseTower.removeAllListeners();
         tower.baseTower.on('pointerdown', () => {
             // send tower info to ui controller
-            const info: TowerInformation = { towerType: tower.towerType, speed: tower.speed, dame: tower.dame, level: tower.level, goldUpgrade: tower.upGradeCost, towerId: tower.id };
+            const info: TowerInformation = { towerType: tower.towerType, speed: Math.floor(tower.fireTimeColdDown), dame: tower.dame.min, level: tower.level, goldUpgrade: tower.upGradeCost, towerId: tower.id };
             Emitter.emit(AppConstants.event.displayTowerInfo, info);
             sound.play('my-sound', { sprite: 'building-selected' });
         });
