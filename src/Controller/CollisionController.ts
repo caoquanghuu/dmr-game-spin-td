@@ -2,7 +2,7 @@ import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { BulletType, Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
-import { PointData } from 'pixi.js';
+import { AnimatedSprite, PointData } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 
@@ -63,20 +63,16 @@ export class CollisionController {
             const isBulletReachToTarget = this._isCollision(c1, c3);
             if (isBulletReachToTarget) {
 
-                const explosion = this._getExplosionFromPool();
+                const explosion: AnimatedSprite = this._getExplosionFromPool(bullet.bulletType);
                 explosion.position = bullet.target;
                 explosion.width = bullet.effectArena * 2;
                 explosion.height = bullet.effectArena * 2;
-                if (bullet.bulletType === BulletType.ice) {
-                    explosion.tint = '0092fe';
-                } else {
-                    explosion.tint = 'white';
-                }
+
                 explosion.gotoAndPlay(0);
                 Emitter.emit(AppConstants.event.addChildToScene, explosion);
                 explosion.onComplete = () => {
 
-                    this._returnExplosionToPool(explosion);
+                    this._returnExplosionToPool(explosion, bullet.bulletType);
 
                     Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
                 };

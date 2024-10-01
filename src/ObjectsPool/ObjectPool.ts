@@ -12,32 +12,27 @@ export class ObjectPool {
     private _bulletPool: {[bulletType: string]: Bullet[]} = {};
     private _enemiesPool: Enemies[] = [];
     private _towerPool: {[towerType: string]: Tower[]} = {};
-    private _explosionAnimation: AnimatedSprite[] = [];
+    private _explosionPool: {[explosionType: string]: AnimatedSprite[]} = {};
+
     constructor() {
         ObjectPool.inst = this;
         //init bullet pool
         for (const [key, value] of Object.entries(BulletType)) {
             this._bulletPool[key] = [];
+            this._explosionPool[key] = [];
 
             for (let i = 0; i < AppConstants.bulletCount; i++) {
                 const bullet = Factory.createBullet(value);
                 this._bulletPool[key].push(bullet);
+                const explosion = new AnimatedSprite(AssetsLoader.getTexture(`${key}-explosion`).animations['explosion']);
+                explosion.loop = false;
+                explosion.anchor = 0.5;
+                explosion.alpha = 20;
+                explosion.zIndex = 7;
+                this._explosionPool[key].push(explosion);
             }
         }
 
-        // init enemies pool and explosion animation sprite
-        for (let i = 0; i <= 10; i ++) {
-            const ene = Factory.createEnemies();
-            this._enemiesPool.push(ene);
-
-            // init animation sprite
-            const explosion = new AnimatedSprite(AssetsLoader.getTexture('explosion').animations['tile']);
-            explosion.loop = false;
-            explosion.anchor = 0.5;
-            explosion.alpha = 20;
-            explosion.zIndex = 7;
-            this._explosionAnimation.push(explosion);
-        }
         // init tower pool
         for (const [key, value] of Object.entries(TowerType)) {
             this._towerPool[key] = [];
@@ -77,16 +72,16 @@ export class ObjectPool {
         }
     }
 
-    public getExplosion(): AnimatedSprite {
-        if (this._explosionAnimation.length <= 0) {
-            const explosion = new AnimatedSprite(AssetsLoader.getTexture('explosion').animations['tile']);
+    public getExplosion(explosionType: BulletType): AnimatedSprite {
+        if (this._explosionPool[explosionType]?.length <= 0) {
+            const explosion = new AnimatedSprite(AssetsLoader.getTexture(`${explosionType}-explosion`).animations['explosion']);
             explosion.loop = false;
             explosion.anchor = 0.5;
             explosion.alpha = 20;
             explosion.zIndex = 7;
             return explosion;
         } else {
-            return this._explosionAnimation.pop() as AnimatedSprite;
+            return this._explosionPool[explosionType].pop() as AnimatedSprite;
         }
     }
 
@@ -102,8 +97,8 @@ export class ObjectPool {
         this._enemiesPool.push(enemies);
     }
 
-    public returnExplosion(ex: AnimatedSprite) {
-        this._explosionAnimation.push(ex);
+    public returnExplosion(ex: AnimatedSprite, exType: BulletType) {
+        this._explosionPool[exType].push(ex);
     }
 
 

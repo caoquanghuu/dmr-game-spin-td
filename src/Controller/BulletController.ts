@@ -39,7 +39,7 @@ export class BulletController {
             case TowerType.crystal_maiden:
                 bullet = this._getBulletFromPool(BulletType.ice);
                 bullet.dame = 0;
-                bullet.effectArena = 100;
+                bullet.effectArena = 50;
 
                 break;
             case TowerType.tinker:

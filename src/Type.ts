@@ -40,9 +40,9 @@ export enum EnemiesType {
 }
 
 export enum EffectType {
-    SLOW,
-    STUN,
-    BLAST
+    SLOW = 'slow',
+    STUN = 'stun',
+    BLAST = 'blast'
 }
 
 export enum BulletType {
@@ -114,5 +114,5 @@ export type GetObjectFromGameSceneFn = () => {towers: Tower[], bullets: Bullet[]
 export type AddToBoardFn= (board: Container) => void;
 export type RemoveFromBoardFb = (board: Container) => void;
 export type GetPlayerGoldFn = () => number;
-export type GetExplosionFromPoolFn = () => AnimatedSprite;
-export type ReturnExplosionToPoolFn = (ex: AnimatedSprite) => void;
+export type GetExplosionFromPoolFn = (exType: BulletType) => AnimatedSprite;
+export type ReturnExplosionToPoolFn = (ex: AnimatedSprite, exType: BulletType) => void;

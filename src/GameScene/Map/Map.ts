@@ -209,12 +209,12 @@ export class GameMap extends Container {
         this._objectPool.returnEnemies(ene);
     }
 
-    private _getExplosionFromPool(): AnimatedSprite {
-        return this._objectPool.getExplosion();
+    private _getExplosionFromPool(explosionType: BulletType): AnimatedSprite {
+        return this._objectPool.getExplosion(explosionType);
     }
 
-    private _returnExplosionToPool(ex: AnimatedSprite) {
-        this._objectPool.returnExplosion(ex);
+    private _returnExplosionToPool(ex: AnimatedSprite, exType: BulletType) {
+        this._objectPool.returnExplosion(ex, exType);
     }
 
     // update function

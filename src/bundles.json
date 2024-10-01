@@ -209,12 +209,20 @@
                 "src": "assets/animation/nuclear-base/nuclear-base.json"
             },
             {
-                "alias": "explosion",
-            "src": "assets/animation/blast-explosion/explosion.json"
+                "alias": "missile-explosion",
+                "src": "assets/animation/blast-explosion/explosion.json"
             },
             {
-                "alias": "thunder",
-                "src": "assets/animation/electric/thunder.json"
+                "alias": "ice-explosion",
+                "src": "assets/animation/electric/electric-blast.json"
+            },
+            {
+                "alias": "laser-explosion",
+                "src": "assets/animation/blast-explosion/explosion.json"
+            },
+            {
+                "alias": "lightning-explosion",
+                "src": "assets/animation/blast-explosion/explosion.json"
             }
 
 
