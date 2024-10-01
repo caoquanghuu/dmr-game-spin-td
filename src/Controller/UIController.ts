@@ -20,7 +20,7 @@ export class UIController {
         this._addToBoardFn = addToBoardCb;
         this._removeFromBoardFn = removeFromBoardCb;
         this._playerGold = 100;
-        this._playerHp = 20;
+        this._playerHp = 30;
         this._basicBoard = new BasicBoard();
         this._basicBoard.scale = 1;
         this._basicBoard.displayBaseHp(this._playerHp);
@@ -70,7 +70,7 @@ export class UIController {
             sound.play('my-sound', { sprite: 'base-under-atacked' });
             if (this._playerHp < 1) {
                 //end game
-                Emitter.emit(AppConstants.event.gameOver, null);
+                Emitter.emit(AppConstants.event.gameOver, false);
                 sound.play('my-sound', { sprite: 'mission-fail' });
                 console.log('game over');
             }

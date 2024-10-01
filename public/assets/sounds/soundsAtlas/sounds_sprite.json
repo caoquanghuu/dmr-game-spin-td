@@ -53,29 +53,34 @@
       "end": 252.05902494331065,
       "loop": false
     },
-    "nuclear-missle-lauch": {
+    "nuclear-missile-alert": {
       "start": 254,
-      "end": 255.99943310657596,
+      "end": 266.5619954648526,
+      "loop": false
+    },
+    "nuclear-missile-launch": {
+      "start": 268,
+      "end": 269.99943310657596,
       "loop": false
     },
     "sold-tower": {
-      "start": 257,
-      "end": 258.37249433106575,
+      "start": 271,
+      "end": 272.37249433106575,
       "loop": false
     },
     "tinker": {
-      "start": 260,
-      "end": 261.63120181405895,
+      "start": 274,
+      "end": 275.63120181405895,
       "loop": false
     },
     "tower-upgraded": {
-      "start": 263,
-      "end": 264.0067800453515,
+      "start": 277,
+      "end": 278.0067800453515,
       "loop": false
     },
     "victory": {
-      "start": 266,
-      "end": 267.4508616780045,
+      "start": 280,
+      "end": 281.4508616780045,
       "loop": false
     }
   }

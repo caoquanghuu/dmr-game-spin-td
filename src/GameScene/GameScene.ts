@@ -53,14 +53,25 @@ export class GameScene extends Container {
     }
 
     private _useEventEffect(): void {
-        Emitter.on(AppConstants.event.gameOver, () => {
+        Emitter.on(AppConstants.event.gameOver, (isVictory: boolean) => {
             this._UIBoard.renderable = false;
             this._map.renderable = false;
 
             const gameOverBg = new Sprite(AssetsLoader.getTexture('logo'));
+            gameOverBg.width = AppConstants.appWidth;
+            gameOverBg.height = AppConstants.appHeight;
+            const resultBg = new Sprite();
+            resultBg.height = AppConstants.appHeight;
+            resultBg.anchor = 0.5;
+            resultBg.position.x = AppConstants.appWidth / 2;
+            resultBg.position.y = AppConstants.appHeight / 2;
+
+            isVictory ? resultBg.texture = AssetsLoader.getTexture('victory-background') : resultBg.texture = AssetsLoader.getTexture('defeated-background');
+
             this._isGameStart = false;
 
             this.addChild(gameOverBg);
+            this.addChild(resultBg);
         });
 
     }

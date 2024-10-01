@@ -173,8 +173,13 @@ export class GameMap extends Container {
         if (this._time >= 5000) {
             this._wave += 1;
             if (this._wave > 15) {
-                sound.play('my-sound', { sprite: 'victory' });
-                sound.play('my-sound', { sprite: 'nuclear-missle-lauch' });
+                sound.play('my-sound', { sprite: 'nuclear-missile-alert' });
+                sound.play('my-sound', { sprite: 'nuclear-missile-launch' });
+                Emitter.emit(AppConstants.event.gameOver, true);
+                setTimeout(() => { sound.play('my-sound', { sprite: 'victory' }); }, 8000);
+
+                return;
+
             }
             // send event to ui basic board display new wave
             Emitter.emit(AppConstants.event.displayWave, this._wave);

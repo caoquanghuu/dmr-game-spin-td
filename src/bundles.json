@@ -227,6 +227,14 @@
             {
                 "alias": "tank-explosion",
                 "src": "assets/animation/tank-explosion/tank-explosion.json"
+            },
+            {
+                "alias": "victory-background",
+                "src": "assets/units/victory-background.jpg"
+            },
+            {
+                "alias": "defeated-background",
+                "src": "assets/units/defeated-background.jpg"
             }
 
 
