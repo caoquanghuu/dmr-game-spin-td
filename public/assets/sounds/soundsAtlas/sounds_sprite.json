@@ -3,7 +3,7 @@
     "./assets/sounds/soundsAtlas/sounds_sprite.mp3"
   ],
   "spritemap": {
-    "base-under-atacked": {
+    "base-under-attacked": {
       "start": 0,
       "end": 1.8688208616780044,
       "loop": false

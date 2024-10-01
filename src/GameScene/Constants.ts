@@ -34,6 +34,11 @@ export namespace AppConstants {
         tower: 7
     };
 
+    export const playerBasicProperty = {
+        playerGold: 100,
+        playerHp: 30
+    };
+
     export const textureName = {
         tankExplosionAnimation: 'tank'
     };
@@ -43,7 +48,9 @@ export namespace AppConstants {
         selectedBuilding: 'building-selected',
         buildingCompleted: 'building-complete',
         soldTower: 'sold-tower',
-        towerUpgraded: 'tower-upgraded'
+        towerUpgraded: 'tower-upgraded',
+        baseBeAttacked: 'base-under-attacked',
+        missionFail: 'mission-fail'
     };
 
     export const time = {

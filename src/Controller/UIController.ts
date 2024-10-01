@@ -19,8 +19,8 @@ export class UIController {
     constructor(addToBoardCb: AddToBoardFn, removeFromBoardCb: RemoveFromBoardFb) {
         this._addToBoardFn = addToBoardCb;
         this._removeFromBoardFn = removeFromBoardCb;
-        this._playerGold = 100;
-        this._playerHp = 30;
+        this._playerGold = AppConstants.playerBasicProperty.playerGold;
+        this._playerHp = AppConstants.playerBasicProperty.playerHp;
         this._basicBoard = new BasicBoard();
         this._basicBoard.scale = 1;
         this._basicBoard.displayBaseHp(this._playerHp);
@@ -41,7 +41,7 @@ export class UIController {
         this._useEventEffect();
     }
 
-    private _useEventEffect() {
+    private _useEventEffect(): void {
         Emitter.on(AppConstants.event.selectTowerBase, (baseSprite: Sprite) => {
             this._basicBoard.renderable = false;
             this._infoTowerBoard.renderable = false;
@@ -67,12 +67,14 @@ export class UIController {
 
         Emitter.on(AppConstants.event.reduceBaseHp, (reduceCount: number) => {
             this._playerHp -= reduceCount;
-            sound.play('my-sound', { sprite: 'base-under-atacked' });
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.baseBeAttacked });
+
+            // check player current hp
             if (this._playerHp < 1) {
-                //end game
+                //end game, send event to game scene told him stop game
                 Emitter.emit(AppConstants.event.gameOver, false);
-                sound.play('my-sound', { sprite: 'mission-fail' });
-                console.log('game over');
+                sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.missionFail });
+                return;
             }
             this._basicBoard.displayBaseHp(this._playerHp);
         });
@@ -83,15 +85,9 @@ export class UIController {
             this._infoTowerBoard.renderable = true;
 
         });
-
-        //
     }
 
     private _getPlayerGold(): number {
         return this._playerGold;
-    }
-
-    private _mainUiBoard() {
-
     }
 }
