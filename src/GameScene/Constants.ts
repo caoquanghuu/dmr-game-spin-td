@@ -9,7 +9,7 @@ export namespace AppConstants {
     export const matrixSize = appWidth / 30;
     export const mapSize = {
         width: appWidth,
-        height: matrixSize * (appHeight / matrixSize) * (4 / 5),
+        height: matrixSize * 16,
     };
     export const UISize = {
         width: appWidth,
@@ -41,7 +41,7 @@ export namespace AppConstants {
     export const imageAlpha = {
         towerBase: 0.8,
         towerCircle: 25,
-        towerUpGradeIcon: 50
+        towerUpGradeIcon: 25
     };
 
     export const textureName = {

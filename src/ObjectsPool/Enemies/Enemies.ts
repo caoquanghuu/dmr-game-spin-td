@@ -25,8 +25,9 @@ export class Enemies extends BaseObject {
         this._bfsMoveEngine = new BSFMoveEngine();
         this._getNextMove();
         this._hpBar = new Sprite(AssetsLoader.getTexture('hp-bar-10'));
-        this._hpBar.width = AppConstants.matrixSize;
-        this._hpBar.height = AppConstants.matrixSize / 6;
+        this._hpBar.scale.set(0.3, 0.2);
+        // this._hpBar.width = AppConstants.matrixSize;
+        // this._hpBar.height = AppConstants.matrixSize / 6;
         this._hpBar.anchor.set(0.5, 4);
 
     }

@@ -17,8 +17,8 @@ export class Bullet extends BaseObject {
         super(bulletType);
         this._bulletType = bulletType;
         this.moveEngine = new BaseEngine(false);
-        this.image.width = 15;
-        this.image.height = 30;
+        this.image.width = AppConstants.matrixSize / 2;
+        this.image.height = AppConstants.matrixSize;
     }
 
     get dame(): number {

@@ -1,6 +1,7 @@
 import { PointData } from 'pixi.js';
 import { GameMap } from '../GameScene/Map/Map';
 import { BSFMove, BSFNextMove, Direction } from '../Type';
+import { AppConstants } from '../GameScene/Constants';
 export class BSFMoveEngine {
     private _mapMatrix: any;
     private _headPoint: PointData;
@@ -22,7 +23,7 @@ export class BSFMoveEngine {
         if (direction.x === 0 && direction.y === 1) nextDirection = Direction.DOWN;
         if (direction.x === 1 && direction.y === 0) nextDirection = Direction.RIGHT;
         if (direction.x === -1 && direction.y === 0) nextDirection = Direction.LEFT;
-        return { directions: nextDirection, path: { x: nextPath[0].x * 32, y: nextPath[0].y * 32 } };
+        return { directions: nextDirection, path: { x: nextPath[0].x * AppConstants.matrixSize, y: nextPath[0].y * AppConstants.matrixSize } };
     }
 
     public reset() {

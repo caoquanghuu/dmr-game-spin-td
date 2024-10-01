@@ -35,12 +35,9 @@ export class EnemiesController {
         // create enemies, set position, hp, move speed , texture base on current wave
         const enemiesOption = EnemiesOption.alias[wave - 1];
         const enePosition: PointData = { x: position.x, y: position.y };
-        let time = AppConstants.time.delayWhenCreateEne;
         for (let i = 0; i <= enemiesOption.eneCount; i ++) {
-            setTimeout(() => {
-                this._createEnemies(enemiesOption, enePosition, wave);
-            }, time);
-            time += AppConstants.time.delayWhenCreateEne;
+            this._createEnemies(enemiesOption, enePosition, wave);
+            enePosition.y -= 100;
         }
     }
 
