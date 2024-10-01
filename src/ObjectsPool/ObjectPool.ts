@@ -42,6 +42,16 @@ export class ObjectPool {
             }
         }
 
+        for (let i = 0; i < 10; i ++) {
+            this._explosionPool['tank'] = [];
+            const tankExplosion = new AnimatedSprite(AssetsLoader.getTexture('tank-explosion').animations['explosion']);
+            tankExplosion.loop = false;
+            tankExplosion.anchor = 0.5;
+            tankExplosion.alpha = 20;
+            tankExplosion.zIndex = 7;
+            this._explosionPool['tank'].push(tankExplosion);
+        }
+
 
     }
 
@@ -72,7 +82,7 @@ export class ObjectPool {
         }
     }
 
-    public getExplosion(explosionType: BulletType): AnimatedSprite {
+    public getExplosion(explosionType: BulletType | string): AnimatedSprite {
         if (this._explosionPool[explosionType]?.length <= 0) {
             const explosion = new AnimatedSprite(AssetsLoader.getTexture(`${explosionType}-explosion`).animations['explosion']);
             explosion.loop = false;

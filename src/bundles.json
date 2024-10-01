@@ -223,6 +223,10 @@
             {
                 "alias": "lightning-explosion",
                 "src": "assets/animation/blast-explosion/explosion.json"
+            },
+            {
+                "alias": "tank-explosion",
+                "src": "assets/animation/tank-explosion/tank-explosion.json"
             }
 
 

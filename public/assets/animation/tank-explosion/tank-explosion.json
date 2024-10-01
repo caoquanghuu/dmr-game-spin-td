@@ -1,0 +1,96 @@
+{"frames": {
+
+"tank-explosion_02.png":
+{
+	"frame": {"x":0,"y":0,"w":608,"h":603},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":608,"h":603},
+	"sourceSize": {"w":608,"h":603},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"tank-explosion_03.png":
+{
+	"frame": {"x":0,"y":642,"w":644,"h":644},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":644,"h":644},
+	"sourceSize": {"w":644,"h":644},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"tank-explosion_04.png":
+{
+	"frame": {"x":1289,"y":1286,"w":645,"h":645},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":645,"h":645},
+	"sourceSize": {"w":645,"h":645},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"tank-explosion_05.png":
+{
+	"frame": {"x":644,"y":642,"w":644,"h":644},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":644,"h":644},
+	"sourceSize": {"w":644,"h":644},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"tank-explosion_06.png":
+{
+	"frame": {"x":608,"y":0,"w":644,"h":642},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":644,"h":642},
+	"sourceSize": {"w":644,"h":642},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"tank-explosion_07.png":
+{
+	"frame": {"x":1252,"y":0,"w":642,"h":642},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":642,"h":642},
+	"sourceSize": {"w":642,"h":642},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"tank-explosion_08.png":
+{
+	"frame": {"x":1288,"y":642,"w":645,"h":644},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":645,"h":644},
+	"sourceSize": {"w":645,"h":644},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"tank-explosion_09.png":
+{
+	"frame": {"x":0,"y":1286,"w":646,"h":644},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":646,"h":644},
+	"sourceSize": {"w":646,"h":644},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"tank-explosion_10.png":
+{
+	"frame": {"x":646,"y":1286,"w":643,"h":644},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":643,"h":644},
+	"sourceSize": {"w":643,"h":644},
+	"anchor": {"x":0.5,"y":0.5}
+}},
+"animations": {
+	"explosion": ["tank-explosion_02.png","tank-explosion_03.png","tank-explosion_04.png","tank-explosion_05.png","tank-explosion_06.png","tank-explosion_07.png","tank-explosion_08.png","tank-explosion_09.png","tank-explosion_10.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.1",
+	"image": "tank-explosion.png",
+	"format": "RGBA8888",
+	"size": {"w":1934,"h":1931},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:2b66d19eb93832bba312c25e8c33fe04:d1a9685408e35eb632e3d8a967808da8:b5f451701832467e5a555e3152024c47$"
+}
+}

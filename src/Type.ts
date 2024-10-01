@@ -114,5 +114,5 @@ export type GetObjectFromGameSceneFn = () => {towers: Tower[], bullets: Bullet[]
 export type AddToBoardFn= (board: Container) => void;
 export type RemoveFromBoardFb = (board: Container) => void;
 export type GetPlayerGoldFn = () => number;
-export type GetExplosionFromPoolFn = (exType: BulletType) => AnimatedSprite;
-export type ReturnExplosionToPoolFn = (ex: AnimatedSprite, exType: BulletType) => void;
+export type GetExplosionFromPoolFn = (exType: string) => AnimatedSprite;
+export type ReturnExplosionToPoolFn = (ex: AnimatedSprite, exType: string) => void;

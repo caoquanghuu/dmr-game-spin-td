@@ -1,6 +1,6 @@
-import { CreateEnemiesOption, GetEnemiesFromPoolFn, ReturnEnemiesToPoolFn } from 'src/Type';
+import { CreateEnemiesOption, GetEnemiesFromPoolFn, GetExplosionFromPoolFn, ReturnEnemiesToPoolFn, ReturnExplosionToPoolFn } from 'src/Type';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
-import { PointData } from 'pixi.js';
+import { AnimatedSprite, PointData } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import EnemiesOption from '../ObjectsPool/Enemies/Enemies.json';
@@ -10,10 +10,14 @@ export class EnemiesController {
     private _enemies: Enemies[] = [];
     private _getEnemiesFromPool: GetEnemiesFromPoolFn;
     private _returnEnemiesToPool: ReturnEnemiesToPoolFn;
+    private _getExplosionFromPool: GetExplosionFromPoolFn;
+    private _returnExplosionToPool: ReturnExplosionToPoolFn;
 
-    constructor(getEnemiesFromPoolCB: GetEnemiesFromPoolFn, returnEnemiesToPoolCB: ReturnEnemiesToPoolFn) {
+    constructor(getEnemiesFromPoolCB: GetEnemiesFromPoolFn, returnEnemiesToPoolCB: ReturnEnemiesToPoolFn, getExplosionFromPoolCB: GetExplosionFromPoolFn, returnExplosionToPoolCB: ReturnExplosionToPoolFn) {
         this._getEnemiesFromPool = getEnemiesFromPoolCB;
         this._returnEnemiesToPool = returnEnemiesToPoolCB;
+        this._getExplosionFromPool = getExplosionFromPoolCB;
+        this._returnExplosionToPool = returnExplosionToPoolCB;
         this._useEventEffect();
     }
 
@@ -64,6 +68,21 @@ export class EnemiesController {
         const ene = this._enemies[i];
         ene.isMoving = false;
         this._returnEnemiesToPool(ene);
+
+        // create animation explosion
+        const explosion: AnimatedSprite = this._getExplosionFromPool('tank');
+        explosion.position = ene.position;
+        explosion.width = ene.image.width * 2;
+        explosion.height = ene.image.height * 2;
+
+        explosion.gotoAndPlay(0);
+        Emitter.emit(AppConstants.event.addChildToScene, explosion);
+        explosion.onComplete = () => {
+
+            this._returnExplosionToPool(explosion, 'tank');
+
+            Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
+        };
 
         Emitter.emit(AppConstants.event.removeChildFromScene, ene.image);
         Emitter.emit(AppConstants.event.removeChildFromScene, ene.hpBar);
