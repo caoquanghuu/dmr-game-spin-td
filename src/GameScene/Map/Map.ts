@@ -112,6 +112,7 @@ export class GameMap extends Container {
                     towerBase.width = 32;
                     towerBase.height = 32;
                     towerBase.zIndex = 3;
+                    towerBase.tint = 'f7f28d';
 
                     this._towerBase.push(towerBase);
                     this.addChild(towerBase);

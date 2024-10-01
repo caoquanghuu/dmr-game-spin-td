@@ -1,17 +1,11 @@
 import { TowerType } from '../../Type';
 import { Tower } from '../Tower/Tower';
-import { AppConstants } from '../../GameScene/Constants';
 import { AssetsLoader } from '../../AssetsLoader';
 
 export class Mirana extends Tower {
     constructor() {
         super(TowerType.mirana);
-        this.dame = AppConstants.dame.Mirana;
-        this.effectArena = AppConstants.effectArena.Mirana;
-        this.goldCost = AppConstants.towerPrice.mirana;
-        this.upGradeCost = this.goldCost * 2;
-        this.image.width = 25;
-        this.time = 0;
+        this.init();
     }
 
     private _animateTexture() {
