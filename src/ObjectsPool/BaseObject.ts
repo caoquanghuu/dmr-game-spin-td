@@ -1,18 +1,32 @@
-import { PointData, Sprite } from 'pixi.js';
+import { AnimatedSprite, AnimatedSpriteFrames, FrameObject, PointData, Sprite, Texture } from 'pixi.js';
 import { AssetsLoader } from '../AssetsLoader';
 import { BaseEngine } from '../MoveEngine/BaseEngine';
 import { Direction } from '../Type';
 import { switchFn } from '../Util';
 
 export class BaseObject {
-    private _image: Sprite;
+    private _image: Sprite | AnimatedSprite;
+    private _animationName: {[animationTypes: string]: AnimatedSpriteFrames} = {};
     private _id: number;
     private _speed: number;
     private _direction: Direction | number;
     private _moveEngine: BaseEngine;
-    constructor(textureName: string) {
-        this._image = new Sprite(AssetsLoader.getTexture(textureName));
+    constructor(textureName: string, isAnimatedSprite?: boolean) {
+        if (isAnimatedSprite) {
+            const animations = AssetsLoader.getTexture(textureName).animations;
+
+            for (const key in animations) {
+
+                this._animationName[key] = animations[key];
+                this._image = new AnimatedSprite(this._animationName[key]);
+            }
+        } else {
+            this._image = new Sprite(AssetsLoader.getTexture(textureName));
+        }
+
+
         this._image.anchor.set(0.5);
+
     }
 
     get position(): PointData {
@@ -21,8 +35,11 @@ export class BaseObject {
     }
 
     set position(position: PointData) {
+
         this._image.position.x = position.x;
         this._image.position.y = position.y;
+
+
     }
 
     get direction(): Direction | number {
@@ -33,7 +50,7 @@ export class BaseObject {
         this._moveEngine.direction = direction;
     }
 
-    get image(): Sprite {
+    get image(): Sprite | AnimatedSprite {
         return this._image;
     }
 
@@ -63,6 +80,20 @@ export class BaseObject {
 
     set speed(sp: number) {
         this._speed = sp;
+    }
+
+    public setAnimation(animationName: string, loop?: boolean) {
+        if (this._image instanceof AnimatedSprite) {
+            const textures = this._animationName[animationName];
+            if (textures) {
+                (this._image as AnimatedSprite).textures = textures;
+
+                (this._image as AnimatedSprite).play();
+                (this._image as AnimatedSprite).loop = loop;
+            }
+        } else {
+            return;
+        }
     }
 
 

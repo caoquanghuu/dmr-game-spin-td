@@ -235,6 +235,10 @@
             {
                 "alias": "defeated-background",
                 "src": "assets/units/defeated-background.jpg"
+            },
+            {
+                "alias": "helicopter",
+                "src": "assets/animation/helicopter/helicopter.json"
             }
 
 

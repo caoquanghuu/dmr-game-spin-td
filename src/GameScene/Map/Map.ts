@@ -13,6 +13,7 @@ import { BulletType, TowerType } from '../../Type';
 import Emitter from '../../Util';
 import { EnemiesController } from '../../Controller/EnemiesController';
 import { sound } from '@pixi/sound';
+import { BaseObject } from '../../ObjectsPool/BaseObject';
 
 export class GameMap extends Container {
     private _towers: Tower[] = [];
@@ -50,7 +51,14 @@ export class GameMap extends Container {
 
         this._startGame();
 
-
+        const helicopter = new BaseObject('helicopter', true);
+        helicopter.position = { x: 200, y: 300 };
+        helicopter.image.zIndex = 100;
+        helicopter.image.width = 100;
+        helicopter.image.height = 100;
+        helicopter.setAnimation('move-down', true);
+        this.addChild(helicopter.image);
+        // helicopter.image.
     }
 
     private _init() {
