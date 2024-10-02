@@ -6,6 +6,7 @@ import { Mirana } from '../ObjectsPool/Tower/Mirana';
 import { Tinker } from '../ObjectsPool/Tower/Tinker';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { ClockWerk } from '../ObjectsPool/Tower/ClockWerk';
+import { Barack } from './Tower/Barack';
 
 export default class Factory {
     public static instance: Factory;
@@ -67,6 +68,10 @@ export default class Factory {
                 const clockwerk = new ClockWerk();
                 clockwerk.id = objectId;
                 return clockwerk;
+            case TowerType.barack:
+                const barack = new Barack();
+                barack.id = objectId;
+                return barack;
             default:
         }
     }

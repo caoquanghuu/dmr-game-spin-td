@@ -23,8 +23,8 @@ export class Tower extends BaseObject {
     private _item: BaseObject[] = [];
 
 
-    constructor(towerType: TowerType) {
-        super(towerType);
+    constructor(towerType: TowerType, isAnimatedSprite?: boolean) {
+        super(towerType, isAnimatedSprite);
         this._towerType = towerType;
         this.speed = 200;
         this.image.width = AppConstants.matrixSize;

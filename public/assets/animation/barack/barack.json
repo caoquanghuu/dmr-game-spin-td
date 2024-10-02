@@ -1,0 +1,51 @@
+{"frames": {
+
+"barack_01.png":
+{
+	"frame": {"x":0,"y":0,"w":320,"h":298},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":298},
+	"sourceSize": {"w":320,"h":298},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"barack_02.png":
+{
+	"frame": {"x":320,"y":0,"w":320,"h":298},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":298},
+	"sourceSize": {"w":320,"h":298},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"barack_03.png":
+{
+	"frame": {"x":640,"y":0,"w":320,"h":298},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":298},
+	"sourceSize": {"w":320,"h":298},
+	"anchor": {"x":0.5,"y":0.5}
+},
+"barack_04.png":
+{
+	"frame": {"x":960,"y":0,"w":320,"h":298},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":298},
+	"sourceSize": {"w":320,"h":298},
+	"anchor": {"x":0.5,"y":0.5}
+}},
+"animations": {
+	"barack": ["barack_01.png","barack_02.png","barack_03.png","barack_04.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.1",
+	"image": "barack.png",
+	"format": "RGBA8888",
+	"size": {"w":1280,"h":298},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:5ce150522a914a4c7e4015c0a95b084a:1463adc044f758542892fb69757c20dc:3e8ca807d45b9598452dba1816496715$"
+}
+}

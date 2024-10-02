@@ -53,9 +53,9 @@ export class GameMap extends Container {
         for (let i = 0; i < 5; i ++) {
             const helicopter = new ControlUnit('helicopter', true);
             helicopter.position = { x:  Math.random() * 200, y: 300 };
-            helicopter.image.zIndex = 100;
-            helicopter.image.width = 100;
-            helicopter.image.height = 100;
+            helicopter.image.zIndex = 960;
+            helicopter.image.width = 64;
+            helicopter.image.height = 64;
             helicopter.setAnimation('move-down', true);
 
             this._unit.push(helicopter);

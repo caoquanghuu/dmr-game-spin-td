@@ -94,14 +94,16 @@ export namespace AppConstants {
         crystal_maiden: { min: 0, max: 0 },
         mirana: { min: 100, max: 140 },
         tinker: { min: 200, max: 240 },
-        clockwerk: { min: 200, max: 250 }
+        clockwerk: { min: 200, max: 250 },
+        barack: { min: 0, max: 0 }
     };
 
     export const fireTimeCd = {
         crystal_maiden: { fireTimeConst: 3000, fireTimeCount: 3000 },
         mirana: { fireTimeConst: 2000, fireTimeCount: 2000 },
         tinker: { fireTimeConst: 3000, fireTimeCount: 3000 },
-        clockwerk: { fireTimeConst: 3000, fireTimeCount: 3000 }
+        clockwerk: { fireTimeConst: 3000, fireTimeCount: 3000 },
+        barack: { fireTimeConst: 3000, fireTimeCount: 3000 }
     };
 
     export const effectArena = {
@@ -109,6 +111,7 @@ export namespace AppConstants {
         mirana: 200,
         tinker: 200,
         clockwerk: 300,
+        barack: 100
     };
 
     export const bulletEffectArena = {
@@ -243,7 +246,8 @@ export namespace AppConstants {
         tinker: 20,
         mirana: 10,
         crystal_maiden: 100,
-        clockwerk: 80
+        clockwerk: 80,
+        barack: 10
     };
 
     export const objectZIndex = {

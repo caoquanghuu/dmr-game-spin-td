@@ -19,6 +19,10 @@
                 "src": "assets/units/laser-tower-icon.jpg"
             },
             {
+                "alias": "barack-icon",
+                "src": "assets/units/barack-icon.png"
+            },
+            {
                 "alias": "mirana-icon",
                 "src": "assets/units/mirana-icon.jpg"
             },
@@ -239,6 +243,10 @@
             {
                 "alias": "helicopter",
                 "src": "assets/animation/helicopter/helicopter.json"
+            },
+            {
+                "alias": "barack",
+                "src": "assets/animation/barack/barack.json"
             }
 
 

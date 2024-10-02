@@ -24,7 +24,7 @@ export class TowerController {
         tower.position = { x: option.baseTower.x, y: option.baseTower.y - 25 };
         tower.circleImage.position = { x: option.baseTower.x, y: option.baseTower.y };
         tower.circleImage.zIndex = AppConstants.zIndex.tower;
-        tower.image.zIndex = AppConstants.zIndex.tower;
+        tower.image.zIndex = tower.position.y;
         tower.baseTower = option.baseTower;
         tower.baseTower.removeAllListeners();
         tower.baseTower.on('pointerdown', () => {
@@ -44,7 +44,7 @@ export class TowerController {
         });
 
         this._towers.push(tower);
-        tower.image.zIndex = tower.position.y;
+
 
         // use event emitter add tower to game
         Emitter.emit(AppConstants.event.addChildToScene, tower.image);

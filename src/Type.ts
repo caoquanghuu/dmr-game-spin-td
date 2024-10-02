@@ -31,6 +31,7 @@ export enum TowerType {
     mirana = 'mirana',
     tinker = 'tinker',
     clockwerk = 'clockwerk',
+    barack = 'barack'
 }
 
 export enum EnemiesType {
