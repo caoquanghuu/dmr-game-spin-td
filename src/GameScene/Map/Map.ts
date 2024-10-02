@@ -18,7 +18,6 @@ import { ControlUnit } from '../../ObjectsPool/ControlUnit/ControlUnit';
 export class GameMap extends Container {
     private _unit: ControlUnit[] = [];
     private _towerBase: Sprite[] = [];
-    private _enemies: Enemies[] = [];
     private _bulletController: BulletController;
     private _collisionController: CollisionController;
     private _towerController: TowerController;
@@ -51,26 +50,20 @@ export class GameMap extends Container {
         this._init();
 
         this._startGame();
+        for (let i = 0; i < 5; i ++) {
+            const helicopter = new ControlUnit('helicopter', true);
+            helicopter.position = { x:  Math.random() * 200, y: 300 };
+            helicopter.image.zIndex = 100;
+            helicopter.image.width = 100;
+            helicopter.image.height = 100;
+            helicopter.setAnimation('move-down', true);
 
-        const helicopter = new ControlUnit('helicopter', true);
-        helicopter.position = { x: 200, y: 300 };
-        helicopter.image.zIndex = 100;
-        helicopter.image.width = 100;
-        helicopter.image.height = 100;
-        helicopter.setAnimation('move-down', true);
+            this._unit.push(helicopter);
+            helicopter.isMoving = true;
 
-        // helicopter.image.
+            this.addChild(helicopter.image);
+        }
 
-        this.eventMode = 'static';
-        this.on('pointerdown', (event) => {
-            const position = event.data.global;
-            helicopter.target = { x: position.x, y: position.y };
-            // helicopter.position = position;
-        });
-        this._unit.push(helicopter);
-        helicopter.isMoving = true;
-
-        this.addChild(helicopter.image);
     }
 
     private _init() {
@@ -135,17 +128,18 @@ export class GameMap extends Container {
 
         // set event for tower base, end event to ui controller display build tower option
         this._towerBase.forEach(base => {
-            base.eventMode = 'static';
+            base.eventMode = 'dynamic';
             base.cursor = 'pointer';
-            base.on('pointerdown', () => {
+            base.on('pointerdown', (event) => {
+                event.stopPropagation();
                 Emitter.emit(AppConstants.event.selectTowerBase, base);
                 sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.selectedBuilding });
             });
         });
     }
 
-    private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Enemies[]} {
-        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._enemiesController.enemies };
+    private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Enemies[], units: ControlUnit[]} {
+        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._enemiesController.enemies, units: this._unit };
     }
 
     private _useEventEffect() {

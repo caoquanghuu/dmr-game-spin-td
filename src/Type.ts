@@ -3,6 +3,7 @@ import { AnimatedSprite, Container, PointData } from 'pixi.js';
 import { Tower } from '../src/ObjectsPool/Tower/Tower';
 import { Enemies } from '../src/ObjectsPool/Enemies/Enemies';
 import { Bullet } from '../src/ObjectsPool/Bullet';
+import { ControlUnit } from './ObjectsPool/ControlUnit/ControlUnit';
 
 export enum Direction {
     UP,
@@ -110,7 +111,7 @@ export type GetBulletFromPoolFn = (bulletType: BulletType) => Bullet;
 export type ReturnTowerToPoolFn = (tower: Tower) => void;
 export type ReturnEnemiesToPoolFn = (enemy: Enemies) => void;
 export type ReturnBulletToPoolFn = (bullet: Bullet) => void;
-export type GetObjectFromGameSceneFn = () => {towers: Tower[], bullets: Bullet[], enemies: Enemies[]};
+export type GetObjectFromGameSceneFn = () => {towers: Tower[], bullets: Bullet[], enemies: Enemies[], units: ControlUnit[]};
 export type AddToBoardFn= (board: Container) => void;
 export type RemoveFromBoardFb = (board: Container) => void;
 export type GetPlayerGoldFn = () => number;

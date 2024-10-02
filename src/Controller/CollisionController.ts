@@ -5,11 +5,13 @@ import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, R
 import { AnimatedSprite, PointData } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
+import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
 
 export class CollisionController {
     private _towers: Tower[] = [];
     private _bullets: Bullet[] = [];
     private _enemies: Enemies[] = [];
+    private _units: ControlUnit[] = [];
     private _nuclearBasePosition: PointData;
     private _getObjectsFromGameScene: GetObjectFromGameSceneFn;
     private _getExplosionFromPool: GetExplosionFromPoolFn;
@@ -22,7 +24,7 @@ export class CollisionController {
     }
 
     private async _checkCollisionBetweenObjects() {
-        this._enemies.forEach(ene => {
+        this._enemies.forEach((ene, eneIdx) => {
 
             // check ene vs tower
             const c1: Circle = { position: ene.position, radius: ene.image.width / 2 };
@@ -46,6 +48,18 @@ export class CollisionController {
                 // send event to ui controller
                 Emitter.emit(AppConstants.event.reduceBaseHp, ene.dameDeal);
             }
+
+            // check ene vs control unit
+            let eneIndex = eneIdx;
+            this._units.forEach(unit => {
+                if (!unit.target) {
+                    const enemy = this._enemies[eneIndex];
+                    if (enemy) {
+                        unit.target = { targetPosition: enemy.getUpdatedPosition(), targetID:  enemy.id };
+                    }
+                    eneIndex += 1;
+                }
+            });
         });
 
         this._bullets.forEach(bullet => {
@@ -116,6 +130,7 @@ export class CollisionController {
         this._towers = objects.towers;
         this._bullets = objects.bullets;
         this._enemies = objects.enemies;
+        this._units = objects.units;
     }
 
     private _isCollision(c1: Circle, c2: Circle): boolean {

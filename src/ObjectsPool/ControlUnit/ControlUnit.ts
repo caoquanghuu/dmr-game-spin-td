@@ -1,44 +1,58 @@
-import { calculateAngleOfVector, isCollision } from '../../Util';
+import Emitter, { calculateAngleOfVector, isCollision } from '../../Util';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BaseObject } from '../BaseObject';
 import { PointData } from 'pixi.js';
 import { AssetsLoader } from '../../AssetsLoader';
 import { AppConstants } from '../../GameScene/Constants';
-import { Circle } from '../../Type';
+import { Circle, EffectType, FireBulletOption, TowerType } from '../../Type';
+import { sound } from '@pixi/sound';
 
 export class ControlUnit extends BaseObject {
-    public _target: PointData = { x: 0, y: 0 };
+    private _targetPosition: PointData;
+    private _targetID: number;
     public isMoving: boolean = false;
+    private _fireTimeCD: {fireTimeConst: number, fireTimeCount: number} = { fireTimeConst: 1000, fireTimeCount: 0 };
     constructor(textureName: string, isAnimationSprite?: boolean) {
         super(textureName, isAnimationSprite);
         this.moveEngine = new BaseEngine(false);
-        this.speed = 100;
+        this.speed = 150;
+        this._useEventEffect();
     }
 
-    set target(target: PointData) {
-        this._target.x = target.x;
-        this._target.y = target.y;
-        this._updateDirection();
+    get target(): PointData {
+        return this._targetPosition;
+    }
+
+    set target(target: {targetPosition: PointData, targetID: number}) {
+        this._targetPosition = target.targetPosition;
+        this._targetID = target.targetID;
         this.isMoving = true;
     }
 
     private _checkTarget() {
-        const c1: Circle = { position: this._target, radius: 5 };
-        const c2: Circle = { position: this.image.position, radius: 5 };
+        if (!this.target) return;
+
+        const c1: Circle = { position: this._targetPosition, radius: 5 };
+        const c2: Circle = { position: this.image.position, radius: 200 };
         const isReached = isCollision(c1, c2);
         if (isReached) {
+            if (this._fireTimeCD.fireTimeCount < this._fireTimeCD.fireTimeConst) return;
             this.isMoving = false;
+            const option: FireBulletOption = { position: this.position, target: this.target, towerType: TowerType.tinker, dame: 100, speed: this.speed * 3, effectType: null };
+            Emitter.emit(AppConstants.event.createBullet, option);
+            // sound.play(AppConstants.soundName.mainSound, { sprite: `${TowerType.tinker}` });
+            this._fireTimeCD.fireTimeCount = 0;
+        } else {
+            this.isMoving = true;
         }
     }
 
     private _updateDirection() {
         // calculate direction
-        const direction = calculateAngleOfVector(this.image.position, this._target);
+        const direction = calculateAngleOfVector(this.image.position, this._targetPosition);
         // set direction for move engine
         this.moveEngine.direction = direction;
         const imageDirection = direction + 90;
-        // this.move(dt);
-        console.log(imageDirection);
 
         // change vector of animation
         if (imageDirection > -22.5 && imageDirection <= 22.5) {
@@ -82,10 +96,20 @@ export class ControlUnit extends BaseObject {
         }
     }
 
-    public update(dt: number) {
-        if (!this._target || !this.isMoving) return;
-        this._checkTarget();
-        this.move(dt);
+    private _useEventEffect() {
+        Emitter.on(AppConstants.event.removeEnemy, (eneId: number) => {
+            if (this._targetID === eneId) {
+                this._targetPosition = undefined;
+                this._targetID = undefined;
+            }
+        });
+    }
 
+    public update(dt: number) {
+        this._fireTimeCD.fireTimeCount += dt;
+        this._checkTarget();
+        if (!this._targetPosition || !this.isMoving) return;
+        this._updateDirection();
+        this.move(dt);
     }
 }

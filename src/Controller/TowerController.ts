@@ -34,10 +34,12 @@ export class TowerController {
             sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.selectedBuilding });
         });
 
-        tower.baseTower.on('mouseenter', () => {
+        tower.baseTower.on('mouseover', () => {
+
             tower.toggleCircle(true);
         });
         tower.baseTower.on('mouseleave', () => {
+
             tower.toggleCircle(false);
         });
 
