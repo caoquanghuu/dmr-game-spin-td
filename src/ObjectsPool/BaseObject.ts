@@ -4,9 +4,11 @@ import { BaseEngine } from '../MoveEngine/BaseEngine';
 import { Direction } from '../Type';
 import { switchFn } from '../Util';
 
+
 export class BaseObject {
     private _image: Sprite | AnimatedSprite;
     private _animationName: {[animationTypes: string]: AnimatedSpriteFrames} = {};
+    private _currentAnimation: string;
     private _id: number;
     private _speed: number;
     private _direction: Direction | number;
@@ -38,8 +40,6 @@ export class BaseObject {
 
         this._image.position.x = position.x;
         this._image.position.y = position.y;
-
-
     }
 
     get direction(): Direction | number {
@@ -54,7 +54,7 @@ export class BaseObject {
         return this._image;
     }
 
-    set image(image: Sprite) {
+    set image(image: Sprite | AnimatedSprite) {
         this._image = image;
     }
 
@@ -86,10 +86,14 @@ export class BaseObject {
         if (this._image instanceof AnimatedSprite) {
             const textures = this._animationName[animationName];
             if (textures) {
-                (this._image as AnimatedSprite).textures = textures;
+                if (this._currentAnimation === animationName) return;
 
-                (this._image as AnimatedSprite).play();
+
+                (this._image as AnimatedSprite).textures = textures;
                 (this._image as AnimatedSprite).loop = loop;
+                (this._image as AnimatedSprite).play();
+                this._currentAnimation = animationName;
+
             }
         } else {
             return;
@@ -102,14 +106,18 @@ export class BaseObject {
 
         const isAngleDirection = this.moveEngine.isMoveByEnumDirection;
 
+
         // if object move by angle
         if (!isAngleDirection) {
-            this._image.x = this._image.x + Math.cos((this._moveEngine.direction * Math.PI) / 180) * ((this._speed * dt) / 1000);
 
-            this._image.y = this._image.y + Math.sin((this._moveEngine.direction * Math.PI) / 180) * ((this._speed * dt) / 1000);
+            const x = this._image.x + Math.cos((this._moveEngine.direction * Math.PI) / 180) * ((this._speed * dt) / 1000);
+
+            const y = this._image.y + Math.sin((this._moveEngine.direction * Math.PI) / 180) * ((this._speed * dt) / 1000);
+
+            this.image.position = { x: x, y: y };
 
             // rotate image direction
-            this._image.angle = this._moveEngine.direction;
+            // this._image.angle = this._moveEngine.direction;
         } else {
             // if object move by Direction type
             // get direction from move engine

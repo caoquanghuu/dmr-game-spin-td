@@ -13,10 +13,10 @@ import { BulletType, TowerType } from '../../Type';
 import Emitter from '../../Util';
 import { EnemiesController } from '../../Controller/EnemiesController';
 import { sound } from '@pixi/sound';
-import { BaseObject } from '../../ObjectsPool/BaseObject';
+import { ControlUnit } from '../../ObjectsPool/ControlUnit/ControlUnit';
 
 export class GameMap extends Container {
-    private _towers: Tower[] = [];
+    private _unit: ControlUnit[] = [];
     private _towerBase: Sprite[] = [];
     private _enemies: Enemies[] = [];
     private _bulletController: BulletController;
@@ -26,6 +26,7 @@ export class GameMap extends Container {
     private _objectPool: ObjectPool;
     private _time: number = 0;
     private _nuclearBase: AnimatedSprite;
+
     // wave is define to current hard level
     private _wave: number = 1;
 
@@ -51,14 +52,25 @@ export class GameMap extends Container {
 
         this._startGame();
 
-        const helicopter = new BaseObject('helicopter', true);
+        const helicopter = new ControlUnit('helicopter', true);
         helicopter.position = { x: 200, y: 300 };
         helicopter.image.zIndex = 100;
         helicopter.image.width = 100;
         helicopter.image.height = 100;
         helicopter.setAnimation('move-down', true);
-        this.addChild(helicopter.image);
+
         // helicopter.image.
+
+        this.eventMode = 'static';
+        this.on('pointerdown', (event) => {
+            const position = event.data.global;
+            helicopter.target = { x: position.x, y: position.y };
+            // helicopter.position = position;
+        });
+        this._unit.push(helicopter);
+        helicopter.isMoving = true;
+
+        this.addChild(helicopter.image);
     }
 
     private _init() {
@@ -213,13 +225,13 @@ export class GameMap extends Container {
 
     // update function
     public update(dt: number) {
-        this._towers.forEach(tower => {
-            tower.update(dt);
+        this._unit.forEach(unit => {
+            unit.update(dt);
         });
 
-        this._enemies.forEach(ene => {
-            ene.update(dt);
-        });
+        // this._enemies.forEach(ene => {
+        //     ene.update(dt);
+        // });
 
         this._towerController.update(dt);
         this._bulletController.update(dt);

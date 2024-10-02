@@ -44,6 +44,17 @@ export namespace AppConstants {
         towerUpGradeIcon: 25
     };
 
+    export const moveAnimationName = {
+        moveUp: 'move-up',
+        moveDown: 'move-down',
+        moveLeft: 'move-left',
+        moveRight: 'move-right',
+        moveUpLeft: 'move-left-up',
+        moveUpRight: 'move-right-up',
+        moveDownLeft: 'move-left-down',
+        moveDownRight: 'move-right-down'
+    };
+
     export const textureName = {
         tankExplosionAnimation: 'tank',
         grass: 'grass-1',
