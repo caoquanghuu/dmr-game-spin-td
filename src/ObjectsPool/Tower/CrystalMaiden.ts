@@ -8,7 +8,7 @@ export class CrystalMaiden extends Tower {
         this.effectType = EffectType.SLOW;
         this.image.width = 0.8 * AppConstants.matrixSize;
         this.image.height = AppConstants.matrixSize;
-        this.image.anchor.set(0.5, 0.2);
+        this.buildingSize = { x: 1, y: 1 };
 
         this.init();
 

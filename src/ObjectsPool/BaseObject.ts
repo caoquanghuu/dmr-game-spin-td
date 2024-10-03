@@ -26,9 +26,6 @@ export class BaseObject {
             this._image = new Sprite(AssetsLoader.getTexture(textureName));
         }
 
-
-        this._image.anchor.set(0.5);
-
     }
 
     get position(): PointData {

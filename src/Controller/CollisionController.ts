@@ -6,12 +6,15 @@ import { AnimatedSprite, PointData } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
+import { GameMap } from '../GameScene/Map/Map';
 
 export class CollisionController {
     private _towers: Tower[] = [];
     private _bullets: Bullet[] = [];
     private _enemies: Enemies[] = [];
     private _units: ControlUnit[] = [];
+    private _eneMatrixMap: {position: PointData, value: number}[] = [];
+    private _towerMatrixMap: {position: PointData, value: number}[] = [];
     private _nuclearBasePosition: PointData;
     private _getObjectsFromGameScene: GetObjectFromGameSceneFn;
     private _getExplosionFromPool: GetExplosionFromPoolFn;
@@ -141,8 +144,65 @@ export class CollisionController {
         return false;
     }
 
+    private _changeMatrixMap() {
+        this._updateMatrixMap();
+        const matrixSize = AppConstants.matrixSize;
+
+        this._eneMatrixMap.forEach(val => {
+            const c1: Circle = { position: { x: val.position.x * matrixSize + matrixSize / 2, y: val.position.y * matrixSize + matrixSize / 2 }, radius: matrixSize / 2 };
+
+            this._enemies.forEach(ene => {
+
+                const c2: Circle = { position: ene.position, radius: matrixSize / 2 };
+
+                const isCollision = this._isCollision(c1, c2);
+                if (isCollision) {
+                    GameMap.mapMatrix[val.position.x][val.position.y] = AppConstants.matrixMapValue.unit;
+                } else {
+                    GameMap.mapMatrix[val.position.x][val.position.y] = AppConstants.matrixMapValue.availableMoveWay;
+                }
+            });
+        });
+
+        // this._towerMatrixMap.forEach(val => {
+        //     const c1: Circle = { position: { x: val.position.x * matrixSize + matrixSize / 2, y: val.position.y * matrixSize + matrixSize / 2 }, radius: matrixSize / 2 };
+
+        //     this._towers.forEach(tower => {
+        //         const c2: Circle = { position: tower.position, radius: matrixSize / 2 };
+        //         const isCollision = this._isCollision(c1, c2);
+
+        //         if (isCollision) {
+        //             GameMap.mapMatrix[val.position.x][val.position.y] = AppConstants.matrixMapValue.tower;
+        //         } else {
+        //             GameMap.mapMatrix[val.position.x][val.position.y] = AppConstants.matrixMapValue.availableTowerBuild;
+        //         }
+        //     });
+        // });
+    }
+
+    /**
+     * method to get update matrix map. It not really need but in case on update of future some other class will change matrix map
+     * it will help full
+     */
+    private _updateMatrixMap() {
+        const eneMatrixMap: {value: number, position: PointData}[] = [];
+        const towerMatrixMap: {value: number, position: PointData}[] = [];
+        GameMap.mapMatrix.forEach((values: number[], idxX: number) => {
+            values.forEach((val, idxY: number) => {
+                if (val === AppConstants.matrixMapValue.availableMoveWay || val === AppConstants.matrixMapValue.unit) {
+                    eneMatrixMap.push({ position: { x: idxX, y: idxY }, value: val });
+                } else if (val === AppConstants.matrixMapValue.availableTowerBuild || val === AppConstants.matrixMapValue.tower) {
+                    towerMatrixMap.push({ position: { x: idxX, y: idxY }, value: val });
+                }
+            });
+        });
+        this._eneMatrixMap = eneMatrixMap;
+        this._towerMatrixMap = towerMatrixMap;
+    }
+
     public update() {
         this._assignObject();
         this._checkCollisionBetweenObjects();
+        this._changeMatrixMap();
     }
 }

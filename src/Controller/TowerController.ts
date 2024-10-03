@@ -1,9 +1,10 @@
 import { FireBulletOption, GetTowerFromPoolFn, ReturnTowerToPoolFn, TowerInformation, TowerType } from '../Type';
 import { Tower } from '../ObjectsPool/Tower/Tower';
-import { Sprite } from 'pixi.js';
+import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { sound } from '@pixi/sound';
+import { GameMap } from '../GameScene/Map/Map';
 
 export class TowerController {
     private _towers: Tower[] = [];
@@ -21,6 +22,11 @@ export class TowerController {
 
     public _createTower(option: {towerType: TowerType, baseTower: Sprite}): void {
         const tower = this._getTowerFromPool(option.towerType);
+        if (!this._checkBuildingSpace({ position: { x: option.baseTower.position.x, y: option.baseTower.position.y }, buildingSize: tower.buildingSize })) {
+            console.log('cant not build');
+            this._returnTowerToPool(tower);
+            return;
+        }
         tower.position = { x: option.baseTower.x, y: option.baseTower.y - 25 };
         tower.circleImage.position = { x: option.baseTower.x, y: option.baseTower.y };
         tower.circleImage.zIndex = AppConstants.zIndex.tower;
@@ -106,6 +112,26 @@ export class TowerController {
     private _fireBullet(option: FireBulletOption) {
         Emitter.emit(AppConstants.event.createBullet, option);
 
+    }
+
+    private _checkBuildingSpace(info: {position: PointData, buildingSize: PointData}): boolean {
+        const matrixPoint: PointData = { x: info.position.x / AppConstants.matrixSize, y: info.position.y / AppConstants.matrixSize };
+        let isPositionAvailable: boolean = true;
+        for (let i = 0; i < info.buildingSize.x; i++) {
+            for (let n = info.buildingSize.y - 1; n >= 0; n--) {
+                if ((GameMap.mapMatrix[matrixPoint.x + i][matrixPoint.y - n] != AppConstants.matrixMapValue.availableTowerBuild)) {
+                    isPositionAvailable = false;
+                }
+            }
+        }
+        if (isPositionAvailable) {
+            for (let i = 0; i < info.buildingSize.x; i++) {
+                for (let n = 0; n < info.buildingSize.y; n++) {
+                    GameMap.mapMatrix[matrixPoint.x + i][matrixPoint.y - n] = AppConstants.matrixMapValue.tower;
+                }
+            }
+        }
+        return isPositionAvailable;
     }
 
     public update(dt: number) {

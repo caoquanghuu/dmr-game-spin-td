@@ -20,6 +20,7 @@ export class Tower extends BaseObject {
     public baseTower: Sprite;
     public circleImage: Sprite;
     private _upgradeLevelImage: Sprite;
+    public buildingSize: PointData;
     private _item: BaseObject[] = [];
 
 

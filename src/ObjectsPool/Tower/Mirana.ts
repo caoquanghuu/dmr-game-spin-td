@@ -5,6 +5,8 @@ import { AssetsLoader } from '../../AssetsLoader';
 export class Mirana extends Tower {
     constructor() {
         super(TowerType.mirana);
+        this.buildingSize = { x: 1, y: 1 };
+        this.image.anchor.set(0, 0.3);
         this.init();
     }
 

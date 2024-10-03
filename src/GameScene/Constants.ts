@@ -20,6 +20,15 @@ export namespace AppConstants {
         height: appHeight / 2
     };
 
+    export const matrixMapValue = {
+        environment: 0,
+        availableMoveWay: 1,
+        availableTowerBuild: 2,
+        base: 3,
+        unit: 4,
+        tower: 5
+    };
+
     export const bulletCount = 5;
     export const towerCount = 5;
     export const enemiesCount = 5;
@@ -34,7 +43,7 @@ export namespace AppConstants {
     };
 
     export const playerBasicProperty = {
-        playerGold: 100,
+        playerGold: 10000,
         playerHp: 30
     };
 

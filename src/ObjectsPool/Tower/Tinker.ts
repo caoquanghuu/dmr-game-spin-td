@@ -6,6 +6,8 @@ export class Tinker extends Tower {
 
     constructor() {
         super(TowerType.tinker);
+        this.buildingSize = { x: 1, y: 1 };
+        this.image.anchor.set(0, 0.28);
         this.init();
     }
 

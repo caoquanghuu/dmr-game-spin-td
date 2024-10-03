@@ -33,7 +33,7 @@ export class GameMap extends Container {
     constructor() {
         super();
         // get matrix map from map file json file
-        GameMap.mapMatrix = map;
+        GameMap.mapMatrix = map.map(row => [...row]);
 
         // assign event emitter
         this._useEventEffect();
@@ -73,6 +73,7 @@ export class GameMap extends Container {
                 const grass = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.grass));
                 grass.width = AppConstants.matrixSize,
                 grass.height = AppConstants.matrixSize,
+                // grass.anchor = 0.5;
 
                 grass.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
                 this.addChild(grass);
@@ -88,13 +89,14 @@ export class GameMap extends Container {
                     const tree = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.tree));
                     tree.width = AppConstants.matrixSize,
                     tree.height = AppConstants.matrixSize;
+                    // tree.anchor = 0.5;
                     tree.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
                     this.addChild(tree);
                 }
 
                 if (value === 3) {
                     this._nuclearBase = new AnimatedSprite(AssetsLoader.getTexture(AppConstants.textureName.nuclearBase).animations[AppConstants.textureName.nuclearBaseAnimation]);
-                    this._nuclearBase.anchor = 0.5;
+                    // this._nuclearBase.anchor = 0.5;
                     this._nuclearBase.position = { x: idxX * AppConstants.matrixSize + AppConstants.matrixSize, y: idxY * AppConstants.matrixSize - AppConstants.matrixSize / 3 };
                     this._nuclearBase.width = AppConstants.matrixSize * 4;
                     this._nuclearBase.height = AppConstants.matrixSize * 4;
@@ -110,8 +112,9 @@ export class GameMap extends Container {
 
                 if (value === 2) {
                     const towerBase = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.towerBase));
-                    towerBase.anchor.set(0.5);
-                    towerBase.position = { x: idxX * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: idxY * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+
+                    // towerBase.anchor.set(0.5);
+                    towerBase.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
                     towerBase.width = AppConstants.matrixSize;
                     towerBase.height = AppConstants.matrixSize;
                     towerBase.zIndex = AppConstants.zIndex.towerBase;
@@ -232,6 +235,6 @@ export class GameMap extends Container {
         this._collisionController.update();
         this._enemiesController.update(dt);
 
-        this._checkWave(dt);
+        // this._checkWave(dt);
     }
 }

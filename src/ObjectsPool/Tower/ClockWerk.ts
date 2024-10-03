@@ -10,7 +10,8 @@ export class ClockWerk extends Tower {
         this.effectType = EffectType.BLAST;
         this.image.width = 0.7 * AppConstants.matrixSize;
         this.image.height = 1.25 * AppConstants.matrixSize;
-        this.image.anchor.set(0.5, 0.3);
+        this.buildingSize = { x: 1, y: 1 };
+        this.image.anchor.set(-0.2, -0.05);
         this.init();
     }
 
