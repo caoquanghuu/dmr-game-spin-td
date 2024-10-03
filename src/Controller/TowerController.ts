@@ -28,7 +28,7 @@ export class TowerController {
             return;
         }
         tower.position = { x: option.baseTower.x, y: option.baseTower.y - 25 };
-        tower.circleImage.position = { x: option.baseTower.x, y: option.baseTower.y };
+        tower.circleImage.position = { x: option.baseTower.x + AppConstants.matrixSize / 2, y: option.baseTower.y + AppConstants.matrixSize / 2 };
         tower.circleImage.zIndex = AppConstants.zIndex.tower;
         tower.image.zIndex = tower.position.y;
         tower.baseTower = option.baseTower;
@@ -81,6 +81,9 @@ export class TowerController {
         Emitter.emit(AppConstants.event.removeChildFromScene, tower.upGradeImage);
         this._towers.splice(i, 1);
 
+        // change matrix map
+        this._changeMatrixMap({ position: tower.baseTower.position, buildingSize: tower.buildingSize }, false);
+
         // play sound
         sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.soldTower });
     }
@@ -111,6 +114,35 @@ export class TowerController {
 
     private _fireBullet(option: FireBulletOption) {
         Emitter.emit(AppConstants.event.createBullet, option);
+
+    }
+
+    private _checkBuildingSpace(info: {position: PointData, buildingSize: PointData}): boolean {
+        const matrixPoint: PointData = { x: info.position.x / AppConstants.matrixSize, y: info.position.y / AppConstants.matrixSize };
+        let isPositionAvailable: boolean = true;
+        for (let i = 0; i < info.buildingSize.x; i++) {
+            for (let n = info.buildingSize.y - 1; n >= 0; n--) {
+                if ((GameMap.mapMatrix[matrixPoint.x + i][matrixPoint.y - n] != AppConstants.matrixMapValue.availableTowerBuild)) {
+                    isPositionAvailable = false;
+                }
+            }
+        }
+        if (isPositionAvailable) {
+            this._changeMatrixMap(info, true);
+        }
+        return isPositionAvailable;
+    }
+
+    private _changeMatrixMap(info: {position: PointData, buildingSize: PointData}, isBuilding: boolean) {
+        const matrixPoint: PointData = { x: info.position.x / AppConstants.matrixSize, y: info.position.y / AppConstants.matrixSize };
+        let matrixValue: number;
+        isBuilding ? matrixValue = AppConstants.matrixMapValue.tower : matrixValue = AppConstants.matrixMapValue.availableTowerBuild;
+
+        for (let i = 0; i < info.buildingSize.x; i++) {
+            for (let n = 0; n < info.buildingSize.y; n++) {
+                GameMap.mapMatrix[matrixPoint.x + i][matrixPoint.y - n] = matrixValue;
+            }
+        }
 
     }
 

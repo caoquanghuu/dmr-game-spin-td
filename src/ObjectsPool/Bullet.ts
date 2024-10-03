@@ -19,6 +19,7 @@ export class Bullet extends BaseObject {
         this.moveEngine = new BaseEngine(false);
         this.image.width = AppConstants.matrixSize / 2;
         this.image.height = AppConstants.matrixSize;
+        this.image.anchor = 0.5;
     }
 
     get dame(): number {

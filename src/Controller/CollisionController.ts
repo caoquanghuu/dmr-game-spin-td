@@ -32,7 +32,7 @@ export class CollisionController {
             // check ene vs tower
             const c1: Circle = { position: ene.position, radius: ene.image.width / 2 };
             this._towers.forEach(tower => {
-                const c2: Circle = { position: tower.position, radius: tower.effectArena };
+                const c2: Circle = { position: { x: tower.baseTower.position.x + AppConstants.matrixSize / 2, y: tower.baseTower.position.y + AppConstants.matrixSize / 2 }, radius: tower.effectArena };
 
                 const isCollision = this._isCollision(c1, c2);
                 if (isCollision) {

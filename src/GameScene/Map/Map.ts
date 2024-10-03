@@ -223,7 +223,7 @@ export class GameMap extends Container {
     // update function
     public update(dt: number) {
         this._unit.forEach(unit => {
-            unit.update(dt);
+            // unit.update(dt);
         });
 
         // this._enemies.forEach(ene => {

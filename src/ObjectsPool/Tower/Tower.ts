@@ -155,7 +155,7 @@ export class Tower extends BaseObject {
     public fire(target: PointData) {
         if (this.fireTimeCd.fireTimeCount > 0) return;
         const dameDeal = getRandomArbitrary(this._dame);
-        const option: FireBulletOption = { position: this.position, target: target, towerType: this.towerType, dame: dameDeal, speed: this.speed * 3, effectType: this.effectType };
+        const option: FireBulletOption = { position: { x: this.baseTower.x + AppConstants.matrixSize / 2, y: this.baseTower.y - this.image.height / 2 }, target: target, towerType: this.towerType, dame: dameDeal, speed: this.speed * 3, effectType: this.effectType };
         Emitter.emit(AppConstants.event.fireBullet, option);
         this.target = { x: target.x, y: target.y };
         this.fireTimeCd.fireTimeCount = this.fireTimeCd.fireTimeConst;
