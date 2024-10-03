@@ -1,4 +1,4 @@
-import { FireBulletOption, GetTowerFromPoolFn, ReturnTowerToPoolFn, TowerInformation, TowerType } from '../Type';
+import { FireBulletOption, GetTowerBasesFn, GetTowerFromPoolFn, ReturnTowerToPoolFn, TowerInformation, TowerType } from '../Type';
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
@@ -10,9 +10,11 @@ export class TowerController {
     private _towers: Tower[] = [];
     private _getTowerFromPool: GetTowerFromPoolFn;
     private _returnTowerToPool: ReturnTowerToPoolFn;
-    constructor(getTowerFromPoolCallBack: GetTowerFromPoolFn, returnTowerToPoolCallback: ReturnTowerToPoolFn) {
+    private _getTowerBases: GetTowerBasesFn;
+    constructor(getTowerFromPoolCallBack: GetTowerFromPoolFn, returnTowerToPoolCallback: ReturnTowerToPoolFn, getTowerBasesCallBack: GetTowerBasesFn) {
         this._getTowerFromPool = getTowerFromPoolCallBack;
         this._returnTowerToPool = returnTowerToPoolCallback;
+        this._getTowerBases = getTowerBasesCallBack;
         this._useEventEffect();
     }
 
@@ -22,33 +24,37 @@ export class TowerController {
 
     public _createTower(option: {towerType: TowerType, baseTower: Sprite}): void {
         const tower = this._getTowerFromPool(option.towerType);
-        if (!this._checkBuildingSpace({ position: { x: option.baseTower.position.x, y: option.baseTower.position.y }, buildingSize: tower.buildingSize })) {
+        const info = { position: [{ x: option.baseTower.position.x, y: option.baseTower.position.y }], buildingSize: tower.buildingSize };
+        if (!this._checkBuildingSpace(info)) {
             console.log('cant not build');
             this._returnTowerToPool(tower);
             return;
         }
+        const towerBasesPosition = this._changeMatrixMap(true, info);
+        const towerBases = this._getTowerBases(towerBasesPosition);
         tower.position = { x: option.baseTower.x, y: option.baseTower.y - 25 };
-        tower.circleImage.position = { x: option.baseTower.x + AppConstants.matrixSize / 2, y: option.baseTower.y + AppConstants.matrixSize / 2 };
+        tower.circleImage.position = { x: tower.position.x + tower.image.width / 2, y: tower.image.position.y + tower.image.height / 2 };
         tower.circleImage.zIndex = AppConstants.zIndex.tower;
         tower.image.zIndex = tower.position.y;
-        tower.baseTower = option.baseTower;
-        tower.baseTower.removeAllListeners();
-        tower.baseTower.on('pointerdown', () => {
+        tower.baseTower = towerBases;
+        tower.baseTower.forEach(base => {
+            base.removeAllListeners();
+            base.on('pointerdown', () => {
             // send tower info to ui controller
-            const info: TowerInformation = { towerType: tower.towerType, speed: Math.floor(tower.fireTimeColdDown), dame: tower.dame.min, level: tower.level, goldUpgrade: tower.upGradeCost, towerId: tower.id };
-            Emitter.emit(AppConstants.event.displayTowerInfo, info);
-            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.selectedBuilding });
+                const info: TowerInformation = { towerType: tower.towerType, speed: Math.floor(tower.fireTimeColdDown), dame: tower.dame.min, level: tower.level, goldUpgrade: tower.upGradeCost, towerId: tower.id };
+                Emitter.emit(AppConstants.event.displayTowerInfo, info);
+                sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.selectedBuilding });
+            });
+
+            base.on('mouseover', () => {
+
+                tower.toggleCircle(true);
+            });
+            base.on('mouseleave', () => {
+
+                tower.toggleCircle(false);
+            });
         });
-
-        tower.baseTower.on('mouseover', () => {
-
-            tower.toggleCircle(true);
-        });
-        tower.baseTower.on('mouseleave', () => {
-
-            tower.toggleCircle(false);
-        });
-
         this._towers.push(tower);
 
 
@@ -69,11 +75,15 @@ export class TowerController {
         }
 
         const tower = this._towers[i];
-        tower.baseTower.removeAllListeners();
-        tower.baseTower.on('pointerdown', () => {
-            Emitter.emit(AppConstants.event.selectTowerBase, tower.baseTower);
-            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.selectedBuilding });
+        tower.baseTower.forEach (base => {
+            base.removeAllListeners();
+            base.on('pointerdown', () => {
+                Emitter.emit(AppConstants.event.selectTowerBase, base);
+                sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.selectedBuilding });
+            });
         });
+        const basesPosition = tower.baseTower.map(base => base.position);
+        this._changeMatrixMap(false, { position: basesPosition, buildingSize: tower.buildingSize });
         tower.reset();
         this._returnTowerToPool(tower);
         Emitter.emit(AppConstants.event.removeChildFromScene, tower.image);
@@ -82,7 +92,7 @@ export class TowerController {
         this._towers.splice(i, 1);
 
         // change matrix map
-        this._changeMatrixMap({ position: tower.baseTower.position, buildingSize: tower.buildingSize }, false);
+
 
         // play sound
         sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.soldTower });
@@ -117,8 +127,8 @@ export class TowerController {
 
     }
 
-    private _checkBuildingSpace(info: {position: PointData, buildingSize: PointData}): boolean {
-        const matrixPoint: PointData = { x: info.position.x / AppConstants.matrixSize, y: info.position.y / AppConstants.matrixSize };
+    private _checkBuildingSpace(info: {position: PointData[], buildingSize: PointData}): boolean {
+        const matrixPoint: PointData = { x: info.position[0].x / AppConstants.matrixSize, y: info.position[0].y / AppConstants.matrixSize };
         let isPositionAvailable: boolean = true;
         for (let i = 0; i < info.buildingSize.x; i++) {
             for (let n = info.buildingSize.y - 1; n >= 0; n--) {
@@ -127,44 +137,48 @@ export class TowerController {
                 }
             }
         }
-        if (isPositionAvailable) {
-            this._changeMatrixMap(info, true);
-        }
+
         return isPositionAvailable;
     }
 
-    private _changeMatrixMap(info: {position: PointData, buildingSize: PointData}, isBuilding: boolean) {
-        const matrixPoint: PointData = { x: info.position.x / AppConstants.matrixSize, y: info.position.y / AppConstants.matrixSize };
-        let matrixValue: number;
-        isBuilding ? matrixValue = AppConstants.matrixMapValue.tower : matrixValue = AppConstants.matrixMapValue.availableTowerBuild;
 
-        for (let i = 0; i < info.buildingSize.x; i++) {
-            for (let n = 0; n < info.buildingSize.y; n++) {
+    private _changeMatrixMap(isBuilding: boolean, info: {position: PointData[], buildingSize: PointData}): PointData[] | undefined {
+        const matrixValue = isBuilding ? AppConstants.matrixMapValue.tower : AppConstants.matrixMapValue.availableTowerBuild;
+        const matrixPoint: PointData = { x: info.position[0].x / AppConstants.matrixSize, y: info.position[0].y / AppConstants.matrixSize };
+        console.log(GameMap.mapMatrix);
+
+        if (isBuilding) {
+            return this._buildTower(matrixPoint, info.buildingSize, matrixValue);
+        } else {
+            this._clearTower(info.position, matrixValue);
+            return;
+        }
+    }
+
+    private _buildTower(matrixPoint: PointData, buildingSize: PointData, matrixValue: number): PointData[] {
+        const basesPosition: PointData[] = [];
+
+        for (let i = 0; i < buildingSize.x; i++) {
+            for (let n = 0; n < buildingSize.y; n++) {
                 GameMap.mapMatrix[matrixPoint.x + i][matrixPoint.y - n] = matrixValue;
+
+                const basePosition: PointData = { x: (matrixPoint.x + i) * AppConstants.matrixSize, y: (matrixPoint.y - n) * AppConstants.matrixSize };
+                basesPosition.push(basePosition);
             }
         }
 
+        console.log(GameMap.mapMatrix);
+
+        return basesPosition;
     }
 
-    private _checkBuildingSpace(info: {position: PointData, buildingSize: PointData}): boolean {
-        const matrixPoint: PointData = { x: info.position.x / AppConstants.matrixSize, y: info.position.y / AppConstants.matrixSize };
-        let isPositionAvailable: boolean = true;
-        for (let i = 0; i < info.buildingSize.x; i++) {
-            for (let n = info.buildingSize.y - 1; n >= 0; n--) {
-                if ((GameMap.mapMatrix[matrixPoint.x + i][matrixPoint.y - n] != AppConstants.matrixMapValue.availableTowerBuild)) {
-                    isPositionAvailable = false;
-                }
-            }
-        }
-        if (isPositionAvailable) {
-            for (let i = 0; i < info.buildingSize.x; i++) {
-                for (let n = 0; n < info.buildingSize.y; n++) {
-                    GameMap.mapMatrix[matrixPoint.x + i][matrixPoint.y - n] = AppConstants.matrixMapValue.tower;
-                }
-            }
-        }
-        return isPositionAvailable;
+    private _clearTower(positions: PointData[], matrixValue: number): void {
+        positions.forEach(pos => {
+            const matrixPoint: PointData = { x: pos.x / AppConstants.matrixSize, y: pos.y / AppConstants.matrixSize };
+            GameMap.mapMatrix[matrixPoint.x][matrixPoint.y] = matrixValue;
+        });
     }
+
 
     public update(dt: number) {
         this._towers.forEach(tower => {

@@ -1,4 +1,4 @@
-import { AnimatedSprite, Container, Graphics, Sprite } from 'pixi.js';
+import { AnimatedSprite, Container, Graphics, PointData, Sprite } from 'pixi.js';
 import { AppConstants } from '../Constants';
 import map from '../Map/mapMatrix.json';
 import { Tower } from '../../ObjectsPool/Tower/Tower';
@@ -42,7 +42,7 @@ export class GameMap extends Container {
         this._objectPool = new ObjectPool();
 
         // create controllers
-        this._towerController = new TowerController(this._getTowerFromPool.bind(this), this._returnTowerToPool.bind(this));
+        this._towerController = new TowerController(this._getTowerFromPool.bind(this), this._returnTowerToPool.bind(this), this._getTowerBase.bind(this));
         this._enemiesController = new EnemiesController(this._getEnemiesFromPool.bind(this), this._returnEnemiesToPool.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this));
         this._bulletController = new BulletController(this._getBulletFromPool.bind(this), this._returnBulletToPool.bind(this));
         this._collisionController = new CollisionController(this._getObject.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this));
@@ -187,6 +187,15 @@ export class GameMap extends Container {
 
     }
 
+    private _getTowerBase(position: PointData[]): Sprite[] {
+        const towerBases: Sprite[] = [];
+        for (let i = 0; i < position.length; i++) {
+            const towerBase = this._towerBase.find(base => base.position.x === position[i].x && base.position.y === position[i].y);
+            towerBases.push(towerBase);
+        }
+        return towerBases;
+    }
+
     // methods get and return object to controllers
     private _getTowerFromPool(towerType: TowerType): Tower {
         return this._objectPool.getTowerFromPool(towerType);
@@ -223,18 +232,15 @@ export class GameMap extends Container {
     // update function
     public update(dt: number) {
         this._unit.forEach(unit => {
-            // unit.update(dt);
+            unit.update(dt);
         });
 
-        // this._enemies.forEach(ene => {
-        //     ene.update(dt);
-        // });
 
         this._towerController.update(dt);
         this._bulletController.update(dt);
         this._collisionController.update();
         this._enemiesController.update(dt);
 
-        // this._checkWave(dt);
+        this._checkWave(dt);
     }
 }

@@ -15,9 +15,10 @@ export class Tower extends BaseObject {
     private _upGradeCost: number;
     protected fireTimeCd: FireTime= { fireTimeConst: 0, fireTimeCount: 0 };
     protected target: PointData;
+    protected isFireAble: boolean = true;
     public time: number = 0;
     private _level: number = 1;
-    public baseTower: Sprite;
+    public baseTower: Sprite[] = [];
     public circleImage: Sprite;
     private _upgradeLevelImage: Sprite;
     public buildingSize: PointData;
@@ -33,8 +34,6 @@ export class Tower extends BaseObject {
         this.circleImage = new Sprite(AssetsLoader.getTexture('circle'));
         this.circleImage.anchor = 0.5;
         this.circleImage.alpha = AppConstants.imageAlpha.towerCircle;
-
-
     }
 
     get effectArena(): number {
@@ -153,9 +152,10 @@ export class Tower extends BaseObject {
     }
 
     public fire(target: PointData) {
+        if (!this.isFireAble) return;
         if (this.fireTimeCd.fireTimeCount > 0) return;
         const dameDeal = getRandomArbitrary(this._dame);
-        const option: FireBulletOption = { position: { x: this.baseTower.x + AppConstants.matrixSize / 2, y: this.baseTower.y - this.image.height / 2 }, target: target, towerType: this.towerType, dame: dameDeal, speed: this.speed * 3, effectType: this.effectType };
+        const option: FireBulletOption = { position: { x: this.image.position.x + this.image.width / 2, y: this.image.position.y }, target: target, towerType: this.towerType, dame: dameDeal, speed: this.speed * 3, effectType: this.effectType };
         Emitter.emit(AppConstants.event.fireBullet, option);
         this.target = { x: target.x, y: target.y };
         this.fireTimeCd.fireTimeCount = this.fireTimeCd.fireTimeConst;

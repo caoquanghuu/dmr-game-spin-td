@@ -14,7 +14,6 @@ export class CollisionController {
     private _enemies: Enemies[] = [];
     private _units: ControlUnit[] = [];
     private _eneMatrixMap: {position: PointData, value: number}[] = [];
-    private _towerMatrixMap: {position: PointData, value: number}[] = [];
     private _nuclearBasePosition: PointData;
     private _getObjectsFromGameScene: GetObjectFromGameSceneFn;
     private _getExplosionFromPool: GetExplosionFromPoolFn;
@@ -32,7 +31,7 @@ export class CollisionController {
             // check ene vs tower
             const c1: Circle = { position: ene.position, radius: ene.image.width / 2 };
             this._towers.forEach(tower => {
-                const c2: Circle = { position: { x: tower.baseTower.position.x + AppConstants.matrixSize / 2, y: tower.baseTower.position.y + AppConstants.matrixSize / 2 }, radius: tower.effectArena };
+                const c2: Circle = { position: { x: tower.image.position.x + AppConstants.matrixSize / 2, y: tower.image.position.y + AppConstants.matrixSize / 2 }, radius: tower.effectArena };
 
                 const isCollision = this._isCollision(c1, c2);
                 if (isCollision) {
@@ -163,21 +162,6 @@ export class CollisionController {
                 }
             });
         });
-
-        // this._towerMatrixMap.forEach(val => {
-        //     const c1: Circle = { position: { x: val.position.x * matrixSize + matrixSize / 2, y: val.position.y * matrixSize + matrixSize / 2 }, radius: matrixSize / 2 };
-
-        //     this._towers.forEach(tower => {
-        //         const c2: Circle = { position: tower.position, radius: matrixSize / 2 };
-        //         const isCollision = this._isCollision(c1, c2);
-
-        //         if (isCollision) {
-        //             GameMap.mapMatrix[val.position.x][val.position.y] = AppConstants.matrixMapValue.tower;
-        //         } else {
-        //             GameMap.mapMatrix[val.position.x][val.position.y] = AppConstants.matrixMapValue.availableTowerBuild;
-        //         }
-        //     });
-        // });
     }
 
     /**
@@ -186,23 +170,20 @@ export class CollisionController {
      */
     private _updateMatrixMap() {
         const eneMatrixMap: {value: number, position: PointData}[] = [];
-        const towerMatrixMap: {value: number, position: PointData}[] = [];
+
         GameMap.mapMatrix.forEach((values: number[], idxX: number) => {
             values.forEach((val, idxY: number) => {
                 if (val === AppConstants.matrixMapValue.availableMoveWay || val === AppConstants.matrixMapValue.unit) {
                     eneMatrixMap.push({ position: { x: idxX, y: idxY }, value: val });
-                } else if (val === AppConstants.matrixMapValue.availableTowerBuild || val === AppConstants.matrixMapValue.tower) {
-                    towerMatrixMap.push({ position: { x: idxX, y: idxY }, value: val });
                 }
             });
         });
         this._eneMatrixMap = eneMatrixMap;
-        this._towerMatrixMap = towerMatrixMap;
     }
 
     public update() {
         this._assignObject();
         this._checkCollisionBetweenObjects();
-        this._changeMatrixMap();
+        // this._changeMatrixMap();
     }
 }

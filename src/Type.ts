@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { AnimatedSprite, Container, PointData } from 'pixi.js';
+import { AnimatedSprite, Container, PointData, Sprite } from 'pixi.js';
 import { Tower } from '../src/ObjectsPool/Tower/Tower';
 import { Enemies } from '../src/ObjectsPool/Enemies/Enemies';
 import { Bullet } from '../src/ObjectsPool/Bullet';
@@ -118,3 +118,4 @@ export type RemoveFromBoardFb = (board: Container) => void;
 export type GetPlayerGoldFn = () => number;
 export type GetExplosionFromPoolFn = (exType: string) => AnimatedSprite;
 export type ReturnExplosionToPoolFn = (ex: AnimatedSprite, exType: string) => void;
+export type GetTowerBasesFn = (position: PointData[]) => Sprite[];

@@ -92,8 +92,10 @@ export class BSFMoveEngine {
     }
 
     private _checkNextMove(point: PointData): boolean {
-        if (this._mapMatrix[point.x][point.y] === 2) return false;
-        if (this._mapMatrix[point.x][point.y] === 0) return false;
+        if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.environment) return false;
+        if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.tower) return false;
+        if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.unit) return false;
+        if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.availableTowerBuild) return false;
         return true;
     }
 }
