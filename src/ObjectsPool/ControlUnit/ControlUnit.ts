@@ -4,18 +4,23 @@ import { BaseObject } from '../BaseObject';
 import { PointData } from 'pixi.js';
 import { AssetsLoader } from '../../AssetsLoader';
 import { AppConstants } from '../../GameScene/Constants';
-import { Circle, EffectType, FireBulletOption, TowerType } from '../../Type';
+import { Circle, EffectType, FireBulletOption, TowerType, UnitType } from '../../Type';
 import { sound } from '@pixi/sound';
 
 export class ControlUnit extends BaseObject {
     private _targetPosition: PointData;
     private _targetID: number;
+    readonly _unitType: UnitType;
     public isMoving: boolean = false;
     private _fireTimeCD: {fireTimeConst: number, fireTimeCount: number} = { fireTimeConst: 1000, fireTimeCount: 0 };
-    constructor(textureName: string, isAnimationSprite?: boolean) {
-        super(textureName, isAnimationSprite);
+    constructor(unitType: UnitType, isAnimationSprite?: boolean) {
+        super(unitType, isAnimationSprite);
+        this._unitType = unitType;
         this.moveEngine = new BaseEngine(false);
         this.speed = 150;
+        this.image.zIndex = 960;
+        this.image.width = AppConstants.matrixSize * 2;
+        this.image.height = AppConstants.matrixSize * 2;
         this._useEventEffect();
     }
 

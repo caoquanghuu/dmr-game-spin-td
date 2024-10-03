@@ -106,6 +106,10 @@ export interface CreateEnemiesOption {
     eneCount?: number
 }
 
+export enum UnitType {
+    helicopter = 'helicopter'
+}
+
 export type GetTowerFromPoolFn = (towerType: TowerType) => Tower;
 export type GetEnemiesFromPoolFn = () => Enemies;
 export type GetBulletFromPoolFn = (bulletType: BulletType) => Bullet;
@@ -119,3 +123,5 @@ export type GetPlayerGoldFn = () => number;
 export type GetExplosionFromPoolFn = (exType: string) => AnimatedSprite;
 export type ReturnExplosionToPoolFn = (ex: AnimatedSprite, exType: string) => void;
 export type GetTowerBasesFn = (position: PointData[]) => Sprite[];
+export type GetUnitFromPoolFn = (unitType: UnitType) => ControlUnit;
+export type ReturnUnitToPoolFn = (unit: ControlUnit) => void;

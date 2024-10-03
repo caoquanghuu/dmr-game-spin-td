@@ -1,25 +1,35 @@
-import { FireBulletOption, GetTowerBasesFn, GetTowerFromPoolFn, ReturnTowerToPoolFn, TowerInformation, TowerType } from '../Type';
+import { FireBulletOption, GetTowerBasesFn, GetTowerFromPoolFn, GetUnitFromPoolFn, ReturnTowerToPoolFn, ReturnUnitToPoolFn, TowerInformation, TowerType, UnitType } from '../Type';
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { sound } from '@pixi/sound';
 import { GameMap } from '../GameScene/Map/Map';
+import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
 
 export class TowerController {
     private _towers: Tower[] = [];
+    private _units: ControlUnit[] = [];
     private _getTowerFromPool: GetTowerFromPoolFn;
     private _returnTowerToPool: ReturnTowerToPoolFn;
     private _getTowerBases: GetTowerBasesFn;
-    constructor(getTowerFromPoolCallBack: GetTowerFromPoolFn, returnTowerToPoolCallback: ReturnTowerToPoolFn, getTowerBasesCallBack: GetTowerBasesFn) {
+    private _getUnitFromPool: GetUnitFromPoolFn;
+    private _returnUnitToPool: ReturnUnitToPoolFn;
+    constructor(getTowerFromPoolCallBack: GetTowerFromPoolFn, returnTowerToPoolCallback: ReturnTowerToPoolFn, getTowerBasesCallBack: GetTowerBasesFn, getUnitFromPoolCallBack: GetUnitFromPoolFn, returnUnitToPoolCallBack: ReturnUnitToPoolFn) {
         this._getTowerFromPool = getTowerFromPoolCallBack;
         this._returnTowerToPool = returnTowerToPoolCallback;
         this._getTowerBases = getTowerBasesCallBack;
+        this._getUnitFromPool = getUnitFromPoolCallBack;
+        this._returnUnitToPool = returnUnitToPoolCallBack;
         this._useEventEffect();
     }
 
     get towers(): Tower[] {
         return this._towers;
+    }
+
+    get units(): ControlUnit[] {
+        return this._units;
     }
 
     /**
@@ -75,10 +85,15 @@ export class TowerController {
         });
         this._towers.push(tower);
 
+        if (tower.towerType === TowerType.barack) {
+            this._createUnit(UnitType.helicopter, tower.position, tower.id);
+        }
+
 
         // use event emitter add tower to game
         Emitter.emit(AppConstants.event.addChildToScene, tower.image);
         Emitter.emit(AppConstants.event.addChildToScene, tower.circleImage);
+        Emitter.emit(AppConstants.event.reduceGold, AppConstants.towerPrice[tower.towerType]);
         tower.toggleCircle(false);
 
         // play sound
@@ -124,6 +139,16 @@ export class TowerController {
 
         // play sound
         sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.soldTower });
+    }
+
+    private _createUnit(unitType: UnitType, position: PointData, towerId: number) {
+        const unit = this._getUnitFromPool(unitType);
+
+        unit.position = position;
+        unit.id = towerId;
+        unit.setAnimation(AppConstants.moveAnimationName.moveDown, true);
+        Emitter.emit(AppConstants.event.addChildToScene, unit.image);
+        this._units.push(unit);
     }
 
     private _useEventEffect() {
@@ -179,7 +204,6 @@ export class TowerController {
     private _changeMatrixMap(isBuilding: boolean, info: {position: PointData[], buildingSize: PointData}): PointData[] | undefined {
         const matrixValue = isBuilding ? AppConstants.matrixMapValue.tower : AppConstants.matrixMapValue.availableTowerBuild;
         const matrixPoint: PointData = { x: info.position[0].x / AppConstants.matrixSize, y: info.position[0].y / AppConstants.matrixSize };
-        console.log(GameMap.mapMatrix);
 
         if (isBuilding) {
             return this._buildTower(matrixPoint, info.buildingSize, matrixValue);
@@ -200,9 +224,6 @@ export class TowerController {
                 basesPosition.push(basePosition);
             }
         }
-
-        console.log(GameMap.mapMatrix);
-
         return basesPosition;
     }
 
@@ -217,6 +238,10 @@ export class TowerController {
     public update(dt: number) {
         this._towers.forEach(tower => {
             tower.update(dt);
+        });
+
+        this._units.forEach(unit => {
+            unit.update(dt);
         });
     }
 }

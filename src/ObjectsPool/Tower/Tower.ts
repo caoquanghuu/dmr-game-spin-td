@@ -16,6 +16,7 @@ export class Tower extends BaseObject {
     protected fireTimeCd: FireTime= { fireTimeConst: 0, fireTimeCount: 0 };
     protected target: PointData;
     protected isFireAble: boolean = true;
+    protected isSpawnUnit: boolean = false;
     public time: number = 0;
     private _level: number = 1;
     public baseTower: Sprite[] = [];

@@ -90,7 +90,6 @@ export class BuildTowerBoard extends Container {
 
         // in case enough gold
         Emitter.emit(AppConstants.event.createTower, { towerType: towerType, baseTower: this._baseTower });
-        Emitter.emit(AppConstants.event.reduceGold, goldCost);
         Emitter.emit(AppConstants.event.resetBoard, null);
     }
 }

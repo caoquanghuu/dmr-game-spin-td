@@ -1,4 +1,4 @@
-import { BulletType, EnemiesType, TowerType } from '../Type';
+import { BulletType, EnemiesType, TowerType, UnitType } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { CrystalMaiden } from '../ObjectsPool/Tower/CrystalMaiden';
@@ -7,6 +7,7 @@ import { Tinker } from '../ObjectsPool/Tower/Tinker';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { ClockWerk } from '../ObjectsPool/Tower/ClockWerk';
 import { Barack } from './Tower/Barack';
+import { ControlUnit } from './ControlUnit/ControlUnit';
 
 export default class Factory {
     public static instance: Factory;
@@ -101,5 +102,10 @@ export default class Factory {
         //         return tank3;
         //     default:
         // }
+    }
+
+    public static createUnit(type: UnitType): ControlUnit {
+        const unit = new ControlUnit(type, true);
+        return unit;
     }
 }

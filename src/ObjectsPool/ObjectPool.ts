@@ -1,4 +1,4 @@
-import { BulletType, TowerType } from '../Type';
+import { BulletType, TowerType, UnitType } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { Tower } from '../ObjectsPool/Tower/Tower';
@@ -6,6 +6,7 @@ import { AppConstants } from '../GameScene/Constants';
 import Factory from '../ObjectsPool/Factory';
 import { AnimatedSprite } from 'pixi.js';
 import { AssetsLoader } from '../AssetsLoader';
+import { ControlUnit } from './ControlUnit/ControlUnit';
 
 export class ObjectPool {
     public static inst: ObjectPool;
@@ -13,6 +14,7 @@ export class ObjectPool {
     private _enemiesPool: Enemies[] = [];
     private _towerPool: {[towerType: string]: Tower[]} = {};
     private _explosionPool: {[explosionType: string]: AnimatedSprite[]} = {};
+    private _unitPool: {[unitType: string]: ControlUnit[]} = {};
 
     constructor() {
         ObjectPool.inst = this;
@@ -39,6 +41,14 @@ export class ObjectPool {
             for (let i = 0; i < AppConstants.bulletCount; i++) {
                 const tower = Factory.createTower(value);
                 this._towerPool[key].push(tower);
+            }
+        }
+
+        for (const [key, value] of Object.entries(UnitType)) {
+            this._unitPool[key] = [];
+            for (let i = 0; i < 5; i++) {
+                const unit = Factory.createUnit(value);
+                this._unitPool[key].push(unit);
             }
         }
 
@@ -95,6 +105,16 @@ export class ObjectPool {
         }
     }
 
+    public getUnit(unitType: UnitType) {
+        if (this._unitPool[unitType]?.length <= 0) {
+            const unit = Factory.createUnit(unitType);
+            return unit;
+        } else {
+
+            return this._unitPool[unitType].pop() as ControlUnit;
+        }
+    }
+
     public returnBullet(bullet: Bullet): void {
         this._bulletPool[bullet.bulletType].push(bullet);
     }
@@ -111,5 +131,7 @@ export class ObjectPool {
         this._explosionPool[exType].push(ex);
     }
 
-
+    public returnUnit(unit: ControlUnit) {
+        this._unitPool[unit._unitType].push(unit);
+    }
 }

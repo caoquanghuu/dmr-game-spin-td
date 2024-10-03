@@ -9,7 +9,7 @@ import { CollisionController } from '../../Controller/CollisionController';
 import { TowerController } from '../../Controller/TowerController';
 import { ObjectPool } from '../../ObjectsPool/ObjectPool';
 import { Bullet } from '../../ObjectsPool/Bullet';
-import { BulletType, TowerType } from '../../Type';
+import { BulletType, TowerType, UnitType } from '../../Type';
 import Emitter from '../../Util';
 import { EnemiesController } from '../../Controller/EnemiesController';
 import { sound } from '@pixi/sound';
@@ -42,7 +42,7 @@ export class GameMap extends Container {
         this._objectPool = new ObjectPool();
 
         // create controllers
-        this._towerController = new TowerController(this._getTowerFromPool.bind(this), this._returnTowerToPool.bind(this), this._getTowerBase.bind(this));
+        this._towerController = new TowerController(this._getTowerFromPool.bind(this), this._returnTowerToPool.bind(this), this._getTowerBase.bind(this), this._getUnitFromPool.bind(this), this._returnUnitToPool.bind(this));
         this._enemiesController = new EnemiesController(this._getEnemiesFromPool.bind(this), this._returnEnemiesToPool.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this));
         this._bulletController = new BulletController(this._getBulletFromPool.bind(this), this._returnBulletToPool.bind(this));
         this._collisionController = new CollisionController(this._getObject.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this));
@@ -50,20 +50,6 @@ export class GameMap extends Container {
         this._init();
 
         this._startGame();
-        for (let i = 0; i < 5; i ++) {
-            const helicopter = new ControlUnit('helicopter', true);
-            helicopter.position = { x:  Math.random() * 200, y: 300 };
-            helicopter.image.zIndex = 960;
-            helicopter.image.width = 64;
-            helicopter.image.height = 64;
-            helicopter.setAnimation('move-down', true);
-
-            this._unit.push(helicopter);
-            helicopter.isMoving = true;
-
-            this.addChild(helicopter.image);
-        }
-
     }
 
     private _init() {
@@ -142,7 +128,7 @@ export class GameMap extends Container {
     }
 
     private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Enemies[], units: ControlUnit[]} {
-        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._enemiesController.enemies, units: this._unit };
+        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._enemiesController.enemies, units: this._towerController.units };
     }
 
     private _useEventEffect() {
@@ -227,6 +213,14 @@ export class GameMap extends Container {
 
     private _returnExplosionToPool(ex: AnimatedSprite, exType: BulletType) {
         this._objectPool.returnExplosion(ex, exType);
+    }
+
+    private _getUnitFromPool(unitType: UnitType): ControlUnit {
+        return this._objectPool.getUnit(unitType);
+    }
+
+    private _returnUnitToPool(unit: ControlUnit) {
+        this._objectPool.returnUnit(unit);
     }
 
     // update function
