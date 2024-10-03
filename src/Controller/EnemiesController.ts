@@ -35,9 +35,13 @@ export class EnemiesController {
         // create enemies, set position, hp, move speed , texture base on current wave
         const enemiesOption = EnemiesOption.alias[wave - 1];
         const enePosition: PointData = { x: position.x, y: position.y };
+        let time = 0;
         for (let i = 0; i <= enemiesOption.eneCount; i ++) {
-            this._createEnemies(enemiesOption, enePosition, wave);
-            enePosition.y -= 100;
+            setTimeout(() => {
+                this._createEnemies(enemiesOption, enePosition, wave);
+            }, time);
+            time += 500;
+
         }
     }
 
@@ -51,7 +55,6 @@ export class EnemiesController {
         ene.dameDeal = option.dame;
         ene.speed = option.speed;
         ene.goldReward = wave + 1;
-        ene.resetMove();
         ene.isMoving = true;
 
         Emitter.emit(AppConstants.event.addChildToScene, ene.image);
@@ -67,6 +70,7 @@ export class EnemiesController {
 
         const ene = this._enemies[i];
         ene.isMoving = false;
+        ene.reset();
         this._returnEnemiesToPool(ene);
 
         // create animation explosion

@@ -24,7 +24,7 @@ export namespace AppConstants {
         environment: 0,
         availableMoveWay: 1,
         availableTowerBuild: 2,
-        base: 3,
+        nuclearBase: 3,
         unit: 4,
         tower: 5
     };
@@ -36,7 +36,7 @@ export namespace AppConstants {
     export const zIndex = {
         bullet: 6,
         enemy: 4,
-        enemyHpBar: 5,
+        enemyHpBar: AppConstants.appHeight - 10,
         tower: 7,
         nuclearBase: 2,
         towerBase: 3

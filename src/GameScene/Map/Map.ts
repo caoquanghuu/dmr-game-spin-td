@@ -143,7 +143,7 @@ export class GameMap extends Container {
     // method to create enemies
     private _startGame() {
         // position spawn enemy game get on matrix map
-        this._enemiesController.spawnWave(this._wave, { x: 15 * AppConstants.matrixSize, y: -100 });
+        this._enemiesController.spawnWave(this._wave, { x: 15 * AppConstants.matrixSize, y: 1 });
     }
 
     private _checkWave(dt: number) {

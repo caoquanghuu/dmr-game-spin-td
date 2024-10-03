@@ -134,10 +134,10 @@ export class Tower extends BaseObject {
         // change or add upgrade image for tower
 
         this._upgradeLevelImage.texture = AssetsLoader.getTexture(`upgrade-level-${this._level}`);
-        this._upgradeLevelImage.position = this.image.position;
+        this._upgradeLevelImage.position = { x: this.position.x + this.image.width * 3 / 4, y: this.position.y + this.image.height / 2 };
         this._upgradeLevelImage.width = AppConstants.matrixSize / 2;
         this._upgradeLevelImage.height = AppConstants.matrixSize / 2;
-        this._upgradeLevelImage.anchor.set(0.2, -0.2);
+        this._upgradeLevelImage.anchor.set(0.5);
         this._upgradeLevelImage.alpha = AppConstants.imageAlpha.towerUpGradeIcon;
         this._upgradeLevelImage.zIndex = this.image.y + 1;
         Emitter.emit(AppConstants.event.addChildToScene, this._upgradeLevelImage);
