@@ -27,16 +27,32 @@ export class CollisionController {
 
     private async _checkCollisionBetweenObjects() {
         this._enemies.forEach((ene, eneIdx) => {
-            const c1: Circle = { position: ene.position, radius: ene.image.width / 2 };
+            const c1: Circle = { position: ene.position, radius: ene.image.width / 2 - 2 };
 
-            // this._enemies.forEach(ene2 => {
-            //     if (ene === ene2) return;
-            //     const c2: Circle = { position: ene2.position, radius: ene2.image.width };
-            //     const isCollision = this._isCollision(c1, c2);
-            //     if (isCollision) {
+            this._enemies.forEach(ene2 => {
+                if (ene === ene2) return;
+                const c2: Circle = { position: ene2.position, radius: ene2.image.width / 2 - 2};
+                const isCollision = this._isCollision(c1, c2);
+                const distance1 = ene.bfsMoveEngine.calculateBfsDistance();
+                const distance2 = ene2.bfsMoveEngine.calculateBfsDistance();
+                if (isCollision) {
 
-            //     }
-            // });
+                    if (distance1 >= distance2) {
+                        ene.isMoving = false;
+                        ene.boundBack();
+                    } else {
+                        ene2.isMoving = false;
+                        ene2.boundBack();
+                    }
+                } else {
+                    if (distance1 >= distance2) {
+                        ene.isMoving = true;
+                    } else {
+                        ene2.isMoving = true;
+                    }
+
+                }
+            });
 
             // check ene vs tower
 

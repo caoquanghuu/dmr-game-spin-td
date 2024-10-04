@@ -141,6 +141,28 @@ export class Enemies extends BaseObject {
         return this.image.position;
     }
 
+    public boundBack() {
+
+        switch (this.moveEngine.direction) {
+            case Direction.UP:
+                this.position = { x: this.position.x, y: this.position.y + 2 };
+                break;
+
+            case Direction.DOWN:
+                this.position = { x: this.position.x, y: this.position.y - 2 };
+                break;
+
+            case Direction.LEFT:
+                this.position = { x: this.position.x + 2, y: this.position.y };
+                break;
+
+            case Direction.RIGHT:
+                this.position = { x: this.position.x - 2, y: this.position.y };
+                break;
+            default:
+                break;
+        }
+    }
     public fire(target: PointData): boolean {
         if (this.fireTimeCd.fireTimeCount < this.fireTimeCd.fireTimeConst) return false;
         const option: FireBulletOption = { position: this.position, target: target, dame: this.dameDeal, speed: this.speed * 3, isEneBullet: this.isEneBullet, towerType: TowerType.tinker };
