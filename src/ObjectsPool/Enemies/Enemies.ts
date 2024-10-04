@@ -118,7 +118,7 @@ export class Enemies extends BaseObject {
 
     public startMove() {
         this._bfsMoveEngine.update();
-        this._getNextMove();
+        this.getNextMove();
         this._isMoving = true;
     }
 
@@ -189,19 +189,19 @@ export class Enemies extends BaseObject {
         this.move(dt);
         switch (this.direction) {
             case Direction.DOWN:
-                if (this.position.y - AppConstants.matrixSize / 2 >= this._positionChangeDirection.y) this._getNextMove();
+                if (this.position.y - AppConstants.matrixSize / 2 >= this._positionChangeDirection.y) this.getNextMove();
                 this.image.angle = 180;
                 break;
             case Direction.UP:
-                if (this.position.y - AppConstants.matrixSize / 2 <= this._positionChangeDirection.y) this._getNextMove();
+                if (this.position.y - AppConstants.matrixSize / 2 <= this._positionChangeDirection.y) this.getNextMove();
                 this.image.angle = 0;
                 break;
             case Direction.RIGHT:
-                if (this.position.x - AppConstants.matrixSize / 2 >= this._positionChangeDirection.x) this._getNextMove();
+                if (this.position.x - AppConstants.matrixSize / 2 >= this._positionChangeDirection.x) this.getNextMove();
                 this.image.angle = 90;
                 break;
             case Direction.LEFT:
-                if (this.position.x - AppConstants.matrixSize / 2 <= this._positionChangeDirection.x) this._getNextMove();
+                if (this.position.x - AppConstants.matrixSize / 2 <= this._positionChangeDirection.x) this.getNextMove();
                 this.image.angle = 270;
                 break;
             default:
@@ -209,7 +209,7 @@ export class Enemies extends BaseObject {
         }
     }
 
-    private _getNextMove() {
+    public getNextMove() {
 
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
         if (nextMove === undefined) {
@@ -228,7 +228,7 @@ export class Enemies extends BaseObject {
 
     public update(dt: number): void {
         if (this._isPauseMove) {
-            this._getNextMove();
+            this.getNextMove();
         }
         this._updateMatrixMap();
         this.time += dt;
