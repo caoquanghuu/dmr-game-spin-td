@@ -69,8 +69,8 @@ export class EnemiesController {
         });
 
         const ene = this._enemies[i];
+        ene.resetMove();
         ene.isMoving = false;
-        ene.reset();
         this._returnEnemiesToPool(ene);
 
         // create animation explosion

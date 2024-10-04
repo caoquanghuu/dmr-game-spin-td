@@ -3,6 +3,7 @@ import { AssetsLoader } from '../AssetsLoader';
 import { BaseEngine } from '../MoveEngine/BaseEngine';
 import { Direction } from '../Type';
 import { switchFn } from '../Util';
+import { AppConstants } from '../GameScene/Constants';
 
 
 export class BaseObject {
@@ -25,7 +26,6 @@ export class BaseObject {
         } else {
             this._image = new Sprite(AssetsLoader.getTexture(textureName));
         }
-
     }
 
     get position(): PointData {

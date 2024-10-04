@@ -4,15 +4,17 @@ import { BSFMove, BSFNextMove, Direction } from '../Type';
 import { AppConstants } from '../GameScene/Constants';
 export class BSFMoveEngine {
     private _mapMatrix: any;
-    private _bsfMove: BSFMove = { directions: [], path: [] };
-    private _targetValue: number = 3;
+    private _headPoint: PointData;
+    private _bsfMove: BSFMove;
 
-    constructor() {
+    constructor(headPoint: PointData) {
         this._mapMatrix = GameMap.mapMatrix;
+        this._headPoint = headPoint;
+        this._bsfMove = this._bfs(this._headPoint);
     }
 
-    set targetValue(vl: number) {
-        this._targetValue = vl;
+    set headPoint(headPoint: PointData) {
+        this.headPoint = headPoint;
     }
 
     get bsfNextMove(): BSFNextMove | undefined {
@@ -27,8 +29,11 @@ export class BSFMoveEngine {
         return { directions: nextDirection, path: { x: nextPath[0].x * AppConstants.matrixSize, y: nextPath[0].y * AppConstants.matrixSize } };
     }
 
-    private _bfs(point: PointData): BSFMove {
-        const headPoint = { x: Math.round((point.x - AppConstants.matrixSize / 2) / AppConstants.matrixSize), y:  Math.round((point.y - AppConstants.matrixSize / 2) / AppConstants.matrixSize) };
+    public reset() {
+        this._bsfMove = this._bfs(this._headPoint);
+    }
+
+    private _bfs(headPoint: PointData): BSFMove {
         const queue = [headPoint];
         const visited = new Set();
         const parent = {};
@@ -45,7 +50,7 @@ export class BSFMoveEngine {
 
         while (queue.length > 0) {
             const current = queue.shift();
-            if (this._mapMatrix[current.x][current.y] === this._targetValue) {
+            if (this._mapMatrix[current.x][current.y] === 3) {
                 let temp = current;
                 while (temp) {
                     path.push(temp);
@@ -89,23 +94,11 @@ export class BSFMoveEngine {
         }
     }
 
-    public reset() {
-        this._bsfMove = { directions: [], path: [] };
-    }
-
     private _checkNextMove(point: PointData): boolean {
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.environment) return false;
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.tower) return false;
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.unit) return false;
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.availableTowerBuild) return false;
         return true;
-    }
-
-    public update(headPoint: PointData) {
-        if (!headPoint) return;
-        const move = this._bfs(headPoint);
-        if (move) {
-            this._bsfMove = move;
-        }
     }
 }

@@ -6,7 +6,7 @@
             "HP": 600,
             "speed": 100,
             "dame": 1,
-            "eneCount": 10
+            "eneCount": 1
         },
         {
             "name": "tank-2",

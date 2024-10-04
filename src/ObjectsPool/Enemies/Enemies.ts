@@ -6,7 +6,6 @@ import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../../Util';
 import { AppConstants } from '../../GameScene/Constants';
 import { AssetsLoader } from '../../AssetsLoader';
-import { GameMap } from '../../GameScene/Map/Map';
 
 export class Enemies extends BaseObject {
     private _HP: {hpConst: number, hpCount: number} = { hpConst: 0, hpCount: 0 };
@@ -23,11 +22,9 @@ export class Enemies extends BaseObject {
         this.image.width = AppConstants.matrixSize;
         this.image.height = AppConstants.matrixSize;
         this.moveEngine = new BaseEngine(true);
-        this._bfsMoveEngine = new BSFMoveEngine();
-
-
-        this._bfsMoveEngine.targetValue = AppConstants.matrixMapValue.nuclearBase;
+        this._bfsMoveEngine = new BSFMoveEngine({x: 14, y: 0});
         this.image.anchor = 0.5;
+        this._getNextMove();
         this._hpBar = new Sprite(AssetsLoader.getTexture('hp-bar-10'));
         this._hpBar.scale.set(0.3, 0.2);
         // this._hpBar.width = AppConstants.matrixSize;
@@ -74,9 +71,9 @@ export class Enemies extends BaseObject {
         return this._hpBar;
     }
 
-    public reset() {
-        this.moveEngine.direction = Direction.DOWN;
+    public resetMove(): void {
         this._bfsMoveEngine.reset();
+        this._getNextMove();
     }
 
     public getUpdatedPosition(): PointData {
@@ -124,18 +121,18 @@ export class Enemies extends BaseObject {
 
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
         if (nextMove === undefined) {
+            this.isMoving = false;
             return;
         }
         this.moveEngine.direction = nextMove.directions;
 
         this._target = nextMove.path;
+
     }
 
 
     public update(dt: number): void {
         if (!this._isMoving) return;
-        this._bfsMoveEngine.update(this.image.position);
-        this._getNextMove();
         this._moveByBsf(dt);
         this._hpBar.position = this.image.position;
     }

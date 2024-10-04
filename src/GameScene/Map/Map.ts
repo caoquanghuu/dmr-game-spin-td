@@ -50,6 +50,7 @@ export class GameMap extends Container {
         this._init();
 
         this._startGame();
+        sound.muteAll();
     }
 
     private _init() {
