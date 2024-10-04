@@ -166,7 +166,7 @@ export class GameMap extends Container {
             Emitter.emit(AppConstants.event.displayWave, this._wave);
             // plus gold for player at new wave
             Emitter.emit(AppConstants.event.plusGold, (AppConstants.goldPlusPerWave + this._wave));
-            this._enemiesController.spawnWave(this._wave, { x: 15 * AppConstants.matrixSize, y: -100 });
+            this._enemiesController.spawnWave(this._wave, { x: 15 * AppConstants.matrixSize, y: 1 });
             // change texture of nuclear base
             this._nuclearBase.gotoAndStop(this._wave - 1);
             this._time = 0;

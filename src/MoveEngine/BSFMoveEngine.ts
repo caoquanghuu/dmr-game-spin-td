@@ -4,20 +4,22 @@ import { BSFMove, BSFNextMove, Direction } from '../Type';
 import { AppConstants } from '../GameScene/Constants';
 export class BSFMoveEngine {
     private _mapMatrix: any;
-    private _headPoint: PointData;
     private _bsfMove: BSFMove;
+    private _targetValue: number;
+    private _getHeadPointPosition: Function;
 
-    constructor(headPoint: PointData) {
+    constructor(getHeadPointPosition: Function, targetValue: number) {
         this._mapMatrix = GameMap.mapMatrix;
-        this._headPoint = headPoint;
-        this._bsfMove = this._bfs(this._headPoint);
+        this._targetValue = targetValue;
+        this._getHeadPointPosition = getHeadPointPosition;
     }
 
     set headPoint(headPoint: PointData) {
         this.headPoint = headPoint;
     }
 
-    get bsfNextMove(): BSFNextMove | undefined {
+    get bsfNextMove(): BSFNextMove {
+        if (!this._bsfMove) return;
         const direction = this._bsfMove.directions.shift();
         if (direction === undefined) return undefined;
         const nextPath = this._bsfMove.path.splice(1, 1);
@@ -29,11 +31,9 @@ export class BSFMoveEngine {
         return { directions: nextDirection, path: { x: nextPath[0].x * AppConstants.matrixSize, y: nextPath[0].y * AppConstants.matrixSize } };
     }
 
-    public reset() {
-        this._bsfMove = this._bfs(this._headPoint);
-    }
-
-    private _bfs(headPoint: PointData): BSFMove {
+    private _bfs(): BSFMove {
+        const headPoint = this._getHeadPointPosition();
+        if (!headPoint) return;
         const queue = [headPoint];
         const visited = new Set();
         const parent = {};
@@ -50,7 +50,7 @@ export class BSFMoveEngine {
 
         while (queue.length > 0) {
             const current = queue.shift();
-            if (this._mapMatrix[current.x][current.y] === 3) {
+            if (this._mapMatrix[current.x][current.y] === this._targetValue) {
                 let temp = current;
                 while (temp) {
                     path.push(temp);
@@ -100,5 +100,9 @@ export class BSFMoveEngine {
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.unit) return false;
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.availableTowerBuild) return false;
         return true;
+    }
+
+    public update() {
+        this._bsfMove = this._bfs();
     }
 }

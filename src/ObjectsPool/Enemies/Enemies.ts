@@ -14,21 +14,20 @@ export class Enemies extends BaseObject {
     private _enemiesType: EnemiesType;
     private _bfsMoveEngine: BSFMoveEngine;
     private _isMoving: boolean = false;
-    private _target: PointData;
+    private _positionChangeDirection: PointData;
     private _goldReward: number = 2;
     constructor(enemyType: EnemiesType) {
         super(enemyType);
         this._enemiesType = enemyType;
         this.image.width = AppConstants.matrixSize;
         this.image.height = AppConstants.matrixSize;
+
         this.moveEngine = new BaseEngine(true);
-        this._bfsMoveEngine = new BSFMoveEngine({x: 14, y: 0});
+        this._bfsMoveEngine = new BSFMoveEngine(this._getMatrixPosition.bind(this), AppConstants.matrixMapValue.nuclearBase);
+
         this.image.anchor = 0.5;
-        this._getNextMove();
         this._hpBar = new Sprite(AssetsLoader.getTexture('hp-bar-10'));
         this._hpBar.scale.set(0.3, 0.2);
-        // this._hpBar.width = AppConstants.matrixSize;
-        // this._hpBar.height = AppConstants.matrixSize / 6;
         this._hpBar.anchor.set(0.5, 4);
 
     }
@@ -71,9 +70,20 @@ export class Enemies extends BaseObject {
         return this._hpBar;
     }
 
-    public resetMove(): void {
-        this._bfsMoveEngine.reset();
-        this._getNextMove();
+    private _getMatrixPosition(): PointData {
+        const matrixPosition: PointData = { x: Math.round((this.position.x - AppConstants.matrixSize / 2) / AppConstants.matrixSize), y: Math.round((this.position.y - AppConstants.matrixSize / 2) / AppConstants.matrixSize) };
+        return matrixPosition;
+    }
+
+    public init() {
+        this._bfsMoveEngine.update();
+        this.getNextMove();
+        this._isMoving = true;
+    }
+
+    public reset() {
+        this.moveEngine.direction = Direction.STAND;
+        this._isMoving = false;
     }
 
     public getUpdatedPosition(): PointData {
@@ -97,19 +107,19 @@ export class Enemies extends BaseObject {
         this.move(dt);
         switch (this.direction) {
             case Direction.DOWN:
-                if (this.position.y - AppConstants.matrixSize / 2 >= this._target.y) this._getNextMove();
+                if (this.position.y - AppConstants.matrixSize / 2 >= this._positionChangeDirection.y) this.getNextMove();
                 this.image.angle = 180;
                 break;
             case Direction.UP:
-                if (this.position.y - AppConstants.matrixSize / 2 <= this._target.y) this._getNextMove();
+                if (this.position.y - AppConstants.matrixSize / 2 <= this._positionChangeDirection.y) this.getNextMove();
                 this.image.angle = 0;
                 break;
             case Direction.RIGHT:
-                if (this.position.x - AppConstants.matrixSize / 2 >= this._target.x) this._getNextMove();
+                if (this.position.x - AppConstants.matrixSize / 2 >= this._positionChangeDirection.x) this.getNextMove();
                 this.image.angle = 90;
                 break;
             case Direction.LEFT:
-                if (this.position.x - AppConstants.matrixSize / 2 <= this._target.x) this._getNextMove();
+                if (this.position.x - AppConstants.matrixSize / 2 <= this._positionChangeDirection.x) this.getNextMove();
                 this.image.angle = 270;
                 break;
             default:
@@ -117,16 +127,16 @@ export class Enemies extends BaseObject {
         }
     }
 
-    private _getNextMove() {
+    public getNextMove() {
 
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
         if (nextMove === undefined) {
-            this.isMoving = false;
+            // this.isMoving = false;
             return;
         }
         this.moveEngine.direction = nextMove.directions;
 
-        this._target = nextMove.path;
+        this._positionChangeDirection = nextMove.path;
 
     }
 
@@ -135,5 +145,6 @@ export class Enemies extends BaseObject {
         if (!this._isMoving) return;
         this._moveByBsf(dt);
         this._hpBar.position = this.image.position;
+        this._bfsMoveEngine.update();
     }
 }

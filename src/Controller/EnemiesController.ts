@@ -12,6 +12,7 @@ export class EnemiesController {
     private _returnEnemiesToPool: ReturnEnemiesToPoolFn;
     private _getExplosionFromPool: GetExplosionFromPoolFn;
     private _returnExplosionToPool: ReturnExplosionToPoolFn;
+    private _time: number = 0;
 
     constructor(getEnemiesFromPoolCB: GetEnemiesFromPoolFn, returnEnemiesToPoolCB: ReturnEnemiesToPoolFn, getExplosionFromPoolCB: GetExplosionFromPoolFn, returnExplosionToPoolCB: ReturnExplosionToPoolFn) {
         this._getEnemiesFromPool = getEnemiesFromPoolCB;
@@ -55,7 +56,8 @@ export class EnemiesController {
         ene.dameDeal = option.dame;
         ene.speed = option.speed;
         ene.goldReward = wave + 1;
-        ene.isMoving = true;
+        ene.init();
+
 
         Emitter.emit(AppConstants.event.addChildToScene, ene.image);
         Emitter.emit(AppConstants.event.addChildToScene, ene.hpBar);
@@ -69,8 +71,7 @@ export class EnemiesController {
         });
 
         const ene = this._enemies[i];
-        ene.resetMove();
-        ene.isMoving = false;
+        ene.reset();
         this._returnEnemiesToPool(ene);
 
         // create animation explosion
@@ -102,5 +103,6 @@ export class EnemiesController {
         this._enemies.forEach(ene => {
             ene.update(dt);
         });
+        this._time += dt;
     }
 }
