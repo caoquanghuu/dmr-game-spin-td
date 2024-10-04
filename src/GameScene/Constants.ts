@@ -163,7 +163,8 @@ export namespace AppConstants {
         upgradeTower: 'upgrade-tower',
         displayWave: 'display-wave',
         reduceBaseHp: 'reduce-base-hp',
-        gameOver: 'game-over'
+        gameOver: 'game-over',
+        gameStart: 'game-start'
 
     };
 

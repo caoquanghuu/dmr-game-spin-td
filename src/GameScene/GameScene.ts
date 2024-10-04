@@ -25,6 +25,7 @@ export class GameScene extends Container {
             this._UIBoard.renderable = true;
             this._map.renderable = true;
             this._isGameStart = true;
+            Emitter.emit(AppConstants.event.gameStart, null);
 
             sound.add('my-sound', { url: `${Assets.get('game-sound').resources[0]}`, sprites: Assets.get('game-sound').spritemap });
             sound.play('my-sound', { sprite: 'battle-control-online' });

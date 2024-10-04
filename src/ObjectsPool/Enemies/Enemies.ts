@@ -22,7 +22,10 @@ export class Enemies extends BaseObject {
     private _lastMatrix: PointData = { x: 0, y: 0 };
     private _isPauseMove: boolean = false;
     readonly isEneBullet: boolean = true;
-    public targetValue: number;
+
+    private _targetValue: number;
+    private _matrixValue: number = 2;
+
     constructor(enemyType: EnemiesType, targetValue: number) {
         super(enemyType);
         this._enemiesType = enemyType;
@@ -31,7 +34,7 @@ export class Enemies extends BaseObject {
 
         this.moveEngine = new BaseEngine(true);
         this._bfsMoveEngine = new BSFMoveEngine(this.getMatrixPosition.bind(this), targetValue);
-        this.targetValue = targetValue;
+        this._targetValue = targetValue;
 
         this.image.anchor = 0.5;
         this._hpBar = new Sprite(AssetsLoader.getTexture('hp-bar-10'));
@@ -39,6 +42,24 @@ export class Enemies extends BaseObject {
         this._hpBar.anchor.set(0.5, 4);
 
     }
+
+    get targetValue(): number {
+        return this._targetValue;
+    }
+
+    set targetValue(val: number) {
+        this._targetValue = val;
+        this._bfsMoveEngine.targetValue = val;
+    }
+
+    get matrixValue(): number {
+        return this._matrixValue;
+    }
+
+    set matrixValue(val: number) {
+        this._matrixValue = val;
+    }
+
 
     get HP(): number {
         return this._HP.hpCount;
@@ -86,6 +107,10 @@ export class Enemies extends BaseObject {
         return this._hpBar;
     }
 
+    get bfsMoveEngine(): BSFMoveEngine {
+        return this._bfsMoveEngine;
+    }
+
     public getMatrixPosition(): PointData {
         const matrixPosition: PointData = { x: Math.round((this.position.x - AppConstants.matrixSize / 2) / AppConstants.matrixSize), y: Math.round((this.position.y - AppConstants.matrixSize / 2) / AppConstants.matrixSize) };
         return matrixPosition;
@@ -101,7 +126,7 @@ export class Enemies extends BaseObject {
         const newMatrixPosition = this.getMatrixPosition();
         if (!newMatrixPosition) return;
         if (this._lastMatrix.x === newMatrixPosition.x && this._lastMatrix.y === newMatrixPosition.y) return;
-        GameMap.mapMatrix[newMatrixPosition.x][newMatrixPosition.y] = AppConstants.matrixMapValue.unit;
+        GameMap.mapMatrix[newMatrixPosition.x][newMatrixPosition.y] = this._matrixValue;
         GameMap.mapMatrix[this._lastMatrix.x][this._lastMatrix.y] = AppConstants.matrixMapValue.availableMoveWay;
 
         this._lastMatrix = { x: newMatrixPosition.x, y: newMatrixPosition.y };
@@ -183,6 +208,7 @@ export class Enemies extends BaseObject {
         if (this._isPauseMove) {
             this._getNextMove();
         }
+        this._updateMatrixMap();
         this.time += dt;
         this.fireTimeCd.fireTimeCount += dt;
         this._bfsMoveEngine.update();
@@ -190,6 +216,6 @@ export class Enemies extends BaseObject {
         this._moveByBsf(dt);
         this._hpBar.position = this.image.position;
 
-        this._updateMatrixMap();
+
     }
 }

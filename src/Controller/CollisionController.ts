@@ -3,7 +3,7 @@ import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
 import { AnimatedSprite, PointData } from 'pixi.js';
-import Emitter from '../Util';
+import Emitter, { switchFn } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
 import { GameMap } from '../GameScene/Map/Map';
@@ -27,9 +27,19 @@ export class CollisionController {
 
     private async _checkCollisionBetweenObjects() {
         this._enemies.forEach((ene, eneIdx) => {
+            const c1: Circle = { position: ene.position, radius: ene.image.width / 2 };
+
+            // this._enemies.forEach(ene2 => {
+            //     if (ene === ene2) return;
+            //     const c2: Circle = { position: ene2.position, radius: ene2.image.width };
+            //     const isCollision = this._isCollision(c1, c2);
+            //     if (isCollision) {
+
+            //     }
+            // });
 
             // check ene vs tower
-            const c1: Circle = { position: ene.position, radius: ene.image.width / 2 };
+
             this._towers.forEach(tower => {
                 const c2: Circle = { position: { x: tower.image.position.x + AppConstants.matrixSize / 2, y: tower.image.position.y + AppConstants.matrixSize / 2 }, radius: tower.effectArena };
 

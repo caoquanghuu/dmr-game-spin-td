@@ -13,7 +13,12 @@ export class EnemiesController {
     private _returnEnemiesToPool: ReturnEnemiesToPoolFn;
     private _getExplosionFromPool: GetExplosionFromPoolFn;
     private _returnExplosionToPool: ReturnExplosionToPoolFn;
+    private _isCreateEne: boolean = false;
     private _time: number = 0;
+    private _enemiesOption: any;
+    private _eneStartPosition: PointData;
+    private _eneCount: {eneConst: number, eneCount: number} = { eneConst: 0, eneCount: 0 };
+    private _wave: number;
 
     constructor(getEnemiesFromPoolCB: GetEnemiesFromPoolFn, returnEnemiesToPoolCB: ReturnEnemiesToPoolFn, getExplosionFromPoolCB: GetExplosionFromPoolFn, returnExplosionToPoolCB: ReturnExplosionToPoolFn) {
         this._getEnemiesFromPool = getEnemiesFromPoolCB;
@@ -34,21 +39,18 @@ export class EnemiesController {
     }
 
     public spawnWave(wave: number, position: PointData) {
-        // create enemies, set position, hp, move speed , texture base on current wave
-        const enemiesOption = EnemiesOption.alias[wave - 1];
-        const enePosition: PointData = { x: position.x, y: position.y };
-        let time = 0;
-        for (let i = 0; i <= enemiesOption.eneCount; i ++) {
-            setTimeout(() => {
-                this._createEnemies(enemiesOption, enePosition, wave);
-            }, time);
-            time += 500;
-
-        }
+        // Create enemies, set position, hp, move speed, texture based on current wave
+        this._enemiesOption = EnemiesOption.alias[wave - 1];
+        this._eneStartPosition = { x: position.x * AppConstants.matrixSize, y: position.y * AppConstants.matrixSize + 1 };
+        this._eneCount.eneConst = this._enemiesOption.eneCount;
+        this._wave = wave;
+        this._isCreateEne = true;
     }
+
 
     private _createEnemies(option: CreateEnemiesOption, position: PointData, wave: number): Enemies {
         const ene = this._getEnemiesFromPool();
+
         ene.image.texture = AssetsLoader.getTexture(`${option.name}`);
         ene.position = position;
         ene.image.zIndex = AppConstants.zIndex.enemy;
@@ -58,12 +60,13 @@ export class EnemiesController {
         ene.speed = option.speed;
         ene.goldReward = wave + 1;
         ene.startMove();
+        this._enemies.push(ene);
 
 
         Emitter.emit(AppConstants.event.addChildToScene, ene.image);
         Emitter.emit(AppConstants.event.addChildToScene, ene.hpBar);
 
-        this._enemies.push(ene);
+
         return ene;
     }
 
@@ -104,11 +107,36 @@ export class EnemiesController {
         Emitter.emit(AppConstants.event.plusGold, ene.goldReward);
     }
 
+    private _calculateDistanceToNuclearBase(dt: number) {
+        const arr = this._enemies.sort((a, b) => a.bfsMoveEngine.calculateBfsDistance() - b.bfsMoveEngine.calculateBfsDistance());
+        arr.forEach((ene, idx) => {
+            ene.update(dt);
+            if (idx === 0 || idx === 1) {
+                ene.targetValue = AppConstants.matrixMapValue.nuclearBase;
+                ene.matrixValue = AppConstants.matrixMapValue.unit;
+            } else {
+                ene.matrixValue = idx + 5;
+                ene.targetValue = arr[idx - 1].matrixValue;
+            }
+
+        });
+    }
+
 
     public update(dt: number) {
-        this._enemies.forEach((ene) => {
-            ene.update(dt);
-        });
+        this._calculateDistanceToNuclearBase(dt);
         this._time += dt;
+        if (this._isCreateEne) {
+            if (this._time >= 1000) {
+                if (this._eneCount.eneCount === this._eneCount.eneConst) {
+                    this._isCreateEne = false;
+                    this._eneCount.eneConst = 0;
+                    return;
+                }
+                this._createEnemies(this._enemiesOption, this._eneStartPosition, this._wave);
+                this._eneCount.eneCount++;
+                this._time = 0;
+            }
+        }
     }
 }

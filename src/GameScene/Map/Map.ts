@@ -48,8 +48,6 @@ export class GameMap extends Container {
         this._collisionController = new CollisionController(this._getObject.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this));
 
         this._init();
-
-        this._startGame();
         sound.muteAll();
     }
 
@@ -139,12 +137,16 @@ export class GameMap extends Container {
         Emitter.on(AppConstants.event.removeChildFromScene, (sprite: Sprite | AnimatedSprite | Graphics) => {
             this.removeChild(sprite);
         });
+
+        Emitter.on(AppConstants.event.gameStart, () => {
+            this._startGame();
+        });
     }
 
     // method to create enemies
     private _startGame() {
         // position spawn enemy game get on matrix map
-        this._enemiesController.spawnWave(this._wave, { x: 15 * AppConstants.matrixSize, y: 1 });
+        this._enemiesController.spawnWave(this._wave, { x: 15, y: 0 });
     }
 
     private _checkWave(dt: number) {
@@ -166,7 +168,7 @@ export class GameMap extends Container {
             Emitter.emit(AppConstants.event.displayWave, this._wave);
             // plus gold for player at new wave
             Emitter.emit(AppConstants.event.plusGold, (AppConstants.goldPlusPerWave + this._wave));
-            this._enemiesController.spawnWave(this._wave, { x: 15 * AppConstants.matrixSize, y: 1 });
+            this._enemiesController.spawnWave(this._wave, { x: 15, y: 0 });
             // change texture of nuclear base
             this._nuclearBase.gotoAndStop(this._wave - 1);
             this._time = 0;

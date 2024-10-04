@@ -14,6 +14,10 @@ export class BSFMoveEngine {
         this._getHeadPointPosition = getHeadPointPosition;
     }
 
+    set targetValue(val: number) {
+        this._targetValue = val;
+    }
+
     set headPoint(headPoint: PointData) {
         this.headPoint = headPoint;
     }
@@ -91,11 +95,55 @@ export class BSFMoveEngine {
         return null;
     }
 
+    public calculateBfsDistance(): number {
+        const headPoint = this._getHeadPointPosition();
+        if (!headPoint) return -1;
+
+        const queue: { point: PointData, steps: number }[] = [{ point: headPoint, steps: 0 }];
+        const visited: Set<string> = new Set();
+        const directions: PointData[] = [
+            { x: 0, y: -1 },
+            { x: 1, y: 0 },
+            { x: 0, y: 1 },
+            { x: -1, y: 0 },
+        ];
+
+        visited.add(`${headPoint.x},${headPoint.y}`);
+
+        while (queue.length > 0) {
+            const { point, steps } = queue.shift()!;
+
+            if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.nuclearBase) {
+                return steps;
+            }
+
+            for (const dir of directions) {
+                const next: PointData = { x: point.x + dir.x, y: point.y + dir.y };
+
+                const isPositionAvailable: boolean = this._checkNextMove(next);
+
+                if (
+                    isPositionAvailable &&
+                    next.x >= 0 &&
+                    next.x < 30 &&
+                    next.y >= 0 &&
+                    next.y < 16 &&
+                    !visited.has(`${next.x},${next.y}`)
+                ) {
+                    queue.push({ point: next, steps: steps + 1 });
+                    visited.add(`${next.x},${next.y}`);
+                }
+            }
+        }
+
+        return -1;
+    }
+
     private _checkNextMove(point: PointData): boolean {
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.environment) return false;
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.tower) return false;
-        if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.unit) return false;
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.availableTowerBuild) return false;
+        if ((this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.unit) && (this._targetValue === AppConstants.matrixMapValue.nuclearBase)) return false;
         return true;
     }
 
