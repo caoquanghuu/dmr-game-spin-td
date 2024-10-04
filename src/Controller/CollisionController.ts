@@ -149,47 +149,8 @@ export class CollisionController {
         return false;
     }
 
-    private _changeMatrixMap() {
-        this._updateMatrixMap();
-        const matrixSize = AppConstants.matrixSize;
-
-        this._eneMatrixMap.forEach(val => {
-            const c1: Circle = { position: { x: val.position.x * matrixSize + matrixSize / 2, y: val.position.y * matrixSize + matrixSize / 2 }, radius: matrixSize / 2 };
-
-            this._enemies.forEach(ene => {
-
-                const c2: Circle = { position: ene.position, radius: matrixSize / 2 };
-
-                const isCollision = this._isCollision(c1, c2);
-                if (isCollision) {
-                    GameMap.mapMatrix[val.position.x][val.position.y] = AppConstants.matrixMapValue.unit;
-                } else {
-                    GameMap.mapMatrix[val.position.x][val.position.y] = AppConstants.matrixMapValue.availableMoveWay;
-                }
-            });
-        });
-    }
-
-    /**
-     * method to get update matrix map. It not really need but in case on update of future some other class will change matrix map
-     * it will help full
-     */
-    private _updateMatrixMap() {
-        const eneMatrixMap: {value: number, position: PointData}[] = [];
-
-        GameMap.mapMatrix.forEach((values: number[], idxX: number) => {
-            values.forEach((val, idxY: number) => {
-                if (val === AppConstants.matrixMapValue.availableMoveWay || val === AppConstants.matrixMapValue.unit) {
-                    eneMatrixMap.push({ position: { x: idxX, y: idxY }, value: val });
-                }
-            });
-        });
-        this._eneMatrixMap = eneMatrixMap;
-    }
-
     public update() {
         this._assignObject();
         this._checkCollisionBetweenObjects();
-        // this._changeMatrixMap();
     }
 }

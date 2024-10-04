@@ -5,6 +5,7 @@ import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import EnemiesOption from '../ObjectsPool/Enemies/Enemies.json';
 import { AssetsLoader } from '../AssetsLoader';
+import { GameMap } from '../GameScene/Map/Map';
 
 export class EnemiesController {
     private _enemies: Enemies[] = [];
@@ -46,7 +47,7 @@ export class EnemiesController {
         }
     }
 
-    private _createEnemies(option: CreateEnemiesOption, position: PointData, wave: number) {
+    private _createEnemies(option: CreateEnemiesOption, position: PointData, wave: number): Enemies {
         const ene = this._getEnemiesFromPool();
         ene.image.texture = AssetsLoader.getTexture(`${option.name}`);
         ene.position = position;
@@ -63,6 +64,7 @@ export class EnemiesController {
         Emitter.emit(AppConstants.event.addChildToScene, ene.hpBar);
 
         this._enemies.push(ene);
+        return ene;
     }
 
     private _removeEnemies(id: number) {
@@ -74,6 +76,9 @@ export class EnemiesController {
 
         ene.reset();
         this._returnEnemiesToPool(ene);
+
+        const matrixPosition = ene.getMatrixPosition();
+        GameMap.mapMatrix[matrixPosition.x][matrixPosition.y] = AppConstants.matrixMapValue.availableMoveWay;
 
         // create animation explosion
         const explosion: AnimatedSprite = this._getExplosionFromPool(AppConstants.textureName.tankExplosionAnimation);
@@ -101,7 +106,7 @@ export class EnemiesController {
 
 
     public update(dt: number) {
-        this._enemies.forEach(ene => {
+        this._enemies.forEach((ene) => {
             ene.update(dt);
         });
         this._time += dt;

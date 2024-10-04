@@ -124,7 +124,7 @@ export namespace AppConstants {
     };
 
     export const bulletEffectArena = {
-        ice: 70,
+        ice: 10,
         laser: 10,
         lightning: 10,
         missile: 100
