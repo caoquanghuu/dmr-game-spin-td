@@ -8,6 +8,7 @@ import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { ClockWerk } from '../ObjectsPool/Tower/ClockWerk';
 import { Barack } from './Tower/Barack';
 import { ControlUnit } from './ControlUnit/ControlUnit';
+import { AppConstants } from '../GameScene/Constants';
 
 export default class Factory {
     public static instance: Factory;
@@ -81,7 +82,7 @@ export default class Factory {
         const objectId = Factory.objectId;
         Factory.objectId++;
 
-        const enemies = new Enemies(EnemiesType.tank_1);
+        const enemies = new Enemies(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase);
         enemies.id = objectId;
         return enemies;
 

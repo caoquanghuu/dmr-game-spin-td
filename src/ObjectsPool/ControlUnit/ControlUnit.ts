@@ -43,7 +43,7 @@ export class ControlUnit extends BaseObject {
         if (isReached) {
             if (this._fireTimeCD.fireTimeCount < this._fireTimeCD.fireTimeConst) return;
             this.isMoving = false;
-            const option: FireBulletOption = { position: this.position, target: this.target, towerType: TowerType.tinker, dame: 100, speed: this.speed * 3, effectType: null };
+            const option: FireBulletOption = { position: this.position, target: this.target, towerType: TowerType.tinker, dame: 100, speed: this.speed * 3, effectType: null, isEneBullet: false };
             Emitter.emit(AppConstants.event.createBullet, option);
             // sound.play(AppConstants.soundName.mainSound, { sprite: `${TowerType.tinker}` });
             this._fireTimeCD.fireTimeCount = 0;

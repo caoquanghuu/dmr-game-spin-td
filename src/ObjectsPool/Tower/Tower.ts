@@ -17,7 +17,6 @@ export class Tower extends BaseObject {
     protected target: PointData;
     protected isFireAble: boolean = true;
     protected isSpawnUnit: boolean = false;
-    public time: number = 0;
     private _level: number = 1;
     public baseTower: Sprite[] = [];
     public circleImage: Sprite;
@@ -156,7 +155,7 @@ export class Tower extends BaseObject {
         if (!this.isFireAble) return;
         if (this.fireTimeCd.fireTimeCount > 0) return;
         const dameDeal = getRandomArbitrary(this._dame);
-        const option: FireBulletOption = { position: { x: this.image.position.x + this.image.width / 2, y: this.image.position.y }, target: target, towerType: this.towerType, dame: dameDeal, speed: this.speed * 3, effectType: this.effectType };
+        const option: FireBulletOption = { position: { x: this.image.position.x + this.image.width / 2, y: this.image.position.y }, target: target, towerType: this.towerType, dame: dameDeal, speed: this.speed * 3, effectType: this.effectType, isEneBullet: false };
         Emitter.emit(AppConstants.event.fireBullet, option);
         this.target = { x: target.x, y: target.y };
         this.fireTimeCd.fireTimeCount = this.fireTimeCd.fireTimeConst;

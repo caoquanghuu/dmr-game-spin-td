@@ -70,6 +70,7 @@ export class BulletController {
         bullet.target = option.target;
         bullet.effectType = option.effectType;
         bullet.image.zIndex = AppConstants.zIndex.bullet;
+        bullet.isEneBullet = option.isEneBullet;
 
         this._bullets.push(bullet);
 

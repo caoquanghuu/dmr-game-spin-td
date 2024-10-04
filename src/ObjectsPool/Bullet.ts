@@ -12,6 +12,7 @@ export class Bullet extends BaseObject {
     private _isMoving: boolean = false;
     private _effectType: EffectType;
     private _effectArena: number;
+    public isEneBullet: boolean;
 
     constructor(bulletType: BulletType) {
         super(bulletType);

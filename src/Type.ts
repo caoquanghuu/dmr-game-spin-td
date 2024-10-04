@@ -68,10 +68,11 @@ export type BSFNextMove = {
 export type FireBulletOption = {
     position: PointData,
     target: PointData,
-    towerType: TowerType,
     dame: number,
     speed: number,
-    effectType?: EffectType
+    isEneBullet: boolean,
+    towerType?: TowerType,
+    effectType?: EffectType,
 };
 
 export type Circle = {

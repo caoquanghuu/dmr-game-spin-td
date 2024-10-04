@@ -1,4 +1,4 @@
-import { BSFNextMove, Direction, EnemiesType } from '../../Type';
+import { BSFNextMove, Direction, EnemiesType, FireBulletOption, FireTime, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BSFMoveEngine } from '../../MoveEngine/BSFMoveEngine';
@@ -16,14 +16,17 @@ export class Enemies extends BaseObject {
     private _isMoving: boolean = false;
     private _positionChangeDirection: PointData;
     private _goldReward: number = 2;
-    constructor(enemyType: EnemiesType) {
+    private _fireRadius: number = 100;
+    public fireTimeCd: FireTime= { fireTimeConst: 3000, fireTimeCount: 0 };
+    readonly isEneBullet: boolean = true;
+    constructor(enemyType: EnemiesType, targetValue: number) {
         super(enemyType);
         this._enemiesType = enemyType;
         this.image.width = AppConstants.matrixSize;
         this.image.height = AppConstants.matrixSize;
 
         this.moveEngine = new BaseEngine(true);
-        this._bfsMoveEngine = new BSFMoveEngine(this._getMatrixPosition.bind(this), AppConstants.matrixMapValue.nuclearBase);
+        this._bfsMoveEngine = new BSFMoveEngine(this._getMatrixPosition.bind(this), targetValue);
 
         this.image.anchor = 0.5;
         this._hpBar = new Sprite(AssetsLoader.getTexture('hp-bar-10'));
@@ -48,6 +51,14 @@ export class Enemies extends BaseObject {
 
     set dameDeal(dame: number) {
         this._dameDeal = dame;
+    }
+
+    get fireRadius(): number {
+        return this._fireRadius;
+    }
+
+    set fireRadius(rad: number) {
+        this._fireRadius = rad;
     }
 
     get enemiesType(): EnemiesType {
@@ -75,9 +86,9 @@ export class Enemies extends BaseObject {
         return matrixPosition;
     }
 
-    public init() {
+    public startMove() {
         this._bfsMoveEngine.update();
-        this.getNextMove();
+        this._getNextMove();
         this._isMoving = true;
     }
 
@@ -88,6 +99,15 @@ export class Enemies extends BaseObject {
 
     public getUpdatedPosition(): PointData {
         return this.image.position;
+    }
+
+    public fire(target: PointData): boolean {
+        if (this.fireTimeCd.fireTimeCount < this.fireTimeCd.fireTimeConst) return false;
+        const option: FireBulletOption = { position: this.position, target: target, dame: this.dameDeal, speed: this.speed * 3, isEneBullet: this.isEneBullet, towerType: TowerType.tinker };
+
+        Emitter.emit(AppConstants.event.createBullet, option);
+        this.fireTimeCd.fireTimeCount = 0;
+        return true;
     }
 
     public reduceHp(hpReDuce: number): void {
@@ -107,19 +127,19 @@ export class Enemies extends BaseObject {
         this.move(dt);
         switch (this.direction) {
             case Direction.DOWN:
-                if (this.position.y - AppConstants.matrixSize / 2 >= this._positionChangeDirection.y) this.getNextMove();
+                if (this.position.y - AppConstants.matrixSize / 2 >= this._positionChangeDirection.y) this._getNextMove();
                 this.image.angle = 180;
                 break;
             case Direction.UP:
-                if (this.position.y - AppConstants.matrixSize / 2 <= this._positionChangeDirection.y) this.getNextMove();
+                if (this.position.y - AppConstants.matrixSize / 2 <= this._positionChangeDirection.y) this._getNextMove();
                 this.image.angle = 0;
                 break;
             case Direction.RIGHT:
-                if (this.position.x - AppConstants.matrixSize / 2 >= this._positionChangeDirection.x) this.getNextMove();
+                if (this.position.x - AppConstants.matrixSize / 2 >= this._positionChangeDirection.x) this._getNextMove();
                 this.image.angle = 90;
                 break;
             case Direction.LEFT:
-                if (this.position.x - AppConstants.matrixSize / 2 <= this._positionChangeDirection.x) this.getNextMove();
+                if (this.position.x - AppConstants.matrixSize / 2 <= this._positionChangeDirection.x) this._getNextMove();
                 this.image.angle = 270;
                 break;
             default:
@@ -127,7 +147,7 @@ export class Enemies extends BaseObject {
         }
     }
 
-    public getNextMove() {
+    private _getNextMove() {
 
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
         if (nextMove === undefined) {
@@ -142,6 +162,8 @@ export class Enemies extends BaseObject {
 
 
     public update(dt: number): void {
+        this.time += dt;
+        this.fireTimeCd.fireTimeCount += dt;
         if (!this._isMoving) return;
         this._moveByBsf(dt);
         this._hpBar.position = this.image.position;

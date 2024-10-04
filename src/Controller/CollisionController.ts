@@ -44,11 +44,17 @@ export class CollisionController {
 
             const isCollision = this._isCollision(c1, c2);
             if (isCollision) {
+
+                const eneFired: boolean = ene.fire(this._nuclearBasePosition);
+                ene.isMoving = false;
                 // remove enemy cause it reached to base
-                Emitter.emit(AppConstants.event.removeEnemy, ene.id);
+                // Emitter.emit(AppConstants.event.removeEnemy, ene.id);
 
                 // send event to ui controller
-                Emitter.emit(AppConstants.event.reduceBaseHp, ene.dameDeal);
+                if (eneFired) {
+                    Emitter.emit(AppConstants.event.reduceBaseHp, ene.dameDeal);
+                }
+
             }
 
             // check ene vs control unit

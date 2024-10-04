@@ -56,7 +56,7 @@ export class EnemiesController {
         ene.dameDeal = option.dame;
         ene.speed = option.speed;
         ene.goldReward = wave + 1;
-        ene.init();
+        ene.startMove();
 
 
         Emitter.emit(AppConstants.event.addChildToScene, ene.image);
@@ -71,6 +71,7 @@ export class EnemiesController {
         });
 
         const ene = this._enemies[i];
+
         ene.reset();
         this._returnEnemiesToPool(ene);
 

@@ -14,6 +14,7 @@ export class BaseObject {
     private _speed: number;
     private _direction: Direction | number;
     private _moveEngine: BaseEngine;
+    protected time: number = 0;
     constructor(textureName: string, isAnimatedSprite?: boolean) {
         if (isAnimatedSprite) {
             const animations = AssetsLoader.getTexture(textureName).animations;
