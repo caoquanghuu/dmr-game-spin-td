@@ -10,7 +10,11 @@ export enum Direction {
     DOWN,
     LEFT,
     RIGHT,
-    STAND
+    STAND,
+    UP_LEFT,
+    UP_RIGHT,
+    DOWN_LEFT,
+    DOWN_RIGHT
 }
 
 export enum MoveType {

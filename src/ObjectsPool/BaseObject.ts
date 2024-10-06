@@ -122,9 +122,9 @@ export class BaseObject {
             const direction = this._moveEngine.direction;
 
             // return if current direction is standing
-            if (direction === Direction.STAND) {
-                return;
-            }
+            // if (direction === Direction.STAND) {
+            //     return;
+            // }
 
 
             //calculate next position base on direction, delta time and speed
@@ -151,11 +151,42 @@ export class BaseObject {
                 nextX = (this.position.x) + ((this._speed * dt) / 1000);
             };
 
+            const standing = () => {
+                nextY = this.position.y;
+                nextX = this.position.x;
+            }
+
+            const moveUpLeft = () => {
+                nextY = (this.position.y) - ((this._speed * dt) / 1000);
+                nextX = (this.position.x) - ((this._speed * dt) / 1000);
+            }
+
+            const moveUpRight = () => {
+                nextY = (this.position.y) - ((this._speed * dt) / 1000);
+                nextX = (this.position.x) + ((this._speed * dt) / 1000);
+            }
+
+            const moveDownLeft = () => {
+                nextY = (this.position.y) + ((this._speed * dt) / 1000);
+                nextX = (this.position.x) - ((this._speed * dt) / 1000);
+            }
+
+            const moveDownRight = () => {
+                nextY = (this.position.y) + ((this._speed * dt) / 1000);
+                nextX = (this.position.x) + ((this._speed * dt) / 1000);
+            }
+
             const moveList = {
                 0 : moveUp,
                 1 : moveDown,
                 2 : moveLeft,
                 3 : moveRight,
+                4: standing,
+                5: moveUpLeft,
+                6: moveUpRight,
+                7: moveDownLeft,
+                8 :moveDownRight,
+
                 'default' : () => {}
             };
 

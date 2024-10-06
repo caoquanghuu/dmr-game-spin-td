@@ -29,34 +29,34 @@ export class CollisionController {
         this._enemies.forEach((ene, eneIdx) => {
             const c1: Circle = { position: ene.position, radius: ene.image.width / 2 - 2 };
 
-            this._enemies.forEach(ene2 => {
-                if (ene === ene2) return;
-                const c2: Circle = { position: ene2.position, radius: ene2.image.width / 2 - 2 };
-                const isCollision = this._isCollision(c1, c2);
-                const distance1 = ene.bfsMoveEngine.calculateBfsDistance();
-                const distance2 = ene2.bfsMoveEngine.calculateBfsDistance();
-                if (isCollision) {
+            // this._enemies.forEach(ene2 => {
+            //     if (ene === ene2) return;
+            //     const c2: Circle = { position: ene2.position, radius: ene2.image.width / 2 - 2 };
+            //     const isCollision = this._isCollision(c1, c2);
+            //     const distance1 = ene.bfsMoveEngine.calculateBfsDistance();
+            //     const distance2 = ene2.bfsMoveEngine.calculateBfsDistance();
+            //     if (isCollision) {
 
-                    if (distance1 >= distance2) {
-                        ene.boundBack();
-                        ene.isMoving = false;
-                        ene.getNextMove();
+            //         if (distance1 >= distance2) {
+            //             ene.boundBack();
+            //             ene.isMoving = false;
+            //             ene.getNextMove();
 
-                    } else {
-                        ene2.boundBack();
-                        ene2.isMoving = false;
-                        ene2.getNextMove();
+            //         } else {
+            //             ene2.boundBack();
+            //             ene2.isMoving = false;
+            //             ene2.getNextMove();
 
-                    }
-                } else {
-                    if (distance1 >= distance2) {
-                        ene.isMoving = true;
-                    } else {
-                        ene2.isMoving = true;
-                    }
+            //         }
+            //     } else {
+            //         if (distance1 >= distance2) {
+            //             ene.isMoving = true;
+            //         } else {
+            //             ene2.isMoving = true;
+            //         }
 
-                }
-            });
+            //     }
+            // });
 
             // check ene vs tower
 

@@ -32,7 +32,12 @@ export class BSFMoveEngine {
         if (direction.x === 0 && direction.y === 1) nextDirection = Direction.DOWN;
         if (direction.x === 1 && direction.y === 0) nextDirection = Direction.RIGHT;
         if (direction.x === -1 && direction.y === 0) nextDirection = Direction.LEFT;
-        return { directions: nextDirection, path: { x: nextPath[0].x * AppConstants.matrixSize, y: nextPath[0].y * AppConstants.matrixSize } };
+        if (direction.x === 1 && direction.y === 1) nextDirection = Direction.DOWN_RIGHT;
+        if (direction.x === 1 && direction.y === -1) nextDirection = Direction.UP_RIGHT;
+        if (direction.x === -1 && direction.y === -1) nextDirection = Direction.UP_LEFT;
+        if (direction.x === -1 && direction.y === 1) nextDirection = Direction.DOWN_LEFT;
+
+        return { directions: nextDirection, path: { x: nextPath[0].x, y: nextPath[0].y} };
     }
 
     private _bfs(): BSFMove | null {
@@ -49,6 +54,10 @@ export class BSFMoveEngine {
             { x: 1, y: 0 },
             { x: 0, y: 1 },
             { x: -1, y: 0 },
+            {x: 1 , y: 1},
+            {x: -1, y: 1},
+            { x: 1, y: -1},
+            {x: -1, y: -1}
         ];
 
         visited.add(`${headPoint.x},${headPoint.y}`);
@@ -76,74 +85,74 @@ export class BSFMoveEngine {
             for (const dir of directions) {
                 const next: PointData = { x: current.x + dir.x, y: current.y + dir.y };
 
-                const isPositionAvailable: boolean = this._checkNextMove(next);
-
                 if (
-                    isPositionAvailable &&
                     next.x >= 0 &&
                     next.x < 30 &&
                     next.y >= 0 &&
                     next.y < 16 &&
                     !visited.has(`${next.x},${next.y}`)
                 ) {
-                    queue.push(next);
-                    visited.add(`${next.x},${next.y}`);
-                    parent[`${next.x},${next.y}`] = current;
+                    if (this._checkNextMove(next)) {
+                        queue.push(next);
+                        visited.add(`${next.x},${next.y}`);
+                        parent[`${next.x},${next.y}`] = current;
+                    }
+                   
                 }
             }
         }
         return null;
     }
 
-    public calculateBfsDistance(): number {
-        const headPoint = this._getHeadPointPosition();
-        if (!headPoint) return -1;
+    // public calculateBfsDistance(): number {
+    //     const headPoint = this._getHeadPointPosition();
+    //     if (!headPoint) return -1;
 
-        const queue: { point: PointData, steps: number }[] = [{ point: headPoint, steps: 0 }];
-        const visited: Set<string> = new Set();
-        const directions: PointData[] = [
-            { x: 0, y: -1 },
-            { x: 1, y: 0 },
-            { x: 0, y: 1 },
-            { x: -1, y: 0 },
-        ];
+    //     const queue: { point: PointData, steps: number }[] = [{ point: headPoint, steps: 0 }];
+    //     const visited: Set<string> = new Set();
+    //     const directions: PointData[] = [
+    //         { x: 0, y: -1 },
+    //         { x: 1, y: 0 },
+    //         { x: 0, y: 1 },
+    //         { x: -1, y: 0 },
+    //     ];
 
-        visited.add(`${headPoint.x},${headPoint.y}`);
+    //     visited.add(`${headPoint.x},${headPoint.y}`);
 
-        while (queue.length > 0) {
-            const { point, steps } = queue.shift()!;
+    //     while (queue.length > 0) {
+    //         const { point, steps } = queue.shift()!;
 
-            if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.nuclearBase) {
-                return steps;
-            }
+    //         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.nuclearBase) {
+    //             return steps;
+    //         }
 
-            for (const dir of directions) {
-                const next: PointData = { x: point.x + dir.x, y: point.y + dir.y };
+    //         for (const dir of directions) {
+    //             const next: PointData = { x: point.x + dir.x, y: point.y + dir.y };
 
-                const isPositionAvailable: boolean = this._checkNextMove(next);
+    //             const isPositionAvailable: boolean = this._checkNextMove(next);
 
-                if (
-                    isPositionAvailable &&
-                    next.x >= 0 &&
-                    next.x < 30 &&
-                    next.y >= 0 &&
-                    next.y < 16 &&
-                    !visited.has(`${next.x},${next.y}`)
-                ) {
-                    queue.push({ point: next, steps: steps + 1 });
-                    visited.add(`${next.x},${next.y}`);
-                }
-            }
-        }
+    //             if (
+    //                 isPositionAvailable &&
+    //                 next.x >= 0 &&
+    //                 next.x < 30 &&
+    //                 next.y >= 0 &&
+    //                 next.y < 16 &&
+    //                 !visited.has(`${next.x},${next.y}`)
+    //             ) {
+    //                 queue.push({ point: next, steps: steps + 1 });
+    //                 visited.add(`${next.x},${next.y}`);
+    //             }
+    //         }
+    //     }
 
-        return -1;
-    }
+    //     return -1;
+    // }
 
     private _checkNextMove(point: PointData): boolean {
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.environment) return false;
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.tower) return false;
         if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.availableTowerBuild) return false;
-        if ((this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.unit) && (this._targetValue === AppConstants.matrixMapValue.nuclearBase)) return false;
+
         return true;
     }
 

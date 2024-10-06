@@ -107,24 +107,25 @@ export class EnemiesController {
         Emitter.emit(AppConstants.event.plusGold, ene.goldReward);
     }
 
-    private _calculateDistanceToNuclearBase(dt: number) {
-        const arr = this._enemies.sort((a, b) => a.bfsMoveEngine.calculateBfsDistance() - b.bfsMoveEngine.calculateBfsDistance());
-        arr.forEach((ene, idx) => {
-            ene.update(dt);
-            if (idx === 0 || idx === 1) {
-                ene.targetValue = AppConstants.matrixMapValue.nuclearBase;
-                ene.matrixValue = AppConstants.matrixMapValue.unit;
-            } else {
-                ene.matrixValue = idx + 5;
-                ene.targetValue = arr[idx - 1].matrixValue;
-            }
+    // private _calculateDistanceToNuclearBase(dt: number) {
+    //     const arr = this._enemies.sort((a, b) => a.bfsMoveEngine.calculateBfsDistance() - b.bfsMoveEngine.calculateBfsDistance());
+    //     arr.forEach((ene, idx) => {
+    //         ene.update(dt);
+    //         if (idx === 0 || idx === 1) {
+    //             ene.targetValue = AppConstants.matrixMapValue.nuclearBase;
+    //             ene.matrixValue = AppConstants.matrixMapValue.unit;
+    //         } else {
+    //             ene.matrixValue = idx + 5;
+    //             ene.targetValue = arr[idx - 1].matrixValue;
+    //         }
 
-        });
-    }
+    //     });
+    // }
 
 
     public update(dt: number) {
-        this._calculateDistanceToNuclearBase(dt);
+        // this._calculateDistanceToNuclearBase(dt);
+        this._enemies.forEach(ene => ene.update(dt));
         this._time += dt;
         if (this._isCreateEne) {
             if (this._time >= 1000) {
