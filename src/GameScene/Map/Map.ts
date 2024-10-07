@@ -39,7 +39,7 @@ export class GameMap extends Container {
         this._useEventEffect();
 
         // create pool
-        this._objectPool = new ObjectPool(this._getMatrixMap.bind(this));
+        this._objectPool = new ObjectPool(this._getMatrixMap.bind(this), this._setMatrixMap.bind(this));
 
         // create controllers
         this._towerController = new TowerController(this._getTowerFromPool.bind(this), this._returnTowerToPool.bind(this), this._getTowerBase.bind(this), this._getUnitFromPool.bind(this), this._returnUnitToPool.bind(this), this._getMatrixMap.bind(this), this._setMatrixMap.bind(this));
@@ -126,8 +126,8 @@ export class GameMap extends Container {
         });
     }
 
-    private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Tank[], units: ControlUnit[]} {
-        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._unitController.units, units: this._towerController.units };
+    private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Tank[], allies: Tank[], units: ControlUnit[]} {
+        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._unitController.enemies, allies: this._unitController.allies, units: this._towerController.units };
     }
 
     private _useEventEffect() {
@@ -150,7 +150,7 @@ export class GameMap extends Container {
     }
 
     private _checkWave(dt: number) {
-        if ((this._unitController.units.some(unit => unit.isEne === true))) return;
+        if (this._unitController.enemies.length > 0) return;
 
         this._time += dt;
         if (this._time >= AppConstants.time.delayBetweenWaves) {

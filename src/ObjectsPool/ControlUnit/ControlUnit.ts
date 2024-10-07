@@ -4,16 +4,16 @@ import { BaseObject } from '../BaseObject';
 import { PointData } from 'pixi.js';
 import { AssetsLoader } from '../../AssetsLoader';
 import { AppConstants } from '../../GameScene/Constants';
-import { Circle, EffectType, FireBulletOption, TowerType, UnitType } from '../../Type';
+import { Circle, EffectType, FireBulletOption, FlyUnitType, TowerType } from '../../Type';
 import { sound } from '@pixi/sound';
 
 export class ControlUnit extends BaseObject {
     private _targetPosition: PointData;
     private _targetID: number;
-    readonly _unitType: UnitType;
+    readonly _unitType: FlyUnitType;
     public isMoving: boolean = false;
     private _fireTimeCD: {fireTimeConst: number, fireTimeCount: number} = { fireTimeConst: 1000, fireTimeCount: 0 };
-    constructor(unitType: UnitType, isAnimationSprite?: boolean) {
+    constructor(unitType: FlyUnitType, isAnimationSprite?: boolean) {
         super(unitType, isAnimationSprite);
         this._unitType = unitType;
         this.moveEngine = new BaseEngine(false);
@@ -102,8 +102,8 @@ export class ControlUnit extends BaseObject {
     }
 
     private _useEventEffect() {
-        Emitter.on(AppConstants.event.removeEnemy, (eneId: number) => {
-            if (this._targetID === eneId) {
+        Emitter.on(AppConstants.event.removeEnemy, (info: {id: number, isEne: boolean}) => {
+            if (this._targetID === info.id) {
                 this._targetPosition = undefined;
                 this._targetID = undefined;
             }

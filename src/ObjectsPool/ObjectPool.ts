@@ -1,4 +1,4 @@
-import { BulletType, EnemiesType, GetMatrixMapFn, TowerType, FlyUnitType } from '../Type';
+import { BulletType, EnemiesType, GetMatrixMapFn, TowerType, FlyUnitType, SetMatrixMapFn } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from './Enemies/Tank';
 import { Tower } from '../ObjectsPool/Tower/Tower';
@@ -15,9 +15,11 @@ export class ObjectPool {
     private _explosionPool: {[explosionType: string]: AnimatedSprite[]} = {};
     private _unitPool: {[unitType: string]: ControlUnit[]} = {};
     private _getMatrixMapCb: GetMatrixMapFn;
+    private _setMatrixMapCb: SetMatrixMapFn;
 
-    constructor(getMatrixMap: GetMatrixMapFn) {
+    constructor(getMatrixMap: GetMatrixMapFn, setMatrixMapCb: SetMatrixMapFn) {
         this._getMatrixMapCb = getMatrixMap;
+        this._setMatrixMapCb = setMatrixMapCb;
         //init bullet pool
         for (const [key, value] of Object.entries(BulletType)) {
             this._bulletPool[key] = [];
@@ -61,7 +63,7 @@ export class ObjectPool {
             tankExplosion.zIndex = 7;
             this._explosionPool['tank'].push(tankExplosion);
 
-            const enemies = new Tank(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase, this._getMatrixMapCb.bind(this));
+            const enemies = new Tank(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase, this._getMatrixMapCb.bind(this), this._setMatrixMapCb.bind(this));
             const eneId = Factory.createEnemies();
             enemies.id = eneId;
 
@@ -92,11 +94,11 @@ export class ObjectPool {
     public getEnemies(): Tank {
         if (this._enemiesPool.length <= 0) {
             const enemyId = Factory.createEnemies();
-            const ene = new Tank(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase, this._getMatrixMapCb.bind(this));
+            const ene = new Tank(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase, this._getMatrixMapCb.bind(this), this._setMatrixMapCb.bind(this));
             ene.id = enemyId;
             return ene;
         } else {
-            return this._enemiesPool.pop() as Tank;
+            return this._enemiesPool.shift() as Tank;
         }
     }
 

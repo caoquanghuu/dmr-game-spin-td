@@ -125,7 +125,7 @@ export type GetBulletFromPoolFn = (bulletType: BulletType) => Bullet;
 export type ReturnTowerToPoolFn = (tower: Tower) => void;
 export type ReturnEnemiesToPoolFn = (enemy: Tank) => void;
 export type ReturnBulletToPoolFn = (bullet: Bullet) => void;
-export type GetObjectFromGameSceneFn = () => {towers: Tower[], bullets: Bullet[], enemies: Tank[], units: ControlUnit[]};
+export type GetObjectFromGameSceneFn = () => {towers: Tower[], bullets: Bullet[], enemies: Tank[], allies: Tank[], units: ControlUnit[]};
 export type AddToBoardFn= (board: Container) => void;
 export type RemoveFromBoardFb = (board: Container) => void;
 export type GetPlayerGoldFn = () => number;

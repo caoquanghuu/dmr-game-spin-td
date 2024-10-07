@@ -1,4 +1,4 @@
-import { CreateEnemiesOption, GetEnemiesFromPoolFn, GetExplosionFromPoolFn, GetMatrixMapFn, ReturnEnemiesToPoolFn, ReturnExplosionToPoolFn, SetMatrixMapFn } from 'src/Type';
+import { CreateEnemiesOption, Direction, GetEnemiesFromPoolFn, GetExplosionFromPoolFn, GetMatrixMapFn, ReturnEnemiesToPoolFn, ReturnExplosionToPoolFn, SetMatrixMapFn } from '../Type';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
 import { AnimatedSprite, PointData } from 'pixi.js';
 import Emitter from '../Util';
@@ -7,7 +7,8 @@ import EnemiesOption from '../ObjectsPool/Enemies/Enemies.json';
 import { AssetsLoader } from '../AssetsLoader';
 
 export class UnitController {
-    private _units: Tank[] = [];
+    private _enemies: Tank[] = [];
+    private _allies: Tank[] = [];
     private _getEnemiesFromPool: GetEnemiesFromPoolFn;
     private _returnEnemiesToPool: ReturnEnemiesToPoolFn;
     private _getExplosionFromPool: GetExplosionFromPoolFn;
@@ -31,13 +32,17 @@ export class UnitController {
         this._useEventEffect();
     }
 
-    get units(): Tank[] {
-        return this._units;
+    get enemies(): Tank[] {
+        return this._enemies;
+    }
+
+    get allies(): Tank[] {
+        return this._allies;
     }
 
     private _useEventEffect() {
-        Emitter.on(AppConstants.event.removeEnemy, (id: number) => {
-            this._removeUnit(id);
+        Emitter.on(AppConstants.event.removeEnemy, (info: {id: number, isEne: boolean}) => {
+            this._removeUnit(info.id, info.isEne);
         });
         Emitter.on(AppConstants.event.createAllyUnit, (info: {op: CreateEnemiesOption, position: PointData}) => {
             this._createUnit(info.op, info.position, false);
@@ -70,29 +75,39 @@ export class UnitController {
             unit.matrixValue = AppConstants.matrixMapValue.enemy;
             unit.targetValue = AppConstants.matrixMapValue.nuclearBase;
             unit.goldReward = wave + 1;
+            this._enemies.push(unit);
 
         } else {
             unit.targetValue = AppConstants.matrixMapValue.enemy;
             unit.matrixValue = AppConstants.matrixMapValue.ally;
+            this._allies.push(unit);
 
         }
-
-        this._units.push(unit);
 
 
         Emitter.emit(AppConstants.event.addChildToScene, unit.image);
         Emitter.emit(AppConstants.event.addChildToScene, unit.hpBar);
+        Emitter.emit(AppConstants.event.addChildToScene, unit.g1);
+        Emitter.emit(AppConstants.event.addChildToScene, unit.g2);
 
 
         return unit;
     }
 
-    private _removeUnit(id: number) {
-        const i = this._units.findIndex(unit => {
-            return unit.id === id;
-        });
+    private _removeUnit(id: number, isEne: boolean) {
+        let unit: Tank;
+        let i: number;
+        if (isEne) {
+            i = this._enemies.findIndex(ene => {
+                return ene.id === id;
+            });
+            unit = this._enemies[i];
+        } else {
+            i = this._allies.findIndex(ally => {
+                return ally.id === id;
+            });
+        }
 
-        const unit = this._units[i];
 
         unit.reset();
         this._returnEnemiesToPool(unit);
@@ -118,10 +133,14 @@ export class UnitController {
         Emitter.emit(AppConstants.event.removeChildFromScene, unit.image);
         Emitter.emit(AppConstants.event.removeChildFromScene, unit.hpBar);
 
-        this._units.splice(i, 1);
+        if (isEne) {
+            this._enemies.splice(i, 1);
+        } else {
+            this._allies.splice(i, 1);
+        }
 
         // send event plus gold for player
-        if (unit.isEne) {
+        if (isEne) {
             Emitter.emit(AppConstants.event.plusGold, unit.goldReward);
         }
 
@@ -134,19 +153,73 @@ export class UnitController {
                 this._setMatrixMapCb(idxX, idxY, AppConstants.matrixMapValue.availableMoveWay);
             }
         }));
-        this._units.forEach(unit => {
+        this._enemies.forEach(ene => {
             // update and assign ene position on matrix map
-            const matrixPosition = unit.update(dt);
+            const matrixPosition = ene.update(dt);
             if (matrixPosition && this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
 
-                if (unit.isEne) {
-                    this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.enemy);
-                } else {
-                    this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.ally);
-                }
+
+                this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.enemy);
+                ene.g1.position = { x: matrixPosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
 
             }
 
+            switch (ene.direction) {
+                case Direction.DOWN:
+                    if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                        this._setMatrixMapCb(matrixPosition.x, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
+                        ene.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                    }
+                    break;
+                case Direction.UP:
+                    if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                        this._setMatrixMapCb(matrixPosition.x, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
+                        ene.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                    }
+                    break;
+                case Direction.RIGHT:
+                    if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+                        this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
+                        ene.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                    }
+                    break;
+                case Direction.LEFT:
+                    if (this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+                        this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
+                        ene.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                    }
+
+                default:
+                    break;
+            }
+
+
+            const nextMatrixPosition = ene.nextPosition;
+
+            if (nextMatrixPosition && this._getMatrixMapCb()[nextMatrixPosition.x][nextMatrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+
+                this._setMatrixMapCb(nextMatrixPosition.x, nextMatrixPosition.y, AppConstants.matrixMapValue.enemy);
+
+
+            }
+
+        });
+
+        this._allies.forEach(ally => {
+            const matrixPosition = ally.update(dt);
+            if (matrixPosition && this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+
+
+                this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.ally);
+            }
+
+
+            const nextMatrixPosition = ally.nextPosition;
+
+            if (nextMatrixPosition && this._getMatrixMapCb()[nextMatrixPosition.x][nextMatrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+
+                this._setMatrixMapCb(nextMatrixPosition.x, nextMatrixPosition.y, AppConstants.matrixMapValue.ally);
+            }
         });
 
         this._time += dt;

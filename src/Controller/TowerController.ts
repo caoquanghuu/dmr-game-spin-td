@@ -193,8 +193,10 @@ export class TowerController {
                     });
                 });
 
-                const position: PointData = { x: nuclearBasePosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: nuclearBasePosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                const position: PointData = { x: nuclearBasePosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (nuclearBasePosition.y - 2) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                 Emitter.emit(AppConstants.event.createAllyUnit, { op, position });
+
+                Emitter.emit(AppConstants.event.reduceGold, AppConstants.unitPrice.allyTank[option.name]);
             } else {
                 // barack require
             }

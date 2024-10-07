@@ -1,4 +1,4 @@
-import { BSFNextMove, Direction, EnemiesType, FireBulletOption, FireTime, GetMatrixMapFn, TowerType } from '../../Type';
+import { BSFNextMove, Direction, EnemiesType, FireBulletOption, FireTime, GetMatrixMapFn, SetMatrixMapFn, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BSFMoveEngine } from '../../MoveEngine/BSFMoveEngine';
@@ -14,27 +14,32 @@ export class Tank extends BaseObject {
     private _enemiesType: EnemiesType;
     private _bfsMoveEngine: BSFMoveEngine;
     private _isMoving: boolean = false;
-    private _positionChangeDirection: PointData;
+    private _positionChangeDirection: PointData = { x: 0, y: 0 };
     private _goldReward: number = 2;
     private _fireRadius: number = 100;
     public fireTimeCd: FireTime= { fireTimeConst: 3000, fireTimeCount: 0 };
     private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 500, changeTimeCount: 0 };
     public isPauseMove: boolean = false;
     public isEne: boolean = true;
-
-    private _fireTarget: PointData;
+    public isFire: boolean = false;
 
     private _targetValue: number;
     private _matrixValue: number = 4;
 
     private _getMatrixMapCb: GetMatrixMapFn;
+    private _setMatrixMapCb: SetMatrixMapFn;
 
-    constructor(enemyType: EnemiesType, targetValue: number, _getMatrixMapCb: GetMatrixMapFn) {
+    public g1: Sprite;
+    public g2: Sprite;
+
+    constructor(enemyType: EnemiesType, targetValue: number, getMatrixMapCb: GetMatrixMapFn, setMatrixMapCb: SetMatrixMapFn) {
         super(enemyType);
-        this._getMatrixMapCb = _getMatrixMapCb;
+        this._getMatrixMapCb = getMatrixMapCb;
+        this._setMatrixMapCb = setMatrixMapCb;
+
         this._enemiesType = enemyType;
         this.image.width = AppConstants.matrixSize;
-        this.image.height = AppConstants.matrixSize;
+        this.image.height = AppConstants.matrixSize ;
 
         this.moveEngine = new BaseEngine(true);
         this._bfsMoveEngine = new BSFMoveEngine(this.getMatrixPosition.bind(this), targetValue, this._getMatrixMapCb.bind(this));
@@ -44,6 +49,18 @@ export class Tank extends BaseObject {
         this._hpBar = new Sprite(AssetsLoader.getTexture('hp-bar-10'));
         this._hpBar.scale.set(0.3, 0.2);
         this._hpBar.anchor.set(0.5, 4);
+
+
+        this.g1 = new Sprite(AssetsLoader.getTexture('grass-1'));
+        this.g1.width = AppConstants.matrixSize;
+        this.g1.height = AppConstants.matrixSize;
+        this.g1.anchor = 0.5;
+        this.g1.tint = 'red';
+        this.g2 = new Sprite(AssetsLoader.getTexture('grass-1'));
+        this.g2.width = AppConstants.matrixSize;
+        this.g2.height = AppConstants.matrixSize;
+        this.g2.anchor = 0.5;
+        this.g2.tint = 'blue';
 
     }
 
@@ -115,6 +132,10 @@ export class Tank extends BaseObject {
         return this._bfsMoveEngine;
     }
 
+    get nextPosition(): PointData {
+        return { x: this._positionChangeDirection.x / AppConstants.matrixSize, y: this._positionChangeDirection.y / AppConstants.matrixSize };
+    }
+
     public getMatrixPosition(): PointData {
         const matrixPosition: PointData = { x: Math.round((this.position.x - AppConstants.matrixSize / 2) / AppConstants.matrixSize), y: Math.round((this.position.y - AppConstants.matrixSize / 2) / AppConstants.matrixSize) };
         return matrixPosition;
@@ -137,11 +158,14 @@ export class Tank extends BaseObject {
     }
 
     public fire(target: PointData): boolean {
+
         if (this.fireTimeCd.fireTimeCount < this.fireTimeCd.fireTimeConst) return false;
+        this._isMoving = false;
         const option: FireBulletOption = { position: this.position, target: target, dame: this.dameDeal, speed: this.speed * 3, isEneBullet: this.isEne, towerType: TowerType.tinker };
 
         Emitter.emit(AppConstants.event.createBullet, option);
         this.fireTimeCd.fireTimeCount = 0;
+
         return true;
     }
 
@@ -150,7 +174,7 @@ export class Tank extends BaseObject {
 
         const hpRate = Math.round(this._HP.hpCount / (this._HP.hpConst / 10));
         if (hpRate <= 0) {
-            Emitter.emit(AppConstants.event.removeEnemy, this.id);
+            Emitter.emit(AppConstants.event.removeEnemy, { id: this.id, isEne: this.isEne });
             return;
         }
         this._hpBar.texture = AssetsLoader.getTexture(`hp-bar-${hpRate}`);
@@ -206,7 +230,7 @@ export class Tank extends BaseObject {
 
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
         if (nextMove === undefined) {
-            this.isMoving = false;
+            this.moveEngine.direction = Direction.STAND;
             this.isPauseMove = true;
             return;
         }
@@ -298,6 +322,7 @@ export class Tank extends BaseObject {
             this.moveEngine.direction = nextDirection;
 
             this._positionChangeDirection = { x: nextPositionChangeDirection.x * AppConstants.matrixSize, y: nextPositionChangeDirection.y * AppConstants.matrixSize };
+
 
             this.isPauseMove = false;
 
