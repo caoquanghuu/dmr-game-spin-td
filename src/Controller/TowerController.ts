@@ -1,4 +1,4 @@
-import { FireBulletOption, GetMatrixMapFn, GetTowerBasesFn, GetTowerFromPoolFn, GetUnitFromPoolFn, ReturnTowerToPoolFn, ReturnUnitToPoolFn, SetMatrixMapFn, TowerInformation, TowerType, UnitType } from '../Type';
+import { FireBulletOption, GetMatrixMapFn, GetTowerBasesFn, GetTowerFromPoolFn, GetUnitFromPoolFn, ReturnTowerToPoolFn, ReturnUnitToPoolFn, SetMatrixMapFn, TowerInformation, TowerType, FlyUnitType, CreateEnemiesOption } from '../Type';
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
@@ -89,7 +89,7 @@ export class TowerController {
         this._towers.push(tower);
 
         if (tower.towerType === TowerType.barack) {
-            this._createUnit(UnitType.helicopter, tower.position, tower.id);
+            this._createFlyUnit(FlyUnitType.helicopter, tower.position, tower.id);
         }
 
 
@@ -144,7 +144,7 @@ export class TowerController {
         sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.soldTower });
     }
 
-    private _createUnit(unitType: UnitType, position: PointData, towerId: number) {
+    private _createFlyUnit(unitType: FlyUnitType, position: PointData, towerId: number) {
         const unit = this._getUnitFromPool(unitType);
 
         unit.position = position;
@@ -175,6 +175,30 @@ export class TowerController {
             } else {
                 console.log('tower not found');
             }
+        });
+
+        Emitter.on(AppConstants.event.createUnit, (option: {name: string}) => {
+
+            const isHaveBarack = this._towers.some(tower => tower.towerType === TowerType.barack);
+            if (isHaveBarack) {
+                const op: CreateEnemiesOption = { name: option.name, dame: 100, speed: 100, HP: 300 };
+
+                let nuclearBasePosition: PointData;
+                this._getMatrixMap().find((row, idxX) => {
+                    row.find((val, idxY) => {
+                        if (val === AppConstants.matrixMapValue.nuclearBase) {
+                            nuclearBasePosition = { x: idxX, y: idxY };
+                            return true;
+                        }
+                    });
+                });
+
+                const position: PointData = { x: nuclearBasePosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: nuclearBasePosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                Emitter.emit(AppConstants.event.createAllyUnit, { op, position });
+            } else {
+                // barack require
+            }
+
         });
     }
 

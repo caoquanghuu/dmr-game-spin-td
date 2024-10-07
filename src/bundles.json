@@ -208,6 +208,16 @@
             "alias": "hp-bar-10",
             "src": "assets/units/hp-10.png"
             },
+            { 
+
+            "alias": "sovietTank",
+            "src": "assets/units/soviet-tank.png"
+            },
+            { 
+
+            "alias": "sovietTank-icon",
+            "src": "assets/units/soviet-tank-icon.png"
+            },
             {
                 "alias": "nuclear-base",
                 "src": "assets/animation/nuclear-base/nuclear-base.json"

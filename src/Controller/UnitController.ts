@@ -39,8 +39,8 @@ export class UnitController {
         Emitter.on(AppConstants.event.removeEnemy, (id: number) => {
             this._removeUnit(id);
         });
-        Emitter.on(AppConstants.event.createUnit, (info: {option: CreateEnemiesOption, position: PointData, isEne: boolean, wave: number }) => {
-            this._createUnit(info.option, info.position, info.isEne, info.wave);
+        Emitter.on(AppConstants.event.createAllyUnit, (info: {op: CreateEnemiesOption, position: PointData}) => {
+            this._createUnit(info.op, info.position, false);
         });
     }
 

@@ -1,4 +1,4 @@
-import { BulletType, EnemiesType, GetMatrixMapFn, TowerType, UnitType } from '../Type';
+import { BulletType, EnemiesType, GetMatrixMapFn, TowerType, FlyUnitType } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from './Enemies/Tank';
 import { Tower } from '../ObjectsPool/Tower/Tower';
@@ -44,7 +44,7 @@ export class ObjectPool {
             }
         }
 
-        for (const [key, value] of Object.entries(UnitType)) {
+        for (const [key, value] of Object.entries(FlyUnitType)) {
             this._unitPool[key] = [];
             for (let i = 0; i < 5; i++) {
                 const unit = Factory.createUnit(value);
@@ -113,7 +113,7 @@ export class ObjectPool {
         }
     }
 
-    public getUnit(unitType: UnitType) {
+    public getUnit(unitType: FlyUnitType) {
         if (this._unitPool[unitType]?.length <= 0) {
             const unit = Factory.createUnit(unitType);
             return unit;

@@ -9,7 +9,7 @@ import { CollisionController } from '../../Controller/CollisionController';
 import { TowerController } from '../../Controller/TowerController';
 import { ObjectPool } from '../../ObjectsPool/ObjectPool';
 import { Bullet } from '../../ObjectsPool/Bullet';
-import { BulletType, TowerType, UnitType } from '../../Type';
+import { BulletType, FlyUnitType, TowerType } from '../../Type';
 import Emitter from '../../Util';
 import { UnitController } from '../../Controller/UnitController';
 import { sound } from '@pixi/sound';
@@ -218,7 +218,7 @@ export class GameMap extends Container {
         this._objectPool.returnExplosion(ex, exType);
     }
 
-    private _getUnitFromPool(unitType: UnitType): ControlUnit {
+    private _getUnitFromPool(unitType: FlyUnitType): ControlUnit {
         return this._objectPool.getUnit(unitType);
     }
 

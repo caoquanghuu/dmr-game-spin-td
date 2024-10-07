@@ -1,7 +1,9 @@
-import { BitmapText, Container, Sprite, Text } from 'pixi.js';
-import { BaseObject } from 'src/ObjectsPool/BaseObject';
+import { BitmapText, Container, PointData, Sprite } from 'pixi.js';
 import { AppConstants } from '../Constants';
 import Emitter from '../../Util';
+import { AllyTanksType, FlyUnitType } from '../../Type';
+import { AssetsLoader } from '../../AssetsLoader';
+import { sound } from '@pixi/sound';
 
 export class BasicBoard extends Container {
     private _wave: BitmapText;
@@ -10,8 +12,7 @@ export class BasicBoard extends Container {
     private _baseHpNumber: BitmapText;
     private _playerGold: BitmapText;
     private _playerGoldNumber: BitmapText;
-    private _item: BaseObject[] = [];
-    private _spin: BitmapText;
+    private _buyAbleUnits: Sprite[] = [];
 
     constructor() {
         super();
@@ -30,13 +31,6 @@ export class BasicBoard extends Container {
         this._playerGold = new BitmapText(AppConstants.text.gold);
         this._playerGold.position = { x: AppConstants.position.gold.x, y: AppConstants.position.gold.y };
 
-        this._spin = new BitmapText(AppConstants.text.spin);
-        this._spin.position = { x: AppConstants.position.spin.x, y: AppConstants.position.spin.y };
-        this._spin.eventMode = 'static';
-        this._spin.cursor = 'pointer';
-        this._spin.on('pointerdown', () => {
-            // spin
-        });
 
         this._waveNumber = new BitmapText(AppConstants.text.waveNumber);
 
@@ -50,7 +44,47 @@ export class BasicBoard extends Container {
 
         this._baseHpNumber.position = { x: AppConstants.position.baseNumber.x, y: AppConstants.position.baseNumber.y };
 
-        this.addChild(this._wave, this._waveNumber, this._baseHp, this._baseHpNumber, this._playerGold, this._playerGoldNumber, this._spin);
+        this.addChild(this._wave, this._waveNumber, this._baseHp, this._baseHpNumber, this._playerGold, this._playerGoldNumber);
+
+
+        const flyUnitLength = Object.keys(FlyUnitType).length;
+        const allyUnitLength = Object.keys(AllyTanksType).length;
+
+
+        const positionXInContainerRatio = AppConstants.appWidth / (flyUnitLength + allyUnitLength + 1);
+        const firstIconPosition: PointData = { x: positionXInContainerRatio, y : this.height / 2 };
+
+
+        for (const [key, value] of Object.entries(AllyTanksType)) {
+
+            const unitIcon = new Sprite(AssetsLoader.getTexture(`${value}-icon`));
+            unitIcon.width = AppConstants.matrixSize * 2;
+            unitIcon.height = AppConstants.matrixSize * 2;
+            unitIcon.anchor = 0.5;
+            unitIcon.position = { x: firstIconPosition.x, y: firstIconPosition.y };
+
+            unitIcon.eventMode = 'static';
+            unitIcon.cursor = 'pointer';
+            unitIcon.on('pointerdown', () => {
+                this._createUnit(value);
+            });
+
+            this._buyAbleUnits.push(unitIcon);
+
+            // create tower price
+            const unitPriceText = new BitmapText({
+                text: `${AppConstants.unitPrice.allyTank[key]}`,
+                style: {
+                    fontFamily: 'font_number',
+                    fontSize: 15,
+                }
+            });
+            unitPriceText.anchor = 0.5;
+            unitPriceText.position = { x: firstIconPosition.x, y: this.height / 2 + unitIcon.height / 2 };
+            this.addChild(unitIcon, unitPriceText);
+
+            firstIconPosition.x += positionXInContainerRatio;
+        }
 
     }
 
@@ -58,6 +92,16 @@ export class BasicBoard extends Container {
         Emitter.on(AppConstants.event.displayWave, (wave: number) => {
             this.displayWaveNumber(wave);
         });
+    }
+
+    private _createUnit(name: string) {
+        // send to tower controller to create unit on type of unit
+        if (this._playerGoldNumber < AppConstants.unitPrice.allyTank[name]) {
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.notEnoughGold });
+        } else {
+            Emitter.emit(AppConstants.event.createUnit, { name: name });
+        }
+
     }
 
     public displayWaveNumber(wave: number | string): void {

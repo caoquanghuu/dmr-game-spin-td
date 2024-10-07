@@ -22,6 +22,8 @@ export class Tank extends BaseObject {
     public isPauseMove: boolean = false;
     public isEne: boolean = true;
 
+    private _fireTarget: PointData;
+
     private _targetValue: number;
     private _matrixValue: number = 4;
 
@@ -212,7 +214,7 @@ export class Tank extends BaseObject {
         let nextPositionChangeDirection: PointData;
         let nextDirection: Direction;
 
-        if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y] === AppConstants.matrixMapValue.enemy) {
+        if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y] === this.matrixValue) {
             switch (nextMove.directions) {
                 case Direction.UP:
                     if (this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&

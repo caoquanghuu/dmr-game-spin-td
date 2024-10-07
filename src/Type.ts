@@ -111,8 +111,12 @@ export interface CreateEnemiesOption {
     eneCount?: number
 }
 
-export enum UnitType {
+export enum FlyUnitType {
     helicopter = 'helicopter'
+}
+
+export enum AllyTanksType {
+    sovietTank = 'sovietTank'
 }
 
 export type GetTowerFromPoolFn = (towerType: TowerType) => Tower;
@@ -128,7 +132,7 @@ export type GetPlayerGoldFn = () => number;
 export type GetExplosionFromPoolFn = (exType: string) => AnimatedSprite;
 export type ReturnExplosionToPoolFn = (ex: AnimatedSprite, exType: string) => void;
 export type GetTowerBasesFn = (position: PointData[]) => Sprite[];
-export type GetUnitFromPoolFn = (unitType: UnitType) => ControlUnit;
+export type GetUnitFromPoolFn = (unitType: FlyUnitType) => ControlUnit;
 export type ReturnUnitToPoolFn = (unit: ControlUnit) => void;
 export type GetMatrixMapFn = () => number[][];
 export type SetMatrixMapFn = (row: number, colum: number, value: number) => void;

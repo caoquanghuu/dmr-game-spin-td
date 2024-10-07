@@ -165,7 +165,8 @@ export namespace AppConstants {
         displayWave: 'display-wave',
         reduceBaseHp: 'reduce-base-hp',
         gameOver: 'game-over',
-        gameStart: 'game-start'
+        gameStart: 'game-start',
+        createAllyUnit: 'create-ally-unit'
 
     };
 
@@ -259,6 +260,15 @@ export namespace AppConstants {
         crystal_maiden: 100,
         clockwerk: 80,
         barack: 10
+    };
+
+    export const unitPrice = {
+        flyUnit: {
+            helicopter: 100
+        },
+        allyTank: {
+            sovietTank: 100
+        }
     };
 
     export const objectZIndex = {

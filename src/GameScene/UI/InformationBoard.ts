@@ -14,6 +14,7 @@ export class InformationBoard extends Container {
     private _goldUpgrade: number;
     private _towerId: number;
     private _towerIcon: Sprite;
+
     private _getPlayerGoldFn: GetPlayerGoldFn;
     constructor(getPlayerGoldCb: GetPlayerGoldFn) {
         super();

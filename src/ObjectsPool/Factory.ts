@@ -1,4 +1,4 @@
-import { BulletType, TowerType, UnitType } from '../Type';
+import { BulletType, TowerType, FlyUnitType } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { CrystalMaiden } from '../ObjectsPool/Tower/CrystalMaiden';
@@ -82,7 +82,7 @@ export default class Factory {
         return objectId;
     }
 
-    public static createUnit(type: UnitType): ControlUnit {
+    public static createUnit(type: FlyUnitType): ControlUnit {
         const unit = new ControlUnit(type, true);
         return unit;
     }

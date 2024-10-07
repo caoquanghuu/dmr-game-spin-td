@@ -11,9 +11,8 @@ import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
 export class CollisionController {
     private _towers: Tower[] = [];
     private _bullets: Bullet[] = [];
-    private _enemies: Tank[] = [];
-    private _units: ControlUnit[] = [];
-    private _eneMatrixMap: {position: PointData, value: number}[] = [];
+    private _units: Tank[] = [];
+    private _flyUnits: ControlUnit[] = [];
     private _nuclearBasePosition: PointData;
     private _getObjectsFromGameScene: GetObjectFromGameSceneFn;
     private _getExplosionFromPool: GetExplosionFromPoolFn;
@@ -26,8 +25,8 @@ export class CollisionController {
     }
 
     private async _checkCollisionBetweenObjects() {
-        this._enemies.forEach((ene, eneIdx) => {
-            const c1: Circle = { position: ene.position, radius: ene.image.width / 2 - 2 };
+        this._units.forEach((unit, unitIdx) => {
+            const c1: Circle = { position: unit.position, radius: unit.image.width / 2 - 2 };
 
             // this._enemies.forEach(ene2 => {
             //     if (ene === ene2) return;
@@ -53,10 +52,11 @@ export class CollisionController {
 
             this._towers.forEach(tower => {
                 const c2: Circle = { position: { x: tower.image.position.x + AppConstants.matrixSize / 2, y: tower.image.position.y + AppConstants.matrixSize / 2 }, radius: tower.effectArena };
-
+                // avoid ally
+                if (!unit.isEne) return;
                 const isCollision = this._isCollision(c1, c2);
                 if (isCollision) {
-                    tower.fire(ene.getUpdatedPosition());
+                    tower.fire(unit.getUpdatedPosition());
                 }
             });
 
@@ -66,29 +66,36 @@ export class CollisionController {
             const isCollision = this._isCollision(c1, c2);
             if (isCollision) {
 
-                const eneFired: boolean = ene.fire(this._nuclearBasePosition);
-                ene.isMoving = false;
-                // remove enemy cause it reached to base
-                // Emitter.emit(AppConstants.event.removeEnemy, ene.id);
+                if (unit.isEne) {
+                    const eneFired: boolean = unit.fire(this._nuclearBasePosition);
+                    unit.isMoving = false;
+                    // remove enemy cause it reached to base
+                    // Emitter.emit(AppConstants.event.removeEnemy, ene.id);
 
-                // send event to ui controller
-                if (eneFired) {
-                    Emitter.emit(AppConstants.event.reduceBaseHp, ene.dameDeal);
+                    // send event to ui controller
+                    if (eneFired) {
+                        Emitter.emit(AppConstants.event.reduceBaseHp, unit.dameDeal);
+                    }
+
                 }
+
 
             }
 
             // check ene vs control unit
-            let eneIndex = eneIdx;
-            this._units.forEach(unit => {
-                if (!unit.target) {
-                    const enemy = this._enemies[eneIndex];
-                    if (enemy) {
-                        unit.target = { targetPosition: enemy.getUpdatedPosition(), targetID:  enemy.id };
+            if (unit.isEne) {
+                let eneIndex = unitIdx;
+                this._flyUnits.forEach(unit => {
+                    if (!unit.target) {
+                        const enemy = this._units[eneIndex];
+                        if (enemy) {
+                            unit.target = { targetPosition: enemy.getUpdatedPosition(), targetID:  enemy.id };
+                        }
+                        eneIndex += 1;
                     }
-                    eneIndex += 1;
-                }
-            });
+                });
+            }
+
         });
 
         this._bullets.forEach(bullet => {
@@ -116,7 +123,7 @@ export class CollisionController {
                     Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
                 };
                 const eneCollisionWithBullet: Tank[] = [];
-                this._enemies.forEach(ene => {
+                this._units.forEach(ene => {
                     const c2: Circle = { position: bullet.position, radius: bullet.effectArena };
                     const cEne: Circle = { position: ene.position, radius: ene.image.width / 2 };
                     const isCollisionWithBullet = this._isCollision(cEne, c2);
@@ -155,8 +162,8 @@ export class CollisionController {
         const objects = this._getObjectsFromGameScene();
         this._towers = objects.towers;
         this._bullets = objects.bullets;
-        this._enemies = objects.enemies;
-        this._units = objects.units;
+        this._units = objects.enemies;
+        this._flyUnits = objects.units;
     }
 
     private _isCollision(c1: Circle, c2: Circle): boolean {
