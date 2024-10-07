@@ -19,8 +19,9 @@ export class Enemies extends BaseObject {
     private _goldReward: number = 2;
     private _fireRadius: number = 100;
     public fireTimeCd: FireTime= { fireTimeConst: 3000, fireTimeCount: 0 };
-    private _lastMatrix: PointData = { x: 0, y: 0 };
-    private _isPauseMove: boolean = false;
+    private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 500, changeTimeCount: 0 };
+    private _nextMatrixPosition: PointData = { x: 0, y: 0 };
+    public isPauseMove: boolean = false;
     readonly isEneBullet: boolean = true;
 
     private _targetValue: number;
@@ -116,20 +117,11 @@ export class Enemies extends BaseObject {
         return matrixPosition;
     }
 
+
     public startMove() {
         this._bfsMoveEngine.update();
         this.getNextMove();
         this._isMoving = true;
-    }
-
-    private _updateMatrixMap() {
-        const newMatrixPosition = this.getMatrixPosition();
-        if (!newMatrixPosition) return;
-        // if (this._lastMatrix.x === newMatrixPosition.x && this._lastMatrix.y === newMatrixPosition.y) return;
-        GameMap.mapMatrix[newMatrixPosition.x][newMatrixPosition.y] = this._matrixValue;
-        // GameMap.mapMatrix[this._lastMatrix.x][this._lastMatrix.y] = AppConstants.matrixMapValue.availableMoveWay;
-
-        // this._lastMatrix = { x: newMatrixPosition.x, y: newMatrixPosition.y };
     }
 
     public reset() {
@@ -141,28 +133,6 @@ export class Enemies extends BaseObject {
         return this.image.position;
     }
 
-    public boundBack() {
-
-        switch (this.moveEngine.direction) {
-            case Direction.UP:
-                this.position = { x: this.position.x, y: this.position.y + 2 };
-                break;
-
-            case Direction.DOWN:
-                this.position = { x: this.position.x, y: this.position.y - 2 };
-                break;
-
-            case Direction.LEFT:
-                this.position = { x: this.position.x + 2, y: this.position.y };
-                break;
-
-            case Direction.RIGHT:
-                this.position = { x: this.position.x - 2, y: this.position.y };
-                break;
-            default:
-                break;
-        }
-    }
     public fire(target: PointData): boolean {
         if (this.fireTimeCd.fireTimeCount < this.fireTimeCd.fireTimeConst) return false;
         const option: FireBulletOption = { position: this.position, target: target, dame: this.dameDeal, speed: this.speed * 3, isEneBullet: this.isEneBullet, towerType: TowerType.tinker };
@@ -186,10 +156,12 @@ export class Enemies extends BaseObject {
     }
 
     private _moveByBsf(dt: number) {
-      
+        this.move(dt);
+
         switch (this.direction) {
             case Direction.DOWN:
                 if (this.position.y - AppConstants.matrixSize / 2 >= this._positionChangeDirection.y) this.getNextMove();
+
                 this.image.angle = 180;
                 break;
             case Direction.UP:
@@ -225,13 +197,6 @@ export class Enemies extends BaseObject {
         }
 
 
-        if (this.direction != Direction.STAND) {
-                GameMap.mapMatrix[this._lastMatrix.x][this._lastMatrix.y] = AppConstants.matrixMapValue.availableMoveWay;
-                GameMap.mapMatrix[this.getMatrixPosition().x][this.getMatrixPosition().y] = AppConstants.matrixMapValue.unit;
-                this._lastMatrix = {x: this.getMatrixPosition().x, y: this.getMatrixPosition().y}
-            
-        }
-        this.move(dt);
     }
 
     public getNextMove() {
@@ -239,7 +204,7 @@ export class Enemies extends BaseObject {
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
         if (nextMove === undefined) {
             this.isMoving = false;
-            this._isPauseMove = true;
+            this.isPauseMove = true;
             return;
         }
 
@@ -250,13 +215,13 @@ export class Enemies extends BaseObject {
             switch (nextMove.directions) {
                 case Direction.UP:
                     if (GameMap.mapMatrix[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                        GameMap.mapMatrix[nextMove.path.x - 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                        GameMap.mapMatrix[nextMove.path.x - 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         nextPositionChangeDirection = { x: nextMove.path.x - 1, y: nextMove.path.y };
                         nextDirection = Direction.UP_LEFT;
 
                         break;
                     } else if (GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                        GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                        GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y };
                         nextDirection = Direction.UP_RIGHT;
 
@@ -304,100 +269,53 @@ export class Enemies extends BaseObject {
 
                         break;
                     }
-                // case Direction.UP_LEFT:
-                //     if (GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay) {
-                //         nextPositionChangeDirection = { x:nextMove.path.x + 1, y: nextMove.path.y };
-                //         nextDirection = Direction.UP;
-
-                //         break;
-                //     } else if (GameMap.mapMatrix[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                //         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y - 1};
-                //         nextDirection = Direction.LEFT;
-
-                //         break;
-                //     }
-                // case Direction.UP_RIGHT:
-                //     if (GameMap.mapMatrix[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay) {
-                //         nextPositionChangeDirection = { x: nextMove.path.x - 1, y: nextMove.path.y };
-                //         nextDirection = Direction.UP;
-
-                //         break;
-                //     } else if (GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay) {
-                //         nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y };
-                //         nextDirection = Direction.RIGHT;
-
-                //         break;
-                //     }
-                // case Direction.DOWN_LEFT:
-                //     if (GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay) {
-                //         nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y };
-                //         nextDirection = Direction.DOWN;
-
-                //         break;
-                //     } else if (GameMap.mapMatrix[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                //         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y - 1 };
-                //         nextDirection = Direction.LEFT;
-
-                //         break;
-                //     }
-                // case Direction.DOWN_RIGHT:
-                //     if (GameMap.mapMatrix[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                //         nextPositionChangeDirection = { x: nextMove.path.x, y:nextMove.path.y - 1 };
-                //         nextDirection = Direction.RIGHT;
-
-                //         break;
-                //     } else if (GameMap.mapMatrix[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay) {
-                //         nextPositionChangeDirection = { x: nextMove.path.x - 1, y: nextMove.path.y };
-                //         nextDirection = Direction.LEFT;
-
-                //         break;
-                //     }
 
                 default:
-                    // this._isMoving = false;
-                    // this._isPauseMove = true;
                     nextDirection = Direction.STAND;
                     break;
             }
         } else if (GameMap.mapMatrix[nextMove.path.x][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay) {
             nextDirection = nextMove.directions;
             nextPositionChangeDirection = nextMove.path;
+
         } else {
             nextDirection === Direction.STAND;
         }
 
         if (nextDirection != Direction.STAND && nextPositionChangeDirection) {
-            // GameMap.mapMatrix[nextPositionChangeDirection.x][nextPositionChangeDirection.y] = AppConstants.matrixMapValue.unit;
-
+            this._nextMatrixPosition = { x: nextPositionChangeDirection.x, y: nextPositionChangeDirection.y };
 
             this.moveEngine.direction = nextDirection;
 
             this._positionChangeDirection = { x: nextPositionChangeDirection.x * AppConstants.matrixSize, y: nextPositionChangeDirection.y * AppConstants.matrixSize };
 
-            this._isPauseMove = false;
+            this.isPauseMove = false;
 
         } else if (nextDirection === Direction.STAND) {
             this.moveEngine.direction = Direction.STAND;
-            this._isPauseMove = true;
-            // this.isMoving = false;
+            this.isPauseMove = true;
         }
 
 
     }
 
 
-    public update(dt: number): void {
-        if (this._isPauseMove) {
-            this.getNextMove();
+    public update(dt: number): PointData {
+        if (this.isPauseMove) {
+            this._forceChangeDirectionCd.changeTimeCount += dt;
+            if (this._forceChangeDirectionCd.changeTimeCount >= this._forceChangeDirectionCd.changeTimeConst) {
+                this.getNextMove();
+                this._forceChangeDirectionCd.changeTimeCount = 0;
+            }
+
         }
-        // this._updateMatrixMap();
-        this.time += dt;
         this.fireTimeCd.fireTimeCount += dt;
         this._bfsMoveEngine.update();
-        if (!this._isMoving) return;
-        this._moveByBsf(dt);
-        this._hpBar.position = this.image.position;
-
+        if (this._isMoving) {
+            this._moveByBsf(dt);
+            this._hpBar.position = this.image.position;
+        }
+        return this.getMatrixPosition() ;
 
     }
 }

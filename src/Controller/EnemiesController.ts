@@ -1,6 +1,6 @@
 import { CreateEnemiesOption, GetEnemiesFromPoolFn, GetExplosionFromPoolFn, ReturnEnemiesToPoolFn, ReturnExplosionToPoolFn } from 'src/Type';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
-import { AnimatedSprite, PointData } from 'pixi.js';
+import { AnimatedSprite, PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import EnemiesOption from '../ObjectsPool/Enemies/Enemies.json';
@@ -107,25 +107,20 @@ export class EnemiesController {
         Emitter.emit(AppConstants.event.plusGold, ene.goldReward);
     }
 
-    // private _calculateDistanceToNuclearBase(dt: number) {
-    //     const arr = this._enemies.sort((a, b) => a.bfsMoveEngine.calculateBfsDistance() - b.bfsMoveEngine.calculateBfsDistance());
-    //     arr.forEach((ene, idx) => {
-    //         ene.update(dt);
-    //         if (idx === 0 || idx === 1) {
-    //             ene.targetValue = AppConstants.matrixMapValue.nuclearBase;
-    //             ene.matrixValue = AppConstants.matrixMapValue.unit;
-    //         } else {
-    //             ene.matrixValue = idx + 5;
-    //             ene.targetValue = arr[idx - 1].matrixValue;
-    //         }
-
-    //     });
-    // }
-
-
     public update(dt: number) {
         // this._calculateDistanceToNuclearBase(dt);
-        this._enemies.forEach(ene => ene.update(dt));
+        GameMap.mapMatrix.forEach((row, idxX) => row.forEach((col, idxY) => {
+            if (col === AppConstants.matrixMapValue.unit) {
+                GameMap.mapMatrix[idxX][idxY] = AppConstants.matrixMapValue.availableMoveWay;
+            }
+        }));
+        this._enemies.forEach(ene => {
+            const matrixPosition = ene.update(dt);
+            if (matrixPosition && GameMap.mapMatrix[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+                GameMap.mapMatrix[matrixPosition.x][matrixPosition.y] = AppConstants.matrixMapValue.unit;
+            }
+
+        });
         this._time += dt;
         if (this._isCreateEne) {
             if (this._time >= 1000) {

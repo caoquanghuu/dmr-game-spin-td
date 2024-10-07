@@ -154,27 +154,27 @@ export class BaseObject {
             const standing = () => {
                 nextY = this.position.y;
                 nextX = this.position.x;
-            }
+            };
 
             const moveUpLeft = () => {
-                nextY = (this.position.y) - ((this._speed * dt) / 1000);
-                nextX = (this.position.x) - ((this._speed * dt) / 1000);
-            }
+                nextY = (this.position.y) - ((this._speed * dt) / (1000 * Math.sqrt(2)));
+                nextX = (this.position.x) - ((this._speed * dt) / (1000 * Math.sqrt(2)));
+            };
 
             const moveUpRight = () => {
-                nextY = (this.position.y) - ((this._speed * dt) / 1000);
-                nextX = (this.position.x) + ((this._speed * dt) / 1000);
-            }
+                nextY = (this.position.y) - ((this._speed * dt) / (1000 * Math.sqrt(2)));
+                nextX = (this.position.x) + ((this._speed * dt) / (1000 * Math.sqrt(2)));
+            };
 
             const moveDownLeft = () => {
-                nextY = (this.position.y) + ((this._speed * dt) / 1000);
-                nextX = (this.position.x) - ((this._speed * dt) / 1000);
-            }
+                nextY = (this.position.y) + ((this._speed * dt) / (1000 * Math.sqrt(2)));
+                nextX = (this.position.x) - ((this._speed * dt) / (1000 * Math.sqrt(2)));
+            };
 
             const moveDownRight = () => {
-                nextY = (this.position.y) + ((this._speed * dt) / 1000);
-                nextX = (this.position.x) + ((this._speed * dt) / 1000);
-            }
+                nextY = (this.position.y) + ((this._speed * dt) / (1000 * Math.sqrt(2)));
+                nextX = (this.position.x) + ((this._speed * dt) / (1000 * Math.sqrt(2)));
+            };
 
             const moveList = {
                 0 : moveUp,

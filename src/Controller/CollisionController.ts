@@ -1,12 +1,12 @@
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
-import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
+import { Circle, Direction, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
 import { AnimatedSprite, PointData } from 'pixi.js';
 import Emitter, { switchFn } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
-import { GameMap } from '../GameScene/Map/Map';
+
 
 export class CollisionController {
     private _towers: Tower[] = [];
@@ -38,23 +38,14 @@ export class CollisionController {
             //     if (isCollision) {
 
             //         if (distance1 >= distance2) {
-            //             ene.boundBack();
-            //             ene.isMoving = false;
-            //             ene.getNextMove();
+            //             ene.moveEngine.direction = Direction.STAND;
+            //             ene.isPauseMove = true;
 
             //         } else {
-            //             ene2.boundBack();
-            //             ene2.isMoving = false;
-            //             ene2.getNextMove();
+            //             ene.moveEngine.direction = Direction.STAND;
+            //             ene2.isPauseMove = true;
 
             //         }
-            //     } else {
-            //         if (distance1 >= distance2) {
-            //             ene.isMoving = true;
-            //         } else {
-            //             ene2.isMoving = true;
-            //         }
-
             //     }
             // });
 
@@ -107,10 +98,6 @@ export class CollisionController {
 
             const c1: Circle = { position: bullet.target, radius: bullet.image.width / 2 };
 
-            // if (!bullet.target) {
-            //     bullet.destroy();
-            //     return;
-            // }
 
             const isBulletReachToTarget = this._isCollision(c1, c3);
             if (isBulletReachToTarget) {
@@ -142,9 +129,10 @@ export class CollisionController {
                 eneCollisionWithBullet.forEach(ene => {
                     if (bullet.effectType === EffectType.SLOW) {
                         // speed of enemy will be reduce
-                        ene.speed = ene.speed / 3;
+                        const speed = 60;
+                        ene.speed = speed;
                         setTimeout(() => {
-                            ene.speed = ene.speed * 3;
+                            ene.speed = 150;
                         }, 2000);
                     } else {
                         ene.reduceHp(bullet.dame);
