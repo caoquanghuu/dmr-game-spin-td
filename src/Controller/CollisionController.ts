@@ -1,9 +1,9 @@
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
-import { Circle, Direction, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
+import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
 import { AnimatedSprite, PointData } from 'pixi.js';
-import Emitter, { switchFn } from '../Util';
+import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
 
@@ -61,7 +61,7 @@ export class CollisionController {
             });
 
             // check ene vs their target
-            const c2: Circle = { position: this._nuclearBasePosition, radius: 10 };
+            const c2: Circle = { position: this._nuclearBasePosition, radius: 20 };
 
             const isCollision = this._isCollision(c1, c2);
             if (isCollision) {
@@ -132,7 +132,7 @@ export class CollisionController {
                         const speed = 60;
                         ene.speed = speed;
                         setTimeout(() => {
-                            ene.speed = 150;
+                            ene.speed = 100;
                         }, 2000);
                     } else {
                         ene.reduceHp(bullet.dame);

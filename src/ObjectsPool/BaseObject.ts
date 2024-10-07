@@ -1,10 +1,8 @@
-import { AnimatedSprite, AnimatedSpriteFrames, FrameObject, PointData, Sprite, Texture } from 'pixi.js';
+import { AnimatedSprite, AnimatedSpriteFrames, PointData, Sprite } from 'pixi.js';
 import { AssetsLoader } from '../AssetsLoader';
 import { BaseEngine } from '../MoveEngine/BaseEngine';
 import { Direction } from '../Type';
 import { switchFn } from '../Util';
-import { AppConstants } from '../GameScene/Constants';
-
 
 export class BaseObject {
     private _image: Sprite | AnimatedSprite;

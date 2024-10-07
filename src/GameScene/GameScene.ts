@@ -2,7 +2,6 @@ import { Assets, Container, Sprite } from 'pixi.js';
 import { AppConstants } from './Constants';
 import { GameMap } from './Map/Map';
 import { UIBoard } from './UI/UIBoard';
-import { ObjectPool } from '../ObjectsPool/ObjectPool';
 import { AssetsLoader } from '../AssetsLoader';
 import { sound } from '@pixi/sound';
 import Emitter from '../Util';

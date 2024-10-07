@@ -4,7 +4,6 @@ import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { sound } from '@pixi/sound';
-import { GameMap } from '../GameScene/Map/Map';
 import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
 
 export class TowerController {
