@@ -29,6 +29,17 @@ export class CollisionController {
         this._enemiesTank.forEach((ene, eneIdx) => {
             const c1: Circle = { position: ene.position, radius: ene.image.width / 2 - 2 };
 
+            this._enemiesTank.forEach((ene2) => {
+                const c2: Circle = {position:ene2.position, radius: ene.image.width / 2};
+                if (ene === ene2) return;
+
+                const isCollision = this._isCollision(c1,c2);
+                if (isCollision) {
+                    // ene.isMoving = false;
+
+                }
+            })
+
             this._allyTank.forEach((ally) => {
 
                 const fireC1: Circle = { position: ene.position, radius: 30 };

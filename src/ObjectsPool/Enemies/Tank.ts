@@ -18,7 +18,7 @@ export class Tank extends BaseObject {
     private _goldReward: number = 2;
     private _fireRadius: number = 100;
     public fireTimeCd: FireTime= { fireTimeConst: 3000, fireTimeCount: 0 };
-    private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 500, changeTimeCount: 0 };
+    private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 1000, changeTimeCount: 0 };
     public isPauseMove: boolean = false;
     public isEne: boolean = true;
     public isFire: boolean = false;
@@ -38,8 +38,8 @@ export class Tank extends BaseObject {
         this._setMatrixMapCb = setMatrixMapCb;
 
         this._enemiesType = enemyType;
-        this.image.width = AppConstants.matrixSize;
-        this.image.height = AppConstants.matrixSize ;
+        this.image.width = AppConstants.matrixSize * 0.7;
+        this.image.height = AppConstants.matrixSize * 0.7;
 
         this.moveEngine = new BaseEngine(true);
         this._bfsMoveEngine = new BSFMoveEngine(this.getMatrixPosition.bind(this), targetValue, this._getMatrixMapCb.bind(this));
