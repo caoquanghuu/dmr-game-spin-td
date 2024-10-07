@@ -1,13 +1,13 @@
 import { CreateEnemiesOption, GetEnemiesFromPoolFn, GetExplosionFromPoolFn, GetMatrixMapFn, ReturnEnemiesToPoolFn, ReturnExplosionToPoolFn, SetMatrixMapFn } from 'src/Type';
-import { Enemies } from '../ObjectsPool/Enemies/Enemies';
+import { Tank } from '../ObjectsPool/Enemies/Tank';
 import { AnimatedSprite, PointData } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import EnemiesOption from '../ObjectsPool/Enemies/Enemies.json';
 import { AssetsLoader } from '../AssetsLoader';
 
-export class EnemiesController {
-    private _enemies: Enemies[] = [];
+export class UnitController {
+    private _units: Tank[] = [];
     private _getEnemiesFromPool: GetEnemiesFromPoolFn;
     private _returnEnemiesToPool: ReturnEnemiesToPoolFn;
     private _getExplosionFromPool: GetExplosionFromPoolFn;
@@ -31,13 +31,16 @@ export class EnemiesController {
         this._useEventEffect();
     }
 
-    get enemies(): Enemies[] {
-        return this._enemies;
+    get units(): Tank[] {
+        return this._units;
     }
 
     private _useEventEffect() {
         Emitter.on(AppConstants.event.removeEnemy, (id: number) => {
-            this._removeEnemies(id);
+            this._removeUnit(id);
+        });
+        Emitter.on(AppConstants.event.createUnit, (info: {option: CreateEnemiesOption, position: PointData, isEne: boolean, wave: number }) => {
+            this._createUnit(info.option, info.position, info.isEne, info.wave);
         });
     }
 
@@ -51,45 +54,57 @@ export class EnemiesController {
     }
 
 
-    private _createEnemies(option: CreateEnemiesOption, position: PointData, wave: number): Enemies {
-        const ene = this._getEnemiesFromPool();
-        ene.image.texture = AssetsLoader.getTexture(`${option.name}`);
-        ene.position = position;
-        ene.image.zIndex = AppConstants.zIndex.enemy;
-        ene.hpBar.zIndex = AppConstants.zIndex.enemyHpBar;
-        ene.HP = option.HP;
-        ene.dameDeal = option.dame;
-        ene.speed = option.speed;
-        ene.goldReward = wave + 1;
-        ene.startMove();
-        this._enemies.push(ene);
+    private _createUnit(option: CreateEnemiesOption, position: PointData, isEne: boolean, wave?: number): Tank {
+        const unit = this._getEnemiesFromPool();
+        unit.image.texture = AssetsLoader.getTexture(`${option.name}`);
+        unit.isEne = isEne;
+        unit.position = position;
+        unit.image.zIndex = AppConstants.zIndex.enemy;
+        unit.hpBar.zIndex = AppConstants.zIndex.enemyHpBar;
+        unit.HP = option.HP;
+        unit.dameDeal = option.dame;
+        unit.speed = option.speed;
+        unit.startMove();
+
+        if (isEne) {
+            unit.matrixValue = AppConstants.matrixMapValue.enemy;
+            unit.targetValue = AppConstants.matrixMapValue.nuclearBase;
+            unit.goldReward = wave + 1;
+
+        } else {
+            unit.targetValue = AppConstants.matrixMapValue.enemy;
+            unit.matrixValue = AppConstants.matrixMapValue.ally;
+
+        }
+
+        this._units.push(unit);
 
 
-        Emitter.emit(AppConstants.event.addChildToScene, ene.image);
-        Emitter.emit(AppConstants.event.addChildToScene, ene.hpBar);
+        Emitter.emit(AppConstants.event.addChildToScene, unit.image);
+        Emitter.emit(AppConstants.event.addChildToScene, unit.hpBar);
 
 
-        return ene;
+        return unit;
     }
 
-    private _removeEnemies(id: number) {
-        const i = this._enemies.findIndex(ene => {
-            return ene.id === id;
+    private _removeUnit(id: number) {
+        const i = this._units.findIndex(unit => {
+            return unit.id === id;
         });
 
-        const ene = this._enemies[i];
+        const unit = this._units[i];
 
-        ene.reset();
-        this._returnEnemiesToPool(ene);
+        unit.reset();
+        this._returnEnemiesToPool(unit);
 
-        const matrixPosition = ene.getMatrixPosition();
+        const matrixPosition = unit.getMatrixPosition();
         this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] = AppConstants.matrixMapValue.availableMoveWay;
 
         // create animation explosion
         const explosion: AnimatedSprite = this._getExplosionFromPool(AppConstants.textureName.tankExplosionAnimation);
-        explosion.position = ene.position;
-        explosion.width = ene.image.width * 2;
-        explosion.height = ene.image.height * 2;
+        explosion.position = unit.position;
+        explosion.width = unit.image.width * 2;
+        explosion.height = unit.image.height * 2;
 
         explosion.gotoAndPlay(0);
         Emitter.emit(AppConstants.event.addChildToScene, explosion);
@@ -100,39 +115,52 @@ export class EnemiesController {
             Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
         };
 
-        Emitter.emit(AppConstants.event.removeChildFromScene, ene.image);
-        Emitter.emit(AppConstants.event.removeChildFromScene, ene.hpBar);
+        Emitter.emit(AppConstants.event.removeChildFromScene, unit.image);
+        Emitter.emit(AppConstants.event.removeChildFromScene, unit.hpBar);
 
-        this._enemies.splice(i, 1);
+        this._units.splice(i, 1);
 
         // send event plus gold for player
-        Emitter.emit(AppConstants.event.plusGold, ene.goldReward);
+        if (unit.isEne) {
+            Emitter.emit(AppConstants.event.plusGold, unit.goldReward);
+        }
+
     }
 
     public update(dt: number) {
-        // this._calculateDistanceToNuclearBase(dt);
+    // reset matrix map on move way
         this._getMatrixMapCb().forEach((row, idxX) => row.forEach((col, idxY) => {
-            if (col === AppConstants.matrixMapValue.unit) {
+            if (col === AppConstants.matrixMapValue.enemy || col === AppConstants.matrixMapValue.ally) {
                 this._setMatrixMapCb(idxX, idxY, AppConstants.matrixMapValue.availableMoveWay);
             }
         }));
-        this._enemies.forEach(ene => {
-            const matrixPosition = ene.update(dt);
+        this._units.forEach(unit => {
+            // update and assign ene position on matrix map
+            const matrixPosition = unit.update(dt);
             if (matrixPosition && this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
 
-                this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.unit);
+                if (unit.isEne) {
+                    this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.enemy);
+                } else {
+                    this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.ally);
+                }
+
             }
 
         });
+
         this._time += dt;
+
+        // create enemy for time
         if (this._isCreateEne) {
             if (this._time >= 1000) {
                 if (this._eneCount.eneCount === this._eneCount.eneConst) {
                     this._isCreateEne = false;
                     this._eneCount.eneConst = 0;
+                    this._eneCount.eneCount = 0;
                     return;
                 }
-                this._createEnemies(this._enemiesOption, this._eneStartPosition, this._wave);
+                this._createUnit(this._enemiesOption, this._eneStartPosition, true, this._wave);
                 this._eneCount.eneCount++;
                 this._time = 0;
             }

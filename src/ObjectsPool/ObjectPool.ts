@@ -1,6 +1,6 @@
 import { BulletType, EnemiesType, GetMatrixMapFn, TowerType, UnitType } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
-import { Enemies } from '../ObjectsPool/Enemies/Enemies';
+import { Tank } from './Enemies/Tank';
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { AppConstants } from '../GameScene/Constants';
 import Factory from '../ObjectsPool/Factory';
@@ -10,7 +10,7 @@ import { ControlUnit } from './ControlUnit/ControlUnit';
 
 export class ObjectPool {
     private _bulletPool: {[bulletType: string]: Bullet[]} = {};
-    private _enemiesPool: Enemies[] = [];
+    private _enemiesPool: Tank[] = [];
     private _towerPool: {[towerType: string]: Tower[]} = {};
     private _explosionPool: {[explosionType: string]: AnimatedSprite[]} = {};
     private _unitPool: {[unitType: string]: ControlUnit[]} = {};
@@ -61,7 +61,7 @@ export class ObjectPool {
             tankExplosion.zIndex = 7;
             this._explosionPool['tank'].push(tankExplosion);
 
-            const enemies = new Enemies(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase, this._getMatrixMapCb.bind(this));
+            const enemies = new Tank(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase, this._getMatrixMapCb.bind(this));
             const eneId = Factory.createEnemies();
             enemies.id = eneId;
 
@@ -89,14 +89,14 @@ export class ObjectPool {
             return this._towerPool[towerType].pop() as Tower;
         }
     }
-    public getEnemies(): Enemies {
+    public getEnemies(): Tank {
         if (this._enemiesPool.length <= 0) {
             const enemyId = Factory.createEnemies();
-            const ene = new Enemies(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase, this._getMatrixMapCb.bind(this));
+            const ene = new Tank(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase, this._getMatrixMapCb.bind(this));
             ene.id = enemyId;
             return ene;
         } else {
-            return this._enemiesPool.pop() as Enemies;
+            return this._enemiesPool.pop() as Tank;
         }
     }
 
@@ -131,7 +131,7 @@ export class ObjectPool {
         this._towerPool[tower.towerType].push(tower);
     }
 
-    public returnEnemies(enemies: Enemies): void {
+    public returnEnemies(enemies: Tank): void {
         this._enemiesPool.push(enemies);
     }
 

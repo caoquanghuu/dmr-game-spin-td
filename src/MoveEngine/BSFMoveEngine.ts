@@ -31,10 +31,10 @@ export class BSFMoveEngine {
         if (direction.x === 0 && direction.y === 1) nextDirection = Direction.DOWN;
         if (direction.x === 1 && direction.y === 0) nextDirection = Direction.RIGHT;
         if (direction.x === -1 && direction.y === 0) nextDirection = Direction.LEFT;
-        // if (direction.x === 1 && direction.y === 1) nextDirection = Direction.DOWN_RIGHT;
-        // if (direction.x === 1 && direction.y === -1) nextDirection = Direction.UP_RIGHT;
-        // if (direction.x === -1 && direction.y === -1) nextDirection = Direction.UP_LEFT;
-        // if (direction.x === -1 && direction.y === 1) nextDirection = Direction.DOWN_LEFT;
+        if (direction.x === 1 && direction.y === 1) nextDirection = Direction.DOWN_RIGHT;
+        if (direction.x === 1 && direction.y === -1) nextDirection = Direction.UP_RIGHT;
+        if (direction.x === -1 && direction.y === -1) nextDirection = Direction.UP_LEFT;
+        if (direction.x === -1 && direction.y === 1) nextDirection = Direction.DOWN_LEFT;
 
         return { directions: nextDirection, path: { x: nextPath[0].x, y: nextPath[0].y } };
     }
@@ -53,10 +53,10 @@ export class BSFMoveEngine {
             { x: 1, y: 0 },
             { x: 0, y: 1 },
             { x: -1, y: 0 },
-            // { x: 1, y: 1 },
-            // { x: -1, y: 1 },
-            // { x: 1, y: -1 },
-            // { x: -1, y: -1 }
+            { x: 1, y: 1 },
+            { x: -1, y: 1 },
+            { x: 1, y: -1 },
+            { x: -1, y: -1 }
         ];
 
         visited.add(`${headPoint.x},${headPoint.y}`);

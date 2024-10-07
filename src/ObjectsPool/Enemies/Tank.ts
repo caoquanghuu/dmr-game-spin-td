@@ -7,7 +7,7 @@ import Emitter from '../../Util';
 import { AppConstants } from '../../GameScene/Constants';
 import { AssetsLoader } from '../../AssetsLoader';
 
-export class Enemies extends BaseObject {
+export class Tank extends BaseObject {
     private _HP: {hpConst: number, hpCount: number} = { hpConst: 0, hpCount: 0 };
     private _hpBar: Sprite;
     private _dameDeal: number;
@@ -19,9 +19,8 @@ export class Enemies extends BaseObject {
     private _fireRadius: number = 100;
     public fireTimeCd: FireTime= { fireTimeConst: 3000, fireTimeCount: 0 };
     private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 500, changeTimeCount: 0 };
-    private _nextMatrixPosition: PointData = { x: 0, y: 0 };
     public isPauseMove: boolean = false;
-    readonly isEneBullet: boolean = true;
+    public isEne: boolean = true;
 
     private _targetValue: number;
     private _matrixValue: number = 4;
@@ -137,7 +136,7 @@ export class Enemies extends BaseObject {
 
     public fire(target: PointData): boolean {
         if (this.fireTimeCd.fireTimeCount < this.fireTimeCd.fireTimeConst) return false;
-        const option: FireBulletOption = { position: this.position, target: target, dame: this.dameDeal, speed: this.speed * 3, isEneBullet: this.isEneBullet, towerType: TowerType.tinker };
+        const option: FireBulletOption = { position: this.position, target: target, dame: this.dameDeal, speed: this.speed * 3, isEneBullet: this.isEne, towerType: TowerType.tinker };
 
         Emitter.emit(AppConstants.event.createBullet, option);
         this.fireTimeCd.fireTimeCount = 0;
@@ -213,7 +212,7 @@ export class Enemies extends BaseObject {
         let nextPositionChangeDirection: PointData;
         let nextDirection: Direction;
 
-        if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y] === AppConstants.matrixMapValue.unit) {
+        if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y] === AppConstants.matrixMapValue.enemy) {
             switch (nextMove.directions) {
                 case Direction.UP:
                     if (this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
@@ -293,7 +292,6 @@ export class Enemies extends BaseObject {
         }
 
         if (nextDirection != Direction.STAND && nextPositionChangeDirection) {
-            this._nextMatrixPosition = { x: nextPositionChangeDirection.x, y: nextPositionChangeDirection.y };
 
             this.moveEngine.direction = nextDirection;
 

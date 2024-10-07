@@ -1,6 +1,6 @@
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
-import { Enemies } from '../ObjectsPool/Enemies/Enemies';
+import { Tank } from '../ObjectsPool/Enemies/Tank';
 import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
 import { AnimatedSprite, PointData } from 'pixi.js';
 import Emitter from '../Util';
@@ -11,7 +11,7 @@ import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
 export class CollisionController {
     private _towers: Tower[] = [];
     private _bullets: Bullet[] = [];
-    private _enemies: Enemies[] = [];
+    private _enemies: Tank[] = [];
     private _units: ControlUnit[] = [];
     private _eneMatrixMap: {position: PointData, value: number}[] = [];
     private _nuclearBasePosition: PointData;
@@ -115,7 +115,7 @@ export class CollisionController {
 
                     Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
                 };
-                const eneCollisionWithBullet: Enemies[] = [];
+                const eneCollisionWithBullet: Tank[] = [];
                 this._enemies.forEach(ene => {
                     const c2: Circle = { position: bullet.position, radius: bullet.effectArena };
                     const cEne: Circle = { position: ene.position, radius: ene.image.width / 2 };

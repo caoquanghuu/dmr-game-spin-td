@@ -2,7 +2,7 @@ import { AnimatedSprite, Container, Graphics, PointData, Sprite } from 'pixi.js'
 import { AppConstants } from '../Constants';
 import gameMap from '../Map/mapMatrix.json';
 import { Tower } from '../../ObjectsPool/Tower/Tower';
-import { Enemies } from '../../ObjectsPool/Enemies/Enemies';
+import { Tank } from '../../ObjectsPool/Enemies/Tank';
 import { AssetsLoader } from '../../AssetsLoader';
 import { BulletController } from '../../Controller/BulletController';
 import { CollisionController } from '../../Controller/CollisionController';
@@ -11,7 +11,7 @@ import { ObjectPool } from '../../ObjectsPool/ObjectPool';
 import { Bullet } from '../../ObjectsPool/Bullet';
 import { BulletType, TowerType, UnitType } from '../../Type';
 import Emitter from '../../Util';
-import { EnemiesController } from '../../Controller/EnemiesController';
+import { UnitController } from '../../Controller/UnitController';
 import { sound } from '@pixi/sound';
 import { ControlUnit } from '../../ObjectsPool/ControlUnit/ControlUnit';
 
@@ -21,7 +21,7 @@ export class GameMap extends Container {
     private _bulletController: BulletController;
     private _collisionController: CollisionController;
     private _towerController: TowerController;
-    private _enemiesController: EnemiesController;
+    private _unitController: UnitController;
     private _objectPool: ObjectPool;
     private _time: number = 0;
     private _nuclearBase: AnimatedSprite;
@@ -43,7 +43,7 @@ export class GameMap extends Container {
 
         // create controllers
         this._towerController = new TowerController(this._getTowerFromPool.bind(this), this._returnTowerToPool.bind(this), this._getTowerBase.bind(this), this._getUnitFromPool.bind(this), this._returnUnitToPool.bind(this), this._getMatrixMap.bind(this), this._setMatrixMap.bind(this));
-        this._enemiesController = new EnemiesController(this._getEnemiesFromPool.bind(this), this._returnEnemiesToPool.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this), this._getMatrixMap.bind(this), this._setMatrixMap.bind(this));
+        this._unitController = new UnitController(this._getEnemiesFromPool.bind(this), this._returnEnemiesToPool.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this), this._getMatrixMap.bind(this), this._setMatrixMap.bind(this));
         this._bulletController = new BulletController(this._getBulletFromPool.bind(this), this._returnBulletToPool.bind(this));
         this._collisionController = new CollisionController(this._getObject.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this));
 
@@ -126,8 +126,8 @@ export class GameMap extends Container {
         });
     }
 
-    private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Enemies[], units: ControlUnit[]} {
-        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._enemiesController.enemies, units: this._towerController.units };
+    private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Tank[], units: ControlUnit[]} {
+        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._unitController.units, units: this._towerController.units };
     }
 
     private _useEventEffect() {
@@ -146,11 +146,11 @@ export class GameMap extends Container {
     // method to create enemies
     private _startGame() {
         // position spawn enemy game get on matrix map
-        this._enemiesController.spawnWave(this._wave, { x: 15, y: 0 });
+        this._unitController.spawnWave(this._wave, { x: 15, y: 0 });
     }
 
     private _checkWave(dt: number) {
-        if (this._enemiesController.enemies.length > 0) return;
+        if ((this._unitController.units.some(unit => unit.isEne === true))) return;
 
         this._time += dt;
         if (this._time >= AppConstants.time.delayBetweenWaves) {
@@ -168,7 +168,7 @@ export class GameMap extends Container {
             Emitter.emit(AppConstants.event.displayWave, this._wave);
             // plus gold for player at new wave
             Emitter.emit(AppConstants.event.plusGold, (AppConstants.goldPlusPerWave + this._wave));
-            this._enemiesController.spawnWave(this._wave, { x: 15, y: 0 });
+            this._unitController.spawnWave(this._wave, { x: 15, y: 0 });
             // change texture of nuclear base
             this._nuclearBase.gotoAndStop(this._wave - 1);
             this._time = 0;
@@ -202,11 +202,11 @@ export class GameMap extends Container {
         this._objectPool.returnBullet(bullet);
     }
 
-    private _getEnemiesFromPool(): Enemies {
+    private _getEnemiesFromPool(): Tank {
         return this._objectPool.getEnemies();
     }
 
-    private _returnEnemiesToPool(ene: Enemies): void {
+    private _returnEnemiesToPool(ene: Tank): void {
         this._objectPool.returnEnemies(ene);
     }
 
@@ -244,7 +244,7 @@ export class GameMap extends Container {
         this._towerController.update(dt);
         this._bulletController.update(dt);
         this._collisionController.update();
-        this._enemiesController.update(dt);
+        this._unitController.update(dt);
 
         this._checkWave(dt);
     }

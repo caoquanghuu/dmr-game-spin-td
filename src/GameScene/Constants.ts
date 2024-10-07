@@ -25,7 +25,8 @@ export namespace AppConstants {
         availableMoveWay: 1,
         availableTowerBuild: 2,
         nuclearBase: 3,
-        unit: 4,
+        enemy: 4,
+        ally: 6,
         tower: 5
     };
 
@@ -151,7 +152,7 @@ export namespace AppConstants {
         addChildToScene: 'add-child-to-scene',
         removeChildFromScene: 'remove-child-from-scene',
         destroyBullet: 'destroy-bullet',
-        createEnemy: 'create-enemy',
+        createUnit: 'create-unit',
         removeEnemy: 'remove-enemy',
         addToUIBoard: 'add-to-ui-board',
         removeFromUiBoard: 'remove-from-ui-board',
