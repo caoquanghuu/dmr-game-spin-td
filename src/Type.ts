@@ -130,3 +130,5 @@ export type ReturnExplosionToPoolFn = (ex: AnimatedSprite, exType: string) => vo
 export type GetTowerBasesFn = (position: PointData[]) => Sprite[];
 export type GetUnitFromPoolFn = (unitType: UnitType) => ControlUnit;
 export type ReturnUnitToPoolFn = (unit: ControlUnit) => void;
+export type GetMatrixMapFn = () => number[][];
+export type SetMatrixMapFn = (row: number, colum: number, value: number) => void;

@@ -11,8 +11,6 @@ export class GameScene extends Container {
     private _map: GameMap;
     private _UIBoard: UIBoard;
     private _isGameStart: boolean = false;
-    // private _spinController: SpinController;
-    private _objectPool: ObjectPool;
 
     constructor() {
         super();
@@ -45,8 +43,6 @@ export class GameScene extends Container {
         this._map.renderable = false;
         this._UIBoard.renderable = false;
         this.addChild(this._map, this._UIBoard);
-        this._objectPool = new ObjectPool();
-
     }
 
     public init() {

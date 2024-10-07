@@ -1,4 +1,4 @@
-import { FireBulletOption, GetTowerBasesFn, GetTowerFromPoolFn, GetUnitFromPoolFn, ReturnTowerToPoolFn, ReturnUnitToPoolFn, TowerInformation, TowerType, UnitType } from '../Type';
+import { FireBulletOption, GetMatrixMapFn, GetTowerBasesFn, GetTowerFromPoolFn, GetUnitFromPoolFn, ReturnTowerToPoolFn, ReturnUnitToPoolFn, SetMatrixMapFn, TowerInformation, TowerType, UnitType } from '../Type';
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
@@ -15,12 +15,16 @@ export class TowerController {
     private _getTowerBases: GetTowerBasesFn;
     private _getUnitFromPool: GetUnitFromPoolFn;
     private _returnUnitToPool: ReturnUnitToPoolFn;
-    constructor(getTowerFromPoolCallBack: GetTowerFromPoolFn, returnTowerToPoolCallback: ReturnTowerToPoolFn, getTowerBasesCallBack: GetTowerBasesFn, getUnitFromPoolCallBack: GetUnitFromPoolFn, returnUnitToPoolCallBack: ReturnUnitToPoolFn) {
+    private _getMatrixMap: GetMatrixMapFn;
+    private _setMatrixMap: SetMatrixMapFn;
+    constructor(getTowerFromPoolCallBack: GetTowerFromPoolFn, returnTowerToPoolCallback: ReturnTowerToPoolFn, getTowerBasesCallBack: GetTowerBasesFn, getUnitFromPoolCallBack: GetUnitFromPoolFn, returnUnitToPoolCallBack: ReturnUnitToPoolFn, getMatrixMapCb: GetMatrixMapFn, setMatrixMapCb: SetMatrixMapFn) {
         this._getTowerFromPool = getTowerFromPoolCallBack;
         this._returnTowerToPool = returnTowerToPoolCallback;
         this._getTowerBases = getTowerBasesCallBack;
         this._getUnitFromPool = getUnitFromPoolCallBack;
         this._returnUnitToPool = returnUnitToPoolCallBack;
+        this._getMatrixMap = getMatrixMapCb;
+        this._setMatrixMap = setMatrixMapCb;
         this._useEventEffect();
     }
 
@@ -185,7 +189,7 @@ export class TowerController {
         let isPositionAvailable: boolean = true;
         for (let i = 0; i < info.buildingSize.x; i++) {
             for (let n = info.buildingSize.y - 1; n >= 0; n--) {
-                if ((GameMap.mapMatrix[matrixPoint.x + i][matrixPoint.y - n] != AppConstants.matrixMapValue.availableTowerBuild)) {
+                if ((this._getMatrixMap()[matrixPoint.x + i][matrixPoint.y - n] != AppConstants.matrixMapValue.availableTowerBuild)) {
                     isPositionAvailable = false;
                 }
             }
@@ -218,7 +222,8 @@ export class TowerController {
 
         for (let i = 0; i < buildingSize.x; i++) {
             for (let n = 0; n < buildingSize.y; n++) {
-                GameMap.mapMatrix[matrixPoint.x + i][matrixPoint.y - n] = matrixValue;
+                this._setMatrixMap(matrixPoint.x + i, matrixPoint.y - n, matrixValue);
+                // GameMap.mapMatrix[matrixPoint.x + i][matrixPoint.y - n] = matrixValue;
 
                 const basePosition: PointData = { x: (matrixPoint.x + i) * AppConstants.matrixSize, y: (matrixPoint.y - n) * AppConstants.matrixSize };
                 basesPosition.push(basePosition);
@@ -230,7 +235,8 @@ export class TowerController {
     private _clearTower(positions: PointData[], matrixValue: number): void {
         positions.forEach(pos => {
             const matrixPoint: PointData = { x: pos.x / AppConstants.matrixSize, y: pos.y / AppConstants.matrixSize };
-            GameMap.mapMatrix[matrixPoint.x][matrixPoint.y] = matrixValue;
+            this._setMatrixMap(matrixPoint.x, matrixPoint.y, matrixValue);
+            // GameMap.mapMatrix[matrixPoint.x][matrixPoint.y] = matrixValue;
         });
     }
 

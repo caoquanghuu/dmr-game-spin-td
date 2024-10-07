@@ -1,6 +1,6 @@
 import { AnimatedSprite, Container, Graphics, PointData, Sprite } from 'pixi.js';
 import { AppConstants } from '../Constants';
-import map from '../Map/mapMatrix.json';
+import gameMap from '../Map/mapMatrix.json';
 import { Tower } from '../../ObjectsPool/Tower/Tower';
 import { Enemies } from '../../ObjectsPool/Enemies/Enemies';
 import { AssetsLoader } from '../../AssetsLoader';
@@ -29,21 +29,21 @@ export class GameMap extends Container {
     // wave is define to current hard level
     private _wave: number = 1;
 
-    public static mapMatrix: any;
+    private _mapMatrix: any;
     constructor() {
         super();
         // get matrix map from map file json file
-        GameMap.mapMatrix = map.map(row => [...row]);
+        this._mapMatrix = gameMap.gridMap;
 
         // assign event emitter
         this._useEventEffect();
 
         // create pool
-        this._objectPool = new ObjectPool();
+        this._objectPool = new ObjectPool(this._getMatrixMap.bind(this));
 
         // create controllers
-        this._towerController = new TowerController(this._getTowerFromPool.bind(this), this._returnTowerToPool.bind(this), this._getTowerBase.bind(this), this._getUnitFromPool.bind(this), this._returnUnitToPool.bind(this));
-        this._enemiesController = new EnemiesController(this._getEnemiesFromPool.bind(this), this._returnEnemiesToPool.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this));
+        this._towerController = new TowerController(this._getTowerFromPool.bind(this), this._returnTowerToPool.bind(this), this._getTowerBase.bind(this), this._getUnitFromPool.bind(this), this._returnUnitToPool.bind(this), this._getMatrixMap.bind(this), this._setMatrixMap.bind(this));
+        this._enemiesController = new EnemiesController(this._getEnemiesFromPool.bind(this), this._returnEnemiesToPool.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this), this._getMatrixMap.bind(this), this._setMatrixMap.bind(this));
         this._bulletController = new BulletController(this._getBulletFromPool.bind(this), this._returnBulletToPool.bind(this));
         this._collisionController = new CollisionController(this._getObject.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this));
 
@@ -53,7 +53,7 @@ export class GameMap extends Container {
 
     private _init() {
         // create const objects base on matrix map
-        map.forEach((val, idxX) => {
+        this._mapMatrix.forEach((val, idxX) => {
             val.forEach((value, idxY) => {
                 const grass = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.grass));
                 grass.width = AppConstants.matrixSize,
@@ -224,6 +224,14 @@ export class GameMap extends Container {
 
     private _returnUnitToPool(unit: ControlUnit) {
         this._objectPool.returnUnit(unit);
+    }
+
+    private _getMatrixMap(): number[][] {
+        return this._mapMatrix;
+    }
+
+    private _setMatrixMap(row: number, colum: number, value: number) {
+        this._mapMatrix[row][colum] = value;
     }
 
     // update function

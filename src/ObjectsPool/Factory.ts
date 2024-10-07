@@ -1,14 +1,12 @@
-import { BulletType, EnemiesType, TowerType, UnitType } from '../Type';
+import { BulletType, TowerType, UnitType } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { CrystalMaiden } from '../ObjectsPool/Tower/CrystalMaiden';
 import { Mirana } from '../ObjectsPool/Tower/Mirana';
 import { Tinker } from '../ObjectsPool/Tower/Tinker';
-import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { ClockWerk } from '../ObjectsPool/Tower/ClockWerk';
 import { Barack } from './Tower/Barack';
 import { ControlUnit } from './ControlUnit/ControlUnit';
-import { AppConstants } from '../GameScene/Constants';
 
 export default class Factory {
     public static instance: Factory;
@@ -78,31 +76,10 @@ export default class Factory {
         }
     }
 
-    public static createEnemies(): Enemies {
+    public static createEnemies(): number {
         const objectId = Factory.objectId;
         Factory.objectId++;
-
-        const enemies = new Enemies(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase);
-        enemies.id = objectId;
-        return enemies;
-
-        // switch (type) {
-        //     case EnemiesType.tank_1:
-        //         const tank1 = new Enemies(EnemiesType.tank_1);
-        //         tank1.id = objectId;
-        //         return tank1;
-
-        //     case EnemiesType.tank_2:
-        //         const tank2 = new Enemies(EnemiesType.tank_2);
-        //         tank2.id = objectId;
-        //         return tank2;
-
-        //     case EnemiesType.tank_3:
-        //         const tank3 = new Enemies(EnemiesType.tank_3);
-        //         tank3.id = objectId;
-        //         return tank3;
-        //     default:
-        // }
+        return objectId;
     }
 
     public static createUnit(type: UnitType): ControlUnit {

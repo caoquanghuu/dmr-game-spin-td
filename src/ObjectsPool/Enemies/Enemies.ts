@@ -1,4 +1,4 @@
-import { BSFNextMove, Direction, EnemiesType, FireBulletOption, FireTime, TowerType } from '../../Type';
+import { BSFNextMove, Direction, EnemiesType, FireBulletOption, FireTime, GetMatrixMapFn, SetMatrixMapFn, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BSFMoveEngine } from '../../MoveEngine/BSFMoveEngine';
@@ -6,7 +6,6 @@ import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../../Util';
 import { AppConstants } from '../../GameScene/Constants';
 import { AssetsLoader } from '../../AssetsLoader';
-import { GameMap } from '../../GameScene/Map/Map';
 
 export class Enemies extends BaseObject {
     private _HP: {hpConst: number, hpCount: number} = { hpConst: 0, hpCount: 0 };
@@ -27,14 +26,17 @@ export class Enemies extends BaseObject {
     private _targetValue: number;
     private _matrixValue: number = 4;
 
-    constructor(enemyType: EnemiesType, targetValue: number) {
+    private _getMatrixMapCb: GetMatrixMapFn;
+
+    constructor(enemyType: EnemiesType, targetValue: number, _getMatrixMapCb: GetMatrixMapFn) {
         super(enemyType);
+        this._getMatrixMapCb = _getMatrixMapCb;
         this._enemiesType = enemyType;
         this.image.width = AppConstants.matrixSize;
         this.image.height = AppConstants.matrixSize;
 
         this.moveEngine = new BaseEngine(true);
-        this._bfsMoveEngine = new BSFMoveEngine(this.getMatrixPosition.bind(this), targetValue);
+        this._bfsMoveEngine = new BSFMoveEngine(this.getMatrixPosition.bind(this), targetValue, this._getMatrixMapCb.bind(this));
         this._targetValue = targetValue;
 
         this.image.anchor = 0.5;
@@ -211,59 +213,59 @@ export class Enemies extends BaseObject {
         let nextPositionChangeDirection: PointData;
         let nextDirection: Direction;
 
-        if (GameMap.mapMatrix[nextMove.path.x][nextMove.path.y] === AppConstants.matrixMapValue.unit) {
+        if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y] === AppConstants.matrixMapValue.unit) {
             switch (nextMove.directions) {
                 case Direction.UP:
-                    if (GameMap.mapMatrix[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                        GameMap.mapMatrix[nextMove.path.x - 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    if (this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                        this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         nextPositionChangeDirection = { x: nextMove.path.x - 1, y: nextMove.path.y };
                         nextDirection = Direction.UP_LEFT;
 
                         break;
-                    } else if (GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                        GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    } else if (this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                        this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y };
                         nextDirection = Direction.UP_RIGHT;
 
                         break;
                     }
                 case Direction.LEFT:
-                    if (GameMap.mapMatrix[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
+                        this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y - 1 };
                         nextDirection = Direction.UP_LEFT;
 
                         break;
-                    } else if (GameMap.mapMatrix[nextMove.path.x][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    } else if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
+                        this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y + 1 };
                         nextDirection = Direction.DOWN_LEFT;
 
                         break;
                     }
                 case Direction.DOWN:
-                    if (GameMap.mapMatrix[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                        GameMap.mapMatrix[nextMove.path.x - 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    if (this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                        this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         nextPositionChangeDirection = { x: nextMove.path.x - 1, y:nextMove.path.y };
                         nextDirection = Direction.DOWN_LEFT;
 
                         break;
-                    } else if (GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                        GameMap.mapMatrix[nextMove.path.x + 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    } else if (this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                        this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y };
                         nextDirection = Direction.DOWN_RIGHT;
 
                         break;
                     }
                 case Direction.RIGHT:
-                    if (GameMap.mapMatrix[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        GameMap.mapMatrix[nextMove.path.x - 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
+                        this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y - 1 };
                         nextDirection = Direction.UP_RIGHT;
 
                         break;
-                    } else if (GameMap.mapMatrix[nextMove.path.x][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        GameMap.mapMatrix[nextMove.path.x - 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    } else if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
+                        this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y + 1 };
                         nextDirection = Direction.DOWN_RIGHT;
 
@@ -274,7 +276,7 @@ export class Enemies extends BaseObject {
                     nextDirection = Direction.STAND;
                     break;
             }
-        } else if (GameMap.mapMatrix[nextMove.path.x][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay) {
+        } else if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay) {
             nextDirection = nextMove.directions;
             nextPositionChangeDirection = nextMove.path;
 

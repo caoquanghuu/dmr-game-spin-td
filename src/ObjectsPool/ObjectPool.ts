@@ -1,4 +1,4 @@
-import { BulletType, TowerType, UnitType } from '../Type';
+import { BulletType, EnemiesType, GetMatrixMapFn, TowerType, UnitType } from '../Type';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { Tower } from '../ObjectsPool/Tower/Tower';
@@ -9,15 +9,15 @@ import { AssetsLoader } from '../AssetsLoader';
 import { ControlUnit } from './ControlUnit/ControlUnit';
 
 export class ObjectPool {
-    public static inst: ObjectPool;
     private _bulletPool: {[bulletType: string]: Bullet[]} = {};
     private _enemiesPool: Enemies[] = [];
     private _towerPool: {[towerType: string]: Tower[]} = {};
     private _explosionPool: {[explosionType: string]: AnimatedSprite[]} = {};
     private _unitPool: {[unitType: string]: ControlUnit[]} = {};
+    private _getMatrixMapCb: GetMatrixMapFn;
 
-    constructor() {
-        ObjectPool.inst = this;
+    constructor(getMatrixMap: GetMatrixMapFn) {
+        this._getMatrixMapCb = getMatrixMap;
         //init bullet pool
         for (const [key, value] of Object.entries(BulletType)) {
             this._bulletPool[key] = [];
@@ -60,6 +60,12 @@ export class ObjectPool {
             tankExplosion.alpha = 20;
             tankExplosion.zIndex = 7;
             this._explosionPool['tank'].push(tankExplosion);
+
+            const enemies = new Enemies(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase, this._getMatrixMapCb.bind(this));
+            const eneId = Factory.createEnemies();
+            enemies.id = eneId;
+
+            this._enemiesPool.push(enemies);
         }
 
 
@@ -85,8 +91,10 @@ export class ObjectPool {
     }
     public getEnemies(): Enemies {
         if (this._enemiesPool.length <= 0) {
-            const enemies = Factory.createEnemies();
-            return enemies;
+            const enemyId = Factory.createEnemies();
+            const ene = new Enemies(EnemiesType.tank_1, AppConstants.matrixMapValue.nuclearBase, this._getMatrixMapCb.bind(this));
+            ene.id = enemyId;
+            return ene;
         } else {
             return this._enemiesPool.pop() as Enemies;
         }

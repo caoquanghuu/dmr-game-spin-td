@@ -1,15 +1,14 @@
 import { PointData } from 'pixi.js';
-import { GameMap } from '../GameScene/Map/Map';
-import { BSFMove, BSFNextMove, Direction } from '../Type';
+import { BSFMove, BSFNextMove, Direction, GetMatrixMapFn } from '../Type';
 import { AppConstants } from '../GameScene/Constants';
 export class BSFMoveEngine {
-    private _mapMatrix: any;
+    private _getMatrixMapCb: GetMatrixMapFn;
     private _bsfMove: BSFMove;
     private _targetValue: number;
     private _getHeadPointPosition: Function;
 
-    constructor(getHeadPointPosition: Function, targetValue: number) {
-        this._mapMatrix = GameMap.mapMatrix;
+    constructor(getHeadPointPosition: Function, targetValue: number, getMatrixMap: GetMatrixMapFn) {
+        this._getMatrixMapCb = getMatrixMap;
         this._targetValue = targetValue;
         this._getHeadPointPosition = getHeadPointPosition;
     }
@@ -65,7 +64,7 @@ export class BSFMoveEngine {
 
         while (queue.length > 0) {
             const current = queue.shift()!;
-            if (this._mapMatrix[current.x][current.y] === this._targetValue) {
+            if (this._getMatrixMapCb()[current.x][current.y] === this._targetValue) {
                 let temp = current;
                 while (temp !== null) {
                     path.push(temp);
@@ -122,7 +121,7 @@ export class BSFMoveEngine {
         while (queue.length > 0) {
             const { point, steps } = queue.shift()!;
 
-            if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.nuclearBase) {
+            if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.nuclearBase) {
                 return steps;
             }
 
@@ -149,9 +148,9 @@ export class BSFMoveEngine {
     }
 
     private _checkNextMove(point: PointData): boolean {
-        if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.environment) return false;
-        if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.tower) return false;
-        if (this._mapMatrix[point.x][point.y] === AppConstants.matrixMapValue.availableTowerBuild) return false;
+        if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.environment) return false;
+        if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.tower) return false;
+        if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.availableTowerBuild) return false;
 
         return true;
     }

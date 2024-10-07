@@ -1,11 +1,10 @@
-import { CreateEnemiesOption, GetEnemiesFromPoolFn, GetExplosionFromPoolFn, ReturnEnemiesToPoolFn, ReturnExplosionToPoolFn } from 'src/Type';
+import { CreateEnemiesOption, GetEnemiesFromPoolFn, GetExplosionFromPoolFn, GetMatrixMapFn, ReturnEnemiesToPoolFn, ReturnExplosionToPoolFn, SetMatrixMapFn } from 'src/Type';
 import { Enemies } from '../ObjectsPool/Enemies/Enemies';
 import { AnimatedSprite, PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import EnemiesOption from '../ObjectsPool/Enemies/Enemies.json';
 import { AssetsLoader } from '../AssetsLoader';
-import { GameMap } from '../GameScene/Map/Map';
 
 export class EnemiesController {
     private _enemies: Enemies[] = [];
@@ -13,6 +12,8 @@ export class EnemiesController {
     private _returnEnemiesToPool: ReturnEnemiesToPoolFn;
     private _getExplosionFromPool: GetExplosionFromPoolFn;
     private _returnExplosionToPool: ReturnExplosionToPoolFn;
+    private _getMatrixMapCb: GetMatrixMapFn;
+    private _setMatrixMapCb: SetMatrixMapFn;
     private _isCreateEne: boolean = false;
     private _time: number = 0;
     private _enemiesOption: any;
@@ -20,11 +21,13 @@ export class EnemiesController {
     private _eneCount: {eneConst: number, eneCount: number} = { eneConst: 0, eneCount: 0 };
     private _wave: number;
 
-    constructor(getEnemiesFromPoolCB: GetEnemiesFromPoolFn, returnEnemiesToPoolCB: ReturnEnemiesToPoolFn, getExplosionFromPoolCB: GetExplosionFromPoolFn, returnExplosionToPoolCB: ReturnExplosionToPoolFn) {
+    constructor(getEnemiesFromPoolCB: GetEnemiesFromPoolFn, returnEnemiesToPoolCB: ReturnEnemiesToPoolFn, getExplosionFromPoolCB: GetExplosionFromPoolFn, returnExplosionToPoolCB: ReturnExplosionToPoolFn, getMatrixMapCB: GetMatrixMapFn, setMatrixMapCB: SetMatrixMapFn) {
         this._getEnemiesFromPool = getEnemiesFromPoolCB;
         this._returnEnemiesToPool = returnEnemiesToPoolCB;
         this._getExplosionFromPool = getExplosionFromPoolCB;
         this._returnExplosionToPool = returnExplosionToPoolCB;
+        this._getMatrixMapCb = getMatrixMapCB;
+        this._setMatrixMapCb = setMatrixMapCB;
         this._useEventEffect();
     }
 
@@ -50,7 +53,6 @@ export class EnemiesController {
 
     private _createEnemies(option: CreateEnemiesOption, position: PointData, wave: number): Enemies {
         const ene = this._getEnemiesFromPool();
-
         ene.image.texture = AssetsLoader.getTexture(`${option.name}`);
         ene.position = position;
         ene.image.zIndex = AppConstants.zIndex.enemy;
@@ -81,7 +83,7 @@ export class EnemiesController {
         this._returnEnemiesToPool(ene);
 
         const matrixPosition = ene.getMatrixPosition();
-        GameMap.mapMatrix[matrixPosition.x][matrixPosition.y] = AppConstants.matrixMapValue.availableMoveWay;
+        this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] = AppConstants.matrixMapValue.availableMoveWay;
 
         // create animation explosion
         const explosion: AnimatedSprite = this._getExplosionFromPool(AppConstants.textureName.tankExplosionAnimation);
@@ -109,15 +111,16 @@ export class EnemiesController {
 
     public update(dt: number) {
         // this._calculateDistanceToNuclearBase(dt);
-        GameMap.mapMatrix.forEach((row, idxX) => row.forEach((col, idxY) => {
+        this._getMatrixMapCb().forEach((row, idxX) => row.forEach((col, idxY) => {
             if (col === AppConstants.matrixMapValue.unit) {
-                GameMap.mapMatrix[idxX][idxY] = AppConstants.matrixMapValue.availableMoveWay;
+                this._setMatrixMapCb(idxX, idxY, AppConstants.matrixMapValue.availableMoveWay);
             }
         }));
         this._enemies.forEach(ene => {
             const matrixPosition = ene.update(dt);
-            if (matrixPosition && GameMap.mapMatrix[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
-                GameMap.mapMatrix[matrixPosition.x][matrixPosition.y] = AppConstants.matrixMapValue.unit;
+            if (matrixPosition && this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+
+                this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.unit);
             }
 
         });
