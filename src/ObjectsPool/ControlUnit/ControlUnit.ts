@@ -2,7 +2,6 @@ import Emitter, { calculateAngleOfVector, isCollision } from '../../Util';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BaseObject } from '../BaseObject';
 import { PointData } from 'pixi.js';
-import { AssetsLoader } from '../../AssetsLoader';
 import { AppConstants } from '../../GameScene/Constants';
 import { Circle, EffectType, FireBulletOption, FlyUnitType, TowerType } from '../../Type';
 import { sound } from '@pixi/sound';

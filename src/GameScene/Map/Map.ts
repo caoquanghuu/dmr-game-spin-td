@@ -95,7 +95,7 @@ export class GameMap extends Container {
 
 
                     // set target for collision
-                    this._collisionController.nuclearPosition = this._nuclearBase.position;
+                    this._collisionController.nuclearBase = this._nuclearBase;
 
                 }
 
