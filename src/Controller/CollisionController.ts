@@ -1,7 +1,7 @@
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
-import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
+import { Circle, Direction, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
 import { AnimatedSprite, PointData } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
@@ -29,44 +29,26 @@ export class CollisionController {
         this._enemiesTank.forEach((ene, eneIdx) => {
             const c1: Circle = { position: ene.position, radius: ene.image.width / 2 - 2 };
 
-            this._enemiesTank.forEach((ene2) => {
-                const c2: Circle = {position:ene2.position, radius: ene.image.width / 2};
-                if (ene === ene2) return;
-
-                const isCollision = this._isCollision(c1,c2);
-                if (isCollision) {
-                    // ene.isMoving = false;
-
-                }
-            })
-
+            // check collision fire of tank and ene
             this._allyTank.forEach((ally) => {
 
-                const fireC1: Circle = { position: ene.position, radius: 30 };
+                const fireC1: Circle = { position: ene.position, radius: 40 };
 
-                const fireC2: Circle = { position: ally.position, radius: 30 };
+                const fireC2: Circle = { position: ally.position, radius: 40 };
 
                 const isCollision = this._isCollision(fireC1, fireC2);
 
                 if (isCollision) {
-                    ene.isMoving = false;
-                    ally.isMoving = false;
-
-                    ene.fire(ally.getUpdatedPosition());
-                    ally.fire(ene.getUpdatedPosition());
-                } else {
-                    if (ene.isMoving === false) {
-                        ene.isMoving = true;
-                        ene.getNextMove();
+                    if (!ene.targetId && !ene.fireTarget) {
+                        ene.targetId = ally.id;
+                        ene.fireTarget = ally.getUpdatedPosition();
                     }
 
-                    if (ally.isMoving === false) {
-                        ally.isMoving = true;
-                        ally.getNextMove();
+                    if (!ally.targetId && !ally.fireTarget) {
+                        ally.targetId = ene.id;
+                        ally.fireTarget = ene.getUpdatedPosition();
                     }
                 }
-
-
             });
 
             this._towers.forEach(tower => {
@@ -77,14 +59,15 @@ export class CollisionController {
                 }
             });
 
-            // check ene vs their target
-            const c2: Circle = { position: this._nuclearBasePosition, radius: 20 };
+            // check ene vs nuclear base
+            const c2: Circle = { position: this._nuclearBasePosition, radius: 30 };
 
             const isCollision = this._isCollision(c1, c2);
             if (isCollision) {
 
 
-                const eneFired: boolean = ene.fire(this._nuclearBasePosition);
+                const eneFired: boolean = ene.fire();
+
                 ene.isMoving = false;
                 // remove enemy cause it reached to base
                 // Emitter.emit(AppConstants.event.removeEnemy, ene.id);
@@ -137,27 +120,47 @@ export class CollisionController {
 
                     Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
                 };
-                const eneCollisionWithBullet: Tank[] = [];
-                this._enemiesTank.forEach(ene => {
-                    const c2: Circle = { position: bullet.position, radius: bullet.effectArena };
-                    const cEne: Circle = { position: ene.position, radius: ene.image.width / 2 };
-                    const isCollisionWithBullet = this._isCollision(cEne, c2);
+                const unitsCollisionWithBullet: Tank[] = [];
+
+                // check bullet with other object
+                if (!bullet.isEneBullet) {
+                    this._enemiesTank.forEach(ene => {
+                        // return in case bullet is ene bullet
+
+                        const c2: Circle = { position: bullet.position, radius: bullet.effectArena };
+                        const cEne: Circle = { position: ene.position, radius: ene.image.width / 2 };
+                        const isCollisionWithBullet = this._isCollision(cEne, c2);
 
 
-                    if (isCollisionWithBullet) {
-                        eneCollisionWithBullet.push(ene);
-                    }
-                });
-                eneCollisionWithBullet.forEach(ene => {
+                        if (isCollisionWithBullet) {
+                            unitsCollisionWithBullet.push(ene);
+                        }
+                    });
+                } else {
+                    this._allyTank.forEach(ally => {
+
+                        // return is case bullet is ally bullet
+
+                        const c2: Circle = { position: bullet.position, radius: bullet.effectArena };
+                        const cAlly: Circle = { position: ally.position, radius: ally.image.width / 2 };
+                        const isCollisionWithBullet = this._isCollision(cAlly, c2);
+                        if (isCollisionWithBullet) {
+                            unitsCollisionWithBullet.push(ally);
+                        }
+                    });
+                }
+
+
+                unitsCollisionWithBullet.forEach(unit => {
                     if (bullet.effectType === EffectType.SLOW) {
                         // speed of enemy will be reduce
                         const speed = 60;
-                        ene.speed = speed;
+                        unit.speed = speed;
                         setTimeout(() => {
-                            ene.speed = 100;
+                            unit.speed = 100;
                         }, 2000);
                     } else {
-                        ene.reduceHp(bullet.dame);
+                        unit.reduceHp(bullet.dame);
                     }
                 });
 

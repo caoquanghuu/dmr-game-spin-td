@@ -106,6 +106,7 @@ export class UnitController {
             i = this._allies.findIndex(ally => {
                 return ally.id === id;
             });
+            unit = this._allies[i];
         }
 
 
@@ -166,6 +167,8 @@ export class UnitController {
 
             switch (unit.direction) {
                 case Direction.DOWN:
+                    // avoid next position go out of map
+                    if (this._getMatrixMapCb().length < (matrixPosition.x + 1) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 2)) return;
                     if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
 
@@ -174,6 +177,8 @@ export class UnitController {
                     }
                     break;
                 case Direction.UP:
+                    // avoid next position go out of map
+                    if (this._getMatrixMapCb().length < (matrixPosition.x + 1) || (matrixPosition.y - 2) < 0) return;
                     if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
 
@@ -182,6 +187,8 @@ export class UnitController {
                     }
                     break;
                 case Direction.RIGHT:
+                    // avoid next position go out of map
+                    if (this._getMatrixMapCb().length < (matrixPosition.x + 2) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 1)) return;
                     if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
 
@@ -190,6 +197,8 @@ export class UnitController {
                     }
                     break;
                 case Direction.LEFT:
+                    // avoid next position go out of map
+                    if ((matrixPosition.x - 2) < 0 || this._getMatrixMapCb()[0].length < (matrixPosition.y + 1)) return;
                     if (this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
 
@@ -233,7 +242,7 @@ export class UnitController {
                     break;
                 case Direction.UP_RIGHT:
                     // avoid next position go out of map
-                    if (this._getMatrixMapCb().length < (matrixPosition.x + 1) || (matrixPosition.y - 2) < 0) return;
+                    if (this._getMatrixMapCb().length < (matrixPosition.x + 2) || (matrixPosition.y - 2) < 0) return;
 
                     // if next position available then set value for that next matrix
                     if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {

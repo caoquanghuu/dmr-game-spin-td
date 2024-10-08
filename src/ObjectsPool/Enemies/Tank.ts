@@ -21,7 +21,8 @@ export class Tank extends BaseObject {
     private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 500, changeTimeCount: 0 };
     public isPauseMove: boolean = false;
     public isEne: boolean = true;
-    public isFire: boolean = false;
+    public fireTarget: PointData = null;
+    public targetId: number;
 
     private _targetValue: number;
     private _matrixValue: number = 4;
@@ -36,6 +37,7 @@ export class Tank extends BaseObject {
         super(enemyType);
         this._getMatrixMapCb = getMatrixMapCb;
         this._setMatrixMapCb = setMatrixMapCb;
+        this._useEventEffect();
 
         this._enemiesType = enemyType;
         this.image.width = AppConstants.matrixSize * 0.7;
@@ -151,22 +153,25 @@ export class Tank extends BaseObject {
     public reset() {
         this.moveEngine.direction = Direction.STAND;
         this._isMoving = false;
+        this.targetId = undefined;
+        this.fireTarget = undefined;
     }
 
     public getUpdatedPosition(): PointData {
         return this.image.position;
     }
 
-    public fire(target: PointData): boolean {
+    public fire() {
+        if (this.targetId && this.fireTarget) {
+            this._isMoving = false;
+            if (this.fireTimeCd.fireTimeCount < this.fireTimeCd.fireTimeConst) return false;
 
-        if (this.fireTimeCd.fireTimeCount < this.fireTimeCd.fireTimeConst) return false;
-        this._isMoving = false;
-        const option: FireBulletOption = { position: this.position, target: target, dame: this.dameDeal, speed: this.speed * 3, isEneBullet: this.isEne, towerType: TowerType.tinker };
-
-        Emitter.emit(AppConstants.event.createBullet, option);
-        this.fireTimeCd.fireTimeCount = 0;
-
-        return true;
+            const option: FireBulletOption = { position: this.position, target: this.fireTarget, dame: this.dameDeal, speed: this.speed * 3, isEneBullet: this.isEne, towerType: TowerType.tinker };
+            Emitter.emit(AppConstants.event.createBullet, option);
+            this.fireTimeCd.fireTimeCount = 0;
+        } else {
+            this.isMoving = true;
+        }
     }
 
     public reduceHp(hpReDuce: number): void {
@@ -226,13 +231,13 @@ export class Tank extends BaseObject {
 
     }
 
-    public getNextMove() {
+    public getNextMove(): boolean {
 
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
         if (nextMove === undefined) {
             this.moveEngine.direction = Direction.STAND;
             this.isPauseMove = true;
-            return;
+            return false;
         }
 
         let nextPositionChangeDirection: PointData;
@@ -398,6 +403,15 @@ export class Tank extends BaseObject {
 
     }
 
+    private _useEventEffect() {
+        Emitter.on(AppConstants.event.removeEnemy, (info: {id: number, isEne: boolean}) => {
+            if (this.targetId === info.id) {
+                this.fireTarget = undefined;
+                this.targetId = undefined;
+            }
+        });
+    }
+
 
     public update(dt: number): PointData {
         if (this.isPauseMove) {
@@ -408,6 +422,8 @@ export class Tank extends BaseObject {
             }
 
         }
+
+        this.fire();
         this.fireTimeCd.fireTimeCount += dt;
         this._bfsMoveEngine.update();
         if (this._isMoving) {
