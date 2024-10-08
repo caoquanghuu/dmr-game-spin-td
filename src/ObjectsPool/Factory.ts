@@ -7,6 +7,8 @@ import { Tinker } from '../ObjectsPool/Tower/Tinker';
 import { ClockWerk } from '../ObjectsPool/Tower/ClockWerk';
 import { Barack } from './Tower/Barack';
 import { ControlUnit } from './ControlUnit/ControlUnit';
+import { BaseObject } from './BaseObject';
+import { AppConstants } from '../GameScene/Constants';
 
 export default class Factory {
     public static instance: Factory;
@@ -80,6 +82,14 @@ export default class Factory {
         const objectId = Factory.objectId;
         Factory.objectId++;
         return objectId;
+    }
+
+    public static createNuclearBase(): BaseObject {
+        const objectId = Factory.objectId;
+        Factory.objectId++;
+        const nuclearBase = new BaseObject(AppConstants.textureName.nuclearBase, true);
+        nuclearBase.id = objectId;
+        return nuclearBase;
     }
 
     public static createUnit(type: FlyUnitType): ControlUnit {

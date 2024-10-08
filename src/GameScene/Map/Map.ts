@@ -14,6 +14,8 @@ import Emitter from '../../Util';
 import { UnitController } from '../../Controller/UnitController';
 import { sound } from '@pixi/sound';
 import { ControlUnit } from '../../ObjectsPool/ControlUnit/ControlUnit';
+import Factory from '../../ObjectsPool/Factory';
+import { BaseObject } from '../../ObjectsPool/BaseObject';
 
 export class GameMap extends Container {
     private _unit: ControlUnit[] = [];
@@ -24,7 +26,7 @@ export class GameMap extends Container {
     private _unitController: UnitController;
     private _objectPool: ObjectPool;
     private _time: number = 0;
-    private _nuclearBase: AnimatedSprite;
+    private _nuclearBase: BaseObject;
 
     // wave is define to current hard level
     private _wave: number = 1;
@@ -80,14 +82,16 @@ export class GameMap extends Container {
                 }
 
                 if (value === 3) {
-                    this._nuclearBase = new AnimatedSprite(AssetsLoader.getTexture(AppConstants.textureName.nuclearBase).animations[AppConstants.textureName.nuclearBaseAnimation]);
+                    // this._nuclearBase = new AnimatedSprite(AssetsLoader.getTexture(AppConstants.textureName.nuclearBase).animations[AppConstants.textureName.nuclearBaseAnimation]);
                     // this._nuclearBase.anchor = 0.5;
+                    this._nuclearBase = Factory.createNuclearBase();
                     this._nuclearBase.position = { x: idxX * AppConstants.matrixSize + AppConstants.matrixSize, y: idxY * AppConstants.matrixSize - AppConstants.matrixSize / 3 };
-                    this._nuclearBase.width = AppConstants.matrixSize * 4;
-                    this._nuclearBase.height = AppConstants.matrixSize * 4;
-                    this._nuclearBase.zIndex = AppConstants.zIndex.nuclearBase;
-                    this.addChild(this._nuclearBase);
-                    this._nuclearBase.gotoAndStop(0);
+                    this._nuclearBase.image.width = AppConstants.matrixSize * 4;
+                    this._nuclearBase.image.height = AppConstants.matrixSize * 4;
+                    this._nuclearBase.image.zIndex = AppConstants.zIndex.nuclearBase;
+                    this._nuclearBase.setAnimation(AppConstants.textureName.nuclearBaseAnimation);
+                    this._nuclearBase.setFrame(0);
+                    this.addChild(this._nuclearBase.image);
 
 
                     // set target for collision
@@ -170,7 +174,7 @@ export class GameMap extends Container {
             Emitter.emit(AppConstants.event.plusGold, (AppConstants.goldPlusPerWave + this._wave));
             this._unitController.spawnWave(this._wave, { x: 15, y: 0 });
             // change texture of nuclear base
-            this._nuclearBase.gotoAndStop(this._wave - 1);
+            this._nuclearBase.setFrame(this._wave - 1);
             this._time = 0;
         }
 

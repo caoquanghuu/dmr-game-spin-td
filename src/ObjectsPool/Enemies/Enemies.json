@@ -12,7 +12,7 @@
             "name": "tank-2",
             "HP": 800,
             "speed": 100,
-            "dame": 1,
+            "dame": 100,
             "eneCount": 12
         },
         {

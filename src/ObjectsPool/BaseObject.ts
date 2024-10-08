@@ -78,6 +78,14 @@ export class BaseObject {
         this._speed = sp;
     }
 
+    public setFrame(frame: number) {
+        if (this._image instanceof AnimatedSprite) {
+            (this._image as AnimatedSprite).gotoAndStop(frame);
+        } else {
+            return;
+        }
+    }
+
     public setAnimation(animationName: string, loop?: boolean) {
         if (this._image instanceof AnimatedSprite) {
             const textures = this._animationName[animationName];
