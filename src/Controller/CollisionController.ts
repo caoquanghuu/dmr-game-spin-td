@@ -1,7 +1,7 @@
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
-import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
+import { Circle, Direction, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
 import { AnimatedSprite, PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
@@ -98,10 +98,18 @@ export class CollisionController {
 
                         // handle collision of tanks
                         if (this._isCollision(c1, c2)) {
-                            const correctPosition = this._findCorrectPositionBeforeCollision(c2, c1);
-                            if (correctPosition.x && correctPosition.y) {
+                            if (object1.direction === Direction.STAND) {
+                                const correctPosition = this._findCorrectPositionBeforeCollision(c1, c2);
+                                object2.position = correctPosition;
+                                object2.getNextMove();
+                            } else {
+                                const correctPosition = this._findCorrectPositionBeforeCollision(c2, c1);
+
                                 object1.position = correctPosition;
+                                object1.getNextMove();
+
                             }
+
 
                         }
 
@@ -232,7 +240,7 @@ export class CollisionController {
         for (const [key, value] of Object.entries(objects)) {
             this._allObjects = this._allObjects.concat(value);
             value.forEach(val => {
-                if (!val.position.x && !val.position.y) return;
+                if (!val.position.x && !val.position.y && !val.isDead) return;
                 this._mapControl.addObject(val, val.position.x, val.position.y);
 
             });

@@ -41,8 +41,8 @@ export class Tank extends BaseObject {
         this._useEventEffect();
 
         this._enemiesType = enemyType;
-        this.image.width = AppConstants.matrixSize * 0.7;
-        this.image.height = AppConstants.matrixSize * 0.7;
+        this.image.width = AppConstants.matrixSize * 0.5;
+        this.image.height = AppConstants.matrixSize * 0.5;
 
         this.moveEngine = new BaseEngine(true);
         this._bfsMoveEngine = new BSFMoveEngine(this.getMatrixPosition.bind(this), targetValue, this._getMatrixMapCb.bind(this));
@@ -197,7 +197,7 @@ export class Tank extends BaseObject {
         this._HP.hpCount -= hpReDuce;
 
         const hpRate = Math.round(this._HP.hpCount / (this._HP.hpConst / 10));
-        if (this._HP.hpCount <= 0) {
+        if (hpRate <= 0) {
             Emitter.emit(AppConstants.event.removeEnemy, { id: this.id, isEne: this.isEne });
             this.isDead = true;
             return;

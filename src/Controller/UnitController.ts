@@ -21,6 +21,7 @@ export class UnitController {
     private _eneStartPosition: PointData;
     private _eneCount: {eneConst: number, eneCount: number} = { eneConst: 0, eneCount: 0 };
     private _wave: number;
+    private _createEnemiesTime: number = 0;
 
     constructor(getEnemiesFromPoolCB: GetEnemiesFromPoolFn, returnEnemiesToPoolCB: ReturnEnemiesToPoolFn, getExplosionFromPoolCB: GetExplosionFromPoolFn, returnExplosionToPoolCB: ReturnExplosionToPoolFn, getMatrixMapCB: GetMatrixMapFn, setMatrixMapCB: SetMatrixMapFn) {
         this._getEnemiesFromPool = getEnemiesFromPoolCB;
@@ -55,6 +56,7 @@ export class UnitController {
         this._eneStartPosition = { x: position.x * AppConstants.matrixSize, y: position.y * AppConstants.matrixSize + 1 };
         this._eneCount.eneConst = this._enemiesOption.eneCount;
         this._wave = wave;
+        this._createEnemiesTime = 100 / (this._enemiesOption.speed / 1000);
         this._isCreateEne = true;
     }
 
@@ -290,7 +292,7 @@ export class UnitController {
 
         // create enemy for time
         if (this._isCreateEne) {
-            if (this._time >= 1000) {
+            if (this._time >= this._createEnemiesTime) {
                 if (this._eneCount.eneCount === this._eneCount.eneConst) {
                     this._isCreateEne = false;
                     this._eneCount.eneConst = 0;
