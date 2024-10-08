@@ -75,8 +75,12 @@ export class CollisionController {
         this._allObjects.forEach(object1 => {
             const otherObjects = this._mapControl.getObjectsInNearbyCells(object1.position.x, object1.position.y);
             if (object1 instanceof Tank) {
+                // avoid when ene dead but this still loop to it
+                if (object1.isDead) return;
                 const c1: Circle = { position: object1.position, radius: object1.image.width / 2 };
                 otherObjects.forEach(object2 => {
+                    if (object2 === object1) return;
+
 
                     // incase object 2 is environment objects
                     if (object2 instanceof Sprite) {
@@ -89,6 +93,7 @@ export class CollisionController {
 
                     // incase other tank
                     if (object2 instanceof Tank) {
+                        if (object2.isDead) return;
                         const c2: Circle = { position: object2.position, radius: object2.image.width / 2 };
 
                         // handle collision of tanks

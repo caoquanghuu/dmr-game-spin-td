@@ -8,6 +8,7 @@ import { AppConstants } from '../../GameScene/Constants';
 import { AssetsLoader } from '../../AssetsLoader';
 
 export class Tank extends BaseObject {
+    public isDead: boolean = false;
     private _HP: {hpConst: number, hpCount: number} = { hpConst: 0, hpCount: 0 };
     private _hpBar: Sprite;
     private _dameDeal: number;
@@ -164,6 +165,7 @@ export class Tank extends BaseObject {
         this._bfsMoveEngine.update();
         this.getNextMove();
         this._isMoving = true;
+        this.isDead = false;
     }
 
     public reset() {
@@ -197,6 +199,7 @@ export class Tank extends BaseObject {
         const hpRate = Math.round(this._HP.hpCount / (this._HP.hpConst / 10));
         if (this._HP.hpCount <= 0) {
             Emitter.emit(AppConstants.event.removeEnemy, { id: this.id, isEne: this.isEne });
+            this.isDead = true;
             return;
         }
         this._hpBar.texture = AssetsLoader.getTexture(`hp-bar-${hpRate}`);
