@@ -14,9 +14,9 @@ export class Tinker extends Tower {
     private _animateTexture(dt: number) {
         this.time += dt;
         if (this.time <= 200) {
-            this.image.texture = AssetsLoader.getTexture('laser-tower-2');
+            this.image.texture = AssetsLoader.getTexture('tinker');
         } else {
-            this.image.texture = AssetsLoader.getTexture('laser-tower-1');
+            this.image.texture = AssetsLoader.getTexture('tinker-2');
         }
         if (this.time > 400) {
             this.time = 0;

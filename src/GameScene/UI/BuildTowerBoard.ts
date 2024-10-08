@@ -46,6 +46,20 @@ export class BuildTowerBoard extends Container {
             towerIcon.on('pointerdown', () => {
                 this.createTower(value);
             });
+            let isMouseIn: boolean = false;
+            towerIcon.on('mouseover', () => {
+                if (!isMouseIn) {
+                    isMouseIn = true;
+                    Emitter.emit(AppConstants.event.createTowerIllusion, {towerType: value, baseTower: this._baseTower})
+                }
+            });
+            towerIcon.on('mouseout', () => {
+                if (isMouseIn) {
+                    isMouseIn = false;
+                    Emitter.emit(AppConstants.event.invisibleTowerIllusion, null);
+                }
+            });
+
             this.addChild(towerIcon);
 
             this._towerCanBuildIcon.push(towerIcon);

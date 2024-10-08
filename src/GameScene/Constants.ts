@@ -166,7 +166,9 @@ export namespace AppConstants {
         reduceBaseHp: 'reduce-base-hp',
         gameOver: 'game-over',
         gameStart: 'game-start',
-        createAllyUnit: 'create-ally-unit'
+        createAllyUnit: 'create-ally-unit',
+        createTowerIllusion: 'create-tower-illusion',
+        invisibleTowerIllusion: 'invisible-tower-illusion'
 
     };
 

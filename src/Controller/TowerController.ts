@@ -9,6 +9,7 @@ import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
 export class TowerController {
     private _towers: Tower[] = [];
     private _units: ControlUnit[] = [];
+    private _illusionTower: Tower;
     private _getTowerFromPool: GetTowerFromPoolFn;
     private _returnTowerToPool: ReturnTowerToPoolFn;
     private _getTowerBases: GetTowerBasesFn;
@@ -35,23 +36,44 @@ export class TowerController {
         return this._units;
     }
 
+    private _createTowerIllusion(towerType: TowerType, position: PointData): Tower {
+        const tower = this._getTowerFromPool(towerType);
+
+        tower.position = { x: position.x, y: position.y - 25 };
+        tower.circleImage.position = { x: tower.position.x + tower.image.width / 2, y: tower.image.position.y + tower.image.height / 2 };
+        tower.circleImage.zIndex = AppConstants.zIndex.tower;
+        tower.image.zIndex = tower.position.y;
+        tower.image.alpha = 0.7;
+        tower.circleImage.alpha = 0.7;
+
+        Emitter.emit(AppConstants.event.addChildToScene, tower.image);
+        Emitter.emit(AppConstants.event.addChildToScene, tower.circleImage);
+
+        return tower;
+    }
+
     /**
      * method create tower be called when ui success buy tower
      * @param option  type of tower and the base where player chose to build tower
-     * @returns return undefine when that position not available
+     * @returns return tower
      */
-    public _createTower(option: {towerType: TowerType, baseTower: Sprite}): void {
+    public _createTower(option: {towerType: TowerType, baseTower: Sprite}) {
         // get tower from pool
-        const tower = this._getTowerFromPool(option.towerType);
+        const tower = this._illusionTower;
 
         // create a variable info to check that position with tower size available or not
         const info = { position: [{ x: option.baseTower.position.x, y: option.baseTower.position.y }], buildingSize: tower.buildingSize };
         // in case cant not build then return
         if (!this._checkBuildingSpace(info)) {
             // return tower to pool
-            this._returnTowerToPool(tower);
+            Emitter.emit(AppConstants.event.removeChildFromScene, tower.image);
+            Emitter.emit(AppConstants.event.removeChildFromScene, tower.circleImage);
             return;
         }
+
+        this._illusionTower = null;
+        tower.image.alpha = 1;
+        tower.circleImage.alpha = 1;
 
         // in case that position is available
 
@@ -62,10 +84,10 @@ export class TowerController {
         tower.baseTower = towerBases;
 
         // set position for images of tower
-        tower.position = { x: option.baseTower.x, y: option.baseTower.y - 25 };
-        tower.circleImage.position = { x: tower.position.x + tower.image.width / 2, y: tower.image.position.y + tower.image.height / 2 };
-        tower.circleImage.zIndex = AppConstants.zIndex.tower;
-        tower.image.zIndex = tower.position.y;
+        // tower.position = { x: option.baseTower.x, y: option.baseTower.y - 25 };
+        // tower.circleImage.position = { x: tower.position.x + tower.image.width / 2, y: tower.image.position.y + tower.image.height / 2 };
+        // tower.circleImage.zIndex = AppConstants.zIndex.tower;
+        // tower.image.zIndex = tower.position.y;
 
         // set new event for bases that when click will render tower information
         tower.baseTower.forEach(base => {
@@ -86,6 +108,10 @@ export class TowerController {
                 tower.toggleCircle(false);
             });
         });
+
+        tower.toggleCircle(true);
+
+
         this._towers.push(tower);
 
         if (tower.towerType === TowerType.barack) {
@@ -97,10 +123,13 @@ export class TowerController {
         Emitter.emit(AppConstants.event.addChildToScene, tower.image);
         Emitter.emit(AppConstants.event.addChildToScene, tower.circleImage);
         Emitter.emit(AppConstants.event.reduceGold, AppConstants.towerPrice[tower.towerType]);
-        tower.toggleCircle(false);
-
-        // play sound
+        // // play sound
         sound.play(AppConstants.soundName.mainSound, { sprite:AppConstants.soundName.buildingCompleted });
+
+        // toggle turn of tower circle
+        setTimeout(() => {
+            tower.toggleCircle(false);
+        }, 1000);
     }
 
     /**
@@ -158,9 +187,38 @@ export class TowerController {
         Emitter.on(AppConstants.event.fireBullet, (option: FireBulletOption) => {
             this._fireBullet(option);
         });
+
+        // get event from ui build tower board
         Emitter.on(AppConstants.event.createTower, (option: {towerType: TowerType, baseTower: Sprite}) => {
             this._createTower(option);
         });
+
+        // create illusion of tower
+        Emitter.on(AppConstants.event.createTowerIllusion, (option: {towerType: TowerType, baseTower: Sprite}) => {
+            if (this._illusionTower && this._illusionTower.towerType === option.towerType) {
+                this._illusionTower.position = { x: option.baseTower.position.x, y: option.baseTower.position.y - 24};
+                this._illusionTower.circleImage.position = { x: this._illusionTower.position.x + this._illusionTower.image.width / 2, y: this._illusionTower.image.position.y + this._illusionTower.image.height / 2 };
+                Emitter.emit(AppConstants.event.addChildToScene, this._illusionTower.image);
+                Emitter.emit(AppConstants.event.addChildToScene, this._illusionTower.circleImage);
+            } else if (this._illusionTower) {
+                this._returnTowerToPool(this._illusionTower);
+                this._illusionTower = this._createTowerIllusion(option.towerType, option.baseTower.position);
+            } else {
+                this._illusionTower = this._createTowerIllusion(option.towerType, option.baseTower.position);
+            }
+
+
+        });
+
+        // event toggle illusion tower
+        Emitter.on(AppConstants.event.invisibleTowerIllusion, () => {
+            if (this._illusionTower) {
+                Emitter.emit(AppConstants.event.removeChildFromScene, this._illusionTower.image);
+                Emitter.emit(AppConstants.event.removeChildFromScene, this._illusionTower.circleImage);
+            }
+
+        });
+
         Emitter.on(AppConstants.event.destroyTower, (towerID: number) => {
             this._removeTower(towerID);
         });

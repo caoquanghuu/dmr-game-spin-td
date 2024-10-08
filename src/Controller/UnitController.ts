@@ -53,7 +53,7 @@ export class UnitController {
     public spawnWave(wave: number, position: PointData) {
         // Create enemies, set position, hp, move speed, texture based on current wave
         this._enemiesOption = EnemiesOption.alias[wave - 1];
-        this._eneStartPosition = { x: position.x * AppConstants.matrixSize, y: position.y * AppConstants.matrixSize + 1 };
+        this._eneStartPosition = { x: position.x * AppConstants.matrixSize, y: position.y * AppConstants.matrixSize};
         this._eneCount.eneConst = this._enemiesOption.eneCount;
         this._wave = wave;
         this._createEnemiesTime = 100 / (this._enemiesOption.speed / 1000);
@@ -111,6 +111,11 @@ export class UnitController {
                 return ally.id === id;
             });
             unit = this._allies[i];
+        }
+
+        // in case duplicate emitter call
+        if (!unit) {
+            return;
         }
 
 
@@ -299,9 +304,11 @@ export class UnitController {
                     this._eneCount.eneCount = 0;
                     return;
                 }
-                this._createUnit(this._enemiesOption, this._eneStartPosition, true, this._wave);
-                this._eneCount.eneCount++;
-                this._time = 0;
+                if (this._getMatrixMapCb()[(this._eneStartPosition.x) / AppConstants.matrixSize][(this._eneStartPosition.y) / AppConstants.matrixSize] === AppConstants.matrixMapValue.availableMoveWay) {
+                    this._createUnit(this._enemiesOption, this._eneStartPosition, true, this._wave);
+                    this._eneCount.eneCount++;
+                    this._time = 0;
+                }
             }
         }
     }
