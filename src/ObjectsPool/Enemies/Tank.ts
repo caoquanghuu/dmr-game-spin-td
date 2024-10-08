@@ -41,8 +41,8 @@ export class Tank extends BaseObject {
         this._useEventEffect();
 
         this._enemiesType = enemyType;
-        this.image.width = AppConstants.matrixSize * 0.5;
-        this.image.height = AppConstants.matrixSize * 0.5;
+        this.image.width = AppConstants.matrixSize * 0.7;
+        this.image.height = AppConstants.matrixSize * 0.7;
 
         this.moveEngine = new BaseEngine(true);
         this._bfsMoveEngine = new BSFMoveEngine(this.getMatrixPosition.bind(this), targetValue, this._getMatrixMapCb.bind(this));

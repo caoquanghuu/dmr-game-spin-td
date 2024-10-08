@@ -12,11 +12,8 @@ import { MapControl } from './MapControl';
 
 export class CollisionController {
     private _towers: Tower[] = [];
-    private _bullets: Bullet[] = [];
-    private _allyTank: Tank[] = [];
     private _enemiesTank: Tank[] = [];
     private _flyUnits: ControlUnit[] = [];
-    private _blockingObject: Sprite[] = [];
     private _allObjects: any[] = [];
     public nuclearBase: BaseObject;
     private _mapControl: MapControl;
@@ -31,10 +28,12 @@ export class CollisionController {
         this._mapControl = new MapControl(AppConstants.matrixSize * 4);
     }
 
-    private async _checkCollisionBetweenObjects() {
+    // still use this method for some special case
+    private _checkCollisionBetweenObjects() {
         this._enemiesTank.forEach((ene, eneIdx) => {
             const c1: Circle = { position: ene.position, radius: ene.image.width / 2 };
 
+            // tower check ene cause it range too big
             this._towers.forEach(tower => {
                 const c2: Circle = { position: { x: tower.image.position.x + AppConstants.matrixSize / 2, y: tower.image.position.y + AppConstants.matrixSize / 2 }, radius: tower.effectArena };
                 const isCollision = this._isCollision(c1, c2);
@@ -43,13 +42,12 @@ export class CollisionController {
                 }
             });
 
+
             // check ene vs nuclear base
             const c2: Circle = { position: this.nuclearBase.position, radius: 30 };
 
             const isCollision = this._isCollision(c1, c2);
             if (isCollision) {
-
-
                 ene.targetId = this.nuclearBase.id;
                 ene.targetPosition = this.nuclearBase.position;
             }
@@ -230,13 +228,11 @@ export class CollisionController {
     private _assignObject(): void {
         const objects = this._getObjectsFromGameScene();
         this._towers = objects.towers;
-        this._bullets = objects.bullets;
         this._enemiesTank = objects.enemies;
         this._flyUnits = objects.units;
-        this._allyTank = objects.allies;
-        this._blockingObject = objects.blockObjects;
         this._allObjects = [];
         this._mapControl.clear();
+        // eslint-disable-next-line no-unused-vars
         for (const [key, value] of Object.entries(objects)) {
             this._allObjects = this._allObjects.concat(value);
             value.forEach(val => {
@@ -245,7 +241,6 @@ export class CollisionController {
 
             });
         }
-        this._mapControl.addObject(this.nuclearBase, this.nuclearBase.position.x, this.nuclearBase.position.y);
     }
 
     private _isCollision(c1: Circle, c2: Circle): boolean {
@@ -259,7 +254,7 @@ export class CollisionController {
     private _findCorrectPositionBeforeCollision(c1: Circle, c2: Circle): PointData {
         const vector = { x: c1.position.x - c2.position.x, y: c1.position.y - c2.position.y };
         const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-        const r = c1.radius + c2.radius;
+        const r = c1.radius + c2.radius + 1;
         const unitVector = { x: vector.x / distance, y: vector.y / distance };
 
         const correctPosition = {
