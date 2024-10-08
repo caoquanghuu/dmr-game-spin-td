@@ -18,7 +18,7 @@ export class Tank extends BaseObject {
     private _goldReward: number = 2;
     private _fireRadius: number = 100;
     public fireTimeCd: FireTime= { fireTimeConst: 3000, fireTimeCount: 0 };
-    private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 1000, changeTimeCount: 0 };
+    private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 500, changeTimeCount: 0 };
     public isPauseMove: boolean = false;
     public isEne: boolean = true;
     public isFire: boolean = false;

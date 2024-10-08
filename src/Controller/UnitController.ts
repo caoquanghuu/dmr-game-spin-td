@@ -133,6 +133,9 @@ export class UnitController {
         Emitter.emit(AppConstants.event.removeChildFromScene, unit.image);
         Emitter.emit(AppConstants.event.removeChildFromScene, unit.hpBar);
 
+        Emitter.emit(AppConstants.event.removeChildFromScene, unit.g1);
+        Emitter.emit(AppConstants.event.removeChildFromScene, unit.g2);
+
         if (isEne) {
             this._enemies.splice(i, 1);
         } else {
@@ -146,71 +149,98 @@ export class UnitController {
 
     }
 
-    public update(dt: number) {
-    // reset matrix map on move way
-        this._getMatrixMapCb().forEach((row, idxX) => row.forEach((col, idxY) => {
-            if (col === AppConstants.matrixMapValue.enemy || col === AppConstants.matrixMapValue.ally) {
-                this._setMatrixMapCb(idxX, idxY, AppConstants.matrixMapValue.availableMoveWay);
-            }
-        }));
-        this._enemies.forEach(ene => {
+    private _updateUnits(units: Tank[], dt: number) {
+        // update for ene
+        units.forEach(unit => {
             // update and assign ene position on matrix map
-            const matrixPosition = ene.update(dt);
+            const matrixPosition = unit.update(dt);
             if (matrixPosition && this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
 
 
                 this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.enemy);
-                ene.g1.position = { x: matrixPosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                unit.g1.position = { x: matrixPosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
 
             }
 
-            switch (ene.direction) {
+            // set next direction of ene on matrix map have value of it and wont let other ene go in there
+
+            switch (unit.direction) {
                 case Direction.DOWN:
                     if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
-                        ene.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+
+                        // for debug ene matrix map
+                        unit.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.UP:
                     if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
-                        ene.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+
+                        // for debug ene matrix map
+                        unit.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.RIGHT:
                     if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
-                        ene.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+
+                        // for debug ene matrix map
+                        unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.LEFT:
                     if (this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
-                        ene.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+
+                        // for debug ene matrix map
+                        unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.DOWN_LEFT:
+                    // avoid next position go out of map
+                    if ((matrixPosition.x - 2 < 0) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 2)) return;
+                    // if next position available then set value for that next matrix
+                    if (!this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y + 1]) return;
                     if (this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
-                        ene.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+
+                        // for debug ene matrix map
+                        unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.DOWN_RIGHT:
+                    // avoid next position go out of map
+                    if (this._getMatrixMapCb().length < (matrixPosition.x + 2) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 2)) return;
+                    // if next position available then set value for that next matrix
                     if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
-                        ene.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+
+                        // for debug ene matrix map
+                        unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.UP_LEFT:
+                    // avoid next position go out of map
+                    if ((matrixPosition.x - 2) < 0 || (matrixPosition.y - 2 < 0)) return;
+                    // if next position available then set value for that next matrix
                     if (this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
-                        ene.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+
+                        // for debug ene matrix map
+                        unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.UP_RIGHT:
+                    // avoid next position go out of map
+                    if (this._getMatrixMapCb().length < (matrixPosition.x + 1) || (matrixPosition.y - 2) < 0) return;
+
+                    // if next position available then set value for that next matrix
                     if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
                         this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
-                        ene.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+
+                        // for debug ene matrix map
+                        unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
 
@@ -219,7 +249,8 @@ export class UnitController {
             }
 
 
-            const nextMatrixPosition = ene.nextPosition;
+            // set value next position in case ene calculate next position
+            const nextMatrixPosition = unit.nextPosition;
 
             if (nextMatrixPosition && this._getMatrixMapCb()[nextMatrixPosition.x][nextMatrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
 
@@ -229,24 +260,18 @@ export class UnitController {
             }
 
         });
+    }
 
-
-        this._allies.forEach(ally => {
-            const matrixPosition = ally.update(dt);
-            if (matrixPosition && this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
-
-
-                this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.ally);
+    public update(dt: number) {
+    // reset matrix map on move way
+        this._getMatrixMapCb().forEach((row, idxX) => row.forEach((col, idxY) => {
+            if (col === AppConstants.matrixMapValue.enemy || col === AppConstants.matrixMapValue.ally) {
+                this._setMatrixMapCb(idxX, idxY, AppConstants.matrixMapValue.availableMoveWay);
             }
+        }));
 
-
-            const nextMatrixPosition = ally.nextPosition;
-
-            if (nextMatrixPosition && this._getMatrixMapCb()[nextMatrixPosition.x][nextMatrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
-
-                this._setMatrixMapCb(nextMatrixPosition.x, nextMatrixPosition.y, AppConstants.matrixMapValue.ally);
-            }
-        });
+        this._updateUnits(this._enemies, dt);
+        this._updateUnits(this._allies, dt);
 
         this._time += dt;
 
