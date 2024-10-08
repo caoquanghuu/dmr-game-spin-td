@@ -20,6 +20,7 @@ import { BaseObject } from '../../ObjectsPool/BaseObject';
 export class GameMap extends Container {
     private _unit: ControlUnit[] = [];
     private _towerBase: Sprite[] = [];
+    private _trees: Sprite[]= [];
     private _bulletController: BulletController;
     private _collisionController: CollisionController;
     private _towerController: TowerController;
@@ -79,6 +80,7 @@ export class GameMap extends Container {
                     // tree.anchor = 0.5;
                     tree.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
                     this.addChild(tree);
+                    this._trees.push(tree);
                 }
 
                 if (value === 3) {
@@ -130,8 +132,8 @@ export class GameMap extends Container {
         });
     }
 
-    private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Tank[], allies: Tank[], units: ControlUnit[]} {
-        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._unitController.enemies, allies: this._unitController.allies, units: this._towerController.units };
+    private _getObject(): {towers: Tower[], bullets: Bullet[], enemies: Tank[], allies: Tank[], units: ControlUnit[], blockObjects: Sprite[]} {
+        return { towers: this._towerController.towers, bullets: this._bulletController.bullets, enemies: this._unitController.enemies, allies: this._unitController.allies, units: this._towerController.units, blockObjects: this._towerBase.concat(this._trees) };
     }
 
     private _useEventEffect() {
@@ -150,7 +152,7 @@ export class GameMap extends Container {
     // method to create enemies
     private _startGame() {
         // position spawn enemy game get on matrix map
-        this._unitController.spawnWave(this._wave, { x: 15, y: 0 });
+        this._unitController.spawnWave(this._wave, { x: 14, y: 1 });
     }
 
     private _checkWave(dt: number) {
@@ -172,7 +174,7 @@ export class GameMap extends Container {
             Emitter.emit(AppConstants.event.displayWave, this._wave);
             // plus gold for player at new wave
             Emitter.emit(AppConstants.event.plusGold, (AppConstants.goldPlusPerWave + this._wave));
-            this._unitController.spawnWave(this._wave, { x: 15, y: 0 });
+            this._unitController.spawnWave(this._wave, { x: 14, y: 1 });
             // change texture of nuclear base
             this._nuclearBase.setFrame(this._wave - 1);
             this._time = 0;

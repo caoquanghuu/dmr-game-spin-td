@@ -87,8 +87,10 @@ export class UnitController {
 
         Emitter.emit(AppConstants.event.addChildToScene, unit.image);
         Emitter.emit(AppConstants.event.addChildToScene, unit.hpBar);
-        Emitter.emit(AppConstants.event.addChildToScene, unit.g1);
-        Emitter.emit(AppConstants.event.addChildToScene, unit.g2);
+
+        // debug by redener enemy move on game
+        // Emitter.emit(AppConstants.event.addChildToScene, unit.g1);
+        // Emitter.emit(AppConstants.event.addChildToScene, unit.g2);
 
 
         return unit;
@@ -134,8 +136,9 @@ export class UnitController {
         Emitter.emit(AppConstants.event.removeChildFromScene, unit.image);
         Emitter.emit(AppConstants.event.removeChildFromScene, unit.hpBar);
 
-        Emitter.emit(AppConstants.event.removeChildFromScene, unit.g1);
-        Emitter.emit(AppConstants.event.removeChildFromScene, unit.g2);
+        // debug by redener enemy move on game
+        // Emitter.emit(AppConstants.event.removeChildFromScene, unit.g1);
+        // Emitter.emit(AppConstants.event.removeChildFromScene, unit.g2);
 
         if (isEne) {
             this._enemies.splice(i, 1);

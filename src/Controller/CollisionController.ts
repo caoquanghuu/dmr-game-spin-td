@@ -2,7 +2,7 @@ import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
 import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
-import { AnimatedSprite, PointData } from 'pixi.js';
+import { AnimatedSprite, PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
@@ -15,6 +15,7 @@ export class CollisionController {
     private _allyTank: Tank[] = [];
     private _enemiesTank: Tank[] = [];
     private _flyUnits: ControlUnit[] = [];
+    private _blockingObject: Sprite[] = [];
     public nuclearBase: BaseObject;
     private _getObjectsFromGameScene: GetObjectFromGameSceneFn;
     private _getExplosionFromPool: GetExplosionFromPoolFn;
@@ -28,7 +29,18 @@ export class CollisionController {
 
     private async _checkCollisionBetweenObjects() {
         this._enemiesTank.forEach((ene, eneIdx) => {
-            const c1: Circle = { position: ene.position, radius: ene.image.width / 2 - 2 };
+            const c1: Circle = { position: ene.position, radius: ene.image.width / 2 };
+
+            this._enemiesTank.forEach(ene2 => {
+                if (ene === ene2) return;
+
+                const c2: Circle = { position: ene2.position, radius: ene.image.width / 2 };
+                const isCollision = this._isCollision(c1, c2);
+                if (isCollision) {
+                    const correctPosition = this._findCorrectPositionBeforeCollision(c1, c2);
+                    ene2.position = correctPosition;
+                }
+            });
 
             // check collision fire of tank and ene
             this._allyTank.forEach((ally) => {
@@ -168,6 +180,28 @@ export class CollisionController {
 
 
         });
+
+        this._blockingObject.forEach(object => {
+            const c1: Circle = { position: { x: object.x + AppConstants.matrixSize / 2, y: object.y + AppConstants.matrixSize / 2 }, radius: AppConstants.matrixSize / 2 };
+
+            this._enemiesTank.forEach(ene => {
+                const c2: Circle = { position: ene.position, radius: ene.image.width / 2 };
+                const isCollision = this._isCollision(c1, c2);
+                if (isCollision) {
+                    const correctPosition = this._findCorrectPositionBeforeCollision(c1, c2);
+                    ene.position = correctPosition;
+                }
+            });
+
+            this._allyTank.forEach(ally => {
+                const c2: Circle = { position: ally.position, radius: ally.image.width / 2 };
+                const isCollision = this._isCollision(c1, c2);
+                if (isCollision) {
+                    const correctPosition = this._findCorrectPositionBeforeCollision(c1, c2);
+                    ally.position = correctPosition;
+                }
+            });
+        });
     }
 
     private _assignObject(): void {
@@ -177,6 +211,7 @@ export class CollisionController {
         this._enemiesTank = objects.enemies;
         this._flyUnits = objects.units;
         this._allyTank = objects.allies;
+        this._blockingObject = objects.blockObjects;
     }
 
     private _isCollision(c1: Circle, c2: Circle): boolean {
@@ -186,6 +221,21 @@ export class CollisionController {
 
         return false;
     }
+
+    private _findCorrectPositionBeforeCollision(c1: Circle, c2: Circle): PointData {
+        const vector = { x: c1.position.x - c2.position.x, y: c1.position.y - c2.position.y };
+        const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+        const r = c1.radius + c2.radius;
+        const unitVector = { x: vector.x / distance, y: vector.y / distance };
+
+        const correctPosition = {
+            x: c2.position.x - unitVector.x * (r - distance),
+            y: c2.position.y - unitVector.y * (r - distance)
+        };
+
+        return correctPosition;
+    }
+
 
     public update() {
         this._assignObject();

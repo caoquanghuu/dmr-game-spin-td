@@ -4,6 +4,7 @@ import { Tower } from '../src/ObjectsPool/Tower/Tower';
 import { Tank } from './ObjectsPool/Enemies/Tank';
 import { Bullet } from '../src/ObjectsPool/Bullet';
 import { ControlUnit } from './ObjectsPool/ControlUnit/ControlUnit';
+import { BaseObject } from './ObjectsPool/BaseObject';
 
 export enum Direction {
     UP,
@@ -125,7 +126,7 @@ export type GetBulletFromPoolFn = (bulletType: BulletType) => Bullet;
 export type ReturnTowerToPoolFn = (tower: Tower) => void;
 export type ReturnEnemiesToPoolFn = (enemy: Tank) => void;
 export type ReturnBulletToPoolFn = (bullet: Bullet) => void;
-export type GetObjectFromGameSceneFn = () => {towers: Tower[], bullets: Bullet[], enemies: Tank[], allies: Tank[], units: ControlUnit[]};
+export type GetObjectFromGameSceneFn = () => {towers: Tower[], bullets: Bullet[], enemies: Tank[], allies: Tank[], units: ControlUnit[], blockObjects: Sprite[]};
 export type AddToBoardFn= (board: Container) => void;
 export type RemoveFromBoardFb = (board: Container) => void;
 export type GetPlayerGoldFn = () => number;
