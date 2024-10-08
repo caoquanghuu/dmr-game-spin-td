@@ -7,6 +7,7 @@ import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
 import { BaseObject } from 'src/ObjectsPool/BaseObject';
+import { MapControl } from './MapControl';
 
 
 export class CollisionController {
@@ -16,7 +17,9 @@ export class CollisionController {
     private _enemiesTank: Tank[] = [];
     private _flyUnits: ControlUnit[] = [];
     private _blockingObject: Sprite[] = [];
+    private _allObjects: any[] = [];
     public nuclearBase: BaseObject;
+    private _mapControl: MapControl;
     private _getObjectsFromGameScene: GetObjectFromGameSceneFn;
     private _getExplosionFromPool: GetExplosionFromPoolFn;
     private _returnExplosionToPool: ReturnExplosionToPoolFn;
@@ -25,44 +28,12 @@ export class CollisionController {
         this._getObjectsFromGameScene = getObjectsFromGameSceneCB;
         this._getExplosionFromPool = getExplosionFromPoolCB;
         this._returnExplosionToPool = returnExplosionToPoolCB;
+        this._mapControl = new MapControl(AppConstants.matrixSize * 4);
     }
 
     private async _checkCollisionBetweenObjects() {
         this._enemiesTank.forEach((ene, eneIdx) => {
             const c1: Circle = { position: ene.position, radius: ene.image.width / 2 };
-
-            this._enemiesTank.forEach(ene2 => {
-                if (ene === ene2) return;
-
-                const c2: Circle = { position: ene2.position, radius: ene.image.width / 2 };
-                const isCollision = this._isCollision(c1, c2);
-                if (isCollision) {
-                    const correctPosition = this._findCorrectPositionBeforeCollision(c1, c2);
-                    ene2.position = correctPosition;
-                }
-            });
-
-            // check collision fire of tank and ene
-            this._allyTank.forEach((ally) => {
-
-                const fireC1: Circle = { position: ene.position, radius: 40 };
-
-                const fireC2: Circle = { position: ally.position, radius: 40 };
-
-                const isCollision = this._isCollision(fireC1, fireC2);
-
-                if (isCollision) {
-                    if (!ene.targetId && !ene.fireTarget) {
-                        ene.targetId = ally.id;
-                        ene.fireTarget = ally.getUpdatedPosition();
-                    }
-
-                    if (!ally.targetId && !ally.fireTarget) {
-                        ally.targetId = ene.id;
-                        ally.fireTarget = ene.getUpdatedPosition();
-                    }
-                }
-            });
 
             this._towers.forEach(tower => {
                 const c2: Circle = { position: { x: tower.image.position.x + AppConstants.matrixSize / 2, y: tower.image.position.y + AppConstants.matrixSize / 2 }, radius: tower.effectArena };
@@ -80,7 +51,7 @@ export class CollisionController {
 
 
                 ene.targetId = this.nuclearBase.id;
-                ene.fireTarget = this.nuclearBase.position;
+                ene.targetPosition = this.nuclearBase.position;
             }
 
             // check ene vs fly unit
@@ -98,109 +69,148 @@ export class CollisionController {
 
 
         });
+    }
 
-        this._bullets.forEach(bullet => {
+    private _handleCollision() {
+        this._allObjects.forEach(object1 => {
+            const otherObjects = this._mapControl.getObjectsInNearbyCells(object1.position.x, object1.position.y);
+            if (object1 instanceof Tank) {
+                const c1: Circle = { position: object1.position, radius: object1.image.width / 2 };
+                otherObjects.forEach(object2 => {
 
-
-            const c3: Circle = { position: bullet.position, radius: bullet.image.width / 2 };
-
-            const c1: Circle = { position: bullet.target, radius: bullet.image.width / 2 };
-
-
-            const isBulletReachToTarget = this._isCollision(c1, c3);
-            if (isBulletReachToTarget) {
-
-                const explosion: AnimatedSprite = this._getExplosionFromPool(bullet.bulletType);
-                explosion.position = bullet.target;
-                explosion.width = bullet.effectArena * 2;
-                explosion.height = bullet.effectArena * 2;
-
-                explosion.gotoAndPlay(0);
-                Emitter.emit(AppConstants.event.addChildToScene, explosion);
-                explosion.onComplete = () => {
-
-                    this._returnExplosionToPool(explosion, bullet.bulletType);
-
-                    Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
-                };
-                const unitsCollisionWithBullet: Tank[] = [];
-
-                // check bullet with other object
-                if (!bullet.isEneBullet) {
-                    this._enemiesTank.forEach(ene => {
-                        // return in case bullet is ene bullet
-
-                        const c2: Circle = { position: bullet.position, radius: bullet.effectArena };
-                        const cEne: Circle = { position: ene.position, radius: ene.image.width / 2 };
-                        const isCollisionWithBullet = this._isCollision(cEne, c2);
-
-
-                        if (isCollisionWithBullet) {
-                            unitsCollisionWithBullet.push(ene);
+                    // incase object 2 is environment objects
+                    if (object2 instanceof Sprite) {
+                        const c2: Circle = { position: { x: object2.position.x + AppConstants.matrixSize / 2, y: object2.position.y + AppConstants.matrixSize / 2 }, radius: object2.width / 2 };
+                        if (this._isCollision(c1, c2)) {
+                            const correctPosition = this._findCorrectPositionBeforeCollision(c2, c1);
+                            object1.position = correctPosition;
                         }
-                    });
-                } else {
-                    const c2: Circle = { position: bullet.position, radius: bullet.effectArena };
-                    this._allyTank.forEach(ally => {
-
-                        // return is case bullet is ally bullet
-
-
-                        const cAlly: Circle = { position: ally.position, radius: ally.image.width / 2 };
-                        const isCollisionWithBullet = this._isCollision(cAlly, c2);
-                        if (isCollisionWithBullet) {
-                            unitsCollisionWithBullet.push(ally);
-                        }
-                    });
-
-                    const cNuclear: Circle = { position: this.nuclearBase.position, radius: this.nuclearBase.image.width / 2 };
-                    const isCollisionWithBase = this._isCollision(cNuclear, c2);
-                    if (isCollisionWithBase) {
-                        Emitter.emit(AppConstants.event.reduceBaseHp, bullet.dame);
                     }
-                }
 
+                    // incase other tank
+                    if (object2 instanceof Tank) {
+                        const c2: Circle = { position: object2.position, radius: object2.image.width / 2 };
 
-                unitsCollisionWithBullet.forEach(unit => {
-                    if (bullet.effectType === EffectType.SLOW) {
-                        // speed of enemy will be reduce
-                        const speed = 60;
-                        unit.speed = speed;
-                        setTimeout(() => {
-                            unit.speed = 100;
-                        }, 2000);
-                    } else {
-                        unit.reduceHp(bullet.dame);
+                        // handle collision of tanks
+                        if (this._isCollision(c1, c2)) {
+                            const correctPosition = this._findCorrectPositionBeforeCollision(c2, c1);
+                            if (correctPosition.x && correctPosition.y) {
+                                object1.position = correctPosition;
+                            }
+
+                        }
+
+                        // handle when 2 tank is their own ene
+                        if (object1.isEne != object2.isEne) {
+                            const fireC1: Circle = { position: object1.position, radius: object1.fireRadius };
+                            const fireC2: Circle = { position: object2.position, radius: object2.fireRadius };
+                            if (this._isCollision(fireC1, fireC2)) {
+                                if (!object1.targetId || !object1.targetPosition) {
+                                    object1.targetId = object2.id;
+                                    object1.targetPosition = object2.getUpdatedPosition();
+                                }
+
+                                if (!object2.targetId || !object2.targetPosition) {
+                                    object2.targetId = object1.id;
+                                    object2.targetPosition = object1.getUpdatedPosition();
+                                }
+                            }
+                        }
                     }
                 });
 
-                // destroy bullet
-                bullet.destroy();
             }
 
+            // handle bullet collision
+            if (object1 instanceof Bullet) {
+                const c3: Circle = { position: object1.position, radius: object1.image.width / 2 };
 
-        });
+                const c1: Circle = { position: object1.target, radius: object1.image.width / 2 };
 
-        this._blockingObject.forEach(object => {
-            const c1: Circle = { position: { x: object.x + AppConstants.matrixSize / 2, y: object.y + AppConstants.matrixSize / 2 }, radius: AppConstants.matrixSize / 2 };
 
-            this._enemiesTank.forEach(ene => {
-                const c2: Circle = { position: ene.position, radius: ene.image.width / 2 };
-                const isCollision = this._isCollision(c1, c2);
-                if (isCollision) {
-                    const correctPosition = this._findCorrectPositionBeforeCollision(c1, c2);
-                    ene.position = correctPosition;
+                const isBulletReachToTarget = this._isCollision(c1, c3);
+                // if bullet reached to it target
+                if (isBulletReachToTarget) {
+                    // create an explosion animation
+                    const explosion: AnimatedSprite = this._getExplosionFromPool(object1.bulletType);
+                    explosion.position = object1.target;
+                    explosion.width = object1.effectArena * 2;
+                    explosion.height = object1.effectArena * 2;
+
+                    explosion.gotoAndPlay(0);
+                    Emitter.emit(AppConstants.event.addChildToScene, explosion);
+                    explosion.onComplete = () => {
+
+                        this._returnExplosionToPool(explosion, object1.bulletType);
+
+                        Emitter.emit(AppConstants.event.removeChildFromScene, explosion);
+                    };
+
+                    // create a variable avoid missing handle when code run
+                    const unitsCollisionWithBullet: Tank[] = [];
+
+                    // check bullet with other object
+                    if (!object1.isEneBullet) {
+                        // bullet is ally bullet and it will hit enemy
+                        const eneTanks: Tank[] = otherObjects.filter((object): object is Tank => {
+                            return (object instanceof Tank) && object.isEne;
+                        });
+                        eneTanks.forEach(ene => {
+                            const c2: Circle = { position: object1.position, radius: object1.effectArena };
+                            const cEne: Circle = { position: ene.position, radius: ene.image.width / 2 };
+                            const isCollisionWithBullet = this._isCollision(cEne, c2);
+
+
+                            if (isCollisionWithBullet) {
+                                // push to array then handle later
+                                unitsCollisionWithBullet.push(ene);
+                            }
+                        });
+                    } else {
+                        // bullet is ene bullet
+                        const c2: Circle = { position: object1.position, radius: object1.effectArena };
+
+                        // check ally tank near bullet
+                        const allyTank: Tank[] = otherObjects.filter((object): object is Tank => {
+                            return (object instanceof Tank) && !object.isEne;
+                        });
+                        allyTank.forEach(ally => {
+
+                            const cAlly: Circle = { position: ally.position, radius: ally.image.width / 2 };
+                            const isCollisionWithBullet = this._isCollision(cAlly, c2);
+                            if (isCollisionWithBullet) {
+                                // push to array then calculate later
+                                unitsCollisionWithBullet.push(ally);
+                            }
+                        });
+
+                        // handle nuclear base
+                        const cNuclear: Circle = { position: this.nuclearBase.position, radius: this.nuclearBase.image.width / 2 };
+                        const isCollisionWithBase = this._isCollision(cNuclear, c2);
+                        if (isCollisionWithBase) {
+                            Emitter.emit(AppConstants.event.reduceBaseHp, object1.dame);
+                        }
+                    }
+
+                    // process do thing with units hit by bullet
+                    unitsCollisionWithBullet.forEach(unit => {
+                        if (object1.effectType === EffectType.SLOW) {
+                            // speed of enemy will be reduce
+                            const speed = 60;
+                            unit.speed = speed;
+                            setTimeout(() => {
+                                unit.speed = 100;
+                            }, 2000);
+                        } else {
+                            unit.reduceHp(object1.dame);
+                        }
+                    });
+
+                    // destroy bullet
+                    object1.destroy();
                 }
-            });
+            }
 
-            this._allyTank.forEach(ally => {
-                const c2: Circle = { position: ally.position, radius: ally.image.width / 2 };
-                const isCollision = this._isCollision(c1, c2);
-                if (isCollision) {
-                    const correctPosition = this._findCorrectPositionBeforeCollision(c1, c2);
-                    ally.position = correctPosition;
-                }
-            });
         });
     }
 
@@ -212,6 +222,17 @@ export class CollisionController {
         this._flyUnits = objects.units;
         this._allyTank = objects.allies;
         this._blockingObject = objects.blockObjects;
+        this._allObjects = [];
+        this._mapControl.clear();
+        for (const [key, value] of Object.entries(objects)) {
+            this._allObjects = this._allObjects.concat(value);
+            value.forEach(val => {
+                if (!val.position.x && !val.position.y) return;
+                this._mapControl.addObject(val, val.position.x, val.position.y);
+
+            });
+        }
+        this._mapControl.addObject(this.nuclearBase, this.nuclearBase.position.x, this.nuclearBase.position.y);
     }
 
     private _isCollision(c1: Circle, c2: Circle): boolean {
@@ -240,5 +261,6 @@ export class CollisionController {
     public update() {
         this._assignObject();
         this._checkCollisionBetweenObjects();
+        this._handleCollision();
     }
 }

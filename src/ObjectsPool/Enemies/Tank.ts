@@ -16,13 +16,13 @@ export class Tank extends BaseObject {
     private _isMoving: boolean = false;
     private _positionChangeDirection: PointData = { x: 0, y: 0 };
     private _goldReward: number = 2;
-    private _fireRadius: number = 100;
+    private _fireRadius: number = 30;
     public fireTimeCd: FireTime= { fireTimeConst: 3000, fireTimeCount: 0 };
     private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 500, changeTimeCount: 0 };
     public isPauseMove: boolean = false;
     public isEne: boolean = true;
-    public fireTarget: PointData = null;
-    public targetId: number;
+    private _targetPosition: PointData;
+    private _targetID: number;
 
     private _targetValue: number;
     private _matrixValue: number = 4;
@@ -64,6 +64,22 @@ export class Tank extends BaseObject {
         this.g2.anchor = 0.5;
         this.g2.tint = 'blue';
 
+    }
+
+    get targetPosition(): PointData {
+        return this._targetPosition;
+    }
+
+    get targetId(): number {
+        return this._targetID;
+    }
+
+    set targetPosition(tar: PointData) {
+        this._targetPosition = tar;
+    }
+
+    set targetId(id: number) {
+        this._targetID = id;
     }
 
     get targetValue(): number {
@@ -153,8 +169,8 @@ export class Tank extends BaseObject {
     public reset() {
         this.moveEngine.direction = Direction.STAND;
         this._isMoving = false;
-        this.targetId = undefined;
-        this.fireTarget = undefined;
+        this._targetID = undefined;
+        this._targetPosition = undefined;
     }
 
     public getUpdatedPosition(): PointData {
@@ -162,16 +178,17 @@ export class Tank extends BaseObject {
     }
 
     public fire() {
-        if (this.targetId && this.fireTarget) {
-            this._isMoving = false;
-            if (this.fireTimeCd.fireTimeCount < this.fireTimeCd.fireTimeConst) return false;
-
-            const option: FireBulletOption = { position: this.position, target: this.fireTarget, dame: this.dameDeal, speed: this.speed * 3, isEneBullet: this.isEne, towerType: TowerType.tinker };
-            Emitter.emit(AppConstants.event.createBullet, option);
-            this.fireTimeCd.fireTimeCount = 0;
-        } else {
+        if (!this._targetID && !this._targetPosition) {
             this.isMoving = true;
+            return;
         }
+        this._isMoving = false;
+        if (this.fireTimeCd.fireTimeCount < this.fireTimeCd.fireTimeConst) return;
+
+        const option: FireBulletOption = { position: this.position, target: this._targetPosition, dame: this.dameDeal, speed: this.speed * 3, isEneBullet: this.isEne, towerType: TowerType.tinker };
+        Emitter.emit(AppConstants.event.createBullet, option);
+        this.fireTimeCd.fireTimeCount = 0;
+
     }
 
     public reduceHp(hpReDuce: number): void {
@@ -307,70 +324,6 @@ export class Tank extends BaseObject {
 
                         break;
                     }
-                    // case Direction.UP_LEFT:
-                    //     if (this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x + 2][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x + 2][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                    //         nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y };
-                    //         nextDirection = Direction.UP;
-
-                    //         break;
-                    //     } else if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y + 2] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y + 2] === AppConstants.matrixMapValue.availableMoveWay) {
-                    //         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y + 1 };
-                    //         nextDirection = Direction.LEFT;
-
-                    //         break;
-                    //     }
-                    // case Direction.UP_RIGHT:
-                    //     if (this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y + 2] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y + 2] === AppConstants.matrixMapValue.availableMoveWay) {
-                    //         nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y + 1 };
-                    //         nextDirection = Direction.RIGHT;
-
-                    //         break;
-                    //     } else if (this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x - 2][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x - 2][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                    //         nextPositionChangeDirection = { x: nextMove.path.x - 1, y: nextMove.path.y };
-                    //         nextDirection = Direction.UP;
-
-                    //         break;
-                    //     }
-                    // case Direction.DOWN_RIGHT:
-                    //     if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 2] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y - 2] === AppConstants.matrixMapValue.availableMoveWay) {
-                    //         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y - 1 };
-                    //         nextDirection = Direction.RIGHT;
-
-                    //         break;
-                    //     } else if (this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x - 2][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x - 2][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                    //         nextPositionChangeDirection = { x: nextMove.path.x - 1, y: nextMove.path.y };
-                    //         nextDirection = Direction.DOWN;
-
-                    //         break;
-                    //     }
-                    // case Direction.DOWN_LEFT:
-                    //     if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 2] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y - 2] === AppConstants.matrixMapValue.availableMoveWay) {
-                    //         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y - 1 };
-                    //         nextDirection = Direction.LEFT;
-
-                    //         break;
-                    //     } else if (this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x + 2][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                    //         this._getMatrixMapCb()[nextMove.path.x + 2][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                    //         nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y };
-                    //         nextDirection = Direction.DOWN;
-
-                    //         break;
-                    //     }
 
                 default:
                     nextDirection = Direction.STAND;
@@ -404,14 +357,14 @@ export class Tank extends BaseObject {
     private _useEventEffect() {
         Emitter.on(AppConstants.event.removeEnemy, (info: {id: number, isEne: boolean}) => {
             if (this.targetId === info.id) {
-                this.fireTarget = undefined;
-                this.targetId = undefined;
+                this._targetPosition = null;
+                this._targetID = null;
             }
         });
     }
 
 
-    public update(dt: number): PointData {
+    public update(dt: number) {
         if (this.isPauseMove) {
             this._forceChangeDirectionCd.changeTimeCount += dt;
             if (this._forceChangeDirectionCd.changeTimeCount >= this._forceChangeDirectionCd.changeTimeConst) {
@@ -428,7 +381,6 @@ export class Tank extends BaseObject {
             this._moveByBsf(dt);
             this._hpBar.position = this.image.position;
         }
-        return this.getMatrixPosition() ;
 
     }
 }

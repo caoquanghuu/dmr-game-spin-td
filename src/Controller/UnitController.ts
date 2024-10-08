@@ -157,7 +157,8 @@ export class UnitController {
         // update for ene
         units.forEach(unit => {
             // update and assign ene position on matrix map
-            const matrixPosition = unit.update(dt);
+            unit.update(dt);
+            const matrixPosition = unit.getMatrixPosition();
             if (matrixPosition && this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
 
 

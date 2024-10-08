@@ -152,7 +152,7 @@ export class GameMap extends Container {
     // method to create enemies
     private _startGame() {
         // position spawn enemy game get on matrix map
-        this._unitController.spawnWave(this._wave, { x: 14, y: 1 });
+        this._unitController.spawnWave(this._wave, { x: 15, y: 0 });
     }
 
     private _checkWave(dt: number) {
@@ -174,7 +174,7 @@ export class GameMap extends Container {
             Emitter.emit(AppConstants.event.displayWave, this._wave);
             // plus gold for player at new wave
             Emitter.emit(AppConstants.event.plusGold, (AppConstants.goldPlusPerWave + this._wave));
-            this._unitController.spawnWave(this._wave, { x: 14, y: 1 });
+            this._unitController.spawnWave(this._wave, { x: 15, y: 0 });
             // change texture of nuclear base
             this._nuclearBase.setFrame(this._wave - 1);
             this._time = 0;
@@ -246,11 +246,11 @@ export class GameMap extends Container {
             unit.update(dt);
         });
 
-
+        this._collisionController.update();
         this._towerController.update(dt);
         this._bulletController.update(dt);
-        this._collisionController.update();
         this._unitController.update(dt);
+
 
         this._checkWave(dt);
     }
