@@ -272,7 +272,7 @@ export class TowerController {
         });
 
         this._units.forEach(unit => {
-            // unit.update(dt);
+            unit.update(dt);
         });
     }
 }

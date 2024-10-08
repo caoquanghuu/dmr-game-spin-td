@@ -51,7 +51,7 @@ export class GameMap extends Container {
         this._collisionController = new CollisionController(this._getObject.bind(this), this._getExplosionFromPool.bind(this), this._returnExplosionToPool.bind(this));
 
         this._init();
-        sound.muteAll();
+        // sound.muteAll();
     }
 
     private _init() {

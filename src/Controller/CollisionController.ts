@@ -225,12 +225,19 @@ export class CollisionController {
         });
     }
 
+    /**
+     * method assign all object to check contact between object
+     */
     private _assignObject(): void {
+        // call back to map get objects
         const objects = this._getObjectsFromGameScene();
+
         this._towers = objects.towers;
         this._enemiesTank = objects.enemies;
         this._flyUnits = objects.units;
         this._allObjects = [];
+
+        // clear object map and assign objects to object map
         this._mapControl.clear();
         // eslint-disable-next-line no-unused-vars
         for (const [key, value] of Object.entries(objects)) {
@@ -243,6 +250,12 @@ export class CollisionController {
         }
     }
 
+    /**
+     * method check collision between 2 circle base on calculate distance
+     * @param c1
+     * @param c2
+     * @returns return result as boolean have collision or not
+     */
     private _isCollision(c1: Circle, c2: Circle): boolean {
         const r = c1.radius + c2.radius;
         const distance = Math.sqrt((c1.position.x - c2.position.x) * (c1.position.x - c2.position.x) + (c1.position.y - c2.position.y) * ((c1.position.y - c2.position.y)));
@@ -251,6 +264,12 @@ export class CollisionController {
         return false;
     }
 
+    /**
+     * method will calculate correct distance of circle 2 before collision
+     * @param c1 circle 1
+     * @param c2 circle 2, which no calculate correct position
+     * @returns return correct position of c2 before collision
+     */
     private _findCorrectPositionBeforeCollision(c1: Circle, c2: Circle): PointData {
         const vector = { x: c1.position.x - c2.position.x, y: c1.position.y - c2.position.y };
         const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
