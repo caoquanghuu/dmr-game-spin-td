@@ -304,6 +304,70 @@ export class Tank extends BaseObject {
 
                         break;
                     }
+                    // case Direction.UP_LEFT:
+                    //     if (this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x + 2][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x + 2][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    //         nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y };
+                    //         nextDirection = Direction.UP;
+
+                    //         break;
+                    //     } else if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y + 2] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y + 2] === AppConstants.matrixMapValue.availableMoveWay) {
+                    //         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y + 1 };
+                    //         nextDirection = Direction.LEFT;
+
+                    //         break;
+                    //     }
+                    // case Direction.UP_RIGHT:
+                    //     if (this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y + 2] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y + 2] === AppConstants.matrixMapValue.availableMoveWay) {
+                    //         nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y + 1 };
+                    //         nextDirection = Direction.RIGHT;
+
+                    //         break;
+                    //     } else if (this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x - 2][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x - 2][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    //         nextPositionChangeDirection = { x: nextMove.path.x - 1, y: nextMove.path.y };
+                    //         nextDirection = Direction.UP;
+
+                    //         break;
+                    //     }
+                    // case Direction.DOWN_RIGHT:
+                    //     if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 2] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y - 2] === AppConstants.matrixMapValue.availableMoveWay) {
+                    //         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y - 1 };
+                    //         nextDirection = Direction.RIGHT;
+
+                    //         break;
+                    //     } else if (this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x - 2][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x - 2][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    //         nextPositionChangeDirection = { x: nextMove.path.x - 1, y: nextMove.path.y };
+                    //         nextDirection = Direction.DOWN;
+
+                    //         break;
+                    //     }
+                    // case Direction.DOWN_LEFT:
+                    //     if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 2] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y - 2] === AppConstants.matrixMapValue.availableMoveWay) {
+                    //         nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y - 1 };
+                    //         nextDirection = Direction.LEFT;
+
+                    //         break;
+                    //     } else if (this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x + 2][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
+                    //         this._getMatrixMapCb()[nextMove.path.x + 2][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+                    //         nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y };
+                    //         nextDirection = Direction.DOWN;
+
+                    //         break;
+                    //     }
 
                 default:
                     nextDirection = Direction.STAND;
