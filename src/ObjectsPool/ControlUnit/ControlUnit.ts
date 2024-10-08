@@ -23,26 +23,32 @@ export class ControlUnit extends BaseObject {
         this._useEventEffect();
     }
 
-    get target(): PointData {
+    get targetPosition(): PointData {
         return this._targetPosition;
     }
 
-    set target(target: {targetPosition: PointData, targetID: number}) {
-        this._targetPosition = target.targetPosition;
-        this._targetID = target.targetID;
-        this.isMoving = true;
+    get targetId(): number {
+        return this._targetID;
+    }
+
+    set targetPosition(tar: PointData) {
+        this._targetPosition = tar;
+    }
+
+    set targetId(id: number) {
+        this._targetID = id;
     }
 
     private _checkTarget() {
-        if (!this.target) return;
+        if (!this._targetID && !this._targetPosition) return;
 
         const c1: Circle = { position: this._targetPosition, radius: 5 };
-        const c2: Circle = { position: this.image.position, radius: 200 };
+        const c2: Circle = { position: this.image.position, radius: 100 };
         const isReached = isCollision(c1, c2);
         if (isReached) {
             if (this._fireTimeCD.fireTimeCount < this._fireTimeCD.fireTimeConst) return;
             this.isMoving = false;
-            const option: FireBulletOption = { position: this.position, target: this.target, towerType: TowerType.tinker, dame: 100, speed: this.speed * 3, effectType: null, isEneBullet: false };
+            const option: FireBulletOption = { position: this.position, target: this._targetPosition, towerType: TowerType.tinker, dame: 100, speed: this.speed * 3, effectType: null, isEneBullet: false };
             Emitter.emit(AppConstants.event.createBullet, option);
             // sound.play(AppConstants.soundName.mainSound, { sprite: `${TowerType.tinker}` });
             this._fireTimeCD.fireTimeCount = 0;
@@ -103,8 +109,8 @@ export class ControlUnit extends BaseObject {
     private _useEventEffect() {
         Emitter.on(AppConstants.event.removeEnemy, (info: {id: number, isEne: boolean}) => {
             if (this._targetID === info.id) {
-                this._targetPosition = undefined;
-                this._targetID = undefined;
+                this._targetPosition = null;
+                this._targetID = null;
             }
         });
     }

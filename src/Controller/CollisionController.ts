@@ -71,14 +71,14 @@ export class CollisionController {
                 ene.fireTarget = this.nuclearBase.position;
             }
 
-            // check ene vs control unit
-
+            // check ene vs fly unit
             let eneIndex = eneIdx;
             this._flyUnits.forEach(unit => {
-                if (!unit.target) {
+                if (!unit.targetId && !unit.targetPosition) {
                     const enemy = this._enemiesTank[eneIndex];
                     if (enemy) {
-                        unit.target = { targetPosition: enemy.getUpdatedPosition(), targetID:  enemy.id };
+                        unit.targetId = enemy.id;
+                        unit.targetPosition = enemy.getUpdatedPosition();
                     }
                     eneIndex += 1;
                 }

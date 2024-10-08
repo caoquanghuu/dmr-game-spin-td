@@ -178,13 +178,11 @@ export class Tank extends BaseObject {
         this._HP.hpCount -= hpReDuce;
 
         const hpRate = Math.round(this._HP.hpCount / (this._HP.hpConst / 10));
-        if (hpRate <= 0) {
+        if (this._HP.hpCount <= 0) {
             Emitter.emit(AppConstants.event.removeEnemy, { id: this.id, isEne: this.isEne });
             return;
         }
         this._hpBar.texture = AssetsLoader.getTexture(`hp-bar-${hpRate}`);
-
-
     }
 
     private _moveByBsf(dt: number) {
