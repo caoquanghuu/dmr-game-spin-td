@@ -241,20 +241,26 @@ export class TowerController {
             if (isHaveBarack) {
                 const op: CreateEnemiesOption = { name: option.name, dame: 100, speed: 100, HP: 300 };
 
-                let nuclearBasePosition: PointData;
+                let spawnPosition: PointData;
                 this._getMatrixMap().find((row, idxX) => {
                     row.find((val, idxY) => {
-                        if (val === AppConstants.matrixMapValue.nuclearBase) {
-                            nuclearBasePosition = { x: idxX, y: idxY };
+                        if (val === AppConstants.matrixMapValue.spawnAllyPosition) {
+                            spawnPosition = { x: idxX - 1, y: idxY };
                             return true;
                         }
                     });
                 });
 
-                const position: PointData = { x: nuclearBasePosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (nuclearBasePosition.y - 2) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
-                Emitter.emit(AppConstants.event.createAllyUnit, { op, position });
+                if (this._getMatrixMap()[spawnPosition.x][spawnPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+                    const position: PointData = { x: spawnPosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (spawnPosition.y) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                    Emitter.emit(AppConstants.event.createAllyUnit, { op, position });
 
-                Emitter.emit(AppConstants.event.reduceGold, AppConstants.unitPrice.allyTank[option.name]);
+                    Emitter.emit(AppConstants.event.reduceGold, AppConstants.unitPrice.allyTank[option.name]);
+                } else {
+                    // play sound cant not spawn
+                }
+
+
             } else {
                 // barack require
             }
