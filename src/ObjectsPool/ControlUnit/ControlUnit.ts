@@ -1,4 +1,4 @@
-import Emitter, { calculateAngleOfVector, getRandomArbitrary, isCollision } from '../../Util';
+import Emitter, { calculateAngleOfVector, findCorrectPositionBeforeCollision, getRandomArbitrary, isCollision } from '../../Util';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BaseObject } from '../BaseObject';
 import { PointData, Sprite } from 'pixi.js';
@@ -23,7 +23,7 @@ export class ControlUnit extends BaseObject {
         this._unitType = unitType;
         this.moveEngine = new BaseEngine(false);
 
-        this.speed = 150;
+        this.speed = 100;
 
         this.image.zIndex = 1000;
         this.image.width = AppConstants.matrixSize * 2;
@@ -68,8 +68,14 @@ export class ControlUnit extends BaseObject {
     private _checkTarget() {
         if (!this._targetID && !this._targetPosition) return;
 
-        const c1: Circle = { position: this._targetPosition, radius: 5 };
+        const c1: Circle = { position: this._targetPosition, radius: AppConstants.matrixSize / 2 };
         const c2: Circle = { position: this.image.position, radius: 100 };
+        const c3: Circle = {position: this.image.position, radius: this.image.width / 2}
+        const isCollisionWithEne = isCollision(c1, c3);
+        if (isCollisionWithEne) {
+            const correctPosition = findCorrectPositionBeforeCollision(c1, c3);
+            this.position = correctPosition;
+        }
         const isReached = isCollision(c1, c2);
         if (isReached) {
             if (this._fireTimeCD.fireTimeCount < this._fireTimeCD.fireTimeConst) return;
