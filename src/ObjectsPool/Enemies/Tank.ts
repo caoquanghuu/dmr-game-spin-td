@@ -5,7 +5,6 @@ import { BSFMoveEngine } from '../../MoveEngine/BSFMoveEngine';
 import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../../Util';
 import { AppConstants } from '../../GameScene/Constants';
-import { AssetsLoader } from '../../AssetsLoader';
 
 export class Tank extends BaseObject {
 
