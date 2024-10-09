@@ -10,6 +10,7 @@ export class TowerController {
     private _towers: Tower[] = [];
     private _units: ControlUnit[] = [];
     private _illusionTower: Tower;
+    private _createAllyUnitOption: CreateEnemiesOption = { name: '', dame: AppConstants.allyUnitBasicProperty.dame, speed: AppConstants.allyUnitBasicProperty.speed, HP: AppConstants.allyUnitBasicProperty.hp };
     private _getTowerFromPool: GetTowerFromPoolFn;
     private _returnTowerToPool: ReturnTowerToPoolFn;
     private _getTowerBases: GetTowerBasesFn;
@@ -233,6 +234,11 @@ export class TowerController {
                     if (helicopter) {
                         helicopter.upgrade(tower.level);
                     }
+
+                    // upgrade unit can buy too, it will event stronger if player build many barack
+                    this._createAllyUnitOption.dame += AppConstants.allyUnitBasicProperty.dame / 3;
+                    this._createAllyUnitOption.speed += AppConstants.allyUnitBasicProperty.speed / 10;
+                    this._createAllyUnitOption.HP += AppConstants.allyUnitBasicProperty.hp / 2;
                 }
 
                 tower.upgrade();
@@ -242,12 +248,16 @@ export class TowerController {
             }
         });
 
+        // get event from buy unit board
         Emitter.on(AppConstants.event.createUnit, (option: {name: string}) => {
 
             const isHaveBarack = this._towers.some(tower => tower.towerType === TowerType.barack);
-            if (isHaveBarack) {
-                const op: CreateEnemiesOption = { name: 'tank-5', dame: 100, speed: 100, HP: 300 };
 
+            // if player was build barack tower
+            if (isHaveBarack) {
+                const op: CreateEnemiesOption = { name: option.name, dame: this._createAllyUnitOption.dame, speed: this._createAllyUnitOption.speed, HP: this._createAllyUnitOption.HP };
+
+                // find spawn position
                 let spawnPosition: PointData;
                 this._getMatrixMap().find((row, idxX) => {
                     row.find((val, idxY) => {
@@ -258,16 +268,19 @@ export class TowerController {
                     });
                 });
 
+                // check that spawn position is available or not
                 if (this._getMatrixMap()[spawnPosition.x][spawnPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+                    // define position
                     const position: PointData = { x: spawnPosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (spawnPosition.y) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+
+                    // send event create to units controller
                     Emitter.emit(AppConstants.event.createAllyUnit, { op, position });
 
+                    // reduce player gold
                     Emitter.emit(AppConstants.event.reduceGold, AppConstants.unitPrice.allyTank[option.name]);
                 } else {
                     // play sound cant not spawn
                 }
-
-
             } else {
                 // barack require
             }
@@ -280,6 +293,11 @@ export class TowerController {
 
     }
 
+    /**
+     * method to check positions base building size on matrix map
+     * @param info position of where need check and size of space need to check
+     * @returns return true if that position is available and false if not
+     */
     private _checkBuildingSpace(info: {position: PointData[], buildingSize: PointData}): boolean {
         const matrixPoint: PointData = { x: info.position[0].x / AppConstants.matrixSize, y: info.position[0].y / AppConstants.matrixSize };
         let isPositionAvailable: boolean = true;

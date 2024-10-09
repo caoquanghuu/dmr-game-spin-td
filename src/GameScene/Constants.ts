@@ -125,6 +125,12 @@ export namespace AppConstants {
         allyTank: { min: 100, max: 120 }
     };
 
+    export const allyUnitBasicProperty = {
+        dame: 100,
+        speed: 100,
+        hp: 1000
+    };
+
     export const fireTimeCd = {
         crystal_maiden: { fireTimeConst: 3000, fireTimeCount: 3000 },
         mirana: { fireTimeConst: 2000, fireTimeCount: 2000 },
