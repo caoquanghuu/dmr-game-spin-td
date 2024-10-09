@@ -78,6 +78,7 @@ export class BuildTowerBoard extends Container {
 
             firstIconPosition.x += positionXInContainerRatio;
         }
+        
     }
 
     get baseTower(): Sprite {

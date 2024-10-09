@@ -257,7 +257,16 @@
             {
                 "alias": "barack",
                 "src": "assets/animation/barack/barack.json"
+            },
+            {
+                "alias": "information-background",
+                "src": "assets/units/information-background.jpg"
+            },
+            {
+                "alias": "option-background",
+                "src": "assets/units/option-background.jpg"
             }
+
 
 
             

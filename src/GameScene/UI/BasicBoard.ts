@@ -81,10 +81,16 @@ export class BasicBoard extends Container {
             });
             unitPriceText.anchor = 0.5;
             unitPriceText.position = { x: firstIconPosition.x, y: this.height / 2 + unitIcon.height / 2 };
-            this.addChild(unitIcon, unitPriceText);
+            // this.addChild(unitIcon, unitPriceText);
 
             firstIconPosition.x += positionXInContainerRatio;
         }
+
+        const bg = new Sprite(AssetsLoader.getTexture('information-background'));
+        bg.width = AppConstants.basicBoardSize.width;
+        bg.height = AppConstants.basicBoardSize.height;
+        bg.zIndex = -1;
+        this.addChild(bg);
 
     }
 

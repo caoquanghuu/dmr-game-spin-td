@@ -15,6 +15,18 @@ export namespace AppConstants {
         width: appWidth,
         height: appHeight - mapSize.height
     };
+    export const basicBoardSize = {
+        width: appWidth / 3.8,
+        height: UISize.height
+    };
+    export const optionBoardSize = {
+        width: appWidth - basicBoardSize.width,
+        height: UISize.height
+    };
+    export const optionBoardPosition = {
+        x: basicBoardSize.width,
+        y: 0
+    };
     export const SpinSize = {
         width: appWidth / 2,
         height: appHeight / 2
@@ -117,10 +129,10 @@ export namespace AppConstants {
     };
 
     export const effectArena = {
-        crystal_maiden: 200,
-        mirana: 200,
-        tinker: 200,
-        clockwerk: 300,
+        crystal_maiden: 130,
+        mirana: 120,
+        tinker: 100,
+        clockwerk: 150,
         barack: 100
     };
 
