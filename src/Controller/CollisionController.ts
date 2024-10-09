@@ -3,7 +3,7 @@ import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
 import { Circle, Direction, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
 import { AnimatedSprite, PointData, Sprite } from 'pixi.js';
-import Emitter from '../Util';
+import Emitter, { findCorrectPositionBeforeCollision, isCollision } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
 import { BaseObject } from 'src/ObjectsPool/BaseObject';
@@ -36,8 +36,7 @@ export class CollisionController {
             // tower check ene cause it range too big
             this._towers.forEach(tower => {
                 const c2: Circle = { position: { x: tower.image.position.x + AppConstants.matrixSize / 2, y: tower.image.position.y + AppConstants.matrixSize / 2 }, radius: tower.effectArena };
-                const isCollision = this._isCollision(c1, c2);
-                if (isCollision) {
+                if (isCollision(c1, c2)) {
                     tower.fire(ene.getUpdatedPosition());
                 }
             });
@@ -46,8 +45,7 @@ export class CollisionController {
             // check ene vs nuclear base
             const c2: Circle = { position: this.nuclearBase.position, radius: 30 };
 
-            const isCollision = this._isCollision(c1, c2);
-            if (isCollision) {
+            if (isCollision(c1, c2)) {
                 ene.targetId = this.nuclearBase.id;
                 ene.targetPosition = this.nuclearBase.position;
             }
@@ -81,8 +79,8 @@ export class CollisionController {
                     if (object2 instanceof Tank) {
                         const c2: Circle = { position: object2.position, radius: object2.image.width / 2 };
 
-                        if (this._isCollision(c1, c2)) {
-                            const correctPosition = this._findCorrectPositionBeforeCollision(c1, c2);
+                        if (isCollision(c1, c2)) {
+                            const correctPosition = findCorrectPositionBeforeCollision(c1, c2);
                             object2.position = correctPosition;
                         }
                     }
@@ -103,13 +101,13 @@ export class CollisionController {
                         const c2: Circle = { position: object2.position, radius: object2.image.width / 2 };
 
                         // handle collision of tanks
-                        if (this._isCollision(c1, c2)) {
+                        if (isCollision(c1, c2)) {
                             if (object1.direction === Direction.STAND) {
-                                const correctPosition = this._findCorrectPositionBeforeCollision(c1, c2);
+                                const correctPosition = findCorrectPositionBeforeCollision(c1, c2);
                                 object2.position = correctPosition;
                                 object2.getNextMove();
                             } else {
-                                const correctPosition = this._findCorrectPositionBeforeCollision(c2, c1);
+                                const correctPosition = findCorrectPositionBeforeCollision(c2, c1);
 
                                 object1.position = correctPosition;
                                 object1.getNextMove();
@@ -123,7 +121,7 @@ export class CollisionController {
                         if (object1.isEne != object2.isEne) {
                             const fireC1: Circle = { position: object1.position, radius: object1.fireRadius };
                             const fireC2: Circle = { position: object2.position, radius: object2.fireRadius };
-                            if (this._isCollision(fireC1, fireC2)) {
+                            if (isCollision(fireC1, fireC2)) {
                                 if (!object1.targetId || !object1.targetPosition) {
                                     object1.targetId = object2.id;
                                     object1.targetPosition = object2.getUpdatedPosition();
@@ -147,7 +145,7 @@ export class CollisionController {
                 const c1: Circle = { position: object1.target, radius: object1.image.width / 2 };
 
 
-                const isBulletReachToTarget = this._isCollision(c1, c3);
+                const isBulletReachToTarget = isCollision(c1, c3);
                 // if bullet reached to it target
                 if (isBulletReachToTarget) {
                     // create an explosion animation
@@ -177,7 +175,7 @@ export class CollisionController {
                         eneTanks.forEach(ene => {
                             const c2: Circle = { position: object1.position, radius: object1.effectArena };
                             const cEne: Circle = { position: ene.position, radius: ene.image.width / 2 };
-                            const isCollisionWithBullet = this._isCollision(cEne, c2);
+                            const isCollisionWithBullet = isCollision(cEne, c2);
 
 
                             if (isCollisionWithBullet) {
@@ -196,7 +194,7 @@ export class CollisionController {
                         allyTank.forEach(ally => {
 
                             const cAlly: Circle = { position: ally.position, radius: ally.image.width / 2 };
-                            const isCollisionWithBullet = this._isCollision(cAlly, c2);
+                            const isCollisionWithBullet = isCollision(cAlly, c2);
                             if (isCollisionWithBullet) {
                                 // push to array then calculate later
                                 unitsCollisionWithBullet.push(ally);
@@ -205,7 +203,7 @@ export class CollisionController {
 
                         // handle nuclear base
                         const cNuclear: Circle = { position: this.nuclearBase.position, radius: this.nuclearBase.image.width / 2 };
-                        const isCollisionWithBase = this._isCollision(cNuclear, c2);
+                        const isCollisionWithBase = isCollision(cNuclear, c2);
                         if (isCollisionWithBase) {
                             Emitter.emit(AppConstants.event.reduceBaseHp, object1.dame);
                             this.nuclearBase.reduceHp(object1.dame);
@@ -257,40 +255,6 @@ export class CollisionController {
 
             });
         }
-    }
-
-    /**
-     * method check collision between 2 circle base on calculate distance
-     * @param c1
-     * @param c2
-     * @returns return result as boolean have collision or not
-     */
-    private _isCollision(c1: Circle, c2: Circle): boolean {
-        const r = c1.radius + c2.radius;
-        const distance = Math.sqrt((c1.position.x - c2.position.x) * (c1.position.x - c2.position.x) + (c1.position.y - c2.position.y) * ((c1.position.y - c2.position.y)));
-        if (distance <= r) return true;
-
-        return false;
-    }
-
-    /**
-     * method will calculate correct distance of circle 2 before collision
-     * @param c1 circle 1
-     * @param c2 circle 2, which no calculate correct position
-     * @returns return correct position of c2 before collision
-     */
-    private _findCorrectPositionBeforeCollision(c1: Circle, c2: Circle): PointData {
-        const vector = { x: c1.position.x - c2.position.x, y: c1.position.y - c2.position.y };
-        const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-        const r = c1.radius + c2.radius;
-        const unitVector = { x: vector.x / distance, y: vector.y / distance };
-
-        const correctPosition = {
-            x: c2.position.x - unitVector.x * (r - distance),
-            y: c2.position.y - unitVector.y * (r - distance)
-        };
-
-        return correctPosition;
     }
 
 
