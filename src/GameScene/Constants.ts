@@ -45,7 +45,7 @@ export namespace AppConstants {
 
     export const playerBasicProperty = {
         playerGold: 10000,
-        playerHp: 30000
+        playerHp: 3000
     };
 
     export const imageAlpha = {

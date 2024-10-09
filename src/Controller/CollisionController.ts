@@ -200,6 +200,7 @@ export class CollisionController {
                         const isCollisionWithBase = this._isCollision(cNuclear, c2);
                         if (isCollisionWithBase) {
                             Emitter.emit(AppConstants.event.reduceBaseHp, object1.dame);
+                            this.nuclearBase.reduceHp(object1.dame);
                         }
                     }
 

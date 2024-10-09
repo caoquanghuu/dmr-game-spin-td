@@ -53,7 +53,7 @@ export class UnitController {
     public spawnWave(wave: number, position: PointData) {
         // Create enemies, set position, hp, move speed, texture based on current wave
         this._enemiesOption = EnemiesOption.alias[wave - 1];
-        this._eneStartPosition = { x: position.x * AppConstants.matrixSize, y: position.y * AppConstants.matrixSize};
+        this._eneStartPosition = { x: position.x * AppConstants.matrixSize, y: position.y * AppConstants.matrixSize };
         this._eneCount.eneConst = this._enemiesOption.eneCount;
         this._wave = wave;
         this._createEnemiesTime = 100 / (this._enemiesOption.speed / 1000);
@@ -170,7 +170,7 @@ export class UnitController {
 
 
                 this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.enemy);
-                unit.g1.position = { x: matrixPosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                // unit.g1.position = { x: matrixPosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
 
             }
 
@@ -184,7 +184,7 @@ export class UnitController {
                         this._setMatrixMapCb(matrixPosition.x, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
 
                         // for debug ene matrix map
-                        unit.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                        // unit.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.UP:
@@ -194,7 +194,7 @@ export class UnitController {
                         this._setMatrixMapCb(matrixPosition.x, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
 
                         // for debug ene matrix map
-                        unit.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                        // unit.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.RIGHT:
@@ -204,7 +204,7 @@ export class UnitController {
                         this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
 
                         // for debug ene matrix map
-                        unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                        // unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.LEFT:
@@ -214,7 +214,7 @@ export class UnitController {
                         this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
 
                         // for debug ene matrix map
-                        unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                        // unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.DOWN_LEFT:
@@ -226,7 +226,7 @@ export class UnitController {
                         this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
 
                         // for debug ene matrix map
-                        unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                        // unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.DOWN_RIGHT:
@@ -237,7 +237,7 @@ export class UnitController {
                         this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
 
                         // for debug ene matrix map
-                        unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                        // unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.UP_LEFT:
@@ -248,7 +248,7 @@ export class UnitController {
                         this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
 
                         // for debug ene matrix map
-                        unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                        // unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
                 case Direction.UP_RIGHT:
@@ -260,7 +260,7 @@ export class UnitController {
                         this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
 
                         // for debug ene matrix map
-                        unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+                        // unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
                     }
                     break;
 

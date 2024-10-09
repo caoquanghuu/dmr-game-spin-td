@@ -8,9 +8,7 @@ import { AppConstants } from '../../GameScene/Constants';
 import { AssetsLoader } from '../../AssetsLoader';
 
 export class Tank extends BaseObject {
-    public isDead: boolean = false;
-    private _HP: {hpConst: number, hpCount: number} = { hpConst: 0, hpCount: 0 };
-    private _hpBar: Sprite;
+
     private _dameDeal: number;
     private _enemiesType: EnemiesType;
     private _bfsMoveEngine: BSFMoveEngine;
@@ -21,7 +19,7 @@ export class Tank extends BaseObject {
     public fireTimeCd: FireTime= { fireTimeConst: 3000, fireTimeCount: 0 };
     private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 500, changeTimeCount: 0 };
     public isPauseMove: boolean = false;
-    public isEne: boolean = true;
+
     private _targetPosition: PointData;
     private _targetID: number;
 
@@ -31,6 +29,7 @@ export class Tank extends BaseObject {
     private _getMatrixMapCb: GetMatrixMapFn;
     private _setMatrixMapCb: SetMatrixMapFn;
 
+    // for debug enemies move
     public g1: Sprite;
     public g2: Sprite;
 
@@ -49,21 +48,19 @@ export class Tank extends BaseObject {
         this._targetValue = targetValue;
 
         this.image.anchor = 0.5;
-        this._hpBar = new Sprite(AssetsLoader.getTexture('hp-bar-10'));
-        this._hpBar.scale.set(0.3, 0.2);
-        this._hpBar.anchor.set(0.5, 4);
 
 
-        this.g1 = new Sprite(AssetsLoader.getTexture('grass-1'));
-        this.g1.width = AppConstants.matrixSize;
-        this.g1.height = AppConstants.matrixSize;
-        this.g1.anchor = 0.5;
-        this.g1.tint = 'red';
-        this.g2 = new Sprite(AssetsLoader.getTexture('grass-1'));
-        this.g2.width = AppConstants.matrixSize;
-        this.g2.height = AppConstants.matrixSize;
-        this.g2.anchor = 0.5;
-        this.g2.tint = 'blue';
+        // this for debug ene next move
+        // this.g1 = new Sprite(AssetsLoader.getTexture('grass-1'));
+        // this.g1.width = AppConstants.matrixSize;
+        // this.g1.height = AppConstants.matrixSize;
+        // this.g1.anchor = 0.5;
+        // this.g1.tint = 'red';
+        // this.g2 = new Sprite(AssetsLoader.getTexture('grass-1'));
+        // this.g2.width = AppConstants.matrixSize;
+        // this.g2.height = AppConstants.matrixSize;
+        // this.g2.anchor = 0.5;
+        // this.g2.tint = 'blue';
 
     }
 
@@ -101,16 +98,6 @@ export class Tank extends BaseObject {
     }
 
 
-    get HP(): number {
-        return this._HP.hpCount;
-    }
-
-    set HP(newHp: number) {
-        this._HP.hpConst = newHp;
-        this._HP.hpCount = newHp;
-        this.reduceHp(0);
-    }
-
     get dameDeal(): number {
         return this._dameDeal;
     }
@@ -143,9 +130,6 @@ export class Tank extends BaseObject {
         this._goldReward = gold;
     }
 
-    get hpBar(): Sprite {
-        return this._hpBar;
-    }
 
     get bfsMoveEngine(): BSFMoveEngine {
         return this._bfsMoveEngine;
@@ -193,17 +177,6 @@ export class Tank extends BaseObject {
 
     }
 
-    public reduceHp(hpReDuce: number): void {
-        this._HP.hpCount -= hpReDuce;
-
-        const hpRate = Math.round(this._HP.hpCount / (this._HP.hpConst / 10));
-        if (hpRate <= 0) {
-            Emitter.emit(AppConstants.event.removeEnemy, { id: this.id, isEne: this.isEne });
-            this.isDead = true;
-            return;
-        }
-        this._hpBar.texture = AssetsLoader.getTexture(`hp-bar-${hpRate}`);
-    }
 
     private _moveByBsf(dt: number) {
         this.move(dt);
@@ -382,7 +355,7 @@ export class Tank extends BaseObject {
         this._bfsMoveEngine.update();
         if (this._isMoving) {
             this._moveByBsf(dt);
-            this._hpBar.position = this.image.position;
+            this.hpBar.position = this.image.position;
         }
 
     }

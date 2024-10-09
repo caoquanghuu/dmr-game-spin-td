@@ -88,12 +88,16 @@ export class GameMap extends Container {
                     // this._nuclearBase.anchor = 0.5;
                     this._nuclearBase = Factory.createNuclearBase();
                     this._nuclearBase.position = { x: idxX * AppConstants.matrixSize + AppConstants.matrixSize, y: idxY * AppConstants.matrixSize - AppConstants.matrixSize / 3 };
+                    this._nuclearBase.hpBar.position = { x: this._nuclearBase.position.x, y: this._nuclearBase.position.y - AppConstants.matrixSize / 2 };
                     this._nuclearBase.image.width = AppConstants.matrixSize * 4;
                     this._nuclearBase.image.height = AppConstants.matrixSize * 4;
                     this._nuclearBase.image.zIndex = AppConstants.zIndex.nuclearBase;
+                    this._nuclearBase.hpBar.zIndex = AppConstants.zIndex.nuclearBase;
+                    this._nuclearBase.HP = AppConstants.playerBasicProperty.playerHp;
                     this._nuclearBase.setAnimation(AppConstants.textureName.nuclearBaseAnimation);
                     this._nuclearBase.setFrame(0);
                     this.addChild(this._nuclearBase.image);
+                    this.addChild(this._nuclearBase.hpBar);
 
 
                     // set target for collision

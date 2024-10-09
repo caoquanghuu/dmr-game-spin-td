@@ -2,9 +2,14 @@ import { AnimatedSprite, AnimatedSpriteFrames, PointData, Sprite } from 'pixi.js
 import { AssetsLoader } from '../AssetsLoader';
 import { BaseEngine } from '../MoveEngine/BaseEngine';
 import { Direction } from '../Type';
-import { switchFn } from '../Util';
+import Emitter, { switchFn } from '../Util';
+import { AppConstants } from '../GameScene/Constants';
 
 export class BaseObject {
+    public isEne: boolean = true;
+    public isDead: boolean = false;
+    private _HP: {hpConst: number, hpCount: number} = { hpConst: 0, hpCount: 0 };
+    private _hpBar: Sprite;
     private _image: Sprite | AnimatedSprite;
     private _animationName: {[animationTypes: string]: AnimatedSpriteFrames} = {};
     private _currentAnimation: string;
@@ -25,7 +30,25 @@ export class BaseObject {
         } else {
             this._image = new Sprite(AssetsLoader.getTexture(textureName));
         }
+        this._hpBar = new Sprite(AssetsLoader.getTexture('hp-bar-10'));
+        this._hpBar.scale.set(0.3, 0.2);
+        this._hpBar.anchor.set(0.5, 4);
     }
+
+    get HP(): number {
+        return this._HP.hpCount;
+    }
+
+    set HP(newHp: number) {
+        this._HP.hpConst = newHp;
+        this._HP.hpCount = newHp;
+        this.reduceHp(0);
+    }
+
+    get hpBar(): Sprite {
+        return this._hpBar;
+    }
+
 
     get position(): PointData {
         const position: PointData = { x: this._image.position.x, y: this._image.position.y };
@@ -76,6 +99,18 @@ export class BaseObject {
 
     set speed(sp: number) {
         this._speed = sp;
+    }
+
+    public reduceHp(hpReDuce: number): void {
+        this._HP.hpCount -= hpReDuce;
+
+        const hpRate = Math.round(this._HP.hpCount / (this._HP.hpConst / 10));
+        if (hpRate <= 0) {
+            Emitter.emit(AppConstants.event.removeEnemy, { id: this.id, isEne: this.isEne });
+            this.isDead = true;
+            return;
+        }
+        this._hpBar.texture = AssetsLoader.getTexture(`hp-bar-${hpRate}`);
     }
 
     public setFrame(frame: number) {
