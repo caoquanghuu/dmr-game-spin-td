@@ -3,7 +3,7 @@ import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BaseObject } from '../BaseObject';
 import { PointData, Sprite } from 'pixi.js';
 import { AppConstants } from '../../GameScene/Constants';
-import { Circle, EffectType, FireBulletOption, FlyUnitType, TowerType } from '../../Type';
+import { Circle, FireBulletOption, FlyUnitType, TowerType } from '../../Type';
 import { sound } from '@pixi/sound';
 import { AssetsLoader } from '../../AssetsLoader';
 
@@ -14,7 +14,7 @@ export class ControlUnit extends BaseObject {
     public isMoving: boolean = false;
     private _upgradeLevelImage: Sprite;
     private _dame: {min: number, max: number} = { min: AppConstants.dame.helicopter.min, max: AppConstants.dame.helicopter.max };
-    private _fireTimeCD: {fireTimeConst: number, fireTimeCount: number} = { fireTimeConst: 1000, fireTimeCount: 0 };
+    private _fireTimeCD: {fireTimeConst: number, fireTimeCount: number} = { fireTimeConst: AppConstants.fireTimeCd.helicopter.fireTimeConst, fireTimeCount: AppConstants.fireTimeCd.helicopter.fireTimeCount };
 
 
     constructor(unitType: FlyUnitType, isAnimationSprite?: boolean) {
@@ -42,6 +42,10 @@ export class ControlUnit extends BaseObject {
         return this._targetPosition;
     }
 
+    get upgradeImage(): Sprite {
+        return this._upgradeLevelImage;
+    }
+
     get targetId(): number {
         return this._targetID;
     }
@@ -52,6 +56,13 @@ export class ControlUnit extends BaseObject {
 
     set targetId(id: number) {
         this._targetID = id;
+    }
+
+    public reset() {
+        this._targetID = null;
+        this._targetPosition = null;
+        this._dame = { min: AppConstants.dame.helicopter.min, max: AppConstants.dame.helicopter.max };
+        this._fireTimeCD.fireTimeConst = AppConstants.fireTimeCd.helicopter.fireTimeConst;
     }
 
     private _checkTarget() {

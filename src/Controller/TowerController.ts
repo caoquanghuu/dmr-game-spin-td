@@ -37,6 +37,12 @@ export class TowerController {
         return this._units;
     }
 
+    /**
+     * method create tower illusion when player want to build a tower
+     * @param towerType type of tower want to build
+     * @param position position want to build
+     * @returns return that tower just create
+     */
     private _createTowerIllusion(towerType: TowerType, position: PointData): Tower {
         const tower = this._getTowerFromPool(towerType);
 
@@ -140,6 +146,27 @@ export class TowerController {
 
         const tower = this._towers[i];
 
+        // check tower is barack or not. If is barack then remove their helicopter and reduce this create ally option
+        if (tower.towerType === TowerType.barack) {
+            // find that unit
+            const idxHelicopter = this._units.findIndex(helicopter => helicopter.id === towerId);
+            const helicopter = this._units[idxHelicopter];
+            // remove it from this update and return to pool
+            if (helicopter) {
+                helicopter.reset();
+                Emitter.emit(AppConstants.event.removeChildFromScene, helicopter.image);
+                Emitter.emit(AppConstants.event.removeChildFromScene, helicopter.upgradeImage);
+                this._returnUnitToPool(helicopter);
+                this._units.splice(idxHelicopter, 1);
+            }
+
+            // reduce unit property option
+            this._createAllyUnitOption.HP -= tower.level * AppConstants.allyUnitBasicProperty.dame / 3;
+            this._createAllyUnitOption.speed -= tower.level * AppConstants.allyUnitBasicProperty.speed / 10;
+            this._createAllyUnitOption.HP -= tower.level * AppConstants.allyUnitBasicProperty.hp / 2;
+
+        }
+
         // reset event for bases
         tower.baseTower.forEach (base => {
             base.removeAllListeners();
@@ -160,8 +187,6 @@ export class TowerController {
         Emitter.emit(AppConstants.event.removeChildFromScene, tower.circleImage);
         Emitter.emit(AppConstants.event.removeChildFromScene, tower.upGradeImage);
         this._towers.splice(i, 1);
-
-        // change matrix map
 
 
         // play sound
@@ -190,22 +215,28 @@ export class TowerController {
 
         // create illusion of tower
         Emitter.on(AppConstants.event.createTowerIllusion, (option: {towerType: TowerType, baseTower: Sprite}) => {
+            // reduce calculate for optimal in case player just move out and in one tower type or click on other position with same type tower want to build
             if (this._illusionTower && this._illusionTower.towerType === option.towerType) {
+                // update position for that next position
                 this._illusionTower.position = { x: option.baseTower.position.x, y: option.baseTower.position.y - 24 };
                 this._illusionTower.circleImage.position = { x: this._illusionTower.position.x + this._illusionTower.image.width / 2, y: this._illusionTower.image.position.y + this._illusionTower.image.height / 2 };
+                // redisplay that tower to new position
                 Emitter.emit(AppConstants.event.addChildToScene, this._illusionTower.image);
                 Emitter.emit(AppConstants.event.addChildToScene, this._illusionTower.circleImage);
             } else if (this._illusionTower) {
+                // return illusion tower that we just create to pool
                 this._returnTowerToPool(this._illusionTower);
+                // create new tower as tower type by get from pool
                 this._illusionTower = this._createTowerIllusion(option.towerType, option.baseTower.position);
             } else {
+                // incase this illusion tower is null
                 this._illusionTower = this._createTowerIllusion(option.towerType, option.baseTower.position);
             }
 
 
         });
 
-        // event toggle illusion tower
+        // event toggle remove illusion tower image
         Emitter.on(AppConstants.event.invisibleTowerIllusion, () => {
             if (this._illusionTower) {
                 Emitter.emit(AppConstants.event.removeChildFromScene, this._illusionTower.image);
@@ -214,10 +245,12 @@ export class TowerController {
 
         });
 
+        // remove tower when player sell tower from information board
         Emitter.on(AppConstants.event.destroyTower, (towerID: number) => {
             this._removeTower(towerID);
         });
 
+        // upgrade tower when player want upgrade tower from information board and condition check gold has been checked
         Emitter.on(AppConstants.event.upgradeTower, (info: {towerId: number, towerType: string}) => {
             // find tower in list
             const tower = this.towers.find(tower => {
@@ -249,12 +282,14 @@ export class TowerController {
         });
 
         // get event from buy unit board
+        // in future update. player can buy more unit type and their will have many skill and different bullet type
         Emitter.on(AppConstants.event.createUnit, (option: {name: string}) => {
 
             const isHaveBarack = this._towers.some(tower => tower.towerType === TowerType.barack);
 
             // if player was build barack tower
             if (isHaveBarack) {
+                // now ally unit only have 1 property. in future update their will have other option and upgrade option too
                 const op: CreateEnemiesOption = { name: option.name, dame: this._createAllyUnitOption.dame, speed: this._createAllyUnitOption.speed, HP: this._createAllyUnitOption.HP };
 
                 // find spawn position
@@ -331,13 +366,19 @@ export class TowerController {
         }
     }
 
+    /**
+     * method change matrix map when build tower or clear tower
+     * @param matrixPoint position start change
+     * @param buildingSize size of matrix from matrix point to near arena
+     * @param matrixValue matrix value want to change
+     * @returns return positions on matrix map changed
+     */
     private _buildTower(matrixPoint: PointData, buildingSize: PointData, matrixValue: number): PointData[] {
         const basesPosition: PointData[] = [];
 
         for (let i = 0; i < buildingSize.x; i++) {
             for (let n = 0; n < buildingSize.y; n++) {
                 this._setMatrixMap(matrixPoint.x + i, matrixPoint.y - n, matrixValue);
-                // GameMap.mapMatrix[matrixPoint.x + i][matrixPoint.y - n] = matrixValue;
 
                 const basePosition: PointData = { x: (matrixPoint.x + i) * AppConstants.matrixSize, y: (matrixPoint.y - n) * AppConstants.matrixSize };
                 basesPosition.push(basePosition);
@@ -346,6 +387,11 @@ export class TowerController {
         return basesPosition;
     }
 
+    /**
+     * method clear value of tower on matrix map
+     * @param positions positions want to clear
+     * @param matrixValue value want to change on matrix map
+     */
     private _clearTower(positions: PointData[], matrixValue: number): void {
         positions.forEach(pos => {
             const matrixPoint: PointData = { x: pos.x / AppConstants.matrixSize, y: pos.y / AppConstants.matrixSize };

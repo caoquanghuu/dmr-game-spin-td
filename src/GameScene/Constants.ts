@@ -136,7 +136,8 @@ export namespace AppConstants {
         mirana: { fireTimeConst: 2000, fireTimeCount: 2000 },
         tinker: { fireTimeConst: 3000, fireTimeCount: 3000 },
         clockwerk: { fireTimeConst: 3000, fireTimeCount: 3000 },
-        barack: { fireTimeConst: 3000, fireTimeCount: 3000 }
+        barack: { fireTimeConst: 3000, fireTimeCount: 3000 },
+        helicopter: { fireTimeConst: 1000, fireTimeCount: 0 }
     };
 
     export const effectArena = {
