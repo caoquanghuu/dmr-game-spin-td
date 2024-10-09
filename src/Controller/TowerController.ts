@@ -312,7 +312,7 @@ export class TowerController {
                     Emitter.emit(AppConstants.event.createAllyUnit, { op, position });
 
                     // reduce player gold
-                    Emitter.emit(AppConstants.event.reduceGold, AppConstants.unitPrice.allyTank[option.name]);
+                    Emitter.emit(AppConstants.event.reduceGold, AppConstants.unitPrice.allyTank.sovietTank);
                 } else {
                     // play sound cant not spawn
                 }

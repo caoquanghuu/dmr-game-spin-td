@@ -15,19 +15,18 @@ export class AssetsLoader {
     static async loadBundle(bundles: AssetsBundle[]) {
         await Assets.init({ manifest: { bundles } });
         Assets.backgroundLoadBundle(bundles.map(i => i.name));
+        // load animation
         await Assets.loadBundle('animation').then((data) => {
 
             Object.keys(data).forEach(key => {
                 // @ts-ignore
                 const keyData = bundles.find(i => i.name === 'animation').assets.find(asset => asset.name === key)?.data || '';
                 AssetsLoader._resources[key] = keyData ? get(data, [key, keyData]) : data[key];
-
-
             });
 
         });
+        // load images
         await Assets.loadBundle('images').then((data) => {
-            console.log(data);
             Object.keys(data).forEach(spriteSheet => {
                 for (const [key, value] of Object.entries(data[spriteSheet].textures)) {
                     AssetsLoader._resources[key] = value;
@@ -35,7 +34,6 @@ export class AssetsLoader {
 
 
             });
-            console.log(AssetsLoader._resources);
         });
 
 
