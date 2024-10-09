@@ -74,7 +74,8 @@ export class GameMap extends Container {
                 if (value === 0) {
 
                     // create tree con border of map
-                    const tree = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.tree));
+                    const treeNumber = Math.round(Math.random() * 5);
+                    const tree = new Sprite(AssetsLoader.getTexture(`tree-${treeNumber}`));
                     tree.width = AppConstants.matrixSize,
                     tree.height = AppConstants.matrixSize;
                     // tree.anchor = 0.5;

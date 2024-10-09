@@ -265,7 +265,31 @@
             {
                 "alias": "option-background",
                 "src": "assets/units/option-background.jpg"
-            }
+            },
+            {
+                "alias": "tree-0",
+                "src": "assets/units/tree-1.png"
+            },
+            {
+                "alias": "tree-1",
+                "src": "assets/units/tree-1.png"
+            },
+            {
+                "alias": "tree-2",
+                "src": "assets/units/tree-2.png"
+            },
+            {
+                "alias": "tree-3",
+                "src": "assets/units/tree-3.png"
+            },
+            {
+                "alias": "tree-4",
+                "src": "assets/units/tree-4.png"
+            },
+            {
+                "alias": "tree-5",
+                "src": "assets/units/tree-5.png"
+            }        
 
 
 
