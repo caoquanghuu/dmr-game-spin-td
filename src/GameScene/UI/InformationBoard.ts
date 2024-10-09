@@ -76,12 +76,13 @@ export class InformationBoard extends Container {
         });
 
         const sellText = new BitmapText({
-            text: 'sell:',
+            text: 'sell',
             style: style1
         });
         sellText.position = { x: AppConstants.infoBoardPosition.sell.x, y: AppConstants.infoBoardPosition.sell.y };
         sellText.eventMode = 'static';
         sellText.cursor = 'pointer';
+        sellText.tint = 'fe0606';
         sellText.on('pointerdown', () => {
             // send event sell tower to ui controller plus gold for player and tower controller remove tower
             Emitter.emit(AppConstants.event.destroyTower, this._towerId);
@@ -96,6 +97,7 @@ export class InformationBoard extends Container {
         exitText.position = { x: AppConstants.infoBoardPosition.exit.x, y: AppConstants.infoBoardPosition.exit.y };
         exitText.eventMode = 'static';
         exitText.cursor = 'pointer';
+        exitText.tint = 'fe0606';
         exitText.on('pointerdown', () => {
             Emitter.emit(AppConstants.event.resetBoard, null);
         });

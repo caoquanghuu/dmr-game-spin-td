@@ -25,6 +25,7 @@ export class BuildTowerBoard extends Container {
         exitText.position = { x: AppConstants.matrixSize * 28, y:  10 };
         exitText.eventMode = 'static';
         exitText.cursor = 'pointer';
+        exitText.tint = 'fe0606';
         exitText.on('pointerdown', () => {
             Emitter.emit(AppConstants.event.resetBoard, null);
         });
@@ -50,7 +51,7 @@ export class BuildTowerBoard extends Container {
             towerIcon.on('mouseover', () => {
                 if (!isMouseIn) {
                     isMouseIn = true;
-                    Emitter.emit(AppConstants.event.createTowerIllusion, {towerType: value, baseTower: this._baseTower})
+                    Emitter.emit(AppConstants.event.createTowerIllusion, { towerType: value, baseTower: this._baseTower });
                 }
             });
             towerIcon.on('mouseout', () => {
@@ -78,7 +79,7 @@ export class BuildTowerBoard extends Container {
 
             firstIconPosition.x += positionXInContainerRatio;
         }
-        
+
     }
 
     get baseTower(): Sprite {
