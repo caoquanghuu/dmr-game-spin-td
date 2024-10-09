@@ -18,7 +18,6 @@ import Factory from '../../ObjectsPool/Factory';
 import { BaseObject } from '../../ObjectsPool/BaseObject';
 
 export class GameMap extends Container {
-    private _unit: ControlUnit[] = [];
     private _towerBase: Sprite[] = [];
     private _trees: Sprite[]= [];
     private _bulletController: BulletController;
@@ -259,9 +258,6 @@ export class GameMap extends Container {
 
     // update function
     public update(dt: number) {
-        this._unit.forEach(unit => {
-            unit.update(dt);
-        });
 
         this._collisionController.update();
         this._towerController.update(dt);

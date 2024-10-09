@@ -233,7 +233,7 @@ export class Tank extends BaseObject {
         let nextPositionChangeDirection: PointData;
         let nextDirection: Direction;
 
-        if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y] === this.matrixValue) {
+        if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y] != AppConstants.matrixMapValue.availableMoveWay) {
             switch (nextMove.directions) {
                 case Direction.UP:
                     if (this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&

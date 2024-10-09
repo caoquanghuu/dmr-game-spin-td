@@ -239,7 +239,7 @@ export class TowerController {
 
             const isHaveBarack = this._towers.some(tower => tower.towerType === TowerType.barack);
             if (isHaveBarack) {
-                const op: CreateEnemiesOption = { name: option.name, dame: 100, speed: 100, HP: 300 };
+                const op: CreateEnemiesOption = { name: 'tank-5', dame: 100, speed: 100, HP: 300 };
 
                 let spawnPosition: PointData;
                 this._getMatrixMap().find((row, idxX) => {
