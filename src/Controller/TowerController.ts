@@ -196,7 +196,7 @@ export class TowerController {
         // create illusion of tower
         Emitter.on(AppConstants.event.createTowerIllusion, (option: {towerType: TowerType, baseTower: Sprite}) => {
             if (this._illusionTower && this._illusionTower.towerType === option.towerType) {
-                this._illusionTower.position = { x: option.baseTower.position.x, y: option.baseTower.position.y - 24};
+                this._illusionTower.position = { x: option.baseTower.position.x, y: option.baseTower.position.y - 24 };
                 this._illusionTower.circleImage.position = { x: this._illusionTower.position.x + this._illusionTower.image.width / 2, y: this._illusionTower.image.position.y + this._illusionTower.image.height / 2 };
                 Emitter.emit(AppConstants.event.addChildToScene, this._illusionTower.image);
                 Emitter.emit(AppConstants.event.addChildToScene, this._illusionTower.circleImage);

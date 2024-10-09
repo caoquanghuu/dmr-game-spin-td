@@ -53,7 +53,7 @@ export class BuyUnitBoard extends Container {
     }
 
     private _createUnit(name: string) {
-        // send to tower controller to create unit on type of unit
+        // send to tower controller to create ally unit on type of unit
         if (this._getPlayerGoldFn() < AppConstants.unitPrice.allyTank[name]) {
             sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.notEnoughGold });
         } else {

@@ -285,7 +285,11 @@
             {
                 "alias": "tree-5",
                 "src": "assets/units/tree-5.png"
-            }        
+            },
+            {
+                "alias": "tank-factory",
+                "src": "assets/units/tank-factory.png"
+            }         
 
 
 

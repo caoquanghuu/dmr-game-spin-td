@@ -90,7 +90,7 @@ export class UnitController {
         Emitter.emit(AppConstants.event.addChildToScene, unit.image);
         Emitter.emit(AppConstants.event.addChildToScene, unit.hpBar);
 
-        // debug by redener enemy move on game
+        // debug by render enemy move on game
         // Emitter.emit(AppConstants.event.addChildToScene, unit.g1);
         // Emitter.emit(AppConstants.event.addChildToScene, unit.g2);
 
@@ -143,7 +143,7 @@ export class UnitController {
         Emitter.emit(AppConstants.event.removeChildFromScene, unit.image);
         Emitter.emit(AppConstants.event.removeChildFromScene, unit.hpBar);
 
-        // debug by redener enemy move on game
+        // debug by render enemy move on game
         // Emitter.emit(AppConstants.event.removeChildFromScene, unit.g1);
         // Emitter.emit(AppConstants.event.removeChildFromScene, unit.g2);
 

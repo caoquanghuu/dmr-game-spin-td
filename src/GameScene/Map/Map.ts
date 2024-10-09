@@ -121,6 +121,17 @@ export class GameMap extends Container {
                     this.addChild(towerBase);
                 }
 
+                if (value === 7) {
+                    const tankFactory = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.tankFactory));
+                    tankFactory.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize + AppConstants.matrixSize / 4 };
+                    tankFactory.width = AppConstants.matrixSize * 2;
+                    tankFactory.height = AppConstants.matrixSize * 2;
+                    tankFactory.zIndex = AppConstants.zIndex.tankFactory;
+                    tankFactory.anchor = 0.5;
+                    this._trees.push(tankFactory);
+                    this.addChild(tankFactory);
+                }
+
 
             });
         });

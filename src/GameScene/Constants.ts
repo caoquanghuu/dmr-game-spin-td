@@ -39,7 +39,8 @@ export namespace AppConstants {
         nuclearBase: 3,
         enemy: 4,
         ally: 6,
-        tower: 5
+        tower: 5,
+        spawnAllyPosition: 7
     };
 
     export const bulletCount = 5;
@@ -52,7 +53,8 @@ export namespace AppConstants {
         enemyHpBar: AppConstants.appHeight - 10,
         tower: 7,
         nuclearBase: 2,
-        towerBase: 3
+        towerBase: 3,
+        tankFactory: 8
     };
 
     export const playerBasicProperty = {
@@ -83,7 +85,8 @@ export namespace AppConstants {
         tree: 'tree-1',
         nuclearBase: 'nuclear-base',
         nuclearBaseAnimation: 'building',
-        towerBase: 'tower-base'
+        towerBase: 'tower-base',
+        tankFactory: 'tank-factory'
     };
 
     export const soundName = {
