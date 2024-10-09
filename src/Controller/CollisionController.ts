@@ -274,7 +274,7 @@ export class CollisionController {
     private _findCorrectPositionBeforeCollision(c1: Circle, c2: Circle): PointData {
         const vector = { x: c1.position.x - c2.position.x, y: c1.position.y - c2.position.y };
         const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-        const r = c1.radius + c2.radius + 1;
+        const r = c1.radius + c2.radius;
         const unitVector = { x: vector.x / distance, y: vector.y / distance };
 
         const correctPosition = {
