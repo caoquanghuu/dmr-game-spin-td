@@ -166,7 +166,7 @@ export class InformationBoard extends Container {
         }
         if (this._levelNumber.text === `${AppConstants.maxLevelOfTower}`) return;
 
-        Emitter.emit(AppConstants.event.upgradeTower, this._towerId);
+        Emitter.emit(AppConstants.event.upgradeTower, { towerId: this._towerId, towerType: this._effectType.text });
         Emitter.emit(AppConstants.event.reduceGold, this._goldUpgrade);
         Emitter.emit(AppConstants.event.resetBoard, null);
     }

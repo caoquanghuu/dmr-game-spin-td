@@ -83,12 +83,6 @@ export class TowerController {
         const towerBases = this._getTowerBases(towerBasesPosition);
         tower.baseTower = towerBases;
 
-        // set position for images of tower
-        // tower.position = { x: option.baseTower.x, y: option.baseTower.y - 25 };
-        // tower.circleImage.position = { x: tower.position.x + tower.image.width / 2, y: tower.image.position.y + tower.image.height / 2 };
-        // tower.circleImage.zIndex = AppConstants.zIndex.tower;
-        // tower.image.zIndex = tower.position.y;
-
         // set new event for bases that when click will render tower information
         tower.baseTower.forEach(base => {
             base.removeAllListeners();
@@ -123,7 +117,7 @@ export class TowerController {
         Emitter.emit(AppConstants.event.addChildToScene, tower.image);
         Emitter.emit(AppConstants.event.addChildToScene, tower.circleImage);
         Emitter.emit(AppConstants.event.reduceGold, AppConstants.towerPrice[tower.towerType]);
-        // // play sound
+        // play sound
         sound.play(AppConstants.soundName.mainSound, { sprite:AppConstants.soundName.buildingCompleted });
 
         // toggle turn of tower circle
@@ -223,11 +217,24 @@ export class TowerController {
             this._removeTower(towerID);
         });
 
-        Emitter.on(AppConstants.event.upgradeTower, (towerId: number) => {
+        Emitter.on(AppConstants.event.upgradeTower, (info: {towerId: number, towerType: string}) => {
+            // find tower in list
             const tower = this.towers.find(tower => {
-                return tower.id === towerId;
+                return tower.id === info.towerId;
             });
+
+            // if tower exist
             if (tower) {
+                // incase tower is barack
+                if (info.towerType === TowerType.barack) {
+                    // find helicopter of that barack
+                    const helicopter = this._units.find(helicopter => helicopter.id === info.towerId);
+                    // if helicopter exist
+                    if (helicopter) {
+                        helicopter.upgrade(tower.level);
+                    }
+                }
+
                 tower.upgrade();
                 sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.towerUpgraded });
             } else {

@@ -1,26 +1,41 @@
-import Emitter, { calculateAngleOfVector, isCollision } from '../../Util';
+import Emitter, { calculateAngleOfVector, getRandomArbitrary, isCollision } from '../../Util';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BaseObject } from '../BaseObject';
-import { PointData } from 'pixi.js';
+import { PointData, Sprite } from 'pixi.js';
 import { AppConstants } from '../../GameScene/Constants';
 import { Circle, EffectType, FireBulletOption, FlyUnitType, TowerType } from '../../Type';
 import { sound } from '@pixi/sound';
+import { AssetsLoader } from '../../AssetsLoader';
 
 export class ControlUnit extends BaseObject {
     private _targetPosition: PointData;
     private _targetID: number;
     readonly _unitType: FlyUnitType;
     public isMoving: boolean = false;
+    private _upgradeLevelImage: Sprite;
+    private _dame: {min: number, max: number} = { min: AppConstants.dame.helicopter.min, max: AppConstants.dame.helicopter.max };
     private _fireTimeCD: {fireTimeConst: number, fireTimeCount: number} = { fireTimeConst: 1000, fireTimeCount: 0 };
+
+
     constructor(unitType: FlyUnitType, isAnimationSprite?: boolean) {
         super(unitType, isAnimationSprite);
+        this._useEventEffect();
         this._unitType = unitType;
         this.moveEngine = new BaseEngine(false);
+
         this.speed = 150;
-        this.image.zIndex = 960;
+
+        this.image.zIndex = 1000;
         this.image.width = AppConstants.matrixSize * 2;
         this.image.height = AppConstants.matrixSize * 2;
-        this._useEventEffect();
+
+        this._upgradeLevelImage = new Sprite();
+
+        this._upgradeLevelImage.width = AppConstants.matrixSize / 3;
+        this._upgradeLevelImage.height = AppConstants.matrixSize / 3;
+        this._upgradeLevelImage.anchor.set(0.5);
+        this._upgradeLevelImage.alpha = AppConstants.imageAlpha.towerUpGradeIcon;
+        this._upgradeLevelImage.zIndex = 1000;
     }
 
     get targetPosition(): PointData {
@@ -48,13 +63,26 @@ export class ControlUnit extends BaseObject {
         if (isReached) {
             if (this._fireTimeCD.fireTimeCount < this._fireTimeCD.fireTimeConst) return;
             this.isMoving = false;
-            const option: FireBulletOption = { position: this.position, target: this._targetPosition, towerType: TowerType.tinker, dame: 100, speed: this.speed * 3, effectType: null, isEneBullet: false };
+            const dameDeal = getRandomArbitrary({ min: this._dame.min, max: this._dame.max });
+            const option: FireBulletOption = { position: this.position, target: this._targetPosition, towerType: TowerType.tinker, dame: dameDeal, speed: this.speed * 3, effectType: null, isEneBullet: false };
             Emitter.emit(AppConstants.event.createBullet, option);
             // sound.play(AppConstants.soundName.mainSound, { sprite: `${TowerType.tinker}` });
             this._fireTimeCD.fireTimeCount = 0;
         } else {
             this.isMoving = true;
         }
+    }
+
+    public upgrade(level: number) {
+        this._dame.min = AppConstants.dame.helicopter.min * level;
+        this._dame.max = AppConstants.dame.helicopter.max * level;
+        this._upgradeLevelImage.texture = AssetsLoader.getTexture(`upgrade-level-${level + 1}`);
+        Emitter.emit(AppConstants.event.addChildToScene, this._upgradeLevelImage);
+
+        if (level === 3) {
+            this._fireTimeCD.fireTimeConst -= 500;
+        }
+        // incase level 3 will increase fire speed and bullet carrying count
     }
 
     private _updateDirection() {
@@ -121,5 +149,6 @@ export class ControlUnit extends BaseObject {
         if (!this._targetPosition || !this.isMoving) return;
         this._updateDirection();
         this.move(dt);
+        this._upgradeLevelImage.position = { x: this.position.x, y: this.position.y };
     }
 }

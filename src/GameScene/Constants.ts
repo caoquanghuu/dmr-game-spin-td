@@ -120,7 +120,9 @@ export namespace AppConstants {
         mirana: { min: 100, max: 140 },
         tinker: { min: 200, max: 240 },
         clockwerk: { min: 200, max: 250 },
-        barack: { min: 0, max: 0 }
+        barack: { min: 0, max: 0 },
+        helicopter: { min: 150, max: 300 },
+        allyTank: { min: 100, max: 120 }
     };
 
     export const fireTimeCd = {
@@ -184,7 +186,6 @@ export namespace AppConstants {
         createAllyUnit: 'create-ally-unit',
         createTowerIllusion: 'create-tower-illusion',
         invisibleTowerIllusion: 'invisible-tower-illusion'
-
     };
 
     export const position = {
