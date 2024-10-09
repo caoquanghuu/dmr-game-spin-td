@@ -1,0 +1,111 @@
+{
+  "frames": {
+    "logo": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 1920,
+        "h": 1080
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1920,
+        "h": 1080
+      },
+      "sourceSize": {
+        "w": 1920,
+        "h": 1080
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "option-background": {
+      "frame": {
+        "x": 0,
+        "y": 1080,
+        "w": 840,
+        "h": 357
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 840,
+        "h": 357
+      },
+      "sourceSize": {
+        "w": 840,
+        "h": 357
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "defeated-background": {
+      "frame": {
+        "x": 357,
+        "y": 1080,
+        "w": 512,
+        "h": 768
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 512,
+        "h": 768
+      },
+      "sourceSize": {
+        "w": 512,
+        "h": 768
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "victory-background": {
+      "frame": {
+        "x": 869,
+        "y": 1080,
+        "w": 511,
+        "h": 768
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 511,
+        "h": 768
+      },
+      "sourceSize": {
+        "w": 511,
+        "h": 768
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://github.com/odrick/free-tex-packer-core",
+    "version": "0.3.4",
+    "image": "backgrounds_atlas-0.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1920,
+      "h": 1920
+    },
+    "scale": 1
+  }
+}

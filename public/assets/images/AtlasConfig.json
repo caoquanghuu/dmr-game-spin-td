@@ -1,0 +1,11 @@
+{
+    "textureName": "fishPool",
+    "fixedSize": false,
+    "padding": 2,
+    "allowRotation": true,
+    "detectIdentical": true,
+    "allowTrim": true,
+    "exporter": "Pixi",
+    "removeFileExtension": true,
+    "prependFolderName": true
+  }

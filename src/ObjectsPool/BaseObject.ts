@@ -30,7 +30,7 @@ export class BaseObject {
         } else {
             this._image = new Sprite(AssetsLoader.getTexture(textureName));
         }
-        this._hpBar = new Sprite(AssetsLoader.getTexture('hp-bar-10'));
+        this._hpBar = new Sprite(AssetsLoader.getTexture('hp-10'));
         this._hpBar.scale.set(0.3, 0.2);
         this._hpBar.anchor.set(0.5, 4);
     }
@@ -110,7 +110,7 @@ export class BaseObject {
             this.isDead = true;
             return;
         }
-        this._hpBar.texture = AssetsLoader.getTexture(`hp-bar-${hpRate}`);
+        this._hpBar.texture = AssetsLoader.getTexture(`hp-${hpRate}`);
     }
 
     public setFrame(frame: number) {

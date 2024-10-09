@@ -40,6 +40,7 @@
     "webpack-merge": "5.8.0",
     "webpack-preprocessor-loader": "1.2.0",
     "@pixi/sound": "^6.0.1",
-    "audiosprite": "^0.7.2"
+    "audiosprite": "^0.7.2",
+    "webpack-free-tex-packer": "^0.3.4"
   }
 }

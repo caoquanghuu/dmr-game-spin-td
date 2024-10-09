@@ -1,0 +1,39 @@
+{
+  "frames": {
+    "circle": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 1065,
+        "h": 1064
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 5,
+        "w": 1065,
+        "h": 1064
+      },
+      "sourceSize": {
+        "w": 1067,
+        "h": 1072
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://github.com/odrick/free-tex-packer-core",
+    "version": "0.3.4",
+    "image": "backgrounds_atlas-2.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1065,
+      "h": 1064
+    },
+    "scale": 1
+  }
+}

@@ -3,8 +3,6 @@ import { get } from 'lodash';
 
 export class AssetsLoader {
     private static _resources: any = null;
-    public static _explosion: any;
-    public static _nuclearBase: any;
 
     constructor() {
         if (AssetsLoader._resources) {
@@ -17,14 +15,27 @@ export class AssetsLoader {
     static async loadBundle(bundles: AssetsBundle[]) {
         await Assets.init({ manifest: { bundles } });
         Assets.backgroundLoadBundle(bundles.map(i => i.name));
-        return Assets.loadBundle('preLoad').then((data) => {
+        await Assets.loadBundle('animation').then((data) => {
+
             Object.keys(data).forEach(key => {
                 // @ts-ignore
-                const keyData = bundles.find(i => i.name == 'preLoad').assets.find(asset => asset.name === key)?.data || '';
+                const keyData = bundles.find(i => i.name === 'animation').assets.find(asset => asset.name === key)?.data || '';
                 AssetsLoader._resources[key] = keyData ? get(data, [key, keyData]) : data[key];
 
 
             });
+
+        });
+        await Assets.loadBundle('images').then((data) => {
+            console.log(data);
+            Object.keys(data).forEach(spriteSheet => {
+                for (const [key, value] of Object.entries(data[spriteSheet].textures)) {
+                    AssetsLoader._resources[key] = value;
+                }
+
+
+            });
+            console.log(AssetsLoader._resources);
         });
 
 

@@ -300,7 +300,7 @@ export class UnitController {
         // create enemy for time
         if (this._isCreateEne) {
             if (this._time >= this._createEnemiesTime) {
-                if (this._eneCount.eneCount === this._eneCount.eneConst) {
+                if (this._eneCount.eneCount >= this._eneCount.eneConst) {
                     this._isCreateEne = false;
                     this._eneCount.eneConst = 0;
                     this._eneCount.eneCount = 0;

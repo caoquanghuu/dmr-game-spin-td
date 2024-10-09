@@ -117,7 +117,7 @@ export enum FlyUnitType {
 }
 
 export enum AllyTanksType {
-    sovietTank = 'sovietTank'
+    sovietTank = 'soviet-tank'
 }
 
 export type GetTowerFromPoolFn = (towerType: TowerType) => Tower;

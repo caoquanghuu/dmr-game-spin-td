@@ -1,219 +1,7 @@
 [
     {
-        "name":"preLoad",
+        "name":"animation",
         "assets": [
-            {
-                "alias": "logo",
-                "src": "assets/units/logo.png"
-            },
-            {
-                "alias": "tinker",
-                "src": "assets/units/laser-tower1.png"
-            },
-            {
-                "alias": "tinker-2",
-                "src": "assets/units/laser-tower2.png"
-            },
-            {
-                "alias": "tinker-icon",
-                "src": "assets/units/laser-tower-icon.jpg"
-            },
-            {
-                "alias": "barack-icon",
-                "src": "assets/units/barack-icon.png"
-            },
-            {
-                "alias": "mirana-icon",
-                "src": "assets/units/mirana-icon.jpg"
-            },
-            {
-                "alias": "clockwerk-icon",
-                "src": "assets/units/clockwerk-icon.png"
-            }
-            ,
-            {
-                "alias": "tank-1",
-                "src":"assets/units/tank-1.png"
-            },
-            {
-                "alias": "tank-2",
-                "src":"assets/units/tank-2.png"
-            },
-            {
-                "alias": "tank-3",
-                "src":"assets/units/tank-3.png"
-            },
-            {
-                "alias": "tank-4",
-                "src":"assets/units/tank-4.png"
-            },
-            {
-                "alias": "tank-5",
-                "src":"assets/units/tank-5.png"
-            },
-            {
-                "alias": "tank-6",
-                "src":"assets/units/tank-6.png"
-            },
-            {
-                "alias": "tank-7",
-                "src":"assets/units/tank-7.png"
-            },
-            {
-                "alias": "tank-8",
-                "src":"assets/units/tank-8.png"
-            },
-            {
-                "alias": "tank-9",
-                "src":"assets/units/tank-9.png"
-            },
-            {
-                "alias": "grass-1",
-                "src": "assets/units/grass-1.png"
-            },
-            {
-                "alias": "tower-base",
-                "src": "assets/units/tower-base.png"
-            },
-            {
-                "alias": "laser",
-                "src": "assets/units/laser.png"
-            },
-            {
-                "alias": "mirana",
-                "src": "assets/units/mirana-tower-1.png"
-            },
-            {
-                "alias": "mirana-2",
-                "src": "assets/units/mirana-tower-2.png"
-            },
-            {
-                "alias": "mirana-3",
-                "src": "assets/units/mirana-tower-3.png"
-            },
-            {
-                "alias": "lightning",
-                "src": "assets/units/lightning.png"
-            },
-            {
-                "alias": "clockwerk",
-                "src": "assets/units/rocket-1.png"
-            },
-            {
-                "alias": "clockwerk-2",
-                "src": "assets/units/rocket-2.png"
-            },
-            {
-                "alias": "clockwerk-3",
-                "src": "assets/units/rocket-3.png"
-            },
-            {
-                "alias": "clockwerk-4",
-                "src": "assets/units/rocket-4.png"
-            },
-            { 
-
-            "alias": "missile",
-            "src": "assets/units/missile.png"
-            },
-            { 
-
-            "alias": "crystal_maiden",
-            "src": "assets/units/crystal-maiden.png"
-            },
-            { 
-
-            "alias": "crystal_maiden-icon",
-            "src": "assets/units/crystal-maiden-icon.png"
-            },
-            { 
-
-            "alias": "ice",
-            "src": "assets/units/ice.png"
-            },
-            { 
-
-            "alias": "circle",
-            "src": "assets/units/circle.png"
-            },
-            { 
-
-            "alias": "upgrade-level-2",
-            "src": "assets/units/upgrade-level-2.png"
-            },
-            { 
-
-            "alias": "upgrade-level-3",
-            "src": "assets/units/upgrade-level-3.png"
-            },
-            { 
-
-            "alias": "upgrade-level-4",
-            "src": "assets/units/upgrade-level-4.png"
-            },
-            { 
-
-            "alias": "hp-bar-1",
-            "src": "assets/units/hp-1.png"
-            },
-            { 
-
-            "alias": "hp-bar-2",
-            "src": "assets/units/hp-2.png"
-            },
-            { 
-
-            "alias": "hp-bar-3",
-            "src": "assets/units/hp-3.png"
-            }
-            ,
-            { 
-
-            "alias": "hp-bar-4",
-            "src": "assets/units/hp-4.png"
-            },
-            { 
-
-            "alias": "hp-bar-5",
-            "src": "assets/units/hp-5.png"
-            }
-            ,
-            { 
-
-            "alias": "hp-bar-6",
-            "src": "assets/units/hp-6.png"
-            },
-            { 
-
-            "alias": "hp-bar-7",
-            "src": "assets/units/hp-7.png"
-            },
-            { 
-
-            "alias": "hp-bar-8",
-            "src": "assets/units/hp-8.png"
-            }
-            ,
-            { 
-
-            "alias": "hp-bar-9",
-            "src": "assets/units/hp-9.png"
-            },
-            { 
-
-            "alias": "hp-bar-10",
-            "src": "assets/units/hp-10.png"
-            },
-            { 
-
-            "alias": "sovietTank",
-            "src": "assets/units/soviet-tank.png"
-            },
-            { 
-
-            "alias": "sovietTank-icon",
-            "src": "assets/units/soviet-tank-icon.png"
-            },
             {
                 "alias": "nuclear-base",
                 "src": "assets/animation/nuclear-base/nuclear-base.json"
@@ -239,62 +27,39 @@
                 "src": "assets/animation/tank-explosion/tank-explosion.json"
             },
             {
-                "alias": "victory-background",
-                "src": "assets/units/victory-background.jpg"
-            },
-            {
-                "alias": "defeated-background",
-                "src": "assets/units/defeated-background.jpg"
-            },
-            {
                 "alias": "helicopter",
                 "src": "assets/animation/helicopter/helicopter.json"
             },
             {
                 "alias": "barack",
                 "src": "assets/animation/barack/barack.json"
-            },
-            {
-                "alias": "information-background",
-                "src": "assets/units/information-background.jpg"
-            },
-            {
-                "alias": "option-background",
-                "src": "assets/units/option-background.jpg"
-            },
-            {
-                "alias": "tree-0",
-                "src": "assets/units/tree-1.png"
-            },
-            {
-                "alias": "tree-1",
-                "src": "assets/units/tree-1.png"
-            },
-            {
-                "alias": "tree-2",
-                "src": "assets/units/tree-2.png"
-            },
-            {
-                "alias": "tree-3",
-                "src": "assets/units/tree-3.png"
-            },
-            {
-                "alias": "tree-4",
-                "src": "assets/units/tree-4.png"
-            },
-            {
-                "alias": "tree-5",
-                "src": "assets/units/tree-5.png"
-            },
-            {
-                "alias": "tank-factory",
-                "src": "assets/units/tank-factory.png"
-            }         
-
-
-
+            }
+        ]
+    },
+    {
+        "name":"images",
+        "assets": [
             
-            
+            {
+                "alias": "background-0",
+                "src": "assets/atlas/backgrounds_atlas-0.json"
+            },
+            {
+                "alias": "background-1",
+                "src": "assets/atlas/backgrounds_atlas-1.json"
+            },
+            {
+                "alias": "background-2",
+                "src": "assets/atlas/backgrounds_atlas-2.json"
+            },
+            {
+                "alias": "tower-atlas",
+                "src": "assets/atlas/towers_atlas.json"
+            },
+            {
+                "alias": "units-atlas",
+                "src": "assets/atlas/units_atlas.json"
+            }
         ]
     }
 ]
