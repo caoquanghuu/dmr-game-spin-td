@@ -2,7 +2,7 @@ import { BSFNextMove, Direction, EnemiesType, FireBulletOption, FireTime, GetMat
 import { BaseObject } from '../BaseObject';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BSFMoveEngine } from '../../MoveEngine/BSFMoveEngine';
-import { PointData, Sprite } from 'pixi.js';
+import { PointData } from 'pixi.js';
 import Emitter from '../../Util';
 import { AppConstants } from '../../GameScene/Constants';
 
@@ -29,8 +29,8 @@ export class Tank extends BaseObject {
     private _setMatrixMapCb: SetMatrixMapFn;
 
     // for debug enemies move
-    public g1: Sprite;
-    public g2: Sprite;
+    // public g1: Sprite;
+    // public g2: Sprite;
 
     constructor(enemyType: EnemiesType, targetValue: number, getMatrixMapCb: GetMatrixMapFn, setMatrixMapCb: SetMatrixMapFn) {
         super(enemyType);

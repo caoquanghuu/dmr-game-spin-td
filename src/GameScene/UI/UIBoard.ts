@@ -16,4 +16,8 @@ export class UIBoard extends Container {
     private _removeFromBoard(container: Container): void {
         this.removeChild(container);
     }
+
+    public update(dt: number) {
+        this._UIController.update(dt);
+    }
 }

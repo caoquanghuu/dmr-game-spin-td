@@ -7,6 +7,7 @@ import Emitter from '../../Util';
 
 export class BuyUnitBoard extends Container {
     private _buyAbleUnits: Sprite[] = [];
+    private _time: {timeConst: number, timeCount: number} = { timeConst: 1000, timeCount: 0 };
     private _getPlayerGoldFn: GetPlayerGoldFn;
 
     constructor(getPlayerGoldCb: GetPlayerGoldFn) {
@@ -29,7 +30,7 @@ export class BuyUnitBoard extends Container {
             unitIcon.eventMode = 'static';
             unitIcon.cursor = 'pointer';
             unitIcon.on('pointerdown', () => {
-                this._createUnit(value);
+                this._createUnit(value, unitIcon);
             });
 
             this._buyAbleUnits.push(unitIcon);
@@ -52,14 +53,32 @@ export class BuyUnitBoard extends Container {
 
     }
 
-    private _createUnit(name: string) {
+    private _createUnit(name: string, unitIcon: Sprite) {
         // send to tower controller to create ally unit on type of unit
-        if (this._getPlayerGoldFn() < AppConstants.unitPrice.allyTank[name]) {
-            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.notEnoughGold });
-        } else {
-            Emitter.emit(AppConstants.event.createUnit, { name: name });
+        if (this._time.timeCount < this._time.timeConst) {
+            unitIcon.tint = 'red';
+            setTimeout(() => {
+                unitIcon.tint = 'white';
+            }, 200);
+            return;
         }
 
+        if (this._getPlayerGoldFn() < AppConstants.unitPrice.allyTank[name]) {
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.notEnoughGold });
+            unitIcon.tint = 'red';
+            setTimeout(() => {
+                unitIcon.tint = 'white';
+            }, 200);
+        } else {
+            Emitter.emit(AppConstants.event.createUnit, { name: name });
+            this._time.timeCount = 0;
+        }
+
+
+    }
+
+    public update(dt: number) {
+        this._time.timeCount += dt;
     }
 
 }

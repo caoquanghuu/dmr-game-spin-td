@@ -76,6 +76,7 @@ export class GameScene extends Container {
     public update(dt: number) {
         if (!this._isGameStart) return;
         this._map.update(dt);
+        this._UIBoard.update(dt);
 
     }
 

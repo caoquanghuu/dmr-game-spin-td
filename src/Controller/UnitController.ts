@@ -71,11 +71,12 @@ export class UnitController {
         unit.HP = option.HP;
         unit.dameDeal = option.dame;
         unit.speed = option.speed;
-        unit.startMove();
+
 
         if (isEne) {
-            unit.matrixValue = AppConstants.matrixMapValue.enemy;
             unit.targetValue = AppConstants.matrixMapValue.nuclearBase;
+            unit.matrixValue = AppConstants.matrixMapValue.enemy;
+
             unit.goldReward = wave + 1;
             this._enemies.push(unit);
 
@@ -83,8 +84,9 @@ export class UnitController {
             unit.targetValue = AppConstants.matrixMapValue.enemy;
             unit.matrixValue = AppConstants.matrixMapValue.ally;
             this._allies.push(unit);
-
         }
+
+        unit.startMove();
 
 
         Emitter.emit(AppConstants.event.addChildToScene, unit.image);

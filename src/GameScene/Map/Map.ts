@@ -267,8 +267,6 @@ export class GameMap extends Container {
         this._towerController.update(dt);
         this._bulletController.update(dt);
         this._unitController.update(dt);
-
-
         this._checkWave(dt);
     }
 }

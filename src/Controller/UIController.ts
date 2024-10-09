@@ -122,4 +122,8 @@ export class UIController {
     private _getPlayerGold(): number {
         return this._playerGold;
     }
+
+    public update(dt: number) {
+        this._buyUnitBoard.update(dt);
+    }
 }
