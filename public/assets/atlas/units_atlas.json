@@ -96,33 +96,9 @@
         "y": 0.5
       }
     },
-    "soviet-tank": {
-      "frame": {
-        "x": 443,
-        "y": 1872,
-        "w": 158,
-        "h": 348
-      },
-      "rotated": true,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 3,
-        "y": 2,
-        "w": 158,
-        "h": 348
-      },
-      "sourceSize": {
-        "w": 161,
-        "h": 350
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
     "upgrade-level-2": {
       "frame": {
-        "x": 791,
+        "x": 443,
         "y": 1872,
         "w": 196,
         "h": 153
@@ -146,7 +122,7 @@
     },
     "upgrade-level-3": {
       "frame": {
-        "x": 987,
+        "x": 639,
         "y": 1872,
         "w": 196,
         "h": 153
@@ -170,7 +146,7 @@
     },
     "hp-10": {
       "frame": {
-        "x": 1183,
+        "x": 835,
         "y": 1872,
         "w": 138,
         "h": 30
@@ -194,7 +170,7 @@
     },
     "hp-2": {
       "frame": {
-        "x": 1183,
+        "x": 835,
         "y": 2010,
         "w": 138,
         "h": 30
@@ -218,7 +194,7 @@
     },
     "hp-3": {
       "frame": {
-        "x": 1213,
+        "x": 865,
         "y": 1872,
         "w": 138,
         "h": 30
@@ -288,10 +264,730 @@
         "y": 0.5
       }
     },
-    "tree-0": {
+    "tank-14": {
       "frame": {
         "x": 282,
         "y": 1787,
+        "w": 76,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 0,
+        "w": 76,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-12": {
+      "frame": {
+        "x": 358,
+        "y": 1787,
+        "w": 75,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 0,
+        "w": 75,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-13": {
+      "frame": {
+        "x": 433,
+        "y": 1787,
+        "w": 75,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 0,
+        "w": 75,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-15": {
+      "frame": {
+        "x": 508,
+        "y": 1787,
+        "w": 75,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 0,
+        "w": 75,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-16": {
+      "frame": {
+        "x": 583,
+        "y": 1787,
+        "w": 75,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 0,
+        "w": 75,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-17": {
+      "frame": {
+        "x": 658,
+        "y": 1787,
+        "w": 75,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 0,
+        "w": 75,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "grass-1": {
+      "frame": {
+        "x": 973,
+        "y": 0,
+        "w": 450,
+        "h": 450
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 450,
+        "h": 450
+      },
+      "sourceSize": {
+        "w": 450,
+        "h": 450
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "missile": {
+      "frame": {
+        "x": 707,
+        "y": 0,
+        "w": 64,
+        "h": 260
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 260
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 260
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "soviet-tank-4": {
+      "frame": {
+        "x": 895,
+        "y": 64,
+        "w": 72,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 0,
+        "w": 72,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "soviet-tank-5": {
+      "frame": {
+        "x": 895,
+        "y": 144,
+        "w": 72,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 0,
+        "w": 72,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "soviet-tank-6": {
+      "frame": {
+        "x": 895,
+        "y": 224,
+        "w": 72,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 0,
+        "w": 72,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "soviet-tank7": {
+      "frame": {
+        "x": 895,
+        "y": 304,
+        "w": 71,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 0,
+        "w": 71,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "soviet-tank-3": {
+      "frame": {
+        "x": 895,
+        "y": 384,
+        "w": 70,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 5,
+        "y": 0,
+        "w": 70,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hp-4": {
+      "frame": {
+        "x": 733,
+        "y": 64,
+        "w": 138,
+        "h": 30
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 30
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hp-5": {
+      "frame": {
+        "x": 733,
+        "y": 94,
+        "w": 138,
+        "h": 30
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 30
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hp-6": {
+      "frame": {
+        "x": 733,
+        "y": 124,
+        "w": 138,
+        "h": 30
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 30
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hp-7": {
+      "frame": {
+        "x": 733,
+        "y": 154,
+        "w": 138,
+        "h": 30
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 30
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hp-8": {
+      "frame": {
+        "x": 733,
+        "y": 184,
+        "w": 138,
+        "h": 30
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 30
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hp-9": {
+      "frame": {
+        "x": 733,
+        "y": 214,
+        "w": 138,
+        "h": 30
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 138,
+        "h": 30
+      },
+      "sourceSize": {
+        "w": 138,
+        "h": 30
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hp-1": {
+      "frame": {
+        "x": 733,
+        "y": 244,
+        "w": 137,
+        "h": 29
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 137,
+        "h": 29
+      },
+      "sourceSize": {
+        "w": 137,
+        "h": 29
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "soviet-tank": {
+      "frame": {
+        "x": 733,
+        "y": 273,
+        "w": 69,
+        "h": 80
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 6,
+        "y": 0,
+        "w": 69,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "soviet-tank-1": {
+      "frame": {
+        "x": 813,
+        "y": 273,
+        "w": 69,
+        "h": 80
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 0,
+        "w": 69,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-10": {
+      "frame": {
+        "x": 733,
+        "y": 342,
+        "w": 69,
+        "h": 80
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 6,
+        "y": 0,
+        "w": 69,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-11": {
+      "frame": {
+        "x": 813,
+        "y": 342,
+        "w": 69,
+        "h": 80
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 5,
+        "y": 0,
+        "w": 69,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-21": {
+      "frame": {
+        "x": 733,
+        "y": 411,
+        "w": 63,
+        "h": 80
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 10,
+        "y": 0,
+        "w": 63,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-22": {
+      "frame": {
+        "x": 813,
+        "y": 411,
+        "w": 63,
+        "h": 80
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 0,
+        "w": 63,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "upgrade-level-4": {
+      "frame": {
+        "x": 240,
+        "y": 0,
+        "w": 196,
+        "h": 197
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 196,
+        "h": 197
+      },
+      "sourceSize": {
+        "w": 196,
+        "h": 197
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-19": {
+      "frame": {
+        "x": 437,
+        "y": 0,
+        "w": 62,
+        "h": 80
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 9,
+        "y": 0,
+        "w": 62,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-25": {
+      "frame": {
+        "x": 517,
+        "y": 0,
+        "w": 62,
+        "h": 80
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 0,
+        "w": 62,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "soviet-tank-2": {
+      "frame": {
+        "x": 597,
+        "y": 0,
+        "w": 70,
+        "h": 79
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 0,
+        "w": 70,
+        "h": 79
+      },
+      "sourceSize": {
+        "w": 79,
+        "h": 79
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tree-0": {
+      "frame": {
+        "x": 676,
+        "y": 64,
         "w": 57,
         "h": 68
       },
@@ -312,240 +1008,96 @@
         "y": 0.5
       }
     },
-    "tree-2": {
+    "tank-18": {
       "frame": {
-        "x": 339,
-        "y": 1787,
-        "w": 52,
-        "h": 67
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 5,
-        "y": 0,
-        "w": 52,
-        "h": 67
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 67
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "tree-4": {
-      "frame": {
-        "x": 391,
-        "y": 1787,
-        "w": 51,
-        "h": 66
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 11,
-        "y": 0,
-        "w": 51,
-        "h": 66
-      },
-      "sourceSize": {
-        "w": 62,
-        "h": 66
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "ice": {
-      "frame": {
-        "x": 442,
-        "y": 1787,
-        "w": 66,
-        "h": 49
+        "x": 437,
+        "y": 62,
+        "w": 63,
+        "h": 79
       },
       "rotated": true,
       "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
-        "y": 10,
-        "w": 66,
-        "h": 49
+        "x": 8,
+        "y": 0,
+        "w": 63,
+        "h": 79
       },
       "sourceSize": {
-        "w": 66,
-        "h": 66
+        "w": 79,
+        "h": 79
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "missile": {
+    "tank-20": {
       "frame": {
-        "x": 491,
-        "y": 1787,
-        "w": 64,
-        "h": 260
+        "x": 516,
+        "y": 62,
+        "w": 63,
+        "h": 79
       },
       "rotated": true,
-      "trimmed": false,
+      "trimmed": true,
       "spriteSourceSize": {
-        "x": 0,
+        "x": 10,
         "y": 0,
-        "w": 64,
-        "h": 260
+        "w": 63,
+        "h": 79
       },
       "sourceSize": {
-        "w": 64,
-        "h": 260
+        "w": 79,
+        "h": 79
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "tree-3": {
+    "tank-23": {
       "frame": {
-        "x": 751,
-        "y": 1787,
-        "w": 44,
-        "h": 64
+        "x": 595,
+        "y": 70,
+        "w": 63,
+        "h": 79
       },
-      "rotated": false,
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 0,
+        "w": 63,
+        "h": 79
+      },
+      "sourceSize": {
+        "w": 79,
+        "h": 79
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-24": {
+      "frame": {
+        "x": 595,
+        "y": 133,
+        "w": 63,
+        "h": 79
+      },
+      "rotated": true,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 7,
         "y": 0,
-        "w": 44,
-        "h": 64
+        "w": 63,
+        "h": 79
       },
       "sourceSize": {
-        "w": 62,
-        "h": 64
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "grass-1": {
-      "frame": {
-        "x": 1321,
-        "y": 0,
-        "w": 450,
-        "h": 450
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 450,
-        "h": 450
-      },
-      "sourceSize": {
-        "w": 450,
-        "h": 450
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "tank-4": {
-      "frame": {
-        "x": 1243,
-        "y": 0,
-        "w": 41,
-        "h": 64
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 41,
-        "h": 64
-      },
-      "sourceSize": {
-        "w": 41,
-        "h": 64
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "tank-8": {
-      "frame": {
-        "x": 1243,
-        "y": 41,
-        "w": 41,
-        "h": 64
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 41,
-        "h": 64
-      },
-      "sourceSize": {
-        "w": 41,
-        "h": 64
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "tank-3": {
-      "frame": {
-        "x": 1243,
-        "y": 82,
-        "w": 41,
-        "h": 61
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 41,
-        "h": 61
-      },
-      "sourceSize": {
-        "w": 41,
-        "h": 61
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "tank-7": {
-      "frame": {
-        "x": 1243,
-        "y": 123,
-        "w": 42,
-        "h": 60
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 42,
-        "h": 60
-      },
-      "sourceSize": {
-        "w": 42,
-        "h": 60
+        "w": 79,
+        "h": 79
       },
       "pivot": {
         "x": 0.5,
@@ -554,8 +1106,8 @@
     },
     "tank-6": {
       "frame": {
-        "x": 1243,
-        "y": 165,
+        "x": 674,
+        "y": 132,
         "w": 42,
         "h": 54
       },
@@ -578,8 +1130,8 @@
     },
     "tank-9": {
       "frame": {
-        "x": 1243,
-        "y": 207,
+        "x": 674,
+        "y": 174,
         "w": 42,
         "h": 53
       },
@@ -594,6 +1146,198 @@
       "sourceSize": {
         "w": 42,
         "h": 53
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tree-2": {
+      "frame": {
+        "x": 437,
+        "y": 125,
+        "w": 52,
+        "h": 67
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 5,
+        "y": 0,
+        "w": 52,
+        "h": 67
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 67
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tree-4": {
+      "frame": {
+        "x": 504,
+        "y": 125,
+        "w": 51,
+        "h": 66
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 11,
+        "y": 0,
+        "w": 51,
+        "h": 66
+      },
+      "sourceSize": {
+        "w": 62,
+        "h": 66
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "ice": {
+      "frame": {
+        "x": 504,
+        "y": 176,
+        "w": 66,
+        "h": 49
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 10,
+        "w": 66,
+        "h": 49
+      },
+      "sourceSize": {
+        "w": 66,
+        "h": 66
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tree-3": {
+      "frame": {
+        "x": 437,
+        "y": 177,
+        "w": 44,
+        "h": 64
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 0,
+        "w": 44,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 62,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-4": {
+      "frame": {
+        "x": 570,
+        "y": 196,
+        "w": 41,
+        "h": 64
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 41,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 41,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-8": {
+      "frame": {
+        "x": 634,
+        "y": 216,
+        "w": 41,
+        "h": 64
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 41,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 41,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-3": {
+      "frame": {
+        "x": 240,
+        "y": 196,
+        "w": 41,
+        "h": 61
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 41,
+        "h": 61
+      },
+      "sourceSize": {
+        "w": 41,
+        "h": 61
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-7": {
+      "frame": {
+        "x": 301,
+        "y": 196,
+        "w": 42,
+        "h": 60
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 42,
+        "h": 60
+      },
+      "sourceSize": {
+        "w": 42,
+        "h": 60
       },
       "pivot": {
         "x": 0.5,
@@ -602,8 +1346,8 @@
     },
     "tank-5": {
       "frame": {
-        "x": 1243,
-        "y": 249,
+        "x": 240,
+        "y": 237,
         "w": 43,
         "h": 52
       },
@@ -618,198 +1362,6 @@
       "sourceSize": {
         "w": 43,
         "h": 52
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "hp-4": {
-      "frame": {
-        "x": 1243,
-        "y": 292,
-        "w": 138,
-        "h": 30
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 138,
-        "h": 30
-      },
-      "sourceSize": {
-        "w": 138,
-        "h": 30
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "hp-5": {
-      "frame": {
-        "x": 1273,
-        "y": 292,
-        "w": 138,
-        "h": 30
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 138,
-        "h": 30
-      },
-      "sourceSize": {
-        "w": 138,
-        "h": 30
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "hp-6": {
-      "frame": {
-        "x": 1273,
-        "y": 430,
-        "w": 138,
-        "h": 30
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 138,
-        "h": 30
-      },
-      "sourceSize": {
-        "w": 138,
-        "h": 30
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "hp-7": {
-      "frame": {
-        "x": 1243,
-        "y": 430,
-        "w": 138,
-        "h": 30
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 138,
-        "h": 30
-      },
-      "sourceSize": {
-        "w": 138,
-        "h": 30
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "upgrade-level-4": {
-      "frame": {
-        "x": 1771,
-        "y": 0,
-        "w": 196,
-        "h": 197
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 196,
-        "h": 197
-      },
-      "sourceSize": {
-        "w": 196,
-        "h": 197
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "hp-8": {
-      "frame": {
-        "x": 1968,
-        "y": 0,
-        "w": 138,
-        "h": 30
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 138,
-        "h": 30
-      },
-      "sourceSize": {
-        "w": 138,
-        "h": 30
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "hp-9": {
-      "frame": {
-        "x": 1998,
-        "y": 0,
-        "w": 138,
-        "h": 30
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 138,
-        "h": 30
-      },
-      "sourceSize": {
-        "w": 138,
-        "h": 30
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "hp-1": {
-      "frame": {
-        "x": 1968,
-        "y": 138,
-        "w": 137,
-        "h": 29
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 137,
-        "h": 29
-      },
-      "sourceSize": {
-        "w": 137,
-        "h": 29
       },
       "pivot": {
         "x": 0.5,
@@ -818,8 +1370,8 @@
     },
     "tree-1": {
       "frame": {
-        "x": 282,
-        "y": 1787,
+        "x": 676,
+        "y": 64,
         "w": 57,
         "h": 68
       },
@@ -847,7 +1399,7 @@
     "image": "units_atlas.png",
     "format": "RGBA8888",
     "size": {
-      "w": 2028,
+      "w": 1423,
       "h": 2045
     },
     "scale": 1

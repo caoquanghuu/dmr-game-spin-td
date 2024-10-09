@@ -2,7 +2,7 @@
     "name": "enemy-type",
     "alias": [
         {
-            "name": "tank-1",
+            "name": "tank-9",
             "HP": 600,
             "speed": 100,
             "dame": 100,

@@ -57,20 +57,29 @@ export class GameMap extends Container {
         // create const objects base on matrix map
         this._mapMatrix.forEach((val, idxX) => {
             val.forEach((value, idxY) => {
-                const grass = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.grass));
+                // const rd = Math.round(Math.random()*1 + 1);
+                const grass = new Sprite(AssetsLoader.getTexture('grass-1'));
                 grass.width = AppConstants.matrixSize,
                 grass.height = AppConstants.matrixSize,
-                // grass.anchor = 0.5;
 
                 grass.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
                 this.addChild(grass);
                 grass.zIndex = 0;
-                if (value === 1) {
 
+                if (value === 1) {
                     // where ene can go
 
                 }
                 if (value === 0) {
+                    // const rd = Math.round(Math.random() * 1 + 1);
+                    // const grass = new Sprite(AssetsLoader.getTexture(`grass-${3 + rd}`));
+                    // grass.width = AppConstants.matrixSize,
+                    // grass.height = AppConstants.matrixSize,
+                    // // grass.anchor = 0.5;
+
+                    // grass.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
+                    // this.addChild(grass);
+                    // grass.zIndex = 0;
 
                     // create tree con border of map
                     const treeNumber = Math.round(Math.random() * 5);
@@ -86,6 +95,7 @@ export class GameMap extends Container {
                 if (value === 3) {
                     // this._nuclearBase = new AnimatedSprite(AssetsLoader.getTexture(AppConstants.textureName.nuclearBase).animations[AppConstants.textureName.nuclearBaseAnimation]);
                     // this._nuclearBase.anchor = 0.5;
+                    
                     this._nuclearBase = Factory.createNuclearBase();
                     this._nuclearBase.position = { x: idxX * AppConstants.matrixSize + AppConstants.matrixSize, y: idxY * AppConstants.matrixSize - AppConstants.matrixSize / 3 };
                     this._nuclearBase.hpBar.position = { x: this._nuclearBase.position.x, y: this._nuclearBase.position.y - AppConstants.matrixSize / 2 };
@@ -106,6 +116,15 @@ export class GameMap extends Container {
                 }
 
                 if (value === 2) {
+                    // const rd = Math.round(Math.random() * 1 + 1);
+                    // const grass = new Sprite(AssetsLoader.getTexture(`grass-${3 + rd}`));
+                    // grass.width = AppConstants.matrixSize,
+                    // grass.height = AppConstants.matrixSize,
+                    // // grass.anchor = 0.5;
+
+                    // grass.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
+                    // this.addChild(grass);
+                    // grass.zIndex = 0;
                     const towerBase = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.towerBase));
 
                     // towerBase.anchor.set(0.5);

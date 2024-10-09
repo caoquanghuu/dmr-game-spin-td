@@ -10,7 +10,7 @@ export class TowerController {
     private _towers: Tower[] = [];
     private _units: ControlUnit[] = [];
     private _illusionTower: Tower;
-    private _createAllyUnitOption: CreateEnemiesOption = { name: '', dame: AppConstants.allyUnitBasicProperty.dame, speed: AppConstants.allyUnitBasicProperty.speed, HP: AppConstants.allyUnitBasicProperty.hp };
+    private _createAllyUnitOption: CreateEnemiesOption = { name: 'soviet-tank', dame: AppConstants.allyUnitBasicProperty.dame, speed: AppConstants.allyUnitBasicProperty.speed, HP: AppConstants.allyUnitBasicProperty.hp };
     private _getTowerFromPool: GetTowerFromPoolFn;
     private _returnTowerToPool: ReturnTowerToPoolFn;
     private _getTowerBases: GetTowerBasesFn;
@@ -290,7 +290,7 @@ export class TowerController {
             // if player was build barack tower
             if (isHaveBarack) {
                 // now ally unit only have 1 property. in future update their will have other option and upgrade option too
-                const op: CreateEnemiesOption = { name: option.name, dame: this._createAllyUnitOption.dame, speed: this._createAllyUnitOption.speed, HP: this._createAllyUnitOption.HP };
+                const op: CreateEnemiesOption = { name: this._createAllyUnitOption.name, dame: this._createAllyUnitOption.dame, speed: this._createAllyUnitOption.speed, HP: this._createAllyUnitOption.HP };
 
                 // find spawn position
                 let spawnPosition: PointData;
