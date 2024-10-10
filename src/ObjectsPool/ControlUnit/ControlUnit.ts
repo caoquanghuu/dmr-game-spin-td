@@ -23,7 +23,7 @@ export class ControlUnit extends BaseObject {
         this._unitType = unitType;
         this.moveEngine = new BaseEngine(false);
 
-        this.speed = 100;
+        this.speed = 150;
 
         this.image.zIndex = 1000;
         this.image.width = AppConstants.matrixSize * 2;

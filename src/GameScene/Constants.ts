@@ -208,20 +208,23 @@ export namespace AppConstants {
     };
 
     export const infoBoardPosition = {
-        dame: { x: 350, y: 35 },
-        dameNumber: { x: 470, y: 35 },
-        speed: { x: 350, y: 70 },
-        speedNumber : { x: 470, y: 70 },
-        level: { x: 350, y: 0 },
-        levelNumber : { x: 470, y: 0 },
-        effect: { x: 650, y: 0 },
-        effectType: { x: 750, y: 0 },
-        upgrade: { x: 650, y: 35 },
-        upgradeNumber: { x: 780, y: 35 },
-        sell: { x: 650, y: 70 },
+        dame: { x: matrixSize * 9, y: matrixSize },
+        dameNumber: { x: matrixSize * 12, y: matrixSize },
+        speed: { x: matrixSize * 8 + 10, y: matrixSize * 2 },
+        speedNumber : { x: matrixSize * 12, y: matrixSize * 2 },
+        level: { x: matrixSize * 20, y: matrixSize },
+        levelNumber : { x: matrixSize * 23, y: matrixSize },
+        effect: { x: matrixSize * 20 + 10, y: matrixSize * 2 },
+        effectType: { x: matrixSize * 23, y: matrixSize * 2 },
+        upgrade: { x: matrixSize * 9, y: matrixSize * 3 },
+        upgradeNumber: { x: matrixSize * 12, y: matrixSize * 3 },
+        sell: { x:  matrixSize * 20 - 10, y: matrixSize * 3 },
         sellNumber: { x: 750, y: 70 },
-        exit: { x: 900, y: 0 },
-        towerIcon: { x: 150, y: 60 }
+        exit: { x: matrixSize * 28, y: matrixSize },
+        towerIcon: { x: matrixSize * 4, y: matrixSize * 2 },
+        exitButton: { x: matrixSize * 28, y: matrixSize },
+        upgradeButton: { x:  matrixSize * 10, y: matrixSize * 3 + 5 },
+        sellButton: { x:matrixSize * 20, y: matrixSize * 3 + 5 }
     };
 
     export const text: {[text: string]: TextOptions} = {

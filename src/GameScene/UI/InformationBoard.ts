@@ -1,6 +1,6 @@
 import { BitmapText, Container, Sprite } from 'pixi.js';
 import { AppConstants } from '../Constants';
-import Emitter from '../../Util';
+import Emitter, { createBitMapText, createImage } from '../../Util';
 import { GetPlayerGoldFn, TowerInformation } from '../../Type';
 import { AssetsLoader } from '../../AssetsLoader';
 import { sound } from '@pixi/sound';
@@ -26,119 +26,98 @@ export class InformationBoard extends Container {
 
     private _init() {
         // create text
-        const style1 = {
-            fontFamily: 'Desyrel',
-            fontSize: 30
-        };
-
-        this._towerIcon = new Sprite();
-        this._towerIcon.width = AppConstants.matrixSize * 3;
-        this._towerIcon.height = AppConstants.matrixSize * 3;
-        this._towerIcon.anchor = 0.5;
+        this._towerIcon = createImage({ texture: '', width: AppConstants.matrixSize * 3, height: AppConstants.matrixSize * 3, anchor: 0.5 });
         this._towerIcon.position = { x: AppConstants.infoBoardPosition.towerIcon.x, y:AppConstants.infoBoardPosition.towerIcon.y };
         this.addChild(this._towerIcon);
 
 
-        const dameText: BitmapText = new BitmapText({
-            text: 'Dame:',
-            style: style1
-        });
+        const dameText: BitmapText = createBitMapText({ content: 'Damage:', font: AppConstants.bitmapTextFontName.fontAlpha, size: AppConstants.matrixSize, anchor: 0.5 });
         dameText.position = { x: AppConstants.infoBoardPosition.dame.x, y: AppConstants.infoBoardPosition.dame.y };
 
-        const speedText: BitmapText = new BitmapText({
-            text: 'Speed:',
-            style: style1
-        });
+        const speedText: BitmapText = createBitMapText({ content: 'Speed:', font: AppConstants.bitmapTextFontName.fontAlpha, size: AppConstants.matrixSize, anchor: 0.5 });
         speedText.position = { x: AppConstants.infoBoardPosition.speed.x, y: AppConstants.infoBoardPosition.speed.y };
 
-        const levelText: BitmapText = new BitmapText({
-            text: 'Level:',
-            style: style1
-        });
+        const levelText: BitmapText = createBitMapText({ content: 'Level:', font: AppConstants.bitmapTextFontName.fontAlpha, size: AppConstants.matrixSize, anchor: 0.5 });
         levelText.position = { x: AppConstants.infoBoardPosition.level.x, y: AppConstants.infoBoardPosition.level.y };
 
-        const effectText: BitmapText = new BitmapText({
-            text: 'Effect:',
-            style: style1
-        });
+        const effectText: BitmapText = createBitMapText({ content: 'Effect:', font: AppConstants.bitmapTextFontName.fontAlpha, size: AppConstants.matrixSize, anchor: 0.5 });
         effectText.position = { x: AppConstants.infoBoardPosition.effect.x, y: AppConstants.infoBoardPosition.effect.y };
 
-        const upgradeText = new BitmapText({
-            text: 'upgrade: ',
-            style: style1
-        });
+        // upgrade button
+        const upgradeButton = createImage({ texture: 'menu_bar', width: AppConstants.matrixSize * 6, height: AppConstants.matrixSize * 1.3, anchor: 0.5 });
+        const upgradeText: BitmapText = createBitMapText({ content: 'Upgrade:', font: AppConstants.bitmapTextFontName.fontAlpha, size: AppConstants.matrixSize, anchor: 0.5 });
         upgradeText.position = { x: AppConstants.infoBoardPosition.upgrade.x, y: AppConstants.infoBoardPosition.upgrade.y };
+        upgradeButton.position = { x: AppConstants.infoBoardPosition.upgradeButton.x, y: AppConstants.infoBoardPosition.upgradeButton.y };
+        upgradeButton.zIndex = -1;
+
         upgradeText.eventMode = 'static';
         upgradeText.cursor = 'pointer';
         upgradeText.on('pointerdown', () => {
             // send upgrade event to tower controller
             this._upGradeTower();
         });
-
-        const sellText = new BitmapText({
-            text: 'sell',
-            style: style1
+        upgradeText.on('mouseenter', () => {
+            upgradeText.tint = '4aeac8';
         });
+        upgradeText.on('mouseleave', () => {
+            upgradeText.tint = 'ffffff';
+        });
+
+        // sell button
+        const sellButton = createImage({ texture: 'menu_bar', width: AppConstants.matrixSize * 3, height: AppConstants.matrixSize * 1.3, anchor: 0.5 });
+        const sellText = createBitMapText({ content: 'Sell', font: AppConstants.bitmapTextFontName.fontAlpha, size: AppConstants.matrixSize, anchor: 0.5 });
         sellText.position = { x: AppConstants.infoBoardPosition.sell.x, y: AppConstants.infoBoardPosition.sell.y };
         sellText.eventMode = 'static';
         sellText.cursor = 'pointer';
-        sellText.tint = 'fe0606';
         sellText.on('pointerdown', () => {
             // send event sell tower to ui controller plus gold for player and tower controller remove tower
             Emitter.emit(AppConstants.event.destroyTower, this._towerId);
             Emitter.emit(AppConstants.event.plusGold, Math.floor(this._goldUpgrade / 3));
             Emitter.emit(AppConstants.event.resetBoard, null);
         });
-
-        const exitText = new BitmapText({
-            text: 'exit',
-            style: style1,
+        sellText.on('mouseenter', () => {
+            sellText.tint = 'fe0606';
         });
+        sellText.on('mouseleave', () => {
+            sellText.tint = 'ffffff';
+        });
+        sellButton.position = { x: AppConstants.infoBoardPosition.sellButton.x, y: AppConstants.infoBoardPosition.sellButton.y };
+        sellButton.zIndex = -1;
+        // exit button
+        const exitButton = createImage({ texture: 'menu_bar', width: AppConstants.matrixSize * 3, height : AppConstants.matrixSize * 1.3, anchor : 0.5 });
+        const exitText = createBitMapText({ content: 'Exit', font: AppConstants.bitmapTextFontName.fontAlpha, size: AppConstants.matrixSize, anchor : 0.5 });
         exitText.position = { x: AppConstants.infoBoardPosition.exit.x, y: AppConstants.infoBoardPosition.exit.y };
+        exitButton.position = { x: AppConstants.infoBoardPosition.exitButton.x, y: AppConstants.infoBoardPosition.exitButton.y };
         exitText.eventMode = 'static';
         exitText.cursor = 'pointer';
-        exitText.tint = 'fe0606';
         exitText.on('pointerdown', () => {
             Emitter.emit(AppConstants.event.resetBoard, null);
         });
-
-        this.addChild(dameText, speedText, levelText, effectText, upgradeText, exitText, sellText);
-
-
-        // create number:
-        const style2 = {
-            fontFamily: 'font_number',
-            fontSize: 30
-        };
-
-        this._dameNumber = new BitmapText({
-            text: '0',
-            style: style2
+        exitText.on('mouseenter', () => {
+            exitText.tint = 'fe0606';
         });
+        exitText.on('mouseleave', () => {
+            exitText.tint = 'ffffff';
+        });
+
+        // add text to game
+        this.addChild(dameText, speedText, levelText, effectText, upgradeButton, upgradeText, exitButton, exitText, sellButton, sellText);
+
+
+        // create number
+        this._dameNumber = createBitMapText({ content: '0', font: AppConstants.bitmapTextFontName.fontNumber, size: AppConstants.matrixSize, anchor : 0.5 });
         this._dameNumber.position = { x: AppConstants.infoBoardPosition.dameNumber.x, y: AppConstants.infoBoardPosition.dameNumber.y };
 
-        this._speedNumber = new BitmapText({
-            text: '0',
-            style: style2
-        });
+        this._speedNumber = createBitMapText({ content: '0', font: AppConstants.bitmapTextFontName.fontNumber, size: AppConstants.matrixSize, anchor : 0.5 });
         this._speedNumber.position = { x: AppConstants.infoBoardPosition.speedNumber.x, y: AppConstants.infoBoardPosition.speedNumber.y };
 
-        this._levelNumber = new BitmapText({
-            text: '0',
-            style: style2
-        });
+        this._levelNumber = createBitMapText({ content: '0', font: AppConstants.bitmapTextFontName.fontNumber, size: AppConstants.matrixSize, anchor : 0.5 });
         this._levelNumber.position = { x: AppConstants.infoBoardPosition.levelNumber.x, y: AppConstants.infoBoardPosition.levelNumber.y };
 
-        this._effectType = new BitmapText({
-            text: 'laser',
-            style: style1
-        });
+        this._effectType = createBitMapText({ content: '0', font: AppConstants.bitmapTextFontName.fontAlpha, size: AppConstants.matrixSize, anchor: 0.5 });
         this._effectType.position = { x: AppConstants.infoBoardPosition.effectType.x, y: AppConstants.infoBoardPosition.effectType.y };
-
-        this._goldUpgradeNumber = new BitmapText({
-            text: '0',
-            style: style2
-        });
+        this._effectType.anchor = { x: 0, y: 0.5 };
+        this._goldUpgradeNumber = createBitMapText({ content: '0', font: AppConstants.bitmapTextFontName.fontNumber, size: AppConstants.matrixSize, anchor : 0.5 });
         this._goldUpgradeNumber.position = { x: AppConstants.infoBoardPosition.upgradeNumber.x, y: AppConstants.infoBoardPosition.upgradeNumber.y };
 
         this.addChild(this._effectType, this._dameNumber, this._levelNumber, this._speedNumber, this._goldUpgradeNumber);
