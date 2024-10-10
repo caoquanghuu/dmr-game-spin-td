@@ -30,15 +30,12 @@ export class BasicBoard extends Container {
 
 
         this._waveNumber = new BitmapText(AppConstants.text.waveNumber);
-
         this._waveNumber.position = { x: AppConstants.position.waveNumber.x, y: AppConstants.position.waveNumber.y };
 
         this._playerGoldNumber = new BitmapText(AppConstants.text.goldNumber);
-
         this._playerGoldNumber.position = { x: AppConstants.position.goldNumber.x, y: AppConstants.position.goldNumber.y };
 
         this._baseHpNumber = new BitmapText(AppConstants.text.baseHpNumber);
-
         this._baseHpNumber.position = { x: AppConstants.position.baseNumber.x, y: AppConstants.position.baseNumber.y };
 
         this.addChild(this._wave, this._waveNumber, this._baseHp, this._baseHpNumber, this._playerGold, this._playerGoldNumber);

@@ -132,6 +132,5 @@ export class UIController {
         this._buyUnitBoard.update(dt);
         this._basicBoard.displayBaseHp(this._playerHp);
         this._basicBoard.displayGoldNumber(this._playerGold);
-        this._basicBoard.displayWaveNumber(1);
     }
 }

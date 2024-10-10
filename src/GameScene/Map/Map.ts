@@ -10,7 +10,7 @@ import { TowerController } from '../../Controller/TowerController';
 import { ObjectPool } from '../../ObjectsPool/ObjectPool';
 import { Bullet } from '../../ObjectsPool/Bullet';
 import { BulletType, FlyUnitType, TowerType } from '../../Type';
-import Emitter from '../../Util';
+import Emitter, { createImage } from '../../Util';
 import { UnitController } from '../../Controller/UnitController';
 import { sound } from '@pixi/sound';
 import { ControlUnit } from '../../ObjectsPool/ControlUnit/ControlUnit';
@@ -58,10 +58,7 @@ export class GameMap extends Container {
         this._mapMatrix.forEach((val, idxX) => {
             val.forEach((value, idxY) => {
                 // const rd = Math.round(Math.random()*1 + 1);
-                const grass = new Sprite(AssetsLoader.getTexture('grass-1'));
-                grass.width = AppConstants.matrixSize,
-                grass.height = AppConstants.matrixSize,
-
+                const grass = createImage({ texture: 'grass-1', width: AppConstants.matrixSize, height: AppConstants.matrixSize });
                 grass.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
                 this.addChild(grass);
                 grass.zIndex = 0;
@@ -71,31 +68,15 @@ export class GameMap extends Container {
 
                 }
                 if (value === 0) {
-                    // const rd = Math.round(Math.random() * 1 + 1);
-                    // const grass = new Sprite(AssetsLoader.getTexture(`grass-${3 + rd}`));
-                    // grass.width = AppConstants.matrixSize,
-                    // grass.height = AppConstants.matrixSize,
-                    // // grass.anchor = 0.5;
-
-                    // grass.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
-                    // this.addChild(grass);
-                    // grass.zIndex = 0;
-
                     // create tree con border of map
                     const treeNumber = Math.round(Math.random() * 5);
-                    const tree = new Sprite(AssetsLoader.getTexture(`tree-${treeNumber}`));
-                    tree.width = AppConstants.matrixSize,
-                    tree.height = AppConstants.matrixSize;
-                    // tree.anchor = 0.5;
+                    const tree = createImage({ texture: `tree-${treeNumber}`, width: AppConstants.matrixSize, height: AppConstants.matrixSize });
                     tree.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
                     this.addChild(tree);
                     this._trees.push(tree);
                 }
 
                 if (value === 3) {
-                    // this._nuclearBase = new AnimatedSprite(AssetsLoader.getTexture(AppConstants.textureName.nuclearBase).animations[AppConstants.textureName.nuclearBaseAnimation]);
-                    // this._nuclearBase.anchor = 0.5;
-
                     this._nuclearBase = Factory.createNuclearBase();
                     this._nuclearBase.position = { x: idxX * AppConstants.matrixSize + AppConstants.matrixSize, y: idxY * AppConstants.matrixSize - AppConstants.matrixSize / 3 };
                     this._nuclearBase.hpBar.position = { x: this._nuclearBase.position.x, y: this._nuclearBase.position.y - AppConstants.matrixSize / 2 };
@@ -116,36 +97,18 @@ export class GameMap extends Container {
                 }
 
                 if (value === 2) {
-                    // const rd = Math.round(Math.random() * 1 + 1);
-                    // const grass = new Sprite(AssetsLoader.getTexture(`grass-${3 + rd}`));
-                    // grass.width = AppConstants.matrixSize,
-                    // grass.height = AppConstants.matrixSize,
-                    // // grass.anchor = 0.5;
+                    const towerBase = createImage({ texture: AppConstants.textureName.towerBase, width: AppConstants.matrixSize, height: AppConstants.matrixSize, alpha: AppConstants.imageAlpha.towerBase });
 
-                    // grass.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
-                    // this.addChild(grass);
-                    // grass.zIndex = 0;
-                    const towerBase = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.towerBase));
-
-                    // towerBase.anchor.set(0.5);
                     towerBase.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
-                    towerBase.width = AppConstants.matrixSize;
-                    towerBase.height = AppConstants.matrixSize;
                     towerBase.zIndex = AppConstants.zIndex.towerBase;
-                    towerBase.alpha = AppConstants.imageAlpha.towerBase;
-
-
                     this._towerBase.push(towerBase);
                     this.addChild(towerBase);
                 }
 
                 if (value === 7) {
-                    const tankFactory = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.tankFactory));
+                    const tankFactory = createImage({ texture: AppConstants.textureName.tankFactory, width: AppConstants.matrixSize * 2, height: AppConstants.matrixSize * 2, anchor: 0.5 });
                     tankFactory.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize + AppConstants.matrixSize / 4 };
-                    tankFactory.width = AppConstants.matrixSize * 2;
-                    tankFactory.height = AppConstants.matrixSize * 2;
                     tankFactory.zIndex = AppConstants.zIndex.tankFactory;
-                    tankFactory.anchor = 0.5;
                     this._trees.push(tankFactory);
                     this.addChild(tankFactory);
                 }
