@@ -4,35 +4,17 @@ import { GameMap } from './Map/Map';
 import { UIBoard } from './UI/UIBoard';
 import { AssetsLoader } from '../AssetsLoader';
 import { sound } from '@pixi/sound';
-import Emitter from '../Util';
+import Emitter, { createBitMapText, createImage } from '../Util';
 
 export class GameScene extends Container {
     private _map: GameMap;
     private _UIBoard: UIBoard;
+    private _startGameBoard: Container;
     private _isGameStart: boolean = false;
 
     constructor() {
         super();
         this._useEventEffect();
-        const logo = new Sprite(AssetsLoader.getTexture('logo'));
-        logo.width = AppConstants.appWidth;
-        logo.height = AppConstants.appHeight;
-        logo.eventMode = 'static';
-        logo.on('pointerdown', () => {
-            this._UIBoard.renderable = true;
-            this._map.renderable = true;
-            this._isGameStart = true;
-            Emitter.emit(AppConstants.event.gameStart, null);
-
-            sound.add('my-sound', { url: `${Assets.get('game-sound').resources[0]}`, sprites: Assets.get('game-sound').spritemap });
-            sound.play('my-sound', { sprite: 'battle-control-online' });
-            sound.play('my-sound', { sprite: 'main-music', loop: true });
-
-            logo.eventMode = 'none';
-
-            this.removeChild(logo);
-        });
-        this.addChild(logo);
 
         this._map = new GameMap();
         this._UIBoard = new UIBoard();
@@ -42,10 +24,54 @@ export class GameScene extends Container {
         this._map.renderable = false;
         this._UIBoard.renderable = false;
         this.addChild(this._map, this._UIBoard);
+        this._createStartGameBoard();
     }
 
-    public init() {
+    /**
+     * method create start game board which will be display when player open game
+     */
+    private _createStartGameBoard() {
+        // create container
+        this._startGameBoard = new Container();
 
+        // add logo
+        const logo = createImage({ texture:'logo', width: AppConstants.appWidth, height:AppConstants.appHeight });
+
+        const menuButtonOption = AppConstants.menuButtonOption;
+        const startButton = createImage(menuButtonOption);
+        startButton.position = { x: AppConstants.matrixSize * 10, y: AppConstants.matrixSize * 17 };
+        const loadGameButton = createImage(menuButtonOption);
+        loadGameButton.position = { x: AppConstants.matrixSize * 20, y: AppConstants.matrixSize * 17 };
+
+        const startText = createBitMapText({ content: 'start mission', font: AppConstants.bitmapTextFontName.fontAlpha, size: AppConstants.matrixSize, anchor: 0.5 });
+        startText.position = startButton.position;
+        const loadGameText = createBitMapText({ content: 'load previous', font: AppConstants.bitmapTextFontName.fontAlpha, size: AppConstants.matrixSize, anchor: 0.5 });
+        loadGameText.position = loadGameButton.position;
+
+        this._startGameBoard.addChild(logo, startButton, loadGameButton, startText, loadGameText);
+
+        // define event for buttons
+        startButton.eventMode = 'static';
+        startButton.cursor = 'pointer';
+        startButton.on('pointerdown', () => {
+            // stop render start board
+            this._startGameBoard.renderable = false;
+            // render map and ui board
+            this._UIBoard.renderable = true;
+            this._map.renderable = true;
+            this._isGameStart = true;
+
+
+            this._map.startGame();
+
+            // add and play theme sound
+            sound.add(AppConstants.soundName.mainSound, { url: `${Assets.get('game-sound').resources[0]}`, sprites: Assets.get('game-sound').spritemap });
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.battleControlOnline });
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.mainMusic, loop: true });
+
+        });
+
+        this.addChild(this._startGameBoard);
     }
 
     public reset() {
@@ -58,8 +84,8 @@ export class GameScene extends Container {
         Emitter.on(AppConstants.event.gameOver, (isVictory: boolean) => {
             this._isGameStart = false;
             this.reset();
-            // this._UIBoard.renderable = false;
-            // this._map.renderable = false;
+            this._UIBoard.renderable = false;
+            this._map.renderable = false;
 
             const gameOverBg = new Sprite(AssetsLoader.getTexture('logo'));
             gameOverBg.width = AppConstants.appWidth;
@@ -82,8 +108,8 @@ export class GameScene extends Container {
                 this._isGameStart = true;
                 this.removeChild(gameOverBg);
                 this.removeChild(resultBg);
-                // this._map.renderable = true;
-                // this._UIBoard.renderable = true;
+                this._map.renderable = true;
+                this._UIBoard.renderable = true;
             });
         });
 

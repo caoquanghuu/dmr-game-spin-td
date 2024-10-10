@@ -7,7 +7,9 @@
   "scripts": {
     "start": "yarn webpack serve --mode development",
     "start-ip": "yarn start --host 0.0.0.0",
-    "build": "yarn webpack --mode production"
+    "build": "yarn webpack --mode production",
+    "createSpriteSheet": "node ./tools/TexturePacker.js",
+    "createSoundAtlas": "node ./tools/AudioSprite.js"
   },
   "license": "ISC",
   "author": "caoquanghuu@gmail.com",

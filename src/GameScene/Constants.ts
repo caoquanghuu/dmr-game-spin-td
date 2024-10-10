@@ -100,7 +100,9 @@ export namespace AppConstants {
         nuclearMissileAlert: 'nuclear-missile-alert',
         nuclearMissileLaunch: 'nuclear-missile-launch',
         victory: 'victory',
-        notEnoughGold: 'not-enough-gold'
+        notEnoughGold: 'not-enough-gold',
+        battleControlOnline: 'battle-control-online',
+        mainMusic: 'main-music'
     };
 
     export const maxLevelOfTower = 4;
@@ -296,8 +298,18 @@ export namespace AppConstants {
         }
     };
 
-    export const objectZIndex = {
+    export const menuButtonOption = {
+        texture: 'menu_bar',
+        width: matrixSize * 7,
+        height: matrixSize * 2,
+        anchor: 0.5,
+        alpha: null
 
+    };
+
+    export const bitmapTextFontName = {
+        fontNumber: 'font_number',
+        fontAlpha: 'Desyrel'
     };
 
 }

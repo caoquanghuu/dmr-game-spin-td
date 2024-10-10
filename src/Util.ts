@@ -1,5 +1,6 @@
-import { EventEmitter, PointData } from 'pixi.js';
+import { BitmapText, EventEmitter, PointData, Sprite } from 'pixi.js';
 import { Circle } from './Type';
+import { AssetsLoader } from './AssetsLoader';
 
 export const switchFn = (lookupObject, defaultCase = '_default') => expression => (lookupObject[expression] || lookupObject[defaultCase])();
 
@@ -22,7 +23,7 @@ const Emitter = {
 Object.freeze(Emitter);
 export default Emitter;
 
- /**
+/**
      * method check collision between 2 circle base on calculate distance
      * @param c1
      * @param c2
@@ -60,4 +61,46 @@ export function findCorrectPositionBeforeCollision(c1: Circle, c2: Circle): Poin
     };
 
     return correctPosition;
+}
+
+/**
+ * method create a sprite and return that sprite
+ * @param texture texture name of that image define on json sprite sheet
+ * @param width width of image
+ * @param height height of image
+ * @param anchor anchor of image
+ * @param alpha alpha of image
+ * @returns return image created
+ */
+export function createImage(option: {texture: string, width?: number, height?: number, anchor?: number, alpha?: number}): Sprite {
+    const sprite = new Sprite(AssetsLoader.getTexture(option.texture));
+    sprite.width = option.width;
+    sprite.height = option.height;
+    if (option.anchor) {
+        sprite.anchor = option.anchor;
+    }
+    if (option.alpha) {
+        sprite.alpha = option.alpha;
+    }
+    return sprite;
+}
+
+/**
+ * method create a bitmap text with basic property, can be update later
+ * @param option content for the text want display, font is name of bitmap font was load, size of text
+ * @returns return bitmap text was created
+ */
+export function createBitMapText(option: {content: string, font: string, size: number, anchor?: number}): BitmapText {
+    const text = new BitmapText({
+        text: option.content,
+        style: {
+            fontFamily: option.font,
+            fontSize: option.size
+        }
+    });
+
+    if (option.anchor) {
+        text.anchor = option.anchor;
+    }
+    return text;
 }

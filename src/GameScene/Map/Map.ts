@@ -178,14 +178,10 @@ export class GameMap extends Container {
         Emitter.on(AppConstants.event.removeChildFromScene, (sprite: Sprite | AnimatedSprite | Graphics) => {
             this.removeChild(sprite);
         });
-
-        Emitter.on(AppConstants.event.gameStart, () => {
-            this._startGame();
-        });
     }
 
     // method to create enemies
-    private _startGame() {
+    public startGame() {
         // position spawn enemy game get on matrix map
         this._unitController.spawnWave(this._wave, { x: 15, y: 0 });
     }
