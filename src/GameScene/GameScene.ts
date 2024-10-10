@@ -1,10 +1,12 @@
-import { Assets, Container, Sprite } from 'pixi.js';
+import { Assets, Container } from 'pixi.js';
 import { AppConstants } from './Constants';
 import { GameMap } from './Map/Map';
 import { UIBoard } from './UI/UIBoard';
 import { AssetsLoader } from '../AssetsLoader';
 import { sound } from '@pixi/sound';
 import Emitter, { createBitMapText, createImage } from '../Util';
+import { SaveGameData } from '../Type';
+import { loadGame, saveGame } from '../../tools/SaveGameData';
 
 export class GameScene extends Container {
     private _map: GameMap;
@@ -56,24 +58,37 @@ export class GameScene extends Container {
         startButton.eventMode = 'static';
         startButton.cursor = 'pointer';
         startButton.on('pointerdown', () => {
-            // stop render start board
-            this._startGameBoard.renderable = false;
-            // render map and ui board
-            this._UIBoard.renderable = true;
-            this._map.renderable = true;
-            this._isGameStart = true;
-
-
+            this._startGame();
             this._map.startGame();
 
-            // add and play theme sound
-            sound.add(AppConstants.soundName.mainSound, { url: `${Assets.get('game-sound').resources[0]}`, sprites: Assets.get('game-sound').spritemap });
-            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.battleControlOnline });
-            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.mainMusic, loop: true });
+        });
+
+        loadGameButton.eventMode = 'static';
+        loadGameButton.cursor = 'pointer';
+        loadGameButton.on('pointerdown', async () => {
+            this._startGame();
+            await this._loadGame();
 
         });
 
         this.addChild(this._startGameBoard);
+    }
+
+    /**
+     * method start game by render or stop render boards, play sounds
+     */
+    private _startGame() {
+        // stop render start board
+        this._startGameBoard.renderable = false;
+        // render map and ui board
+        this._UIBoard.renderable = true;
+        this._map.renderable = true;
+        this._isGameStart = true;
+
+        // add and play theme sound
+        sound.add(AppConstants.soundName.mainSound, { url: `${Assets.get('game-sound').resources[0]}`, sprites: Assets.get('game-sound').spritemap });
+        sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.battleControlOnline });
+        sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.mainMusic, loop: true });
     }
 
     /**
@@ -102,6 +117,7 @@ export class GameScene extends Container {
             this._map.renderable = true;
             this._UIBoard.renderable = true;
             this._isGameStart = true;
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.battleControlOnline });
         });
 
         // change texture of result background
@@ -111,6 +127,7 @@ export class GameScene extends Container {
             } else {
                 endGameImage.texture = AssetsLoader.getTexture('defeated-background');
             }
+            this._isGameStart = false;
         });
 
         this.addChild(this._endGameBoard);
@@ -133,6 +150,25 @@ export class GameScene extends Container {
             this._endGameBoard.renderable = true;
         });
 
+        Emitter.on(AppConstants.event.saveGame, () => {
+            this._autoSaveGame();
+        });
+    }
+
+    private _autoSaveGame() {
+        const mapData = this._map.getDataOnMap();
+        const uiData: {gold: number, hp: number} = this._UIBoard.getUiData();
+
+        const data: SaveGameData = { wave: mapData.wave, gold: uiData.gold, towers: mapData.towers, nuclearBaseHp: mapData.nuclearBaseHp, soundOption: mapData.isMuteSound };
+
+        // save game to local storage
+        saveGame(data);
+    }
+
+    private _loadGame() {
+        const data: SaveGameData = loadGame();
+        this._UIBoard.saveUiData({ gold: data.gold, playerHp: data.nuclearBaseHp, wave: data.wave });
+        this._map.saveDataOnMap({ wave:data.wave, towers: data.towers, nuclearBaseHp: data.nuclearBaseHp, isMuteSound: data.soundOption });
     }
 
 

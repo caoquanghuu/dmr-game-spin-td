@@ -88,14 +88,10 @@ export class UnitController {
 
             // play sound rd
             sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.unitReady });
-            const rd = getRandomArbitrary({ min: 0, max : 5 });
-            if (rd === 1) {
-                const rd2 = getRandomArbitrary({ min: 1, max: 3 });
-                setTimeout(() => {
-                    sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName[`spawnAlly${rd2}`] });
-                }, 500);
-
-            }
+            const rd2 = getRandomArbitrary({ min: 1, max: 3 });
+            setTimeout(() => {
+                sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName[`spawnAlly${rd2}`] });
+            }, 500);
         }
 
         unit.startMove();

@@ -27,6 +27,7 @@ export class GameMap extends Container {
     private _objectPool: ObjectPool;
     private _time: number = 0;
     private _nuclearBase: BaseObject;
+    private _isMuteSound: boolean = false;
 
     // wave is define to current hard level
     private _wave: number = 1;
@@ -53,6 +54,47 @@ export class GameMap extends Container {
         // sound.muteAll();
     }
 
+    /**
+     * method use to get data need on map return to game scene for auto save game.
+     * @returns return current wave, info of tower need to regenerate tower when player load game, nuclear base hp
+     */
+    public getDataOnMap(): {wave: number, towers: {towerType: TowerType, level: number, matrixPosition: PointData}[], nuclearBaseHp: number, isMuteSound: boolean} {
+        const wave = this._wave;
+        const towers = this._towerController.towers.map(tower => {
+            return { towerType: tower.towerType, level: tower.level, matrixPosition: { x: tower.towerMainMatrixPosition.x, y: tower.towerMainMatrixPosition.y } };
+        });
+        const nuclearBaseHp = this._nuclearBase.HP;
+        return { wave: wave, towers: towers, nuclearBaseHp: nuclearBaseHp, isMuteSound: this._isMuteSound };
+    }
+
+    public async saveDataOnMap(data: {wave: number, towers: {towerType: TowerType, level: number, matrixPosition: PointData}[], nuclearBaseHp: number, isMuteSound: boolean}) {
+        this._wave = data.wave;
+        this._nuclearBase.reduceHp(AppConstants.playerBasicProperty.playerHp - (AppConstants.playerBasicProperty.playerHp - data.nuclearBaseHp));
+        this._nuclearBase.setFrame(data.wave - 1);
+        this._isMuteSound = data.isMuteSound;
+
+        // create tower
+        await data.towers.forEach(tw => {
+            this._towerController.createTower({ towerType: tw.towerType, baseTower: this._getBaseTowerSprite(tw.matrixPosition) }).then(
+                (createdTower: Tower) => {
+                    for (let i = 2; i <= tw.level; i++) {
+                        createdTower.upgrade();
+                    }
+                }
+            );
+        });
+    }
+
+    private _getBaseTowerSprite(matrixPosition: PointData): Sprite {
+        const i = this._towerBase.findIndex(base => base.position.x / AppConstants.matrixSize === matrixPosition.x && base.position.y / AppConstants.matrixSize === matrixPosition.y);
+        const baseTower = this._towerBase[i];
+        return baseTower;
+    }
+
+
+    /**
+     * method will generate basic object on matrix
+     */
     private _init() {
         // create const objects base on matrix map
         this._mapMatrix.forEach((val, idxX) => {
@@ -172,6 +214,9 @@ export class GameMap extends Container {
             // change texture of nuclear base
             this._nuclearBase.setFrame(this._wave - 1);
             this._time = 0;
+
+            // auto save game per wave
+            Emitter.emit(AppConstants.event.saveGame, null);
         }
 
     }

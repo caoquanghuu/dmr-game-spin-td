@@ -88,34 +88,34 @@
       "end": 283.36263038548753,
       "loop": false
     },
-    "set-new-target-3": {
-      "start": 285,
-      "end": 286.8850793650794,
-      "loop": false
-    },
-    "set-new-target-4": {
-      "start": 288,
-      "end": 289.36263038548753,
-      "loop": false
-    },
     "sold-tower": {
-      "start": 291,
-      "end": 292.37249433106575,
+      "start": 285,
+      "end": 286.37249433106575,
       "loop": false
     },
     "spawn-ally-1": {
-      "start": 294,
-      "end": 295.93732426303853,
+      "start": 288,
+      "end": 289.93732426303853,
       "loop": false
     },
     "spawn-ally-2": {
-      "start": 297,
-      "end": 298.8850793650794,
+      "start": 291,
+      "end": 292.8850793650794,
       "loop": false
     },
     "spawn-ally-3": {
-      "start": 300,
-      "end": 300.8401814058957,
+      "start": 294,
+      "end": 294.8401814058957,
+      "loop": false
+    },
+    "spawn-helicopter-1": {
+      "start": 296,
+      "end": 297.8850793650794,
+      "loop": false
+    },
+    "spawn-helicopter-2": {
+      "start": 299,
+      "end": 300.36263038548753,
       "loop": false
     },
     "tinker": {

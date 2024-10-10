@@ -2,21 +2,26 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require("fs");
 const path = require("path");
-const audioSprite = require('audiosprite');
+const audioSprite = require("audiosprite");
+const ffmpeg = require("ffmpeg");
 
 const audioFolderPath = "./public/assets";
 
 // Get audio files from directory
 function getAudioFilesFromDir(dirPath) {
-  return fs.readdirSync(dirPath).filter(file => file.endsWith(".mp3") || file.endsWith(".wav"));
+  return fs
+    .readdirSync(dirPath)
+    .filter((file) => file.endsWith(".mp3") || file.endsWith(".wav"));
 }
 
 // Create audio sprite
 async function createAudioSprite(dirName) {
   try {
     const dirPath = path.join(audioFolderPath, dirName);
-    const audioFiles = getAudioFilesFromDir(dirPath).map(file => path.join(dirPath, file));
-    console.log(audioFiles)
+    const audioFiles = getAudioFilesFromDir(dirPath).map((file) =>
+      path.join(dirPath, file)
+    );
+    console.log(audioFiles);
 
     const outputDir = "./public/assets/sounds/soundsAtlas";
     if (!fs.existsSync(outputDir)) {
@@ -29,7 +34,10 @@ async function createAudioSprite(dirName) {
       { output: outputFilePath, export: "mp3" },
       (error, obj) => {
         if (error) {
-          console.error(`Error creating audio sprite for directory ${dirName}:`, error);
+          console.error(
+            `Error creating audio sprite for directory ${dirName}:`,
+            error
+          );
           return;
         }
         obj.resources[0] = `./assets/sounds/soundsAtlas/sounds_sprite.mp3`;
@@ -48,9 +56,9 @@ async function createAudioSprite(dirName) {
 async function createAllAudioSprites() {
   const directories = fs
     .readdirSync(audioFolderPath, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name);
-  
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
+
   for (const dir of directories) {
     await createAudioSprite(dir);
   }

@@ -22,7 +22,8 @@ export class Tower extends BaseObject {
     public circleImage: Sprite;
     private _upgradeLevelImage: Sprite;
     public buildingSize: PointData;
-    private _item: BaseObject[] = [];
+    // this main position of tower. This use to save data game
+    private _towerMainMatrixPosition: PointData;
 
 
     constructor(towerType: TowerType, isAnimatedSprite?: boolean) {
@@ -34,6 +35,14 @@ export class Tower extends BaseObject {
         this.circleImage = new Sprite(AssetsLoader.getTexture('circle'));
         this.circleImage.anchor = 0.5;
         this.circleImage.alpha = AppConstants.imageAlpha.towerCircle;
+    }
+
+    get towerMainMatrixPosition(): PointData {
+        return { x: this._towerMainMatrixPosition.x, y: this._towerMainMatrixPosition.y };
+    }
+
+    set towerMainMatrixPosition(point: PointData) {
+        this._towerMainMatrixPosition = { x: point.x, y: point.y };
     }
 
     get effectArena(): number {

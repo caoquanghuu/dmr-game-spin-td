@@ -64,9 +64,21 @@ export class TowerController {
      * @param option  type of tower and the base where player chose to build tower
      * @returns return tower
      */
-    public _createTower(option: {towerType: TowerType, baseTower: Sprite}) {
+    public async createTower(option: {towerType: TowerType, baseTower: Sprite}): Promise<Tower> {
         // get tower from pool
-        const tower = this._illusionTower;
+        let tower: Tower;
+        if (this._illusionTower) {
+            // incase normal build
+            tower = this._illusionTower;
+        } else {
+            // load game or don't have tower
+            tower = this._getTowerFromPool(option.towerType);
+            tower.position = { x: option.baseTower.position.x, y: option.baseTower.position.y - 25 };
+            tower.circleImage.position = { x: tower.position.x + tower.image.width / 2, y: tower.image.position.y + tower.image.height / 2 };
+            tower.circleImage.zIndex = AppConstants.zIndex.tower;
+            tower.image.zIndex = tower.position.y;
+        }
+
 
         // create a variable info to check that position with tower size available or not
         const info = { position: [{ x: option.baseTower.position.x, y: option.baseTower.position.y }], buildingSize: tower.buildingSize };
@@ -82,6 +94,9 @@ export class TowerController {
         this._illusionTower = null;
         tower.image.alpha = 1;
         tower.circleImage.alpha = 1;
+
+        // assign tower matrix position for save data game
+        tower.towerMainMatrixPosition = { x: option.baseTower.position.x / AppConstants.matrixSize, y: option.baseTower.position.y / AppConstants.matrixSize };
 
         // in case that position is available
 
@@ -119,6 +134,9 @@ export class TowerController {
         if (tower.towerType === TowerType.barack) {
             this._createFlyUnit(FlyUnitType.helicopter, tower.position, tower.id);
             sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.barackBuilded });
+        } else {
+            // play sound
+            sound.play(AppConstants.soundName.mainSound, { sprite:AppConstants.soundName.buildingCompleted });
         }
 
 
@@ -126,13 +144,14 @@ export class TowerController {
         Emitter.emit(AppConstants.event.addChildToScene, tower.image);
         Emitter.emit(AppConstants.event.addChildToScene, tower.circleImage);
         Emitter.emit(AppConstants.event.reduceGold, AppConstants.towerPrice[tower.towerType]);
-        // play sound
-        sound.play(AppConstants.soundName.mainSound, { sprite:AppConstants.soundName.buildingCompleted });
+
 
         // toggle turn of tower circle
         setTimeout(() => {
             tower.toggleCircle(false);
         }, 1000);
+
+        return tower;
     }
 
     /**
@@ -212,7 +231,7 @@ export class TowerController {
 
         // get event from ui build tower board
         Emitter.on(AppConstants.event.createTower, (option: {towerType: TowerType, baseTower: Sprite}) => {
-            this._createTower(option);
+            this.createTower(option);
         });
 
         // create illusion of tower
@@ -279,7 +298,8 @@ export class TowerController {
                 }
 
                 tower.upgrade();
-                sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.towerUpgraded });
+                tower.towerType === TowerType.barack ? sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.firePowerUpgraded }) : sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.towerUpgraded });
+
             } else {
                 console.log('tower not found');
             }

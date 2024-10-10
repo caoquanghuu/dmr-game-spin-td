@@ -85,12 +85,6 @@ export class ControlUnit extends BaseObject {
             Emitter.emit(AppConstants.event.createBullet, option);
             // sound.play(AppConstants.soundName.mainSound, { sprite: `${TowerType.tinker}` });
             this._fireTimeCD.fireTimeCount = 0;
-
-            const rd = getRandomArbitrary({ min: 0, max: 5 });
-            if (rd === 1) {
-                const rd2 = getRandomArbitrary({ min: 1, max: 2 });
-                sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName[`setNewTarget${rd2}`] });
-            }
         } else {
             this.isMoving = true;
         }
@@ -169,9 +163,10 @@ export class ControlUnit extends BaseObject {
     public update(dt: number) {
         this._fireTimeCD.fireTimeCount += dt;
         this._checkTarget();
+        this._upgradeLevelImage.position = { x: this.position.x, y: this.position.y };
         if (!this._targetPosition || !this.isMoving) return;
         this._updateDirection();
         this.move(dt);
-        this._upgradeLevelImage.position = { x: this.position.x, y: this.position.y };
+
     }
 }

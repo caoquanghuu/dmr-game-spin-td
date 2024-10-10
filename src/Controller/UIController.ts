@@ -69,6 +69,22 @@ export class UIController {
         this._infoTowerBoard.renderable = false;
     }
 
+    get playerHp(): number {
+        return this._playerHp;
+    }
+
+    set playerHp(hp: number) {
+        this._playerHp = hp;
+    }
+
+    get playerGold(): number {
+        return this._playerGold;
+    }
+
+    set playerGold(gold: number) {
+        this._playerGold = gold;
+    }
+
     private _useEventEffect(): void {
         // display build tower board on event
         Emitter.on(AppConstants.event.selectTowerBase, (baseSprite: Sprite) => {
@@ -117,6 +133,18 @@ export class UIController {
             this._buyUnitBoard.renderable = false;
 
         });
+    }
+
+    /**
+     * method get data from ui board and assign and display them
+     * @param data data get from game scene
+     */
+    public setPlayerData(data: {gold: number, playerHp: number, wave: number}) {
+        this._playerGold = data.gold;
+        this._playerHp = data.playerHp;
+        this._basicBoard.displayBaseHp(data.playerHp);
+        this._basicBoard.displayGoldNumber(data.gold);
+        this._basicBoard.displayWaveNumber(data.wave);
     }
 
     private _getPlayerGold(): number {

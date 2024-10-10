@@ -120,6 +120,8 @@ export enum AllyTanksType {
     sovietTank = 'soviet-tank'
 }
 
+export type SaveGameData = {wave: number, gold: number, towers: {matrixPosition: PointData, level: number, towerType: TowerType}[], nuclearBaseHp: number, soundOption: boolean};
+
 export type GetTowerFromPoolFn = (towerType: TowerType) => Tower;
 export type GetEnemiesFromPoolFn = () => Tank;
 export type GetBulletFromPoolFn = (bulletType: BulletType) => Bullet;

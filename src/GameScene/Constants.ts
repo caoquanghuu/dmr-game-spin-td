@@ -207,7 +207,8 @@ export namespace AppConstants {
         gameStart: 'game-start',
         createAllyUnit: 'create-ally-unit',
         createTowerIllusion: 'create-tower-illusion',
-        invisibleTowerIllusion: 'invisible-tower-illusion'
+        invisibleTowerIllusion: 'invisible-tower-illusion',
+        saveGame: 'save-game'
     };
 
     export const position = {
