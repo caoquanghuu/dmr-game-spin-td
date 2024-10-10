@@ -30,7 +30,7 @@ export class GameScene extends Container {
 
             logo.eventMode = 'none';
 
-
+            this.removeChild(logo);
         });
         this.addChild(logo);
 
@@ -48,10 +48,18 @@ export class GameScene extends Container {
 
     }
 
+    public reset() {
+        this._isGameStart = false;
+        this._UIBoard.reset();
+        this._map.reset();
+    }
+
     private _useEventEffect(): void {
         Emitter.on(AppConstants.event.gameOver, (isVictory: boolean) => {
-            this._UIBoard.renderable = false;
-            this._map.renderable = false;
+            this._isGameStart = false;
+            this.reset();
+            // this._UIBoard.renderable = false;
+            // this._map.renderable = false;
 
             const gameOverBg = new Sprite(AssetsLoader.getTexture('logo'));
             gameOverBg.width = AppConstants.appWidth;
@@ -64,10 +72,19 @@ export class GameScene extends Container {
 
             isVictory ? resultBg.texture = AssetsLoader.getTexture('victory-background') : resultBg.texture = AssetsLoader.getTexture('defeated-background');
 
-            this._isGameStart = false;
 
             this.addChild(gameOverBg);
             this.addChild(resultBg);
+
+            gameOverBg.eventMode = 'static';
+            gameOverBg.cursor = 'pointer';
+            gameOverBg.on('pointerdown', () => {
+                this._isGameStart = true;
+                this.removeChild(gameOverBg);
+                this.removeChild(resultBg);
+                // this._map.renderable = true;
+                // this._UIBoard.renderable = true;
+            });
         });
 
     }

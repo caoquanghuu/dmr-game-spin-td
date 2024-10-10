@@ -95,7 +95,7 @@ export class GameMap extends Container {
                 if (value === 3) {
                     // this._nuclearBase = new AnimatedSprite(AssetsLoader.getTexture(AppConstants.textureName.nuclearBase).animations[AppConstants.textureName.nuclearBaseAnimation]);
                     // this._nuclearBase.anchor = 0.5;
-                    
+
                     this._nuclearBase = Factory.createNuclearBase();
                     this._nuclearBase.position = { x: idxX * AppConstants.matrixSize + AppConstants.matrixSize, y: idxY * AppConstants.matrixSize - AppConstants.matrixSize / 3 };
                     this._nuclearBase.hpBar.position = { x: this._nuclearBase.position.x, y: this._nuclearBase.position.y - AppConstants.matrixSize / 2 };
@@ -273,6 +273,18 @@ export class GameMap extends Container {
 
     private _setMatrixMap(row: number, colum: number, value: number) {
         this._mapMatrix[row][colum] = value;
+    }
+
+    public reset() {
+        this._collisionController.reset();
+        this._towerController.reset();
+        this._unitController.reset();
+        this._bulletController.reset();
+
+        this._wave = 0;
+        this._nuclearBase.HP = AppConstants.playerBasicProperty.playerHp;
+        this._nuclearBase.setFrame(0);
+        this._nuclearBase.hpBar.texture = AssetsLoader.getTexture('hp-10');
     }
 
     // update function

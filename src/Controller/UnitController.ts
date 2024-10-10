@@ -284,6 +284,22 @@ export class UnitController {
         });
     }
 
+    public reset() {
+        const eneId = this._enemies.map(ene => ene.id);
+        eneId.forEach(id => this._removeUnit(id, true));
+        this._enemies = [];
+
+        const allyId = this._allies.map(ally => ally.id);
+        allyId.forEach(id => this._removeUnit(id, false));
+        this._allies = [];
+
+        this._isCreateEne = false;
+        this._enemiesOption = null;
+        this._eneCount = { eneConst: 0, eneCount: 0 };
+        this._wave = 0;
+        this._createEnemiesTime = 0;
+    }
+
     public update(dt: number) {
     // reset matrix map on move way
         this._getMatrixMapCb().forEach((row, idxX) => row.forEach((col, idxY) => {

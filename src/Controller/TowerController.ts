@@ -4,7 +4,7 @@ import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { sound } from '@pixi/sound';
-import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
+import { ControlUnit } from '../ObjectsPool/ControlUnit/ControlUnit';
 
 export class TowerController {
     private _towers: Tower[] = [];
@@ -283,6 +283,7 @@ export class TowerController {
 
         // get event from buy unit board
         // in future update. player can buy more unit type and their will have many skill and different bullet type
+        // eslint-disable-next-line no-unused-vars
         Emitter.on(AppConstants.event.createUnit, (option: {name: string}) => {
 
             const isHaveBarack = this._towers.some(tower => tower.towerType === TowerType.barack);
@@ -398,6 +399,15 @@ export class TowerController {
             this._setMatrixMap(matrixPoint.x, matrixPoint.y, matrixValue);
             // GameMap.mapMatrix[matrixPoint.x][matrixPoint.y] = matrixValue;
         });
+    }
+
+    public reset() {
+        const towerId = this._towers.map(tower => tower.id);
+        towerId.forEach(id => this._removeTower(id));
+        this._towers = [];
+        // because remove tower will remove their fly unit too
+        this._units = [];
+        this._createAllyUnitOption = { name: 'soviet-tank', dame: AppConstants.allyUnitBasicProperty.dame, speed: AppConstants.allyUnitBasicProperty.speed, HP: AppConstants.allyUnitBasicProperty.hp };
     }
 
 

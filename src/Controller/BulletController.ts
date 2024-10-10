@@ -20,6 +20,11 @@ export class BulletController {
         return this._bullets;
     }
 
+    public reset() {
+        const bulletIdList = this._bullets.map(bullet => bullet.id);
+        bulletIdList.forEach(id => this._removeBullet(id));
+    }
+
     private _useEventEffect() {
         Emitter.on(AppConstants.event.createBullet, (option: FireBulletOption) => {
             this._createBullet(option);
@@ -85,6 +90,8 @@ export class BulletController {
         });
 
         const bullet = this.bullets[i];
+
+        if (!bullet) return;
 
         bullet.isMoving = false;
         this._returnBulletToPool(bullet);

@@ -2,11 +2,11 @@ import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
 import { Circle, Direction, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
-import { AnimatedSprite, PointData, Sprite } from 'pixi.js';
+import { AnimatedSprite, Sprite } from 'pixi.js';
 import Emitter, { findCorrectPositionBeforeCollision, isCollision } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
-import { ControlUnit } from 'src/ObjectsPool/ControlUnit/ControlUnit';
-import { BaseObject } from 'src/ObjectsPool/BaseObject';
+import { ControlUnit } from '../ObjectsPool/ControlUnit/ControlUnit';
+import { BaseObject } from '../ObjectsPool/BaseObject';
 import { MapControl } from './MapControl';
 
 
@@ -255,6 +255,14 @@ export class CollisionController {
 
             });
         }
+    }
+
+    public reset() {
+        this._towers = [];
+        this._enemiesTank = [];
+        this._flyUnits = [];
+        this._allObjects = [];
+        this._mapControl.clear();
     }
 
 

@@ -123,7 +123,15 @@ export class UIController {
         return this._playerGold;
     }
 
+    public reset() {
+        this._playerHp = AppConstants.playerBasicProperty.playerHp;
+        this._playerGold = AppConstants.playerBasicProperty.playerGold;
+    }
+
     public update(dt: number) {
         this._buyUnitBoard.update(dt);
+        this._basicBoard.displayBaseHp(this._playerHp);
+        this._basicBoard.displayGoldNumber(this._playerGold);
+        this._basicBoard.displayWaveNumber(1);
     }
 }

@@ -17,6 +17,10 @@ export class UIBoard extends Container {
         this.removeChild(container);
     }
 
+    public reset() {
+        this._UIController.reset();
+    }
+
     public update(dt: number) {
         this._UIController.update(dt);
     }

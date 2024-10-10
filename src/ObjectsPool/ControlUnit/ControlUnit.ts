@@ -70,7 +70,7 @@ export class ControlUnit extends BaseObject {
 
         const c1: Circle = { position: this._targetPosition, radius: AppConstants.matrixSize / 2 };
         const c2: Circle = { position: this.image.position, radius: 100 };
-        const c3: Circle = {position: this.image.position, radius: this.image.width / 2}
+        const c3: Circle = { position: this.image.position, radius: this.image.width / 2 };
         const isCollisionWithEne = isCollision(c1, c3);
         if (isCollisionWithEne) {
             const correctPosition = findCorrectPositionBeforeCollision(c1, c3);
