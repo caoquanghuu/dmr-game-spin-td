@@ -85,6 +85,12 @@ export class ControlUnit extends BaseObject {
             Emitter.emit(AppConstants.event.createBullet, option);
             // sound.play(AppConstants.soundName.mainSound, { sprite: `${TowerType.tinker}` });
             this._fireTimeCD.fireTimeCount = 0;
+
+            const rd = getRandomArbitrary({ min: 0, max: 5 });
+            if (rd === 1) {
+                const rd2 = getRandomArbitrary({ min: 1, max: 2 });
+                sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName[`setNewTarget${rd2}`] });
+            }
         } else {
             this.isMoving = true;
         }

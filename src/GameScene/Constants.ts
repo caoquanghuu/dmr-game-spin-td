@@ -102,7 +102,20 @@ export namespace AppConstants {
         victory: 'victory',
         notEnoughGold: 'not-enough-gold',
         battleControlOnline: 'battle-control-online',
-        mainMusic: 'main-music'
+        mainMusic: 'main-music',
+        barackBuilded: 'barack-builded',
+        canNotBuild: 'can-not-build',
+        firePowerUpgraded: 'firer-power-upgraded',
+        setNewTarget1: 'set-new-target-1',
+        setNewTarget2: 'set-new-target-2',
+        spawnAlly1: 'spawn-ally-1',
+        spawnAlly2: 'spawn-ally-2',
+        spawnAlly3: 'spawn-ally-3',
+        spawnHelicopter1: 'spawn-helicopter-1',
+        spawnHelicopter2: 'spawn-helicopter-2',
+        training: 'training',
+        unitLost: 'unit-lost',
+        unitReady: 'unit-ready'
     };
 
     export const maxLevelOfTower = 4;

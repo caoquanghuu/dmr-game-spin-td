@@ -3,9 +3,9 @@
     "alias": [
         {
             "name": "tank-9",
-            "HP": 100,
+            "HP": 1000,
             "speed": 100,
-            "dame": 0,
+            "dame": 100,
             "eneCount": 20
         },
         {

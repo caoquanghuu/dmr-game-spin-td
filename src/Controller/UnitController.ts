@@ -1,10 +1,11 @@
 import { CreateEnemiesOption, Direction, GetEnemiesFromPoolFn, GetExplosionFromPoolFn, GetMatrixMapFn, ReturnEnemiesToPoolFn, ReturnExplosionToPoolFn, SetMatrixMapFn } from '../Type';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
 import { AnimatedSprite, PointData } from 'pixi.js';
-import Emitter from '../Util';
+import Emitter, { getRandomArbitrary } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import EnemiesOption from '../ObjectsPool/Enemies/Enemies.json';
 import { AssetsLoader } from '../AssetsLoader';
+import { sound } from '@pixi/sound';
 
 export class UnitController {
     private _enemies: Tank[] = [];
@@ -84,6 +85,17 @@ export class UnitController {
             unit.targetValue = AppConstants.matrixMapValue.enemy;
             unit.matrixValue = AppConstants.matrixMapValue.ally;
             this._allies.push(unit);
+
+            // play sound rd
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.unitReady });
+            const rd = getRandomArbitrary({ min: 0, max : 5 });
+            if (rd === 1) {
+                const rd2 = getRandomArbitrary({ min: 1, max: 3 });
+                setTimeout(() => {
+                    sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName[`spawnAlly${rd2}`] });
+                }, 500);
+
+            }
         }
 
         unit.startMove();
@@ -113,6 +125,11 @@ export class UnitController {
                 return ally.id === id;
             });
             unit = this._allies[i];
+
+            const rd = getRandomArbitrary({ min: 1, max: 2 });
+            if (rd === 1) {
+                sound.play(AppConstants.soundName.mainSound, { sprite:AppConstants.soundName.unitLost });
+            }
         }
 
         // in case duplicate emitter call

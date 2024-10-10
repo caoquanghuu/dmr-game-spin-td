@@ -3,84 +3,149 @@
     "./assets/sounds/soundsAtlas/sounds_sprite.mp3"
   ],
   "spritemap": {
-    "base-under-attacked": {
+    "barack-builded": {
       "start": 0,
-      "end": 1.8688208616780044,
+      "end": 1.4508616780045351,
+      "loop": false
+    },
+    "base-under-attacked": {
+      "start": 3,
+      "end": 4.868820861678005,
       "loop": false
     },
     "battle-control-online": {
-      "start": 3,
-      "end": 4.555351473922903,
+      "start": 6,
+      "end": 7.555351473922903,
       "loop": false
     },
     "building-complete": {
-      "start": 6,
-      "end": 7.346371882086168,
+      "start": 9,
+      "end": 10.346371882086167,
       "loop": false
     },
     "building-selected": {
-      "start": 9,
-      "end": 10.973310657596372,
+      "start": 12,
+      "end": 13.973310657596372,
+      "loop": false
+    },
+    "can-not-build": {
+      "start": 15,
+      "end": 16.2418820861678,
       "loop": false
     },
     "clockwerk": {
-      "start": 12,
-      "end": 14.136009070294785,
+      "start": 18,
+      "end": 20.136009070294783,
       "loop": false
     },
     "crystal_maiden": {
-      "start": 16,
-      "end": 18.376009070294785,
+      "start": 22,
+      "end": 24.376009070294785,
+      "loop": false
+    },
+    "firer-power-upgraded": {
+      "start": 26,
+      "end": 27.764331065759638,
       "loop": false
     },
     "main-music": {
-      "start": 20,
-      "end": 243.88680272108843,
+      "start": 29,
+      "end": 252.88680272108843,
       "loop": false
     },
     "mirana": {
-      "start": 245,
-      "end": 246.50439909297052,
+      "start": 254,
+      "end": 255.50439909297052,
       "loop": false
     },
     "mission-fail": {
-      "start": 248,
-      "end": 249.16351473922902,
+      "start": 257,
+      "end": 258.163514739229,
       "loop": false
     },
     "not-enough-gold": {
-      "start": 251,
-      "end": 252.05902494331065,
+      "start": 260,
+      "end": 261.05902494331065,
       "loop": false
     },
     "nuclear-missile-alert": {
-      "start": 254,
-      "end": 266.5619954648526,
+      "start": 263,
+      "end": 275.5619954648526,
       "loop": false
     },
     "nuclear-missile-launch": {
-      "start": 268,
-      "end": 269.99943310657596,
+      "start": 277,
+      "end": 278.99943310657596,
+      "loop": false
+    },
+    "set-new-target-1": {
+      "start": 280,
+      "end": 280.94467120181406,
+      "loop": false
+    },
+    "set-new-target-2": {
+      "start": 282,
+      "end": 283.36263038548753,
+      "loop": false
+    },
+    "set-new-target-3": {
+      "start": 285,
+      "end": 286.8850793650794,
+      "loop": false
+    },
+    "set-new-target-4": {
+      "start": 288,
+      "end": 289.36263038548753,
       "loop": false
     },
     "sold-tower": {
-      "start": 271,
-      "end": 272.37249433106575,
+      "start": 291,
+      "end": 292.37249433106575,
+      "loop": false
+    },
+    "spawn-ally-1": {
+      "start": 294,
+      "end": 295.93732426303853,
+      "loop": false
+    },
+    "spawn-ally-2": {
+      "start": 297,
+      "end": 298.8850793650794,
+      "loop": false
+    },
+    "spawn-ally-3": {
+      "start": 300,
+      "end": 300.8401814058957,
       "loop": false
     },
     "tinker": {
-      "start": 274,
-      "end": 275.63120181405895,
+      "start": 302,
+      "end": 303.63120181405895,
       "loop": false
     },
     "tower-upgraded": {
-      "start": 277,
-      "end": 278.0067800453515,
+      "start": 305,
+      "end": 306.0067800453515,
+      "loop": false
+    },
+    "training": {
+      "start": 308,
+      "end": 308.77167800453515,
+      "loop": false
+    },
+    "unit-lost": {
+      "start": 310,
+      "end": 310.8500453514739,
+      "loop": false
+    },
+    "unit-ready": {
+      "start": 312,
+      "end": 312.79780045351475,
       "loop": false
     },
     "victory": {
-      "start": 280,
-      "end": 281.4508616780045,
+      "start": 314,
+      "end": 315.4508616780045,
       "loop": false
     }
   }

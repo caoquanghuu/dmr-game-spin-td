@@ -72,9 +72,10 @@ export class TowerController {
         const info = { position: [{ x: option.baseTower.position.x, y: option.baseTower.position.y }], buildingSize: tower.buildingSize };
         // in case cant not build then return
         if (!this._checkBuildingSpace(info)) {
-            // return tower to pool
+            // send clear image
             Emitter.emit(AppConstants.event.removeChildFromScene, tower.image);
             Emitter.emit(AppConstants.event.removeChildFromScene, tower.circleImage);
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.canNotBuild });
             return;
         }
 
@@ -117,6 +118,7 @@ export class TowerController {
 
         if (tower.towerType === TowerType.barack) {
             this._createFlyUnit(FlyUnitType.helicopter, tower.position, tower.id);
+            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.barackBuilded });
         }
 
 
@@ -272,6 +274,8 @@ export class TowerController {
                     this._createAllyUnitOption.dame += AppConstants.allyUnitBasicProperty.dame / 3;
                     this._createAllyUnitOption.speed += AppConstants.allyUnitBasicProperty.speed / 10;
                     this._createAllyUnitOption.HP += AppConstants.allyUnitBasicProperty.hp / 2;
+
+                    sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.firePowerUpgraded });
                 }
 
                 tower.upgrade();

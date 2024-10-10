@@ -3,11 +3,12 @@ import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
 import { Circle, Direction, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
 import { AnimatedSprite, Sprite } from 'pixi.js';
-import Emitter, { findCorrectPositionBeforeCollision, isCollision } from '../Util';
+import Emitter, { findCorrectPositionBeforeCollision, getRandomArbitrary, isCollision } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { ControlUnit } from '../ObjectsPool/ControlUnit/ControlUnit';
 import { BaseObject } from '../ObjectsPool/BaseObject';
 import { MapControl } from './MapControl';
+import { sound } from '@pixi/sound';
 
 
 export class CollisionController {
@@ -58,6 +59,13 @@ export class CollisionController {
                     if (enemy) {
                         unit.targetId = enemy.id;
                         unit.targetPosition = enemy.getUpdatedPosition();
+
+                        // play sound random
+                        const rd = getRandomArbitrary({ min: 0, max: 5 });
+                        if (rd === 1) {
+                            const rd2 = getRandomArbitrary({ min: 1, max: 2 });
+                            sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName[`spawnHelicopter${rd2}`] });
+                        }
                     }
                     eneIndex += 1;
                 }
