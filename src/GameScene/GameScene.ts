@@ -10,6 +10,7 @@ export class GameScene extends Container {
     private _map: GameMap;
     private _UIBoard: UIBoard;
     private _startGameBoard: Container;
+    private _endGameBoard: Container;
     private _isGameStart: boolean = false;
 
     constructor() {
@@ -25,6 +26,7 @@ export class GameScene extends Container {
         this._UIBoard.renderable = false;
         this.addChild(this._map, this._UIBoard);
         this._createStartGameBoard();
+        this._createEndGameBoard();
     }
 
     /**
@@ -74,6 +76,47 @@ export class GameScene extends Container {
         this.addChild(this._startGameBoard);
     }
 
+    /**
+     * method to create end game board
+     */
+    private _createEndGameBoard() {
+        this._endGameBoard = new Container();
+        const background = createImage({ texture: 'logo', width: AppConstants.appWidth, height: AppConstants.appHeight });
+        const endGameImage = createImage({ texture: 'victory-background', width: AppConstants.matrixSize * 15, height: AppConstants.appHeight, anchor: 0.5 });
+        endGameImage.position = { x: AppConstants.matrixSize * 15, y: AppConstants.matrixSize * 10 };
+
+        const menuButtonOption = AppConstants.menuButtonOption;
+        const playAgainButton = createImage(menuButtonOption);
+        playAgainButton.position = { x: AppConstants.matrixSize * 15, y: AppConstants.matrixSize * 15 };
+
+        const playAgainText = createBitMapText({ content: 'Play Again', font: AppConstants.bitmapTextFontName.fontAlpha, size: AppConstants.matrixSize, anchor: 0.5 });
+        playAgainText.position = playAgainButton.position;
+
+        this._endGameBoard.addChild(background, endGameImage, playAgainButton, playAgainText);
+
+        // set event for play again image\
+        playAgainButton.eventMode = 'static';
+        playAgainButton.cursor = 'pointer';
+        playAgainButton.on('pointerdown', () => {
+            this._endGameBoard.renderable = false;
+            this._map.renderable = true;
+            this._UIBoard.renderable = true;
+            this._isGameStart = true;
+        });
+
+        // change texture of result background
+        Emitter.on(AppConstants.event.gameOver, (isVictory: boolean) => {
+            if (isVictory) {
+                endGameImage.texture = AssetsLoader.getTexture('victory-background');
+            } else {
+                endGameImage.texture = AssetsLoader.getTexture('defeated-background');
+            }
+        });
+
+        this.addChild(this._endGameBoard);
+        this._endGameBoard.renderable = false;
+    }
+
     public reset() {
         this._isGameStart = false;
         this._UIBoard.reset();
@@ -81,36 +124,13 @@ export class GameScene extends Container {
     }
 
     private _useEventEffect(): void {
+        // eslint-disable-next-line no-unused-vars
         Emitter.on(AppConstants.event.gameOver, (isVictory: boolean) => {
             this._isGameStart = false;
             this.reset();
             this._UIBoard.renderable = false;
             this._map.renderable = false;
-
-            const gameOverBg = new Sprite(AssetsLoader.getTexture('logo'));
-            gameOverBg.width = AppConstants.appWidth;
-            gameOverBg.height = AppConstants.appHeight;
-            const resultBg = new Sprite();
-            resultBg.height = AppConstants.appHeight;
-            resultBg.anchor = 0.5;
-            resultBg.position.x = AppConstants.appWidth / 2;
-            resultBg.position.y = AppConstants.appHeight / 2;
-
-            isVictory ? resultBg.texture = AssetsLoader.getTexture('victory-background') : resultBg.texture = AssetsLoader.getTexture('defeated-background');
-
-
-            this.addChild(gameOverBg);
-            this.addChild(resultBg);
-
-            gameOverBg.eventMode = 'static';
-            gameOverBg.cursor = 'pointer';
-            gameOverBg.on('pointerdown', () => {
-                this._isGameStart = true;
-                this.removeChild(gameOverBg);
-                this.removeChild(resultBg);
-                this._map.renderable = true;
-                this._UIBoard.renderable = true;
-            });
+            this._endGameBoard.renderable = true;
         });
 
     }
