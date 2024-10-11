@@ -29,6 +29,7 @@ export class GameScene extends Container {
         this.addChild(this._map, this._UIBoard);
         this._createStartGameBoard();
         this._createEndGameBoard();
+        sound.add(AppConstants.soundName.mainSound, { url: `${Assets.get('game-sound').resources[0]}`, sprites: Assets.get('game-sound').spritemap });
     }
 
     /**
@@ -61,13 +62,17 @@ export class GameScene extends Container {
             this._startGame();
             this._map.startGame();
 
+
         });
 
         loadGameButton.eventMode = 'static';
         loadGameButton.cursor = 'pointer';
         loadGameButton.on('pointerdown', async () => {
+            const isLoaded: boolean = this._loadGame();
+            // no data then cant load
+            if (!isLoaded) return;
+
             this._startGame();
-            await this._loadGame();
 
         });
 
@@ -86,7 +91,6 @@ export class GameScene extends Container {
         this._isGameStart = true;
 
         // add and play theme sound
-        sound.add(AppConstants.soundName.mainSound, { url: `${Assets.get('game-sound').resources[0]}`, sprites: Assets.get('game-sound').spritemap });
         sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.battleControlOnline });
         sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.mainMusic, loop: true });
     }
@@ -166,14 +170,15 @@ export class GameScene extends Container {
         saveGame(data);
     }
 
-    private _loadGame() {
+    private _loadGame(): boolean {
         const data: SaveGameData = loadGame();
+        if (!data) return false;
         // build tower first avoid when create tower player gold become < 0
         this._map.saveDataOnMap({ wave:data.wave, towers: data.towers, nuclearBaseHp: data.nuclearBaseHp });
 
         // set player base hp, and gold
         this._UIBoard.saveUiData({ gold: data.gold, playerHp: data.nuclearBaseHp, wave: data.wave, isSoundMute: data.soundOption });
-
+        return true;
     }
 
 

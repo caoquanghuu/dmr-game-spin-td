@@ -4,7 +4,6 @@ import { BaseObject } from '../BaseObject';
 import { Container, PointData, Sprite } from 'pixi.js';
 import { AppConstants } from '../../GameScene/Constants';
 import { Circle, FireBulletOption, FlyUnitType, TowerType } from '../../Type';
-import { sound } from '@pixi/sound';
 import { AssetsLoader } from '../../AssetsLoader';
 
 export class ControlUnit extends BaseObject {
