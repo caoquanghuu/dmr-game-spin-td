@@ -86,7 +86,11 @@ export namespace AppConstants {
         nuclearBase: 'nuclear-base',
         nuclearBaseAnimation: 'building',
         towerBase: 'tower-base',
-        tankFactory: 'tank-factory'
+        tankFactory: 'tank-factory',
+        soundIcon: {
+            on: 'sound-on',
+            off: 'sound-off'
+        }
     };
 
     export const soundName = {
@@ -196,7 +200,9 @@ export namespace AppConstants {
         createAllyUnit: 'create-ally-unit',
         createTowerIllusion: 'create-tower-illusion',
         invisibleTowerIllusion: 'invisible-tower-illusion',
-        saveGame: 'save-game'
+        saveGame: 'save-game',
+        toggleSound: 'toggle-sound',
+        soundIconClicked: 'sound-icon-clicked'
     };
 
     export const position = {
@@ -207,6 +213,7 @@ export namespace AppConstants {
         baseHp: { x: 30, y: 0 },
         baseNumber: { x: 150, y: 0 },
         spin: { x: 800, y: 35 },
+        soundIcon : { x: matrixSize * 29, y: 0 }
     };
 
     export const infoBoardPosition = {

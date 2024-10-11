@@ -3,17 +3,19 @@ import { AppConstants } from '../Constants';
 import { AllyTanksType, FlyUnitType, GetPlayerGoldFn } from '../../Type';
 import { AssetsLoader } from '../../AssetsLoader';
 import { sound } from '@pixi/sound';
-import Emitter from '../../Util';
+import Emitter, { createImage } from '../../Util';
 
 export class BuyUnitBoard extends Container {
     private _buyAbleUnits: Sprite[] = [];
     private _time: {timeConst: number, timeCount: number} = { timeConst: 1000, timeCount: 0 };
     private _getPlayerGoldFn: GetPlayerGoldFn;
+    private _soundIcon: Sprite;
 
     constructor(getPlayerGoldCb: GetPlayerGoldFn) {
         super();
 
         this._getPlayerGoldFn = getPlayerGoldCb;
+        this._useEventEffect();
 
         const flyUnitLength = Object.keys(FlyUnitType).length;
         const allyUnitLength = Object.keys(AllyTanksType).length;
@@ -50,7 +52,28 @@ export class BuyUnitBoard extends Container {
             firstIconPosition.x += positionXInContainerRatio;
         }
 
+        this._soundIcon = createImage({ texture: AppConstants.textureName.soundIcon.on, width: AppConstants.matrixSize, height: AppConstants.matrixSize });
+        this._soundIcon.position = { x: AppConstants.position.soundIcon.x, y: AppConstants.position.soundIcon.y };
+        this._soundIcon.eventMode = 'static';
+        this._soundIcon.cursor = 'pointer';
+        this._soundIcon.on('pointerdown', () => {
+            // send event toggle sound
+            Emitter.emit(AppConstants.event.soundIconClicked, null);
+        });
+        this._soundIcon.tint = '0f00ff';
 
+        this.addChild(this._soundIcon);
+    }
+
+    private _useEventEffect() {
+        // change texture of sound icon
+        Emitter.on(AppConstants.event.toggleSound, (isMute: boolean) => {
+            if (isMute) {
+                this._soundIcon.texture = AssetsLoader.getTexture(AppConstants.textureName.soundIcon.off);
+            } else {
+                this._soundIcon.texture = AssetsLoader.getTexture(AppConstants.textureName.soundIcon.on);
+            }
+        });
     }
 
     private _createUnit(name: string, unitIcon: Sprite) {

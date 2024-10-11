@@ -840,10 +840,106 @@
         "y": 0.5
       }
     },
+    "sound-on": {
+      "frame": {
+        "x": 240,
+        "y": 0,
+        "w": 425,
+        "h": 360
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 425,
+        "h": 360
+      },
+      "sourceSize": {
+        "w": 425,
+        "h": 360
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "missile": {
+      "frame": {
+        "x": 665,
+        "y": 0,
+        "w": 64,
+        "h": 260
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 260
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 260
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "upgrade-level-4": {
+      "frame": {
+        "x": 665,
+        "y": 260,
+        "w": 196,
+        "h": 197
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 196,
+        "h": 197
+      },
+      "sourceSize": {
+        "w": 196,
+        "h": 197
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "sound-off": {
+      "frame": {
+        "x": 240,
+        "y": 360,
+        "w": 387,
+        "h": 360
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 0,
+        "w": 387,
+        "h": 360
+      },
+      "sourceSize": {
+        "w": 388,
+        "h": 360
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "soviet-tank-4": {
       "frame": {
         "x": 733,
-        "y": 239,
+        "y": 456,
         "w": 72,
         "h": 80
       },
@@ -867,7 +963,7 @@
     "soviet-tank-5": {
       "frame": {
         "x": 813,
-        "y": 239,
+        "y": 456,
         "w": 72,
         "h": 80
       },
@@ -890,8 +986,8 @@
     },
     "soviet-tank-6": {
       "frame": {
-        "x": 733,
-        "y": 311,
+        "x": 627,
+        "y": 456,
         "w": 72,
         "h": 80
       },
@@ -914,8 +1010,8 @@
     },
     "soviet-tank-7": {
       "frame": {
-        "x": 813,
-        "y": 311,
+        "x": 627,
+        "y": 528,
         "w": 71,
         "h": 80
       },
@@ -938,12 +1034,12 @@
     },
     "soviet-tank-3": {
       "frame": {
-        "x": 813,
-        "y": 382,
+        "x": 240,
+        "y": 720,
         "w": 70,
         "h": 80
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 5,
@@ -962,12 +1058,12 @@
     },
     "soviet-tank-0": {
       "frame": {
-        "x": 733,
-        "y": 383,
+        "x": 240,
+        "y": 800,
         "w": 69,
         "h": 80
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 6,
@@ -986,12 +1082,12 @@
     },
     "soviet-tank-1": {
       "frame": {
-        "x": 733,
-        "y": 452,
+        "x": 240,
+        "y": 880,
         "w": 69,
         "h": 80
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 4,
@@ -1010,12 +1106,12 @@
     },
     "tank-10": {
       "frame": {
-        "x": 813,
-        "y": 452,
+        "x": 240,
+        "y": 960,
         "w": 69,
         "h": 80
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 6,
@@ -1032,62 +1128,14 @@
         "y": 0.5
       }
     },
-    "missile": {
-      "frame": {
-        "x": 240,
-        "y": 0,
-        "w": 64,
-        "h": 260
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 64,
-        "h": 260
-      },
-      "sourceSize": {
-        "w": 64,
-        "h": 260
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "upgrade-level-4": {
-      "frame": {
-        "x": 500,
-        "y": 0,
-        "w": 196,
-        "h": 197
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 196,
-        "h": 197
-      },
-      "sourceSize": {
-        "w": 196,
-        "h": 197
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
     "tank-11": {
       "frame": {
         "x": 240,
-        "y": 64,
+        "y": 1040,
         "w": 69,
         "h": 80
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 5,
@@ -1106,12 +1154,12 @@
     },
     "soviet-tank-11": {
       "frame": {
-        "x": 320,
-        "y": 64,
+        "x": 240,
+        "y": 1120,
         "w": 63,
         "h": 80
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 10,
@@ -1128,82 +1176,10 @@
         "y": 0.5
       }
     },
-    "soviet-tank-12": {
-      "frame": {
-        "x": 400,
-        "y": 64,
-        "w": 63,
-        "h": 80
-      },
-      "rotated": true,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 8,
-        "y": 0,
-        "w": 63,
-        "h": 80
-      },
-      "sourceSize": {
-        "w": 80,
-        "h": 80
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "soviet-tank-15": {
-      "frame": {
-        "x": 320,
-        "y": 127,
-        "w": 62,
-        "h": 80
-      },
-      "rotated": true,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 8,
-        "y": 0,
-        "w": 62,
-        "h": 80
-      },
-      "sourceSize": {
-        "w": 80,
-        "h": 80
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "soviet-tank-9": {
-      "frame": {
-        "x": 240,
-        "y": 133,
-        "w": 62,
-        "h": 80
-      },
-      "rotated": true,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 9,
-        "y": 0,
-        "w": 62,
-        "h": 80
-      },
-      "sourceSize": {
-        "w": 80,
-        "h": 80
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
     "soviet-tank-2": {
       "frame": {
-        "x": 400,
-        "y": 127,
+        "x": 240,
+        "y": 1200,
         "w": 70,
         "h": 79
       },
@@ -1224,10 +1200,106 @@
         "y": 0.5
       }
     },
+    "soviet-tank-12": {
+      "frame": {
+        "x": 303,
+        "y": 1120,
+        "w": 63,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 0,
+        "w": 63,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "soviet-tank-15": {
+      "frame": {
+        "x": 366,
+        "y": 1120,
+        "w": 62,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 0,
+        "w": 62,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-4": {
+      "frame": {
+        "x": 319,
+        "y": 1200,
+        "w": 41,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 41,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 41,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "tank-8": {
+      "frame": {
+        "x": 360,
+        "y": 1200,
+        "w": 41,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 41,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 41,
+        "h": 64
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "soviet-tank-10": {
       "frame": {
-        "x": 320,
-        "y": 189,
+        "x": 401,
+        "y": 1200,
         "w": 63,
         "h": 79
       },
@@ -1250,8 +1322,8 @@
     },
     "soviet-tank-13": {
       "frame": {
-        "x": 240,
-        "y": 195,
+        "x": 480,
+        "y": 1200,
         "w": 63,
         "h": 79
       },
@@ -1272,14 +1344,38 @@
         "y": 0.5
       }
     },
+    "soviet-tank-9": {
+      "frame": {
+        "x": 309,
+        "y": 800,
+        "w": 62,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 9,
+        "y": 0,
+        "w": 62,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "soviet-tank-14": {
       "frame": {
-        "x": 479,
-        "y": 196,
+        "x": 310,
+        "y": 720,
         "w": 63,
         "h": 79
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 7,
@@ -1298,12 +1394,12 @@
     },
     "soviet-tank-8": {
       "frame": {
-        "x": 399,
-        "y": 197,
+        "x": 309,
+        "y": 880,
         "w": 63,
         "h": 79
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 8,
@@ -1320,62 +1416,14 @@
         "y": 0.5
       }
     },
-    "tank-4": {
-      "frame": {
-        "x": 399,
-        "y": 260,
-        "w": 41,
-        "h": 64
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 41,
-        "h": 64
-      },
-      "sourceSize": {
-        "w": 41,
-        "h": 64
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "tank-8": {
-      "frame": {
-        "x": 319,
-        "y": 252,
-        "w": 41,
-        "h": 64
-      },
-      "rotated": true,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 41,
-        "h": 64
-      },
-      "sourceSize": {
-        "w": 41,
-        "h": 64
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
     "tank-3": {
       "frame": {
-        "x": 240,
-        "y": 258,
+        "x": 371,
+        "y": 799,
         "w": 41,
         "h": 61
       },
-      "rotated": true,
+      "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,

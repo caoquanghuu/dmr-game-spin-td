@@ -9,8 +9,8 @@ export class UIBoard extends Container {
         this._UIController = new UIController(this._addToBoard.bind(this), this._removeFromBoard.bind(this));
     }
 
-    public getUiData(): {gold: number, hp: number} {
-        const data = { gold: this._UIController.playerGold, hp: this._UIController.playerHp };
+    public getUiData(): {gold: number, hp: number, isSoundMute: boolean} {
+        const data = { gold: this._UIController.playerGold, hp: this._UIController.playerHp, isSoundMute: this._UIController.isSoundMute };
         return data;
     }
 
@@ -18,7 +18,7 @@ export class UIBoard extends Container {
      * set data for ui controller to set and display wave, gold, hp
      * @param data data get from game scene
      */
-    public saveUiData(data: {gold: number, playerHp: number, wave: number}) {
+    public saveUiData(data: {gold: number, playerHp: number, wave: number, isSoundMute: boolean}) {
         this._UIController.setPlayerData(data);
     }
     private _addToBoard(container: Container): void {

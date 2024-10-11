@@ -11,6 +11,7 @@ export class BasicBoard extends Container {
     private _playerGold: BitmapText;
     private _playerGoldNumber: BitmapText;
 
+
     constructor() {
         super();
         this._init();
@@ -37,6 +38,7 @@ export class BasicBoard extends Container {
 
         this._baseHpNumber = new BitmapText(AppConstants.text.baseHpNumber);
         this._baseHpNumber.position = { x: AppConstants.position.baseNumber.x, y: AppConstants.position.baseNumber.y };
+
 
         this.addChild(this._wave, this._waveNumber, this._baseHp, this._baseHpNumber, this._playerGold, this._playerGoldNumber);
 

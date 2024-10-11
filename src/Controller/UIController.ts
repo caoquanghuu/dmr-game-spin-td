@@ -21,6 +21,8 @@ export class UIController {
     private _infoTowerBoard: InformationBoard;
     private _buyUnitBoard: BuyUnitBoard;
 
+    // sound mute or not
+    private _isSoundMuted: boolean = false;
     // cb function add to main ui board
     private _addToBoardFn: AddToBoardFn;
     private _removeFromBoardFn: RemoveFromBoardFb;
@@ -85,6 +87,14 @@ export class UIController {
         this._playerGold = gold;
     }
 
+    get isSoundMute(): boolean {
+        return this._isSoundMuted;
+    }
+
+    set isSoundMute(isMute: boolean) {
+        this._isSoundMuted = isMute;
+    }
+
     private _useEventEffect(): void {
         // display build tower board on event
         Emitter.on(AppConstants.event.selectTowerBase, (baseSprite: Sprite) => {
@@ -133,18 +143,48 @@ export class UIController {
             this._buyUnitBoard.renderable = false;
 
         });
+
+        // set sound play option mute of not
+        Emitter.on(AppConstants.event.soundIconClicked, () => {
+            if (this._isSoundMuted) {
+                this._isSoundMuted = false;
+
+                // send event change texture of icon
+                Emitter.emit(AppConstants.event.toggleSound, true);
+
+                // mute all sound
+                sound.muteAll();
+            } else {
+                this._isSoundMuted = true;
+
+                // send event change texture
+                Emitter.emit(AppConstants.event.toggleSound, false);
+
+                // play all sound
+                sound.unmuteAll();
+            }
+        });
     }
 
     /**
      * method get data from ui board and assign and display them
      * @param data data get from game scene
      */
-    public setPlayerData(data: {gold: number, playerHp: number, wave: number}) {
+    public setPlayerData(data: {gold: number, playerHp: number, wave: number, isSoundMute: boolean}) {
         this._playerGold = data.gold;
         this._playerHp = data.playerHp;
         this._basicBoard.displayBaseHp(data.playerHp);
         this._basicBoard.displayGoldNumber(data.gold);
         this._basicBoard.displayWaveNumber(data.wave - 1);
+
+        this._isSoundMuted = data.isSoundMute;
+        if (data.isSoundMute) {
+            sound.unmuteAll();
+            Emitter.emit(AppConstants.event.toggleSound, false);
+        } else {
+            sound.muteAll();
+            Emitter.emit(AppConstants.event.toggleSound, true);
+        }
     }
 
     private _getPlayerGold(): number {

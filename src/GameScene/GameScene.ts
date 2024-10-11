@@ -158,9 +158,9 @@ export class GameScene extends Container {
 
     private _autoSaveGame() {
         const mapData = this._map.getDataOnMap();
-        const uiData: {gold: number, hp: number} = this._UIBoard.getUiData();
+        const uiData: {gold: number, hp: number, isSoundMute: boolean} = this._UIBoard.getUiData();
 
-        const data: SaveGameData = { wave: mapData.wave, gold: uiData.gold, towers: mapData.towers, nuclearBaseHp: mapData.nuclearBaseHp, soundOption: mapData.isMuteSound };
+        const data: SaveGameData = { wave: mapData.wave, gold: uiData.gold, towers: mapData.towers, nuclearBaseHp: mapData.nuclearBaseHp, soundOption: uiData.isSoundMute };
 
         // save game to local storage
         saveGame(data);
@@ -169,10 +169,10 @@ export class GameScene extends Container {
     private _loadGame() {
         const data: SaveGameData = loadGame();
         // build tower first avoid when create tower player gold become < 0
-        this._map.saveDataOnMap({ wave:data.wave, towers: data.towers, nuclearBaseHp: data.nuclearBaseHp, isMuteSound: data.soundOption });
+        this._map.saveDataOnMap({ wave:data.wave, towers: data.towers, nuclearBaseHp: data.nuclearBaseHp });
 
         // set player base hp, and gold
-        this._UIBoard.saveUiData({ gold: data.gold, playerHp: data.nuclearBaseHp, wave: data.wave });
+        this._UIBoard.saveUiData({ gold: data.gold, playerHp: data.nuclearBaseHp, wave: data.wave, isSoundMute: data.soundOption });
 
     }
 

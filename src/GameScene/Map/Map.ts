@@ -27,7 +27,6 @@ export class GameMap extends Container {
     private _objectPool: ObjectPool;
     private _time: number = 0;
     private _nuclearBase: BaseObject;
-    private _isMuteSound: boolean = false;
 
     // wave is define to current hard level
     private _wave: number = 1;
@@ -58,20 +57,19 @@ export class GameMap extends Container {
      * method use to get data need on map return to game scene for auto save game.
      * @returns return current wave, info of tower need to regenerate tower when player load game, nuclear base hp
      */
-    public getDataOnMap(): {wave: number, towers: {towerType: TowerType, level: number, matrixPosition: PointData}[], nuclearBaseHp: number, isMuteSound: boolean} {
+    public getDataOnMap(): {wave: number, towers: {towerType: TowerType, level: number, matrixPosition: PointData}[], nuclearBaseHp: number} {
         const wave = this._wave;
         const towers = this._towerController.towers.map(tower => {
             return { towerType: tower.towerType, level: tower.level, matrixPosition: { x: tower.towerMainMatrixPosition.x, y: tower.towerMainMatrixPosition.y } };
         });
         const nuclearBaseHp = this._nuclearBase.HP;
-        return { wave: wave, towers: towers, nuclearBaseHp: nuclearBaseHp, isMuteSound: this._isMuteSound };
+        return { wave: wave, towers: towers, nuclearBaseHp: nuclearBaseHp };
     }
 
-    public async saveDataOnMap(data: {wave: number, towers: {towerType: TowerType, level: number, matrixPosition: PointData}[], nuclearBaseHp: number, isMuteSound: boolean}) {
+    public async saveDataOnMap(data: {wave: number, towers: {towerType: TowerType, level: number, matrixPosition: PointData}[], nuclearBaseHp: number}) {
         this._wave = data.wave - 1;
         this._nuclearBase.reduceHp((AppConstants.playerBasicProperty.playerHp - data.nuclearBaseHp));
         this._nuclearBase.setFrame(data.wave - 1);
-        this._isMuteSound = data.isMuteSound;
 
         // create tower
         await data.towers.forEach(tw => {
