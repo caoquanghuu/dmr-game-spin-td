@@ -112,6 +112,10 @@ export interface CreateEnemiesOption {
     eneCount?: number
 }
 
+export interface CreteAllyOption extends CreateEnemiesOption{
+    level: number
+}
+
 export enum FlyUnitType {
     helicopter = 'helicopter'
 }

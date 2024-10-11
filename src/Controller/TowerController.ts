@@ -1,4 +1,4 @@
-import { FireBulletOption, GetMatrixMapFn, GetTowerBasesFn, GetTowerFromPoolFn, GetUnitFromPoolFn, ReturnTowerToPoolFn, ReturnUnitToPoolFn, SetMatrixMapFn, TowerInformation, TowerType, FlyUnitType, CreateEnemiesOption } from '../Type';
+import { FireBulletOption, GetMatrixMapFn, GetTowerBasesFn, GetTowerFromPoolFn, GetUnitFromPoolFn, ReturnTowerToPoolFn, ReturnUnitToPoolFn, SetMatrixMapFn, TowerInformation, TowerType, FlyUnitType, CreateEnemiesOption, CreteAllyOption } from '../Type';
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { PointData, Sprite } from 'pixi.js';
 import Emitter from '../Util';
@@ -10,7 +10,7 @@ export class TowerController {
     private _towers: Tower[] = [];
     private _units: ControlUnit[] = [];
     private _illusionTower: Tower;
-    private _createAllyUnitOption: CreateEnemiesOption = { name: 'soviet-tank', dame: AppConstants.allyUnitBasicProperty.dame, speed: AppConstants.allyUnitBasicProperty.speed, HP: AppConstants.allyUnitBasicProperty.hp };
+    private _createAllyUnitOption: CreteAllyOption = { name: 'soviet-tank-0', dame: AppConstants.allyUnitBasicProperty.dame, speed: AppConstants.allyUnitBasicProperty.speed, HP: AppConstants.allyUnitBasicProperty.hp, level: 0 };
     private _getTowerFromPool: GetTowerFromPoolFn;
     private _returnTowerToPool: ReturnTowerToPoolFn;
     private _getTowerBases: GetTowerBasesFn;
@@ -290,9 +290,14 @@ export class TowerController {
                     }
 
                     // upgrade unit can buy too, it will event stronger if player build many barack
-                    this._createAllyUnitOption.dame += AppConstants.allyUnitBasicProperty.dame / 3;
-                    this._createAllyUnitOption.speed += AppConstants.allyUnitBasicProperty.speed / 10;
-                    this._createAllyUnitOption.HP += AppConstants.allyUnitBasicProperty.hp / 2;
+                    if (this._createAllyUnitOption.level < 15) {
+                        this._createAllyUnitOption.level += 1;
+                        this._createAllyUnitOption.name = `soviet-tank-${this._createAllyUnitOption.level}`;
+                        this._createAllyUnitOption.dame += AppConstants.allyUnitBasicProperty.dame / 3;
+                        this._createAllyUnitOption.speed += AppConstants.allyUnitBasicProperty.speed / 10;
+                        this._createAllyUnitOption.HP += AppConstants.allyUnitBasicProperty.hp / 2;
+                    }
+
 
                     sound.play(AppConstants.soundName.mainSound, { sprite: AppConstants.soundName.firePowerUpgraded });
                 }
@@ -425,13 +430,16 @@ export class TowerController {
         });
     }
 
+    /**
+     * method reset will clear all tower and unit which tower controller controlling
+     */
     public reset() {
         const towerId = this._towers.map(tower => tower.id);
         towerId.forEach(id => this._removeTower(id));
         this._towers = [];
         // because remove tower will remove their fly unit too
         this._units = [];
-        this._createAllyUnitOption = { name: 'soviet-tank', dame: AppConstants.allyUnitBasicProperty.dame, speed: AppConstants.allyUnitBasicProperty.speed, HP: AppConstants.allyUnitBasicProperty.hp };
+        this._createAllyUnitOption = { name: 'soviet-tank-0', dame: AppConstants.allyUnitBasicProperty.dame, speed: AppConstants.allyUnitBasicProperty.speed, HP: AppConstants.allyUnitBasicProperty.hp, level : 0 };
     }
 
 

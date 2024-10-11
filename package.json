@@ -17,11 +17,8 @@
   "dependencies": {
     "axios": "^1.7.7",
     "event-emitter": "^0.3.5",
-    "ffmpeg": "^0.0.4",
-    "javascript-obfuscator": "^4.1.1",
     "lodash": "^4.17.21",
-    "pixi.js": "^8.4.0",
-    "yargs": "^17.7.2"
+    "pixi.js": "^8.4.0"
   },
   "devDependencies": {
     "@pixi/sound": "^6.0.1",
@@ -37,7 +34,7 @@
     "html-webpack-plugin": "^5.6.0",
     "postcss": "^8.4.47",
     "postcss-loader": "^6.2.1",
-    "serve": "^14.2.3",
+    "serve": "^6.5.8",
     "short-uuid": "^4.2.0",
     "style-loader": "3.3.1",
     "terser-webpack-plugin": "5.3.6",
@@ -50,6 +47,10 @@
     "webpack-free-tex-packer": "^0.1.5",
     "webpack-merge": "5.8.0",
     "webpack-obfuscator": "^3.5.1",
-    "webpack-preprocessor-loader": "1.2.0"
+    "webpack-preprocessor-loader": "1.2.0",
+    "ffmpeg": "^0.0.4",
+    "free-tex-packer-core": "^0.3.4",
+    "javascript-obfuscator": "^4.1.1",
+    "yargs": "^17.7.2"
   }
 }
