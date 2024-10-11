@@ -144,7 +144,7 @@ export class UIController {
         this._playerHp = data.playerHp;
         this._basicBoard.displayBaseHp(data.playerHp);
         this._basicBoard.displayGoldNumber(data.gold);
-        this._basicBoard.displayWaveNumber(data.wave);
+        this._basicBoard.displayWaveNumber(data.wave - 1);
     }
 
     private _getPlayerGold(): number {

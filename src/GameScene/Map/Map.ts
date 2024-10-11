@@ -68,8 +68,8 @@ export class GameMap extends Container {
     }
 
     public async saveDataOnMap(data: {wave: number, towers: {towerType: TowerType, level: number, matrixPosition: PointData}[], nuclearBaseHp: number, isMuteSound: boolean}) {
-        this._wave = data.wave;
-        this._nuclearBase.reduceHp(AppConstants.playerBasicProperty.playerHp - (AppConstants.playerBasicProperty.playerHp - data.nuclearBaseHp));
+        this._wave = data.wave - 1;
+        this._nuclearBase.reduceHp((AppConstants.playerBasicProperty.playerHp - data.nuclearBaseHp));
         this._nuclearBase.setFrame(data.wave - 1);
         this._isMuteSound = data.isMuteSound;
 
@@ -78,7 +78,8 @@ export class GameMap extends Container {
             this._towerController.createTower({ towerType: tw.towerType, baseTower: this._getBaseTowerSprite(tw.matrixPosition) }).then(
                 (createdTower: Tower) => {
                     for (let i = 2; i <= tw.level; i++) {
-                        createdTower.upgrade();
+                        // upgrade tower base on level tower load
+                        Emitter.emit(AppConstants.event.upgradeTower, { towerId: createdTower.id, towerType: createdTower.towerType });
                     }
                 }
             );
