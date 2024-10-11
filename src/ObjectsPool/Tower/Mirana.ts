@@ -1,6 +1,7 @@
 import { TowerType } from '../../Type';
 import { Tower } from '../Tower/Tower';
 import { AssetsLoader } from '../../AssetsLoader';
+import { AppConstants } from '../../GameScene/Constants';
 
 export class Mirana extends Tower {
     constructor() {
@@ -12,11 +13,11 @@ export class Mirana extends Tower {
 
     private _animateTexture() {
         if (this.time <= 200) {
-            this.image.texture = AssetsLoader.getTexture('mirana-2');
+            this.image.texture = AssetsLoader.getTexture(AppConstants.textureName.towers.mirana3);
         } else if (this.time <= 400) {
-            this.image.texture = AssetsLoader.getTexture('mirana-3');
+            this.image.texture = AssetsLoader.getTexture(AppConstants.textureName.towers.mirana2);
         } else if (this.time <= 600) {
-            this.image.texture = AssetsLoader.getTexture('mirana');
+            this.image.texture = AssetsLoader.getTexture(AppConstants.textureName.towers.mirana1);
             this.time = 0;
         }
     }

@@ -42,7 +42,7 @@ export class BasicBoard extends Container {
 
         this.addChild(this._wave, this._waveNumber, this._baseHp, this._baseHpNumber, this._playerGold, this._playerGoldNumber);
 
-        const bg = new Sprite(AssetsLoader.getTexture('information-background'));
+        const bg = new Sprite(AssetsLoader.getTexture(AppConstants.textureName.informationBackGround));
         bg.width = AppConstants.basicBoardSize.width;
         bg.height = AppConstants.basicBoardSize.height;
         bg.zIndex = -1;

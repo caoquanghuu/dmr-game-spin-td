@@ -32,7 +32,7 @@ module.exports = () => {
         resolve: {
             extensions: ['.ts', '.tsx', '.js'],
         },
-        devtool: 'eval-source-map',
+        devtool: 'hidden-source-map',
         output: {
             filename: `bundle-${bundleID}.js`,
             path: path.resolve(__dirname, 'dist'),

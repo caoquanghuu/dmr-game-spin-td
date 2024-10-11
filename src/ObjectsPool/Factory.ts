@@ -24,27 +24,6 @@ export default class Factory {
         const bullet = new Bullet(BulletType[type]);
         bullet.id = objectId;
         return bullet;
-
-        // switch (type) {
-        //     case BulletType.laser:
-        //         const laserBullet = new Bullet(BulletType.laser);
-        //         laserBullet.id = objectId;
-        //         return laserBullet;
-
-        //     case BulletType.rocket:
-        //         const rocketBullet = new Bullet(BulletType.rocket);
-        //         rocketBullet.id = objectId;
-        //         return rocketBullet;
-        //     case BulletType.ice:
-        //         const iceBullet = new Bullet(BulletType.ice);
-        //         iceBullet.id = objectId;
-        //         return iceBullet;
-        //     case BulletType.lightning:
-        //         const lightningBullet = new Bullet(BulletType.lightning);
-        //         lightningBullet.id = objectId;
-        //         return lightningBullet;
-        //     default:
-        // }
     }
 
     public static createTower(type: TowerType): Tower {

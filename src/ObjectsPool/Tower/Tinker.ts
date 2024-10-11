@@ -1,6 +1,7 @@
 import { TowerType } from '../../Type';
 import { Tower } from '../Tower/Tower';
 import { AssetsLoader } from '../../AssetsLoader';
+import { AppConstants } from '../../GameScene/Constants';
 
 export class Tinker extends Tower {
 
@@ -14,9 +15,9 @@ export class Tinker extends Tower {
     private _animateTexture(dt: number) {
         this.time += dt;
         if (this.time <= 200) {
-            this.image.texture = AssetsLoader.getTexture('tinker');
+            this.image.texture = AssetsLoader.getTexture(AppConstants.textureName.towers.tinker1);
         } else {
-            this.image.texture = AssetsLoader.getTexture('tinker-2');
+            this.image.texture = AssetsLoader.getTexture(AppConstants.textureName.towers.tinker2);
         }
         if (this.time > 400) {
             this.time = 0;

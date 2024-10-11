@@ -154,9 +154,6 @@ export class BaseObject {
             const y = this._image.y + Math.sin((this._moveEngine.direction * Math.PI) / 180) * ((this._speed * dt) / 1000);
 
             this.image.position = { x: x, y: y };
-
-            // rotate image direction
-            // this._image.angle = this._moveEngine.direction;
         } else {
             // if object move by Direction type
             // get direction from move engine

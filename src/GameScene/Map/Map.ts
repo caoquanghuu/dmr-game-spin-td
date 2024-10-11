@@ -66,6 +66,10 @@ export class GameMap extends Container {
         return { wave: wave, towers: towers, nuclearBaseHp: nuclearBaseHp };
     }
 
+    /**
+     * method get data from game scene and assign to controller to create tower base on data loaded
+     * @param data data
+     */
     public async saveDataOnMap(data: {wave: number, towers: {towerType: TowerType, level: number, matrixPosition: PointData}[], nuclearBaseHp: number}) {
         this._wave = data.wave - 1;
         this._nuclearBase.reduceHp((AppConstants.playerBasicProperty.playerHp - data.nuclearBaseHp));
@@ -104,11 +108,11 @@ export class GameMap extends Container {
                 this.addChild(grass);
                 grass.zIndex = 0;
 
-                if (value === 1) {
+                if (value === AppConstants.matrixMapValue.availableMoveWay) {
                     // where ene can go
 
                 }
-                if (value === 0) {
+                if (value === AppConstants.matrixMapValue.environment) {
                     // create tree con border of map
                     const treeNumber = Math.round(Math.random() * 5);
                     const tree = createImage({ texture: `tree-${treeNumber}`, width: AppConstants.matrixSize, height: AppConstants.matrixSize });
@@ -117,7 +121,7 @@ export class GameMap extends Container {
                     this._trees.push(tree);
                 }
 
-                if (value === 3) {
+                if (value === AppConstants.matrixMapValue.nuclearBase) {
                     this._nuclearBase = Factory.createNuclearBase();
                     this._nuclearBase.position = { x: idxX * AppConstants.matrixSize + AppConstants.matrixSize, y: idxY * AppConstants.matrixSize - AppConstants.matrixSize / 3 };
                     this._nuclearBase.hpBar.position = { x: this._nuclearBase.position.x, y: this._nuclearBase.position.y - AppConstants.matrixSize / 2 };
@@ -137,7 +141,7 @@ export class GameMap extends Container {
 
                 }
 
-                if (value === 2) {
+                if (value === AppConstants.matrixMapValue.availableTowerBuild) {
                     const towerBase = createImage({ texture: AppConstants.textureName.towerBase, width: AppConstants.matrixSize, height: AppConstants.matrixSize, alpha: AppConstants.imageAlpha.towerBase });
 
                     towerBase.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize };
@@ -146,7 +150,7 @@ export class GameMap extends Container {
                     this.addChild(towerBase);
                 }
 
-                if (value === 7) {
+                if (value === AppConstants.matrixMapValue.spawnAllyPosition) {
                     const tankFactory = createImage({ texture: AppConstants.textureName.tankFactory, width: AppConstants.matrixSize * 2, height: AppConstants.matrixSize * 2, anchor: 0.5 });
                     tankFactory.position = { x: idxX * AppConstants.matrixSize, y: idxY * AppConstants.matrixSize + AppConstants.matrixSize / 4 };
                     tankFactory.zIndex = AppConstants.zIndex.tankFactory;

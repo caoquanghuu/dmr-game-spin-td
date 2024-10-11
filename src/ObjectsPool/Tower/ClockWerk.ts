@@ -19,22 +19,22 @@ export class ClockWerk extends Tower {
         if (!this.target) return;
         const direction = calculateAngleOfVector(this.position, this.target) + 90;
         if (direction > -45 && direction <= 45) {
-            this.image.texture = AssetsLoader.getTexture('clockwerk-4');
+            this.image.texture = AssetsLoader.getTexture(AppConstants.textureName.towers.clockwerk4);
             return;
         }
 
         if (direction > 45 && direction <= 135) {
-            this.image.texture = AssetsLoader.getTexture('clockwerk-3');
+            this.image.texture = AssetsLoader.getTexture(AppConstants.textureName.towers.clockwerk3);
             return;
         }
 
         if (direction > 135 && direction <= 225) {
-            this.image.texture = AssetsLoader.getTexture('clockwerk');
+            this.image.texture = AssetsLoader.getTexture(AppConstants.textureName.towers.clockwerk1);
             return;
         }
 
         if (direction > 225 && direction <= 270 || direction >= -90 && direction < 0) {
-            this.image.texture = AssetsLoader.getTexture('clockwerk-2');
+            this.image.texture = AssetsLoader.getTexture(AppConstants.textureName.towers.clockwerk2);
             return;
         }
     }

@@ -94,6 +94,18 @@ export namespace AppConstants {
         bulletCountImage: {
             exist: 'bullet-bar-1',
             null: 'bullet-bar-0'
+        },
+        informationBackGround: 'information-background',
+        towers: {
+            mirana1: 'mirana',
+            mirana2: 'mirana-2',
+            mirana3: 'mirana-3',
+            tinker1: 'tinker',
+            tinker2: 'tinker-2',
+            clockwerk1: 'clockwerk',
+            clockwerk2: 'clockwerk-2',
+            clockwerk3: 'clockwerk-3',
+            clockwerk4: 'clockwerk-4'
         }
     };
 
