@@ -154,6 +154,8 @@ export class UIController {
     public reset() {
         this._playerHp = AppConstants.playerBasicProperty.playerHp;
         this._playerGold = AppConstants.playerBasicProperty.playerGold;
+        this._basicBoard.displayBaseHp(AppConstants.playerBasicProperty.playerHp);
+        this._basicBoard.displayGoldNumber(AppConstants.playerBasicProperty.playerGold);
     }
 
     public update(dt: number) {
