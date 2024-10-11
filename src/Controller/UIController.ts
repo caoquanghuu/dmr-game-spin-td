@@ -156,6 +156,10 @@ export class UIController {
         this._playerGold = AppConstants.playerBasicProperty.playerGold;
         this._basicBoard.displayBaseHp(AppConstants.playerBasicProperty.playerHp);
         this._basicBoard.displayGoldNumber(AppConstants.playerBasicProperty.playerGold);
+
+        this._buyUnitBoard.renderable = true;
+        this._buildTowerBoard.renderable = false;
+        this._infoTowerBoard.renderable = false;
     }
 
     public update(dt: number) {
