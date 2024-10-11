@@ -912,6 +912,54 @@
         "y": 0.5
       }
     },
+    "bullet-bar-0": {
+      "frame": {
+        "x": 862,
+        "y": 239,
+        "w": 33,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 33,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 33,
+        "h": 32
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "bullet-bar-1": {
+      "frame": {
+        "x": 862,
+        "y": 271,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "sound-off": {
       "frame": {
         "x": 240,

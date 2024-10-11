@@ -177,6 +177,7 @@ export class TowerController {
                 helicopter.reset();
                 Emitter.emit(AppConstants.event.removeChildFromScene, helicopter.image);
                 Emitter.emit(AppConstants.event.removeChildFromScene, helicopter.upgradeImage);
+                Emitter.emit(AppConstants.event.removeChildFromScene, helicopter.bulletCountImage);
                 this._returnUnitToPool(helicopter);
                 this._units.splice(idxHelicopter, 1);
             }
@@ -219,8 +220,10 @@ export class TowerController {
 
         unit.position = position;
         unit.id = towerId;
+        unit.barackPosition = position;
         unit.setAnimation(AppConstants.moveAnimationName.moveDown, true);
         Emitter.emit(AppConstants.event.addChildToScene, unit.image);
+        Emitter.emit(AppConstants.event.addChildToScene, unit.bulletCountImage);
         this._units.push(unit);
     }
 

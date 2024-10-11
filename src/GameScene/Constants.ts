@@ -59,7 +59,7 @@ export namespace AppConstants {
 
     export const playerBasicProperty = {
         playerGold: 100,
-        playerHp: 1000
+        playerHp: 9000
     };
 
     export const imageAlpha = {
@@ -90,6 +90,10 @@ export namespace AppConstants {
         soundIcon: {
             on: 'sound-on',
             off: 'sound-off'
+        },
+        bulletCountImage: {
+            exist: 'bullet-bar-1',
+            null: 'bullet-bar-0'
         }
     };
 
@@ -127,7 +131,8 @@ export namespace AppConstants {
     export const time = {
         delayWhenCreateEne: 1000,
         delayBetweenWaves: 5000,
-        delayVictorySound: 8000
+        delayVictorySound: 8000,
+        helicopterChargeBulletTime: 300
     };
 
     export const limitWaveNumber = 17;
