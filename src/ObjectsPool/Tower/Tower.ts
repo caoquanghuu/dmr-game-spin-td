@@ -151,13 +151,18 @@ export class Tower extends BaseObject {
         Emitter.emit(AppConstants.event.addChildToScene, this._upgradeLevelImage);
 
 
-        this._dame.max += this._dame.max;
-        this._dame.min += this._dame.max - 50;
+        this._dame.max = AppConstants.dame[this._towerType].max * this._level;
+        this._dame.min = AppConstants.dame[this._towerType].min * this._level;
         this.fireTimeCd.fireTimeConst -= this.fireTimeCd.fireTimeConst / 10 ;
-        this.effectArena += this.effectArena / 10;
+        if (this.towerType === TowerType.crystal_maiden) {
+            // more range fire for crystal maiden tower
+            this.effectArena += this.effectArena / 6;
+        } else {
+            this.effectArena += this.effectArena / 8;
+        }
         this.circleImage.width = this.effectArena * 2;
         this.circleImage.height = this.effectArena * 2;
-        this._upGradeCost = this._goldCost * 4 * this._level;
+        this._upGradeCost = this._goldCost * (this._level + 1);
     }
 
     public fire(target: PointData) {

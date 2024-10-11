@@ -58,8 +58,8 @@ export namespace AppConstants {
     };
 
     export const playerBasicProperty = {
-        playerGold: 10000,
-        playerHp: 3000
+        playerGold: 100,
+        playerHp: 1000
     };
 
     export const imageAlpha = {
@@ -126,9 +126,9 @@ export namespace AppConstants {
         delayVictorySound: 8000
     };
 
-    export const limitWaveNumber = 15;
+    export const limitWaveNumber = 17;
 
-    export const goldPlusPerWave = 10;
+    export const goldPlusPerWave = 20;
 
     export const dame = {
         crystal_maiden: { min: 0, max: 0 },
@@ -137,7 +137,7 @@ export namespace AppConstants {
         clockwerk: { min: 200, max: 250 },
         barack: { min: 0, max: 0 },
         helicopter: { min: 150, max: 300 },
-        allyTank: { min: 100, max: 120 }
+        allyTank: { min: 200, max: 300 }
     };
 
     export const allyUnitBasicProperty = {
@@ -168,18 +168,6 @@ export namespace AppConstants {
         laser: 10,
         lightning: 10,
         missile: 100
-    };
-
-    export const enemiesHp = {
-        tank1: 5,
-        tank2: 10,
-        tank3: 15
-    };
-
-    export const enemiesDameDeal = {
-        tank1: 1,
-        tank2: 2,
-        tank3: 3
     };
 
     export const event = {
@@ -301,9 +289,9 @@ export namespace AppConstants {
     export const towerPrice = {
         tinker: 20,
         mirana: 10,
-        crystal_maiden: 100,
-        clockwerk: 80,
-        barack: 10
+        crystal_maiden: 60,
+        clockwerk: 40,
+        barack: 60
     };
 
     export const unitPrice = {
@@ -311,7 +299,7 @@ export namespace AppConstants {
             helicopter: 100
         },
         allyTank: {
-            sovietTank: 100
+            sovietTank: 10
         }
     };
 

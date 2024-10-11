@@ -222,10 +222,11 @@ export class CollisionController {
                     unitsCollisionWithBullet.forEach(unit => {
                         if (object1.effectType === EffectType.SLOW) {
                             // speed of enemy will be reduce
-                            const speed = 60;
-                            unit.speed = speed;
+                            const speed1 = 60;
+                            const speed2 = unit.speed;
+                            unit.speed = speed1;
                             setTimeout(() => {
-                                unit.speed = 100;
+                                unit.speed = speed2;
                             }, 2000);
                         } else {
                             unit.reduceHp(object1.dame);

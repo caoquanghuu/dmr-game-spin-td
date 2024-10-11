@@ -213,7 +213,13 @@ export class GameMap extends Container {
             Emitter.emit(AppConstants.event.plusGold, (AppConstants.goldPlusPerWave + this._wave));
             this._unitController.spawnWave(this._wave, { x: 15, y: 0 });
             // change texture of nuclear base
-            this._nuclearBase.setFrame(this._wave - 1);
+            if (this._wave >= 15) {
+                // limit of nuclear base frame is 14
+                this._nuclearBase.setFrame(14);
+            } else {
+                this._nuclearBase.setFrame(this._wave - 1);
+            }
+
             this._time = 0;
 
             // auto save game per wave

@@ -136,8 +136,9 @@ export class GameScene extends Container {
 
     public reset() {
         this._isGameStart = false;
-        this._UIBoard.reset();
+        // reset map first
         this._map.reset();
+        this._UIBoard.reset();
     }
 
     private _useEventEffect(): void {
@@ -167,8 +168,12 @@ export class GameScene extends Container {
 
     private _loadGame() {
         const data: SaveGameData = loadGame();
-        this._UIBoard.saveUiData({ gold: data.gold, playerHp: data.nuclearBaseHp, wave: data.wave });
+        // build tower first avoid when create tower player gold become < 0
         this._map.saveDataOnMap({ wave:data.wave, towers: data.towers, nuclearBaseHp: data.nuclearBaseHp, isMuteSound: data.soundOption });
+
+        // set player base hp, and gold
+        this._UIBoard.saveUiData({ gold: data.gold, playerHp: data.nuclearBaseHp, wave: data.wave });
+
     }
 
 
