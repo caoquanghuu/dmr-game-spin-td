@@ -172,7 +172,7 @@ export class ControlUnit extends BaseObject {
             if (this._bulletCount.bulletCount <= 0) {
                 this._fireStage = false;
                 // change target move of unit
-                this._targetPosition = { x: this._barackPosition.x, y: this._barackPosition.y };
+                this._targetPosition = { x: this._barackPosition.x + AppConstants.matrixSize, y: this._barackPosition.y };
                 this.isMoving = true;
             }
         }
@@ -243,7 +243,7 @@ export class ControlUnit extends BaseObject {
         Emitter.on(AppConstants.event.removeEnemy, (info: {id: number, isEne: boolean}) => {
             if (this._targetID === info.id) {
                 // avoid incase ene die right on time helicopter start move to base
-                if (this._targetPosition.x === this._barackPosition.x && this._targetPosition.y === this._barackPosition.y) return;
+                if (this._targetPosition.x === (this._barackPosition.x + AppConstants.matrixSize) && this._targetPosition.y === this._barackPosition.y) return;
                 this._targetPosition = null;
                 this._targetID = null;
             }
