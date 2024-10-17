@@ -1,5 +1,5 @@
 import { BitmapText, EventEmitter, PointData, Sprite } from 'pixi.js';
-import { Circle } from './Type';
+import { Circle, Square } from './Type';
 import { AssetsLoader } from './AssetsLoader';
 
 export const switchFn = (lookupObject, defaultCase = '_default') => expression => (lookupObject[expression] || lookupObject[defaultCase])();
@@ -24,17 +24,32 @@ Object.freeze(Emitter);
 export default Emitter;
 
 /**
-     * method check collision between 2 circle base on calculate distance
+     * method check collision between 2 circle base on calculate distance or circle with square
      * @param c1
      * @param c2
+    * @param square
      * @returns return result as boolean have collision or not
      */
-export function isCollision(c1: Circle, c2: Circle): boolean {
-    const r = c1.radius + c2.radius;
-    const distance = Math.sqrt((c1.position.x - c2.position.x) * (c1.position.x - c2.position.x) + (c1.position.y - c2.position.y) * ((c1.position.y - c2.position.y)));
-    if (distance <= r) return true;
+export function isCollision(c1: Circle, c2?: Circle, square?: Square): boolean {
+    if (c2) {
+        const r = c1.radius + c2.radius;
+        const distance = Math.sqrt((c1.position.x - c2.position.x) * (c1.position.x - c2.position.x) + (c1.position.y - c2.position.y) * ((c1.position.y - c2.position.y)));
+        if (distance <= r) return true;
 
-    return false;
+        return false;
+    } else if (square) {
+        const closestX = Math.max(square.position.x, Math.min(c1.position.x, square.position.x + square.width));
+        const closestY = Math.max(square.position.y, Math.min(c1.position.y, square.position.y + square.height));
+
+        const distanceX = c1.position.x - closestX;
+        const distanceY = c1.position.y - closestY;
+
+        const distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
+
+        return distanceSquared <= (c1.radius * c1.radius);
+    }
+
+
 }
 
 export function getRandomArbitrary(option: {min: number, max: number}): number {
@@ -44,23 +59,46 @@ export function getRandomArbitrary(option: {min: number, max: number}): number {
 }
 
 /**
-     * method will calculate correct distance of circle 2 before collision
-     * @param c1 circle 1
-     * @param c2 circle 2, which no calculate correct position
-     * @returns return correct position of c2 before collision
-     */
-export function findCorrectPositionBeforeCollision(c1: Circle, c2: Circle): PointData {
-    const vector = { x: c1.position.x - c2.position.x, y: c1.position.y - c2.position.y };
-    const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-    const r = c1.radius + c2.radius;
-    const unitVector = { x: vector.x / distance, y: vector.y / distance };
+ * Method to calculate the correct position of the circle's center before collision with a circle or a square.
+ * @param c1 The moving circle.
+ * @param c2 Another circle, which we need to calculate the correct position.
+ * @param square The stationary square.
+ * @returns The correct position of the moving circle before collision.
+ */
+export function findCorrectPositionBeforeCollision(c1: Circle, c2?: Circle, square?: Square): PointData {
+    if (c2) {
+        // Calculate position before collision with another circle
+        const vector = { x: c1.position.x - c2.position.x, y: c1.position.y - c2.position.y };
+        const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+        const r = c1.radius + c2.radius;
+        const unitVector = { x: vector.x / distance, y: vector.y / distance };
+        const correctPosition = {
+            x: c2.position.x - unitVector.x * (r - distance),
+            y: c2.position.y - unitVector.y * (r - distance)
+        };
+        return correctPosition;
+    } else if (square) {
+        // Find the closest point on the square to the circle's center
+        const closestX = Math.max(square.position.x, Math.min(c1.position.x, square.position.x + square.width));
+        const closestY = Math.max(square.position.y, Math.min(c1.position.y, square.position.y + square.height));
 
-    const correctPosition = {
-        x: c2.position.x - unitVector.x * (r - distance),
-        y: c2.position.y - unitVector.y * (r - distance)
-    };
+        // Calculate the vector from the circle's center to this closest point
+        const vector = { x: c1.position.x - closestX, y: c1.position.y - closestY };
+        const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
 
-    return correctPosition;
+        // Calculate the required position before collision
+        const unitVector = { x: vector.x / distance, y: vector.y / distance };
+        const r = c1.radius;
+
+        // Correct position of c1 before collision
+        const correctPosition = {
+            x: c1.position.x - unitVector.x * (distance - r),
+            y: c1.position.y - unitVector.y * (distance - r)
+        };
+        return correctPosition;
+    }
+
+    throw new Error('Either a second circle or a square must be provided.');
 }
 
 /**

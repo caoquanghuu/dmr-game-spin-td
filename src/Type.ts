@@ -85,6 +85,12 @@ export type Circle = {
     radius: number
 };
 
+export type Square = {
+    position: PointData,
+    width: number,
+    height: number
+};
+
 export type TowerInformation = {
     level: number,
     towerType: TowerType,

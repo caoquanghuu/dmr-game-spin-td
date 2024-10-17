@@ -1,7 +1,7 @@
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
-import { Circle, Direction, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn } from '../Type';
+import { Circle, Direction, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn, Square } from '../Type';
 import { AnimatedSprite, Sprite } from 'pixi.js';
 import Emitter, { findCorrectPositionBeforeCollision, getRandomArbitrary, isCollision } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
@@ -82,13 +82,14 @@ export class CollisionController {
 
             // check collision of environment object with tanks
             if (object1 instanceof Sprite) {
-                const c1: Circle = { position: { x: object1.position.x + AppConstants.matrixSize / 2, y: object1.position.y + AppConstants.matrixSize / 2 }, radius: object1.width / 2 };
+                const square: Square = { position: { x: object1.position.x, y:  object1.position.y }, width: object1.width, height: object1.height };
+                // const c1: Circle = { position: { x: object1.position.x + AppConstants.matrixSize / 2, y: object1.position.y + AppConstants.matrixSize / 2 }, radius: object1.width / 2 };
                 otherObjects.forEach(object2 => {
                     if (object2 instanceof Tank) {
                         const c2: Circle = { position: object2.position, radius: object2.image.width / 2 };
 
-                        if (isCollision(c1, c2)) {
-                            const correctPosition = findCorrectPositionBeforeCollision(c1, c2);
+                        if (isCollision(c2, null, square)) {
+                            const correctPosition = findCorrectPositionBeforeCollision(c2, null, square);
                             object2.position = correctPosition;
                         }
                     }
