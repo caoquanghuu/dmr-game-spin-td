@@ -1,13 +1,13 @@
 import { PointData } from 'pixi.js';
-import { BSFMove, BSFNextMove, Direction, GetMatrixMapFn } from '../Type';
+import { BSFMove, BSFNextMove, Direction, GetHeadPointPositionFn, GetMatrixMapFn } from '../Type';
 import { AppConstants } from '../GameScene/Constants';
 export class BSFMoveEngine {
     private _getMatrixMapCb: GetMatrixMapFn;
     private _bsfMove: BSFMove;
     private _targetValue: number;
-    private _getHeadPointPosition: Function;
+    private _getHeadPointPosition: GetHeadPointPositionFn;
 
-    constructor(getHeadPointPosition: Function, targetValue: number, getMatrixMap: GetMatrixMapFn) {
+    constructor(getHeadPointPosition: GetHeadPointPositionFn, targetValue: number, getMatrixMap: GetMatrixMapFn) {
         this._getMatrixMapCb = getMatrixMap;
         this._targetValue = targetValue;
         this._getHeadPointPosition = getHeadPointPosition;
@@ -31,17 +31,16 @@ export class BSFMoveEngine {
         if (direction.x === 0 && direction.y === 1) nextDirection = Direction.DOWN;
         if (direction.x === 1 && direction.y === 0) nextDirection = Direction.RIGHT;
         if (direction.x === -1 && direction.y === 0) nextDirection = Direction.LEFT;
-        if (direction.x === 1 && direction.y === 1) nextDirection = Direction.DOWN_RIGHT;
-        if (direction.x === 1 && direction.y === -1) nextDirection = Direction.UP_RIGHT;
-        if (direction.x === -1 && direction.y === -1) nextDirection = Direction.UP_LEFT;
-        if (direction.x === -1 && direction.y === 1) nextDirection = Direction.DOWN_LEFT;
+        // if (direction.x === 1 && direction.y === 1) nextDirection = Direction.DOWN_RIGHT;
+        // if (direction.x === 1 && direction.y === -1) nextDirection = Direction.UP_RIGHT;
+        // if (direction.x === -1 && direction.y === -1) nextDirection = Direction.UP_LEFT;
+        // if (direction.x === -1 && direction.y === 1) nextDirection = Direction.DOWN_LEFT;
 
         return { directions: nextDirection, path: { x: nextPath[0].x, y: nextPath[0].y } };
     }
 
     private _bfs(): BSFMove | null {
         const headPoint = this._getHeadPointPosition();
-        if (!headPoint) return null;
 
         const queue: PointData[] = [headPoint];
         const visited: Set<string> = new Set();
@@ -53,10 +52,10 @@ export class BSFMoveEngine {
             { x: 1, y: 0 },
             { x: 0, y: 1 },
             { x: -1, y: 0 },
-            { x: 1, y: 1 },
-            { x: -1, y: 1 },
-            { x: 1, y: -1 },
-            { x: -1, y: -1 }
+            // { x: 1, y: 1 },
+            // { x: -1, y: 1 },
+            // { x: 1, y: -1 },
+            // { x: -1, y: -1 }
         ];
 
         visited.add(`${headPoint.x},${headPoint.y}`);
@@ -64,6 +63,7 @@ export class BSFMoveEngine {
 
         while (queue.length > 0) {
             const current = queue.shift()!;
+
             if (this._getMatrixMapCb()[current.x][current.y] === this._targetValue) {
                 let temp = current;
                 while (temp !== null) {
@@ -80,6 +80,7 @@ export class BSFMoveEngine {
                 }
                 return { directions: directionPath.reverse(), path: path.reverse() };
             }
+
 
             for (const dir of directions) {
                 const next: PointData = { x: current.x + dir.x, y: current.y + dir.y };

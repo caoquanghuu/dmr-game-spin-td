@@ -1,123 +1,124 @@
 {
-    "name": "enemy-type",
-    "alias": [
-        {
-            "name": "tank-1",
-            "HP": 500,
-            "speed": 100,
-            "dame": 100,
-            "eneCount": 14
-        },
-        {
-            "name": "tank-2",
-            "HP": 600,
-            "speed": 100,
-            "dame": 200,
-            "eneCount": 12
-        },
-        {
-            "name": "tank-3",
-            "HP": 1000,
-            "speed": 150,
-            "dame": 220,
-            "eneCount": 20
-        },
-        {
-            "name": "tank-4",
-            "HP": 2000,
-            "speed": 100,
-            "dame": 220,
-            "eneCount": 15
-        }, {
-            "name": "tank-5",
-            "HP": 4000,
-            "speed": 70,
-            "dame": 400,
-            "eneCount": 5
-        },
-        {
-            "name": "tank-6",
-            "HP": 2500,
-            "speed": 120,
-            "dame": 250,
-            "eneCount": 13
-        },
-        {
-            "name": "tank-7",
-            "HP": 2000,
-            "speed": 160,
-            "dame": 320,
-            "eneCount": 20
-        },
-        {
-            "name": "tank-8",
-            "HP": 3000,
-            "speed": 110,
-            "dame": 500,
-            "eneCount": 10
-        },
-        {
-            "name": "tank-9",
-            "HP": 4000,
-            "speed": 80,
-            "dame": 300,
-            "eneCount": 20
-        },
-        {
-            "name": "tank-10",
-            "HP": 10000,
-            "speed": 100,
-            "dame": 600,
-            "eneCount": 3
-        },
-        {
-            "name": "tank-11",
-            "HP": 5000,
-            "speed": 100,
-            "dame": 400,
-            "eneCount": 13
-        },
-        {
-            "name": "tank-12",
-            "HP": 8000,
-            "speed": 100,
-            "dame": 420,
-            "eneCount": 15
-        },
-        {
-            "name": "tank-13",
-            "HP": 10000,
-            "speed": 70,
-            "dame": 450,
-            "eneCount": 20
-        },
-        {
-            "name": "tank-14",
-            "HP": 8000,
-            "speed": 170,
-            "dame": 600,
-            "eneCount": 12
-        },
-        {
-            "name": "tank-15",
-            "HP": 20000,
-            "speed": 100,
-            "dame": 700,
-            "eneCount": 3
-        },
-        {
-            "name": "tank-16",
-            "HP": 15000,
-            "speed": 130,
-            "dame": 550,
-            "eneCount": 16
-        },
-        {
-            "name": "tank-17",
-            "HP": 30000,
-            "speed": 100,
-            "dame": 1000,
-            "eneCount": 5
-        }
-    ]
+  "name": "enemy-type",
+  "alias": [
+    {
+      "name": "tank-1",
+      "HP": 500,
+      "speed": 100,
+      "dame": 100,
+      "eneCount": 14
+    },
+    {
+      "name": "tank-2",
+      "HP": 600,
+      "speed": 100,
+      "dame": 200,
+      "eneCount": 12
+    },
+    {
+      "name": "tank-3",
+      "HP": 1000,
+      "speed": 150,
+      "dame": 220,
+      "eneCount": 20
+    },
+    {
+      "name": "tank-4",
+      "HP": 2000,
+      "speed": 100,
+      "dame": 220,
+      "eneCount": 15
+    },
+    {
+      "name": "tank-5",
+      "HP": 4000,
+      "speed": 70,
+      "dame": 400,
+      "eneCount": 5
+    },
+    {
+      "name": "tank-6",
+      "HP": 2500,
+      "speed": 120,
+      "dame": 250,
+      "eneCount": 13
+    },
+    {
+      "name": "tank-7",
+      "HP": 2000,
+      "speed": 160,
+      "dame": 320,
+      "eneCount": 20
+    },
+    {
+      "name": "tank-8",
+      "HP": 3000,
+      "speed": 110,
+      "dame": 500,
+      "eneCount": 10
+    },
+    {
+      "name": "tank-9",
+      "HP": 4000,
+      "speed": 80,
+      "dame": 300,
+      "eneCount": 20
+    },
+    {
+      "name": "tank-10",
+      "HP": 10000,
+      "speed": 100,
+      "dame": 600,
+      "eneCount": 3
+    },
+    {
+      "name": "tank-11",
+      "HP": 5000,
+      "speed": 100,
+      "dame": 400,
+      "eneCount": 13
+    },
+    {
+      "name": "tank-12",
+      "HP": 8000,
+      "speed": 100,
+      "dame": 420,
+      "eneCount": 15
+    },
+    {
+      "name": "tank-13",
+      "HP": 10000,
+      "speed": 70,
+      "dame": 450,
+      "eneCount": 20
+    },
+    {
+      "name": "tank-14",
+      "HP": 8000,
+      "speed": 170,
+      "dame": 600,
+      "eneCount": 12
+    },
+    {
+      "name": "tank-15",
+      "HP": 20000,
+      "speed": 100,
+      "dame": 700,
+      "eneCount": 3
+    },
+    {
+      "name": "tank-16",
+      "HP": 15000,
+      "speed": 130,
+      "dame": 550,
+      "eneCount": 16
+    },
+    {
+      "name": "tank-17",
+      "HP": 30000,
+      "speed": 100,
+      "dame": 1000,
+      "eneCount": 5
+    }
+  ]
 }

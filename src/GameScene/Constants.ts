@@ -58,7 +58,7 @@ export namespace AppConstants {
     };
 
     export const playerBasicProperty = {
-        playerGold: 100,
+        playerGold: 10000,
         playerHp: 9000
     };
 
@@ -144,7 +144,7 @@ export namespace AppConstants {
         delayWhenCreateEne: 1000,
         delayBetweenWaves: 5000,
         delayVictorySound: 8000,
-        helicopterChargeBulletTime: 300
+        helicopterChargeBulletTime: 1000
     };
 
     export const limitWaveNumber = 17;

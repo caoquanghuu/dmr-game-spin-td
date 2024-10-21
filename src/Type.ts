@@ -149,3 +149,4 @@ export type GetUnitFromPoolFn = (unitType: FlyUnitType) => ControlUnit;
 export type ReturnUnitToPoolFn = (unit: ControlUnit) => void;
 export type GetMatrixMapFn = () => number[][];
 export type SetMatrixMapFn = (row: number, colum: number, value: number) => void;
+export type GetHeadPointPositionFn = () => PointData;

@@ -180,8 +180,8 @@ export class UnitController {
         units.forEach(unit => {
             // update and assign ene position on matrix map
             unit.update(dt);
-            const matrixPosition = unit.getMatrixPosition();
-            if (matrixPosition && this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+            const matrixPosition: PointData = unit.getMatrixPosition();
+            if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
 
 
                 this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.enemy);
@@ -191,108 +191,108 @@ export class UnitController {
 
             // set next direction of ene on matrix map have value of it and wont let other ene go in there
 
-            switch (unit.direction) {
-                case Direction.DOWN:
-                    // avoid next position go out of map
-                    if (this._getMatrixMapCb().length < (matrixPosition.x + 1) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 2)) return;
-                    if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        this._setMatrixMapCb(matrixPosition.x, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
+            // switch (unit.direction) {
+            //     case Direction.DOWN:
+            //         // avoid next position go out of map
+            //         if (this._getMatrixMapCb().length < (matrixPosition.x + 1) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 2)) return;
+            //         if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
+            //             this._setMatrixMapCb(matrixPosition.x, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
 
-                        // for debug ene matrix map
-                        // unit.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
-                    }
-                    break;
-                case Direction.UP:
-                    // avoid next position go out of map
-                    if (this._getMatrixMapCb().length < (matrixPosition.x + 1) || (matrixPosition.y - 2) < 0) return;
-                    if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        this._setMatrixMapCb(matrixPosition.x, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
+            //             // for debug ene matrix map
+            //             // unit.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+            //         }
+            //         break;
+            //     case Direction.UP:
+            //         // avoid next position go out of map
+            //         if (this._getMatrixMapCb().length < (matrixPosition.x + 1) || (matrixPosition.y - 2) < 0) return;
+            //         if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+            //             this._setMatrixMapCb(matrixPosition.x, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
 
-                        // for debug ene matrix map
-                        // unit.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
-                    }
-                    break;
-                case Direction.RIGHT:
-                    // avoid next position go out of map
-                    if (this._getMatrixMapCb().length < (matrixPosition.x + 2) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 1)) return;
-                    if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
-                        this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
+            //             // for debug ene matrix map
+            //             // unit.g2.position = { x: (matrixPosition.x) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+            //         }
+            //         break;
+            //     case Direction.RIGHT:
+            //         // avoid next position go out of map
+            //         if (this._getMatrixMapCb().length < (matrixPosition.x + 2) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 1)) return;
+            //         if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+            //             this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
 
-                        // for debug ene matrix map
-                        // unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
-                    }
-                    break;
-                case Direction.LEFT:
-                    // avoid next position go out of map
-                    if ((matrixPosition.x - 2) < 0 || this._getMatrixMapCb()[0].length < (matrixPosition.y + 1)) return;
-                    if (this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
-                        this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
+            //             // for debug ene matrix map
+            //             // unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+            //         }
+            //         break;
+            //     case Direction.LEFT:
+            //         // avoid next position go out of map
+            //         if ((matrixPosition.x - 2) < 0 || this._getMatrixMapCb()[0].length < (matrixPosition.y + 1)) return;
+            //         if (this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+            //             this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y, AppConstants.matrixMapValue.enemy);
 
-                        // for debug ene matrix map
-                        // unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
-                    }
-                    break;
-                case Direction.DOWN_LEFT:
-                    // avoid next position go out of map
-                    if ((matrixPosition.x - 2 < 0) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 2)) return;
-                    // if next position available then set value for that next matrix
-                    if (!this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y + 1]) return;
-                    if (this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
+            //             // for debug ene matrix map
+            //             // unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+            //         }
+            //         break;
+            //     case Direction.DOWN_LEFT:
+            //         // avoid next position go out of map
+            //         if ((matrixPosition.x - 2 < 0) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 2)) return;
+            //         // if next position available then set value for that next matrix
+            //         if (!this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y + 1]) return;
+            //         if (this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
+            //             this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
 
-                        // for debug ene matrix map
-                        // unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
-                    }
-                    break;
-                case Direction.DOWN_RIGHT:
-                    // avoid next position go out of map
-                    if (this._getMatrixMapCb().length < (matrixPosition.x + 2) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 2)) return;
-                    // if next position available then set value for that next matrix
-                    if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
+            //             // for debug ene matrix map
+            //             // unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+            //         }
+            //         break;
+            //     case Direction.DOWN_RIGHT:
+            //         // avoid next position go out of map
+            //         if (this._getMatrixMapCb().length < (matrixPosition.x + 2) || this._getMatrixMapCb()[0].length < (matrixPosition.y + 2)) return;
+            //         // if next position available then set value for that next matrix
+            //         if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
+            //             this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y + 1, AppConstants.matrixMapValue.enemy);
 
-                        // for debug ene matrix map
-                        // unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
-                    }
-                    break;
-                case Direction.UP_LEFT:
-                    // avoid next position go out of map
-                    if ((matrixPosition.x - 2) < 0 || (matrixPosition.y - 2 < 0)) return;
-                    // if next position available then set value for that next matrix
-                    if (this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
+            //             // for debug ene matrix map
+            //             // unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+            //         }
+            //         break;
+            //     case Direction.UP_LEFT:
+            //         // avoid next position go out of map
+            //         if ((matrixPosition.x - 2) < 0 || (matrixPosition.y - 2 < 0)) return;
+            //         // if next position available then set value for that next matrix
+            //         if (this._getMatrixMapCb()[matrixPosition.x - 1][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+            //             this._setMatrixMapCb(matrixPosition.x - 1, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
 
-                        // for debug ene matrix map
-                        // unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
-                    }
-                    break;
-                case Direction.UP_RIGHT:
-                    // avoid next position go out of map
-                    if (this._getMatrixMapCb().length < (matrixPosition.x + 2) || (matrixPosition.y - 2) < 0) return;
+            //             // for debug ene matrix map
+            //             // unit.g2.position = { x: (matrixPosition.x - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+            //         }
+            //         break;
+            //     case Direction.UP_RIGHT:
+            //         // avoid next position go out of map
+            //         if (this._getMatrixMapCb().length < (matrixPosition.x + 2) || (matrixPosition.y - 2) < 0) return;
 
-                    // if next position available then set value for that next matrix
-                    if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
+            //         // if next position available then set value for that next matrix
+            //         if (this._getMatrixMapCb()[matrixPosition.x + 1][matrixPosition.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
+            //             this._setMatrixMapCb(matrixPosition.x + 1, matrixPosition.y - 1, AppConstants.matrixMapValue.enemy);
 
-                        // for debug ene matrix map
-                        // unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
-                    }
-                    break;
+            //             // for debug ene matrix map
+            //             // unit.g2.position = { x: (matrixPosition.x + 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: (matrixPosition.y - 1) * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+            //         }
+            //         break;
 
-                default:
-                    break;
-            }
-
-
-            // set value next position in case ene calculate next position
-            const nextMatrixPosition = unit.nextPosition;
-
-            if (nextMatrixPosition && this._getMatrixMapCb()[nextMatrixPosition.x][nextMatrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
-
-                this._setMatrixMapCb(nextMatrixPosition.x, nextMatrixPosition.y, AppConstants.matrixMapValue.enemy);
+            //     default:
+            //         break;
+            // }
 
 
-            }
+            // // set value next position in case ene calculate next position
+            // const nextMatrixPosition = unit.nextPosition;
+
+            // if (nextMatrixPosition && this._getMatrixMapCb()[nextMatrixPosition.x][nextMatrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
+
+            //     this._setMatrixMapCb(nextMatrixPosition.x, nextMatrixPosition.y, AppConstants.matrixMapValue.enemy);
+
+
+            // }
 
         });
     }

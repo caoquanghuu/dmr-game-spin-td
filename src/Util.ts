@@ -142,3 +142,29 @@ export function createBitMapText(option: {content: string, font: string, size: n
     }
     return text;
 }
+
+/**
+ * calculate new vector for c2 when have collision
+ * @param c1 circle 1 (stay).
+ * @param c2 circle 2 (move).
+ * @returns next position for circle 2 after collision.
+ */
+export function calculateNextPositionAfterCollision(c1: Circle, c2: Circle): PointData {
+    // Tính toán vector va chạm từ c1 đến c2
+    const collisionVector: PointData = { x: c1.position.x - c2.position.x, y: c1.position.y - c2.position.y };
+
+    // Chuẩn hóa vector va chạm
+    const distance = Math.sqrt(collisionVector.x * collisionVector.x + collisionVector.y * collisionVector.y);
+    const unitCollisionVector: PointData = { x: collisionVector.x / distance, y: collisionVector.y / distance };
+
+    // Tính toán vị trí mới của c2 sau va chạm sao cho không va chạm lại với c1 và cách vị trí hiện tại 32 pixel
+    const r = c1.radius + c2.radius;
+    const newPositionDistance = 32; // Khoảng cách mong muốn từ vị trí hiện tại
+    const nextPosition: PointData = {
+        x: c2.position.x + unitCollisionVector.x * newPositionDistance,
+        y: c2.position.y + unitCollisionVector.y * newPositionDistance
+    };
+
+    return nextPosition;
+}
+

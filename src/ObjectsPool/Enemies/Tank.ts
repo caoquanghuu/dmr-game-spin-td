@@ -1,9 +1,9 @@
-import { BSFNextMove, Direction, EnemiesType, FireBulletOption, FireTime, GetMatrixMapFn, SetMatrixMapFn, TowerType } from '../../Type';
+import { BSFNextMove, Circle, Direction, EnemiesType, FireBulletOption, FireTime, GetMatrixMapFn, SetMatrixMapFn, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BSFMoveEngine } from '../../MoveEngine/BSFMoveEngine';
 import { PointData } from 'pixi.js';
-import Emitter from '../../Util';
+import Emitter, { calculateAngleOfVector, isCollision } from '../../Util';
 import { AppConstants } from '../../GameScene/Constants';
 
 export class Tank extends BaseObject {
@@ -42,7 +42,7 @@ export class Tank extends BaseObject {
         this.image.width = AppConstants.matrixSize * 0.7;
         this.image.height = AppConstants.matrixSize * 0.7;
 
-        this.moveEngine = new BaseEngine(true);
+        this.moveEngine = new BaseEngine(false);
         this._bfsMoveEngine = new BSFMoveEngine(this.getMatrixPosition.bind(this), targetValue, this._getMatrixMapCb.bind(this));
         this._targetValue = targetValue;
 
@@ -135,7 +135,11 @@ export class Tank extends BaseObject {
     }
 
     get nextPosition(): PointData {
-        return { x: this._positionChangeDirection.x / AppConstants.matrixSize, y: this._positionChangeDirection.y / AppConstants.matrixSize };
+        return { x: (this._positionChangeDirection.x - AppConstants.matrixSize / 2) / AppConstants.matrixSize, y: (this._positionChangeDirection.y - AppConstants.matrixSize / 2) / AppConstants.matrixSize };
+    }
+
+    set nextPositionChangeDirection(pos: PointData) {
+        this._positionChangeDirection = { x: pos.x, y: pos.y };
     }
 
     public getMatrixPosition(): PointData {
@@ -145,14 +149,12 @@ export class Tank extends BaseObject {
 
 
     public startMove() {
-        this._bfsMoveEngine.update();
         this.getNextMove();
         this._isMoving = true;
         this.isDead = false;
     }
 
     public reset() {
-        this.moveEngine.direction = Direction.STAND;
         this._isMoving = false;
         this._targetID = undefined;
         this._targetPosition = undefined;
@@ -179,154 +181,25 @@ export class Tank extends BaseObject {
 
     private _moveByBsf(dt: number) {
         this.move(dt);
-
-        switch (this.direction) {
-            case Direction.DOWN:
-                if (this.position.y - AppConstants.matrixSize / 2 >= this._positionChangeDirection.y) this.getNextMove();
-
-                this.image.angle = 180;
-                break;
-            case Direction.UP:
-                if (this.position.y - AppConstants.matrixSize / 2 <= this._positionChangeDirection.y) this.getNextMove();
-                this.image.angle = 0;
-                break;
-            case Direction.RIGHT:
-                if (this.position.x - AppConstants.matrixSize / 2 >= this._positionChangeDirection.x) this.getNextMove();
-                this.image.angle = 90;
-                break;
-            case Direction.LEFT:
-                if (this.position.x - AppConstants.matrixSize / 2 <= this._positionChangeDirection.x) this.getNextMove();
-                this.image.angle = 270;
-                break;
-            case Direction.UP_LEFT:
-                if ((this.position.x - AppConstants.matrixSize / 2 <= this._positionChangeDirection.x) && (this.position.y - AppConstants.matrixSize / 2 <= this._positionChangeDirection.y)) this.getNextMove();
-                this.image.angle = -45;
-                break;
-            case Direction.UP_RIGHT:
-                if ((this.position.x - AppConstants.matrixSize / 2 >= this._positionChangeDirection.x) && (this.position.y - AppConstants.matrixSize / 2 <= this._positionChangeDirection.y)) this.getNextMove();
-                this.image.angle = 45;
-                break;
-            case Direction.DOWN_LEFT:
-                if ((this.position.x - AppConstants.matrixSize / 2 <= this._positionChangeDirection.x) && (this.position.y - AppConstants.matrixSize / 2 >= this._positionChangeDirection.y)) this.getNextMove();
-                this.image.angle = 225;
-                break;
-            case Direction.DOWN_RIGHT:
-                if ((this.position.x - AppConstants.matrixSize / 2 >= this._positionChangeDirection.x) && (this.position.y - AppConstants.matrixSize / 2 >= this._positionChangeDirection.y)) this.getNextMove();
-                this.image.angle = 135;
-                break;
-            default:
-                break;
+        const c1: Circle = { position: this.position, radius: 5 };
+        const c2: Circle = { position: this._positionChangeDirection, radius: 5 };
+        const isReached: boolean = isCollision(c1, c2);
+        if (isReached) {
+            this.getNextMove();
         }
-
-
     }
 
     public getNextMove(): boolean {
 
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
         if (nextMove === undefined) {
-            this.moveEngine.direction = Direction.STAND;
             this.isPauseMove = true;
             return false;
         }
-
-        let nextPositionChangeDirection: PointData;
-        let nextDirection: Direction;
-
-        if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y] != AppConstants.matrixMapValue.availableMoveWay) {
-            switch (nextMove.directions) {
-                case Direction.UP:
-                    if (this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x - 2][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        nextPositionChangeDirection = { x: nextMove.path.x - 1, y: nextMove.path.y };
-                        nextDirection = Direction.UP_LEFT;
-
-                        break;
-                    } else if (this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x + 2][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y };
-                        nextDirection = Direction.UP_RIGHT;
-
-                        break;
-                    }
-                case Direction.LEFT:
-                    if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x + 2][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y - 1 };
-                        nextDirection = Direction.UP_LEFT;
-
-                        break;
-                    } else if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x + 2][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y + 1 };
-                        nextDirection = Direction.DOWN_LEFT;
-
-                        break;
-                    }
-                case Direction.DOWN:
-                    if (this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y - 2] === AppConstants.matrixMapValue.availableMoveWay) {
-                        nextPositionChangeDirection = { x: nextMove.path.x - 1, y:nextMove.path.y };
-                        nextDirection = Direction.DOWN_LEFT;
-
-                        break;
-                    } else if (this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x + 1][nextMove.path.y - 2 ] === AppConstants.matrixMapValue.availableMoveWay) {
-                        nextPositionChangeDirection = { x: nextMove.path.x + 1, y: nextMove.path.y };
-                        nextDirection = Direction.DOWN_RIGHT;
-
-                        break;
-                    }
-                case Direction.RIGHT:
-                    if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x - 2][nextMove.path.y - 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y - 1 };
-                        nextDirection = Direction.UP_RIGHT;
-
-                        break;
-                    } else if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x - 1][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay &&
-                        this._getMatrixMapCb()[nextMove.path.x - 2][nextMove.path.y + 1] === AppConstants.matrixMapValue.availableMoveWay) {
-                        nextPositionChangeDirection = { x: nextMove.path.x, y: nextMove.path.y + 1 };
-                        nextDirection = Direction.DOWN_RIGHT;
-
-                        break;
-                    }
-
-                default:
-                    nextDirection = Direction.STAND;
-                    break;
-            }
-        } else if (this._getMatrixMapCb()[nextMove.path.x][nextMove.path.y] === AppConstants.matrixMapValue.availableMoveWay) {
-            nextDirection = nextMove.directions;
-            nextPositionChangeDirection = nextMove.path;
-
-        } else {
-            nextDirection === Direction.STAND;
-        }
-
-        if (nextDirection != Direction.STAND && nextPositionChangeDirection) {
-
-            this.moveEngine.direction = nextDirection;
-
-            this._positionChangeDirection = { x: nextPositionChangeDirection.x * AppConstants.matrixSize, y: nextPositionChangeDirection.y * AppConstants.matrixSize };
-
-
-            this.isPauseMove = false;
-
-        } else if (nextDirection === Direction.STAND) {
-            this.moveEngine.direction = Direction.STAND;
-            this.isPauseMove = true;
-        }
-
-
+        this._positionChangeDirection = { x: nextMove.path.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: nextMove.path.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+        const newDirection = calculateAngleOfVector(this.image.position, { x: this._positionChangeDirection.x, y: this._positionChangeDirection.y });
+        this.image.angle = newDirection + 90;
+        this.moveEngine.direction = newDirection;
     }
 
     private _useEventEffect() {
