@@ -134,9 +134,9 @@ export class Tank extends BaseObject {
         return this._bfsMoveEngine;
     }
 
-    get nextPosition(): PointData {
-        return { x: (this._positionChangeDirection.x - AppConstants.matrixSize / 2) / AppConstants.matrixSize, y: (this._positionChangeDirection.y - AppConstants.matrixSize / 2) / AppConstants.matrixSize };
-    }
+    // get nextPosition(): PointData {
+    //     return { x: (this._positionChangeDirection.x - AppConstants.matrixSize / 2) / AppConstants.matrixSize, y: (this._positionChangeDirection.y - AppConstants.matrixSize / 2) / AppConstants.matrixSize };
+    // }
 
     set nextPositionChangeDirection(pos: PointData) {
         this._positionChangeDirection = { x: pos.x, y: pos.y };
@@ -193,13 +193,16 @@ export class Tank extends BaseObject {
 
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
         if (nextMove === undefined) {
+            this.isMoving = false;
             this.isPauseMove = true;
             return false;
         }
+
         this._positionChangeDirection = { x: nextMove.path.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: nextMove.path.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
         const newDirection = calculateAngleOfVector(this.image.position, { x: this._positionChangeDirection.x, y: this._positionChangeDirection.y });
         this.image.angle = newDirection + 90;
         this.moveEngine.direction = newDirection;
+        this._isMoving = true;
     }
 
     private _useEventEffect() {
@@ -215,6 +218,7 @@ export class Tank extends BaseObject {
     public update(dt: number) {
         if (this.isPauseMove) {
             this._forceChangeDirectionCd.changeTimeCount += dt;
+            this.isMoving = false;
             if (this._forceChangeDirectionCd.changeTimeCount >= this._forceChangeDirectionCd.changeTimeConst) {
                 this.getNextMove();
                 this._forceChangeDirectionCd.changeTimeCount = 0;

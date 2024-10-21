@@ -70,12 +70,24 @@ export function findCorrectPositionBeforeCollision(c1: Circle, c2?: Circle, squa
         // Calculate position before collision with another circle
         const vector = { x: c1.position.x - c2.position.x, y: c1.position.y - c2.position.y };
         const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+
+        // Kiểm tra distance không bằng 0
+        if (distance === 0) {
+            console.error('Khoảng cách giữa hai hình tròn là 0, không thể tính toán.');
+            return { x: c2.position.x, y: c2.position.y }; // Hoặc giá trị xử lý mặc định khác
+        }
+
         const r = c1.radius + c2.radius;
         const unitVector = { x: vector.x / distance, y: vector.y / distance };
         const correctPosition = {
             x: c2.position.x - unitVector.x * (r - distance),
             y: c2.position.y - unitVector.y * (r - distance)
         };
+
+        if (isNaN(correctPosition.x) || isNaN(correctPosition.y)) {
+            console.log('Giá trị NaN tìm thấy:', correctPosition);
+        }
+
         return correctPosition;
     } else if (square) {
         // Find the closest point on the square to the circle's center
@@ -86,15 +98,23 @@ export function findCorrectPositionBeforeCollision(c1: Circle, c2?: Circle, squa
         const vector = { x: c1.position.x - closestX, y: c1.position.y - closestY };
         const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
 
-        // Calculate the required position before collision
+        // Kiểm tra distance không bằng 0
+        if (distance === 0) {
+            console.error('Khoảng cách từ hình tròn đến điểm gần nhất của hình vuông là 0, không thể tính toán.');
+            return { x: c1.position.x, y: c1.position.y }; // Hoặc giá trị xử lý mặc định khác
+        }
+
         const unitVector = { x: vector.x / distance, y: vector.y / distance };
         const r = c1.radius;
-
-        // Correct position of c1 before collision
         const correctPosition = {
             x: c1.position.x - unitVector.x * (distance - r),
             y: c1.position.y - unitVector.y * (distance - r)
         };
+
+        if (isNaN(correctPosition.x) || isNaN(correctPosition.y)) {
+            console.log('Giá trị NaN tìm thấy:', correctPosition);
+        }
+
         return correctPosition;
     }
 
@@ -143,28 +163,43 @@ export function createBitMapText(option: {content: string, font: string, size: n
     return text;
 }
 
+
 /**
- * calculate new vector for c2 when have collision
- * @param c1 circle 1 (stay).
- * @param c2 circle 2 (move).
- * @returns next position for circle 2 after collision.
+ * Tính toán vị trí mới của hình tròn 1 sau va chạm sao cho đối xứng qua tâm dựa trên góc độ a1.
+ * @param c1 Hình tròn 1 (di chuyển).
+ * @param c2 Hình tròn 2 (đứng yên).
+ * @param angle Góc độ di chuyển ban đầu của hình tròn 1 (a1).
+ * @returns Vị trí mới của hình tròn 1 sau va chạm.
  */
-export function calculateNextPositionAfterCollision(c1: Circle, c2: Circle): PointData {
-    // Tính toán vector va chạm từ c1 đến c2
-    const collisionVector: PointData = { x: c1.position.x - c2.position.x, y: c1.position.y - c2.position.y };
+export function calculateNewPositionSymmetric(c1: Circle, c2: Circle, angle: number): PointData {
+    // Chuyển đổi góc sang radians
+    const angleRad = (angle * Math.PI) / 180;
+
+    // Tính toán vector di chuyển ban đầu của hình tròn 1
+    const moveVector: PointData = { x: Math.cos(angleRad), y: Math.sin(angleRad) };
+
+    // Tính toán vector từ c1 đến c2
+    const collisionVector: PointData = { x: c2.position.x - c1.position.x, y: c2.position.y - c1.position.y };
+
+    // Tính khoảng cách giữa hai hình tròn
+    const distance = Math.sqrt(collisionVector.x * collisionVector.x + collisionVector.y * collisionVector.y);
 
     // Chuẩn hóa vector va chạm
-    const distance = Math.sqrt(collisionVector.x * collisionVector.x + collisionVector.y * collisionVector.y);
     const unitCollisionVector: PointData = { x: collisionVector.x / distance, y: collisionVector.y / distance };
 
-    // Tính toán vị trí mới của c2 sau va chạm sao cho không va chạm lại với c1 và cách vị trí hiện tại 32 pixel
-    const r = c1.radius + c2.radius;
-    const newPositionDistance = 32; // Khoảng cách mong muốn từ vị trí hiện tại
-    const nextPosition: PointData = {
-        x: c2.position.x + unitCollisionVector.x * newPositionDistance,
-        y: c2.position.y + unitCollisionVector.y * newPositionDistance
+    // Tính toán góc phản xạ qua vector va chạm
+    const dotProduct = moveVector.x * unitCollisionVector.x + moveVector.y * unitCollisionVector.y;
+    const reflectionVector: PointData = {
+        x: moveVector.x - 2 * dotProduct * unitCollisionVector.x,
+        y: moveVector.y - 2 * dotProduct * unitCollisionVector.y
     };
 
-    return nextPosition;
+    // Tính toán vị trí mới của c1
+    const newPosition: PointData = {
+        x: c1.position.x + reflectionVector.x * 32, // Khoảng cách mới
+        y: c1.position.y + reflectionVector.y * 32
+    };
+
+    return newPosition;
 }
 

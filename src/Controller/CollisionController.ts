@@ -1,7 +1,7 @@
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
-import { Circle, Direction, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn, Square } from '../Type';
+import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn, Square } from '../Type';
 import { AnimatedSprite, Sprite } from 'pixi.js';
 import Emitter, { findCorrectPositionBeforeCollision, getRandomArbitrary, isCollision } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
@@ -111,15 +111,15 @@ export class CollisionController {
 
                         // handle collision of tanks
                         if (isCollision(c1, c2)) {
-                            if (object1.direction === Direction.STAND) {
+                            if (!object1.isMoving) {
                                 const correctPosition = findCorrectPositionBeforeCollision(c1, c2);
                                 object2.position = correctPosition;
-                                object2.getNextMove();
+                                object2.isPauseMove = true;
                             } else {
                                 const correctPosition = findCorrectPositionBeforeCollision(c2, c1);
 
                                 object1.position = correctPosition;
-                                object1.getNextMove();
+                                object1.isPauseMove = true;
 
                             }
 

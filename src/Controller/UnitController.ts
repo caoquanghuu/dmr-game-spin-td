@@ -181,6 +181,7 @@ export class UnitController {
             // update and assign ene position on matrix map
             unit.update(dt);
             const matrixPosition: PointData = unit.getMatrixPosition();
+            if (matrixPosition.x < 0 || matrixPosition.x > 30 || matrixPosition.y < 0 || matrixPosition.y > 16) return;
             if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
 
 
