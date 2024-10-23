@@ -3,7 +3,7 @@ import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
 import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn, Square } from '../Type';
 import { AnimatedSprite, Sprite } from 'pixi.js';
-import Emitter, { findCorrectPositionBeforeCollision, getRandomArbitrary, isCollision } from '../Util';
+import Emitter, { calculateNextPositionAfterCollision, changeEnumDirectionToAngle, comparePosition, findCorrectPositionBeforeCollision, getRandomArbitrary, isCollision } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { ControlUnit } from '../ObjectsPool/ControlUnit/ControlUnit';
 import { BaseObject } from '../ObjectsPool/BaseObject';
@@ -91,6 +91,7 @@ export class CollisionController {
                         if (isCollision(c2, null, square)) {
                             const correctPosition = findCorrectPositionBeforeCollision(c2, null, square);
                             object2.position = correctPosition;
+                            object2.getNextMove();
                         }
                     }
                 });
@@ -114,16 +115,51 @@ export class CollisionController {
                             if (!object1.isMoving) {
                                 const correctPosition = findCorrectPositionBeforeCollision(c1, c2);
                                 object2.position = correctPosition;
+                                const nextPosition = calculateNextPositionAfterCollision(c2, c1, object2.direction);
+                                object2.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
+                                object2._isForceMove = true;
                                 object2.isPauseMove = true;
-                            } else {
+                                return;
+                            } else if (!object2.isMoving) {
+                                // case object 1 behind of object 2
                                 const correctPosition = findCorrectPositionBeforeCollision(c2, c1);
-
                                 object1.position = correctPosition;
+                                const nextPosition = calculateNextPositionAfterCollision(c1, c2, object1.direction);
+                                object1.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
+                                object1._isForceMove = true;
+                                object1.isPauseMove = true;
+                                return;
+                            }
+                            const angle1 = object1.getBFSDirection();
+                            const angle2 = object2.getBFSDirection();
+                            const crossProduct = comparePosition({ position: object1.position, angle: angle1 }, { position: object2.position, angle: angle2 });
+                            // in case object 1 front of object 2
+                            if (crossProduct > 0) {
+                                // recalculate position of object 2
+                                const correctPosition = findCorrectPositionBeforeCollision(c1, c2);
+                                object2.position = correctPosition;
+                                const nextPosition = calculateNextPositionAfterCollision(c2, c1, object2.direction);
+                                object2.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
+                                object2._isForceMove = true;
+                                object2.isPauseMove = true;
+
+                            } else if (crossProduct < 0) {
+                                // case object 1 behind of object 2
+                                const correctPosition = findCorrectPositionBeforeCollision(c2, c1);
+                                object1.position = correctPosition;
+                                const nextPosition = calculateNextPositionAfterCollision(c1, c2, object1.direction);
+                                object1.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
+                                object1._isForceMove = true;
                                 object1.isPauseMove = true;
 
+                            } else {
+                                // case object1 and object 2 moving same
+                                const correctPosition1 = findCorrectPositionBeforeCollision(c1, c2);
+                                object2.position = correctPosition1;
+                                object2.isPauseMove = true;
+                                // const correctPosition2 = findCorrectPositionBeforeCollision(c2, c1);
+                                // object1.position = correctPosition2;
                             }
-
-
                         }
 
                         // handle when 2 tank is their own ene
@@ -223,7 +259,7 @@ export class CollisionController {
                     unitsCollisionWithBullet.forEach(unit => {
                         if (object1.effectType === EffectType.SLOW) {
                             // speed of enemy will be reduce
-                            const speed1 = 60;
+                            const speed1 = 30;
                             const speed2 = unit.speed;
                             unit.speed = speed1;
                             setTimeout(() => {
