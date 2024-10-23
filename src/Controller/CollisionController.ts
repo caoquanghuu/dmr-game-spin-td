@@ -3,7 +3,7 @@ import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
 import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn, Square } from '../Type';
 import { AnimatedSprite, Sprite } from 'pixi.js';
-import Emitter, { calculateNextPositionAfterCollision, changeEnumDirectionToAngle, comparePosition, findCorrectPositionBeforeCollision, getRandomArbitrary, isCollision } from '../Util';
+import Emitter, { calculateNextPositionAfterCollision, comparePosition, findCorrectPositionBeforeCollision, getRandomArbitrary, isCollision } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { ControlUnit } from '../ObjectsPool/ControlUnit/ControlUnit';
 import { BaseObject } from '../ObjectsPool/BaseObject';
@@ -49,6 +49,7 @@ export class CollisionController {
             if (isCollision(c1, c2)) {
                 ene.targetId = this.nuclearBase.id;
                 ene.targetPosition = this.nuclearBase.position;
+                ene.fireStage = true;
             }
 
             // check ene vs fly unit
@@ -80,23 +81,6 @@ export class CollisionController {
             // get objects nearby
             const otherObjects = this._mapControl.getObjectsInNearbyCells(object1.position.x, object1.position.y);
 
-            // check collision of environment object with tanks
-            if (object1 instanceof Sprite) {
-                const square: Square = { position: { x: object1.position.x, y:  object1.position.y }, width: object1.width, height: object1.height };
-                // const c1: Circle = { position: { x: object1.position.x + AppConstants.matrixSize / 2, y: object1.position.y + AppConstants.matrixSize / 2 }, radius: object1.width / 2 };
-                otherObjects.forEach(object2 => {
-                    if (object2 instanceof Tank) {
-                        const c2: Circle = { position: object2.position, radius: object2.image.width / 2 };
-
-                        if (isCollision(c2, null, square)) {
-                            const correctPosition = findCorrectPositionBeforeCollision(c2, null, square);
-                            object2.position = correctPosition;
-                            object2.getNextMove();
-                        }
-                    }
-                });
-            }
-
 
             if (object1 instanceof Tank) {
                 // avoid when ene dead but this still loop to it
@@ -112,21 +96,21 @@ export class CollisionController {
 
                         // handle collision of tanks
                         if (isCollision(c1, c2)) {
-                            if (!object1.isMoving) {
+                            if (object1.isMoving === false || object1.fireStage) {
                                 const correctPosition = findCorrectPositionBeforeCollision(c1, c2);
                                 object2.position = correctPosition;
-                                const nextPosition = calculateNextPositionAfterCollision(c2, c1, object2.direction);
-                                object2.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
-                                object2._isForceMove = true;
+                                // const nextPosition = calculateNextPositionAfterCollision(c2, c1, object2.direction);
+                                // object2.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
+                                // object2._isForceMove = true;
                                 object2.isPauseMove = true;
                                 return;
-                            } else if (!object2.isMoving) {
+                            } else if (object2.isMoving === false || object2.fireStage) {
                                 // case object 1 behind of object 2
                                 const correctPosition = findCorrectPositionBeforeCollision(c2, c1);
                                 object1.position = correctPosition;
-                                const nextPosition = calculateNextPositionAfterCollision(c1, c2, object1.direction);
-                                object1.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
-                                object1._isForceMove = true;
+                                // const nextPosition = calculateNextPositionAfterCollision(c1, c2, object1.direction);
+                                // object1.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
+                                // object1._isForceMove = true;
                                 object1.isPauseMove = true;
                                 return;
                             }
@@ -170,17 +154,36 @@ export class CollisionController {
                                 if (!object1.targetId || !object1.targetPosition) {
                                     object1.targetId = object2.id;
                                     object1.targetPosition = object2.getUpdatedPosition();
+                                    object1.fireStage = true;
                                 }
 
                                 if (!object2.targetId || !object2.targetPosition) {
                                     object2.targetId = object1.id;
                                     object2.targetPosition = object1.getUpdatedPosition();
+                                    object2.fireStage = true;
                                 }
                             }
                         }
                     }
                 });
 
+            }
+
+            // check collision of environment object with tanks
+            if (object1 instanceof Sprite) {
+                const square: Square = { position: { x: object1.position.x, y:  object1.position.y }, width: object1.width, height: object1.height };
+                // const c1: Circle = { position: { x: object1.position.x + AppConstants.matrixSize / 2, y: object1.position.y + AppConstants.matrixSize / 2 }, radius: object1.width / 2 };
+                otherObjects.forEach(object2 => {
+                    if (object2 instanceof Tank) {
+                        const c2: Circle = { position: object2.position, radius: object2.image.width / 2 };
+
+                        if (isCollision(c2, null, square)) {
+                            const correctPosition = findCorrectPositionBeforeCollision(c2, null, square);
+                            object2.position = correctPosition;
+                            object2.getNextMove();
+                        }
+                    }
+                });
             }
 
             // handle bullet collision

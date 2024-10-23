@@ -1,6 +1,7 @@
 import { BitmapText, EventEmitter, PointData, Sprite } from 'pixi.js';
 import { Circle, Direction, Square } from './Type';
 import { AssetsLoader } from './AssetsLoader';
+import { AppConstants } from './GameScene/Constants';
 
 export const switchFn = (lookupObject, defaultCase = '_default') => expression => (lookupObject[expression] || lookupObject[defaultCase])();
 
@@ -83,11 +84,6 @@ export function findCorrectPositionBeforeCollision(c1: Circle, c2?: Circle, squa
             x: c2.position.x - unitVector.x * (r - distance),
             y: c2.position.y - unitVector.y * (r - distance)
         };
-
-        if (isNaN(correctPosition.x) || isNaN(correctPosition.y)) {
-            console.log('Giá trị NaN tìm thấy:', correctPosition);
-        }
-
         return correctPosition;
     } else if (square) {
         // Find the closest point on the square to the circle's center
@@ -100,8 +96,9 @@ export function findCorrectPositionBeforeCollision(c1: Circle, c2?: Circle, squa
 
         // Kiểm tra distance không bằng 0
         if (distance === 0) {
-            console.error('Khoảng cách từ hình tròn đến điểm gần nhất của hình vuông là 0, không thể tính toán.');
-            return { x: c1.position.x, y: c1.position.y }; // Hoặc giá trị xử lý mặc định khác
+            // try calculate by circle
+            const c2: Circle = { position: { x: square.position.x + AppConstants.matrixSize / 2, y: square.position.y + AppConstants.matrixSize / 2 }, radius: square.width / 2 };
+            return findCorrectPositionBeforeCollision(c2, c1); // Hoặc giá trị xử lý mặc định khác
         }
 
         const unitVector = { x: vector.x / distance, y: vector.y / distance };

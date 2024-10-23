@@ -1,4 +1,4 @@
-import { BSFNextMove, Circle, Direction, EnemiesType, FireBulletOption, FireTime, GetMatrixMapFn, SetMatrixMapFn, TowerType } from '../../Type';
+import { BSFNextMove, Circle, EnemiesType, FireBulletOption, FireTime, GetMatrixMapFn, SetMatrixMapFn, TowerType } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BSFMoveEngine } from '../../MoveEngine/BSFMoveEngine';
@@ -16,7 +16,7 @@ export class Tank extends BaseObject {
     private _goldReward: number = 2;
     private _fireRadius: number = 30;
     public fireTimeCd: FireTime= { fireTimeConst: 3000, fireTimeCount: 0 };
-    private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 300, changeTimeCount: 0 };
+    private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 500, changeTimeCount: 0 };
     private _isPauseMove: boolean = false;
     public _isForceMove: boolean = false;
     public fireStage: boolean = false;
@@ -176,6 +176,8 @@ export class Tank extends BaseObject {
         this.isPauseMove = false;
         this._targetID = undefined;
         this._targetPosition = undefined;
+        this._positionChangeDirection = { x: null, y: null };
+        this.fireStage = false;
     }
 
     public getUpdatedPosition(): PointData {
@@ -232,6 +234,8 @@ export class Tank extends BaseObject {
             if (this.targetId === info.id) {
                 this._targetPosition = null;
                 this._targetID = null;
+                this.fireStage = false;
+                this.isPauseMove = true;
             }
         });
     }
@@ -267,7 +271,6 @@ export class Tank extends BaseObject {
         this._bfsMoveEngine.update();
         if (this._isMoving) {
             this._moveByBsf(dt);
-
         }
 
     }

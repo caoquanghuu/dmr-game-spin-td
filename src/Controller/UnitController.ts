@@ -1,4 +1,4 @@
-import { CreateEnemiesOption, Direction, GetEnemiesFromPoolFn, GetExplosionFromPoolFn, GetMatrixMapFn, ReturnEnemiesToPoolFn, ReturnExplosionToPoolFn, SetMatrixMapFn } from '../Type';
+import { CreateEnemiesOption, GetEnemiesFromPoolFn, GetExplosionFromPoolFn, GetMatrixMapFn, ReturnEnemiesToPoolFn, ReturnExplosionToPoolFn, SetMatrixMapFn } from '../Type';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
 import { AnimatedSprite, PointData } from 'pixi.js';
 import Emitter, { getRandomArbitrary } from '../Util';
