@@ -263,8 +263,9 @@ export class Tank extends BaseObject {
             }
 
         }
+        this.fireTimeCd.fireTimeCount += dt;
         if (this.fireStage) {
-            this.fireTimeCd.fireTimeCount += dt;
+
             this.fire();
         }
         this.hpBar.position = this.image.position;

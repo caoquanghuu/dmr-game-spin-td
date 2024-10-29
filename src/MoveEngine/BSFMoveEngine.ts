@@ -39,7 +39,7 @@ export class BSFMoveEngine {
         return { directions: nextDirection, path: { x: nextPath[0].x, y: nextPath[0].y } };
     }
 
-    private _bfs(): BSFMove | null {
+    private _bfs(isAvoidUnits: boolean): BSFMove | null {
         const headPoint = this._getHeadPointPosition();
 
         const queue: PointData[] = [headPoint];
@@ -92,7 +92,7 @@ export class BSFMoveEngine {
                     next.y < 16 &&
                     !visited.has(`${next.x},${next.y}`)
                 ) {
-                    if (this._checkNextMove(next)) {
+                    if (this._checkNextMove(next, isAvoidUnits)) {
                         queue.push(next);
                         visited.add(`${next.x},${next.y}`);
                         parent[`${next.x},${next.y}`] = current;
@@ -129,7 +129,7 @@ export class BSFMoveEngine {
             for (const dir of directions) {
                 const next: PointData = { x: point.x + dir.x, y: point.y + dir.y };
 
-                const isPositionAvailable: boolean = this._checkNextMove(next);
+                const isPositionAvailable: boolean = this._checkNextMove(next, false);
 
                 if (
                     isPositionAvailable &&
@@ -148,15 +148,21 @@ export class BSFMoveEngine {
         return -1;
     }
 
-    private _checkNextMove(point: PointData): boolean {
+    private _checkNextMove(point: PointData, isAvoidUnits: boolean): boolean {
         if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.environment) return false;
         if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.tower) return false;
         if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.availableTowerBuild) return false;
-
+        if (isAvoidUnits) {
+            if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.enemy) return false;
+        }
         return true;
     }
 
     public update() {
-        this._bsfMove = this._bfs();
+        // try move by avoid units
+        let bsfMove: BSFMove = this._bfs(true);
+        // in case cant not move by avoid other units
+        if (!bsfMove) bsfMove = this._bfs(false);
+        this._bsfMove = bsfMove;
     }
 }
