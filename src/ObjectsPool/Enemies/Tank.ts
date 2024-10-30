@@ -1,4 +1,4 @@
-import { BSFNextMove, Circle, EnemiesType, FireBulletOption, FireTime, GetMatrixMapFn, SetMatrixMapFn, TowerType } from '../../Type';
+import { BSFNextMove, Circle, EnemiesType, FireBulletOption, FireTime, GetMatrixMapFn, SetMatrixMapFn, TowerType, UnitStage } from '../../Type';
 import { BaseObject } from '../BaseObject';
 import { BaseEngine } from '../../MoveEngine/BaseEngine';
 import { BSFMoveEngine } from '../../MoveEngine/BSFMoveEngine';
@@ -11,15 +11,12 @@ export class Tank extends BaseObject {
     private _dameDeal: number;
     private _enemiesType: EnemiesType;
     private _bfsMoveEngine: BSFMoveEngine;
-    private _isMoving: boolean = false;
     private _positionChangeDirection: PointData = { x: 0, y: 0 };
     private _goldReward: number = 2;
     private _fireRadius: number = 30;
     public fireTimeCd: FireTime= { fireTimeConst: 3000, fireTimeCount: 0 };
     private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 500, changeTimeCount: 0 };
-    private _isPauseMove: boolean = false;
-    public _isForceMove: boolean = false;
-    public fireStage: boolean = false;
+    public unitStage: UnitStage = UnitStage.MOVING;
 
     private _targetPosition: PointData;
     private _targetID: number;
@@ -119,10 +116,6 @@ export class Tank extends BaseObject {
         return this._enemiesType;
     }
 
-    set isMoving(isMoving: boolean) {
-        this._isMoving = isMoving;
-    }
-
     get goldReward(): number {
         return this._goldReward;
     }
@@ -134,11 +127,6 @@ export class Tank extends BaseObject {
 
     get bfsMoveEngine(): BSFMoveEngine {
         return this._bfsMoveEngine;
-    }
-
-    set isPauseMove(isPause: boolean) {
-        this._isPauseMove = isPause;
-        this._forceChangeDirectionCd.changeTimeCount = 0;
     }
 
     // get nextPosition(): PointData {
@@ -167,17 +155,13 @@ export class Tank extends BaseObject {
 
     public startMove() {
         this.getNextMove();
-        this._isMoving = true;
         this.isDead = false;
     }
 
     public reset() {
-        this._isMoving = false;
-        this.isPauseMove = false;
         this._targetID = undefined;
         this._targetPosition = undefined;
         this._positionChangeDirection = { x: null, y: null };
-        this.fireStage = false;
     }
 
     public getUpdatedPosition(): PointData {
@@ -186,16 +170,14 @@ export class Tank extends BaseObject {
 
     public fire() {
         if (!this._targetID && !this._targetPosition) {
-            this.isMoving = true;
+            this.unitStage = UnitStage.IDLE;
             return;
         }
-        this._isMoving = false;
         if (this.fireTimeCd.fireTimeCount < this.fireTimeCd.fireTimeConst) return;
 
         const option: FireBulletOption = { position: this.position, target: this._targetPosition, dame: this.dameDeal, speed: this.speed * 3, isEneBullet: this.isEne, towerType: TowerType.tinker };
         Emitter.emit(AppConstants.event.createBullet, option);
         this.fireTimeCd.fireTimeCount = 0;
-
     }
 
 
@@ -216,12 +198,14 @@ export class Tank extends BaseObject {
 
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
         if (nextMove === undefined) {
-            this._isPauseMove = true;
-            this._isMoving = false;
+            this.unitStage = UnitStage.IDLE;
+            // this._isPauseMove = true;
+            // this._isMoving = false;
             return false;
         }
 
         this._positionChangeDirection = { x: nextMove.path.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: nextMove.path.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
+        this.unitStage = UnitStage.MOVING;
         // const newDirection = calculateAngleOfVector(this.image.position, { x: this._positionChangeDirection.x, y: this._positionChangeDirection.y });
         // this.image.angle = newDirection + 90;
         // this.moveEngine.direction = newDirection;
@@ -234,45 +218,74 @@ export class Tank extends BaseObject {
             if (this.targetId === info.id) {
                 this._targetPosition = null;
                 this._targetID = null;
-                this.fireStage = false;
-                this.isPauseMove = true;
             }
         });
     }
 
 
     public update(dt: number) {
-        if (this._isPauseMove) {
-            this._forceChangeDirectionCd.changeTimeCount += dt;
-            this.isMoving = false;
-            if (this._forceChangeDirectionCd.changeTimeCount >= this._forceChangeDirectionCd.changeTimeConst) {
-                if (this._isForceMove) {
-                    //
+        switch (this.unitStage) {
+            case UnitStage.MOVING:
+                this._moveByBsf(dt);
+                break;
+            case UnitStage.FORCE_MOVE:
+                this.move(dt);
+                break;
+            case UnitStage.ATTACKING:
+                this.fireTimeCd.fireTimeCount += dt;
+                this.fire();
+                break;
+            case UnitStage.IDLE:
+                this._forceChangeDirectionCd.changeTimeCount += dt;
+                if (this._forceChangeDirectionCd.changeTimeCount >= this._forceChangeDirectionCd.changeTimeConst) {
+                    this.getNextMove();
                     this._forceChangeDirectionCd.changeTimeCount = 0;
-                    this.isMoving = true;
-                    this._isPauseMove = false;
-                    this._isForceMove = false;
-                } else
-                if (this.getNextMove()) {
-                    this._forceChangeDirectionCd.changeTimeCount = 0;
-                    this.isMoving = true;
-                    this._isPauseMove = false;
                 }
-
-
-            }
-
+                break;
+            case UnitStage.IDLE_TO_MOVE:
+                this._forceChangeDirectionCd.changeTimeCount += dt;
+                if (this._forceChangeDirectionCd.changeTimeCount >= this._forceChangeDirectionCd.changeTimeConst) {
+                    this.unitStage = UnitStage.MOVING;
+                    this._forceChangeDirectionCd.changeTimeCount = 0;
+                }
+                break;
+            default:
+                break;
         }
-        this.fireTimeCd.fireTimeCount += dt;
-        if (this.fireStage) {
 
-            this.fire();
-        }
         this.hpBar.position = this.image.position;
         this._bfsMoveEngine.update();
-        if (this._isMoving) {
-            this._moveByBsf(dt);
-        }
+        // if (this._isPauseMove) {
+        //     this._forceChangeDirectionCd.changeTimeCount += dt;
+        //     this.isMoving = false;
+        //     if (this._forceChangeDirectionCd.changeTimeCount >= this._forceChangeDirectionCd.changeTimeConst) {
+        //         if (this._isForceMove) {
+        //             //
+        //             this._forceChangeDirectionCd.changeTimeCount = 0;
+        //             this.isMoving = true;
+        //             this._isPauseMove = false;
+        //             this._isForceMove = false;
+        //         } else
+        //         if (this.getNextMove()) {
+        //             this._forceChangeDirectionCd.changeTimeCount = 0;
+        //             this.isMoving = true;
+        //             this._isPauseMove = false;
+        //         }
+
+
+        //     }
+
+        // }
+        // this.fireTimeCd.fireTimeCount += dt;
+        // if (this.fireStage) {
+
+        //     this.fire();
+        // }
+        // this.hpBar.position = this.image.position;
+        // this._bfsMoveEngine.update();
+        // if (this._isMoving) {
+        //     this._moveByBsf(dt);
+        // }
 
     }
 }

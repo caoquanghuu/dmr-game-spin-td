@@ -130,6 +130,14 @@ export enum AllyTanksType {
     sovietTank = 'soviet-tank'
 }
 
+export enum UnitStage {
+    MOVING,
+    FORCE_MOVE,
+    ATTACKING,
+    IDLE,
+    IDLE_TO_MOVE
+}
+
 export type SaveGameData = {wave: number, gold: number, towers: {matrixPosition: PointData, level: number, towerType: TowerType}[], nuclearBaseHp: number, soundOption: boolean};
 
 export type GetTowerFromPoolFn = (towerType: TowerType) => Tower;
