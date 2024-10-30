@@ -1,9 +1,9 @@
 import { Tower } from '../ObjectsPool/Tower/Tower';
 import { Bullet } from '../ObjectsPool/Bullet';
 import { Tank } from '../ObjectsPool/Enemies/Tank';
-import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn, Square } from '../Type';
+import { Circle, EffectType, GetExplosionFromPoolFn, GetObjectFromGameSceneFn, ReturnExplosionToPoolFn, Square, UnitStage } from '../Type';
 import { AnimatedSprite, Sprite } from 'pixi.js';
-import Emitter, { calculateNextPositionAfterCollision, comparePosition, findCorrectPositionBeforeCollision, getRandomArbitrary, isCollision } from '../Util';
+import Emitter, { comparePosition, findCorrectPositionBeforeCollision, getRandomArbitrary, isCollision } from '../Util';
 import { AppConstants } from '../GameScene/Constants';
 import { ControlUnit } from '../ObjectsPool/ControlUnit/ControlUnit';
 import { BaseObject } from '../ObjectsPool/BaseObject';
@@ -49,7 +49,8 @@ export class CollisionController {
             if (isCollision(c1, c2)) {
                 ene.targetId = this.nuclearBase.id;
                 ene.targetPosition = this.nuclearBase.position;
-                ene.fireStage = true;
+                ene.unitStage = UnitStage.ATTACKING;
+                // ene.fireStage = true;
             }
 
             // check ene vs fly unit
@@ -96,22 +97,23 @@ export class CollisionController {
 
                         // handle collision of tanks
                         if (isCollision(c1, c2)) {
-                            if (object1.isMoving === false || object1.fireStage) {
+                            if (object1.unitStage === UnitStage.IDLE || object1.unitStage === UnitStage.ATTACKING) {
+                                object2.unitStage = UnitStage.IDLE;
+                                // recalculate position of object 2
                                 const correctPosition = findCorrectPositionBeforeCollision(c1, c2);
                                 object2.position = correctPosition;
                                 // const nextPosition = calculateNextPositionAfterCollision(c2, c1, object2.direction);
                                 // object2.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
-                                // object2._isForceMove = true;
-                                object2.isPauseMove = true;
                                 return;
-                            } else if (object2.isMoving === false || object2.fireStage) {
+                            } else if (object2.unitStage === UnitStage.IDLE || object2.unitStage === UnitStage.ATTACKING) {
                                 // case object 1 behind of object 2
                                 const correctPosition = findCorrectPositionBeforeCollision(c2, c1);
                                 object1.position = correctPosition;
                                 // const nextPosition = calculateNextPositionAfterCollision(c1, c2, object1.direction);
                                 // object1.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
                                 // object1._isForceMove = true;
-                                object1.isPauseMove = true;
+                                // object1.isPauseMove = true;
+                                object1.unitStage = UnitStage.IDLE;
                                 return;
                             }
                             const angle1 = object1.getBFSDirection();
@@ -119,28 +121,32 @@ export class CollisionController {
                             const crossProduct = comparePosition({ position: object1.position, angle: angle1 }, { position: object2.position, angle: angle2 });
                             // in case object 1 front of object 2
                             if (crossProduct > 0) {
+                                object2.unitStage = UnitStage.IDLE;
                                 // recalculate position of object 2
                                 const correctPosition = findCorrectPositionBeforeCollision(c1, c2);
                                 object2.position = correctPosition;
-                                const nextPosition = calculateNextPositionAfterCollision(c2, c1, object2.direction);
-                                object2.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
-                                object2._isForceMove = true;
-                                object2.isPauseMove = true;
+                                // const nextPosition = calculateNextPositionAfterCollision(c2, c1, angle2);
+                                // object2.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
+
+                                // object2._isForceMove = true;
+                                // object2.isPauseMove = true;
 
                             } else if (crossProduct < 0) {
                                 // case object 1 behind of object 2
                                 const correctPosition = findCorrectPositionBeforeCollision(c2, c1);
                                 object1.position = correctPosition;
-                                const nextPosition = calculateNextPositionAfterCollision(c1, c2, object1.direction);
-                                object1.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
-                                object1._isForceMove = true;
-                                object1.isPauseMove = true;
+                                // const nextPosition = calculateNextPositionAfterCollision(c1, c2, angle1);
+                                // object1.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
+                                // object1._isForceMove = true;
+                                // object1.isPauseMove = true;
+                                object1.unitStage = UnitStage.IDLE;
 
                             } else {
                                 // case object1 and object 2 moving same
                                 const correctPosition1 = findCorrectPositionBeforeCollision(c1, c2);
                                 object2.position = correctPosition1;
-                                object2.isPauseMove = true;
+                                object2.unitStage = UnitStage.IDLE;
+                                // object2.isPauseMove = true;
                                 // const correctPosition2 = findCorrectPositionBeforeCollision(c2, c1);
                                 // object1.position = correctPosition2;
                             }
@@ -154,13 +160,15 @@ export class CollisionController {
                                 if (!object1.targetId || !object1.targetPosition) {
                                     object1.targetId = object2.id;
                                     object1.targetPosition = object2.getUpdatedPosition();
-                                    object1.fireStage = true;
+                                    object1.unitStage = UnitStage.ATTACKING;
+                                    // object1.fireStage = true;
                                 }
 
                                 if (!object2.targetId || !object2.targetPosition) {
                                     object2.targetId = object1.id;
                                     object2.targetPosition = object1.getUpdatedPosition();
-                                    object2.fireStage = true;
+                                    object2.unitStage = UnitStage.ATTACKING;
+                                    // object2.fireStage = true;
                                 }
                             }
                         }
@@ -181,6 +189,7 @@ export class CollisionController {
                             const correctPosition = findCorrectPositionBeforeCollision(c2, null, square);
                             object2.position = correctPosition;
                             object2.getNextMove();
+                            object2.unitStage = UnitStage.MOVING;
                         }
                     }
                 });
