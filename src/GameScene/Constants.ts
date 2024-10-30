@@ -40,7 +40,8 @@ export namespace AppConstants {
         enemy: 4,
         ally: 6,
         tower: 5,
-        spawnAllyPosition: 7
+        spawnAllyPosition: 7,
+        changeDirectionPoint: 8
     };
 
     export const bulletCount = 5;
