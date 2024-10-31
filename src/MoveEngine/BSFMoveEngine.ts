@@ -5,6 +5,7 @@ export class BSFMoveEngine {
     private _getMatrixMapCb: GetMatrixMapFn;
     private _bsfMove: BSFMove;
     private _targetValue: number;
+    private _isEne: boolean = false;
     private _getHeadPointPosition: GetHeadPointPositionFn;
 
     constructor(getHeadPointPosition: GetHeadPointPositionFn, targetValue: number, getMatrixMap: GetMatrixMapFn) {
@@ -19,6 +20,14 @@ export class BSFMoveEngine {
 
     set headPoint(headPoint: PointData) {
         this.headPoint = headPoint;
+    }
+
+    get isEne(): boolean {
+        return this._isEne;
+    }
+
+    set isEne(isEne: boolean) {
+        this._isEne = isEne;
     }
 
     get bsfNextMove(): BSFNextMove {
@@ -154,7 +163,13 @@ export class BSFMoveEngine {
         if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.availableTowerBuild) return false;
         if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.changeDirectionPoint) return false;
         if (isAvoidUnits) {
-            if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.enemy) return false;
+            if (this._isEne) {
+                if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.enemy) return false;
+            } else {
+                if (this._getMatrixMapCb()[point.x][point.y] === AppConstants.matrixMapValue.ally) return false;
+            }
+
+
         }
         return true;
     }

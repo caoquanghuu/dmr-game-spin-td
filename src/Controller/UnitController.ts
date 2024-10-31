@@ -77,6 +77,7 @@ export class UnitController {
         if (isEne) {
             unit.targetValue = AppConstants.matrixMapValue.nuclearBase;
             unit.matrixValue = AppConstants.matrixMapValue.enemy;
+            unit.bfsMoveEngine.isEne = true;
 
             unit.goldReward = wave + 1;
             this._enemies.push(unit);
@@ -84,6 +85,7 @@ export class UnitController {
         } else {
             unit.targetValue = AppConstants.matrixMapValue.enemy;
             unit.matrixValue = AppConstants.matrixMapValue.ally;
+            unit.bfsMoveEngine.isEne = false;
             this._allies.push(unit);
 
             // play sound rd
@@ -175,7 +177,7 @@ export class UnitController {
 
     }
 
-    private _updateUnits(units: Tank[], dt: number) {
+    private _updateUnits(units: Tank[], dt: number, isEne: boolean) {
         // update for ene
         units.forEach(unit => {
             // update and assign ene position on matrix map
@@ -184,8 +186,12 @@ export class UnitController {
             if (matrixPosition.x < 0 || matrixPosition.x > 30 || matrixPosition.y < 0 || matrixPosition.y > 16) return;
             if (this._getMatrixMapCb()[matrixPosition.x][matrixPosition.y] === AppConstants.matrixMapValue.availableMoveWay) {
 
+                if (isEne) {
+                    this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.enemy);
+                } else {
+                    this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.ally);
+                }
 
-                this._setMatrixMapCb(matrixPosition.x, matrixPosition.y, AppConstants.matrixMapValue.enemy);
                 // unit.g1.position = { x: matrixPosition.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: matrixPosition.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
 
             }
@@ -322,8 +328,8 @@ export class UnitController {
             }
         }));
 
-        this._updateUnits(this._enemies, dt);
-        this._updateUnits(this._allies, dt);
+        this._updateUnits(this._enemies, dt, true);
+        this._updateUnits(this._allies, dt, false);
 
         this._time += dt;
 
