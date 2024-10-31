@@ -97,25 +97,21 @@ export class CollisionController {
 
                         // handle collision of tanks
                         if (isCollision(c1, c2)) {
+
                             if (object1.unitStage === UnitStage.IDLE || object1.unitStage === UnitStage.ATTACKING) {
                                 object2.unitStage = UnitStage.IDLE;
                                 // recalculate position of object 2
                                 const correctPosition = findCorrectPositionBeforeCollision(c1, c2);
                                 object2.position = correctPosition;
-                                // const nextPosition = calculateNextPositionAfterCollision(c2, c1, object2.direction);
-                                // object2.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
                                 return;
                             } else if (object2.unitStage === UnitStage.IDLE || object2.unitStage === UnitStage.ATTACKING) {
                                 // case object 1 behind of object 2
                                 const correctPosition = findCorrectPositionBeforeCollision(c2, c1);
                                 object1.position = correctPosition;
-                                // const nextPosition = calculateNextPositionAfterCollision(c1, c2, object1.direction);
-                                // object1.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
-                                // object1._isForceMove = true;
-                                // object1.isPauseMove = true;
                                 object1.unitStage = UnitStage.IDLE;
                                 return;
                             }
+
                             const angle1 = object1.getBFSDirection();
                             const angle2 = object2.getBFSDirection();
                             const crossProduct = comparePosition({ position: object1.position, angle: angle1 }, { position: object2.position, angle: angle2 });
@@ -125,20 +121,10 @@ export class CollisionController {
                                 // recalculate position of object 2
                                 const correctPosition = findCorrectPositionBeforeCollision(c1, c2);
                                 object2.position = correctPosition;
-                                // const nextPosition = calculateNextPositionAfterCollision(c2, c1, angle2);
-                                // object2.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
-
-                                // object2._isForceMove = true;
-                                // object2.isPauseMove = true;
-
                             } else if (crossProduct < 0) {
                                 // case object 1 behind of object 2
                                 const correctPosition = findCorrectPositionBeforeCollision(c2, c1);
                                 object1.position = correctPosition;
-                                // const nextPosition = calculateNextPositionAfterCollision(c1, c2, angle1);
-                                // object1.nextPositionChangeDirection = { x: nextPosition.x, y: nextPosition.y };
-                                // object1._isForceMove = true;
-                                // object1.isPauseMove = true;
                                 object1.unitStage = UnitStage.IDLE;
 
                             } else {
@@ -146,9 +132,6 @@ export class CollisionController {
                                 const correctPosition1 = findCorrectPositionBeforeCollision(c1, c2);
                                 object2.position = correctPosition1;
                                 object2.unitStage = UnitStage.IDLE;
-                                // object2.isPauseMove = true;
-                                // const correctPosition2 = findCorrectPositionBeforeCollision(c2, c1);
-                                // object1.position = correctPosition2;
                             }
                         }
 
@@ -161,14 +144,12 @@ export class CollisionController {
                                     object1.targetId = object2.id;
                                     object1.targetPosition = object2.getUpdatedPosition();
                                     object1.unitStage = UnitStage.ATTACKING;
-                                    // object1.fireStage = true;
                                 }
 
                                 if (!object2.targetId || !object2.targetPosition) {
                                     object2.targetId = object1.id;
                                     object2.targetPosition = object1.getUpdatedPosition();
                                     object2.unitStage = UnitStage.ATTACKING;
-                                    // object2.fireStage = true;
                                 }
                             }
                         }

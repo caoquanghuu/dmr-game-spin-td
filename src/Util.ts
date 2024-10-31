@@ -72,10 +72,10 @@ export function findCorrectPositionBeforeCollision(c1: Circle, c2?: Circle, squa
         const vector = { x: c1.position.x - c2.position.x, y: c1.position.y - c2.position.y };
         const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
 
-        // Kiểm tra distance không bằng 0
+        // check distance is equal 0
         if (distance === 0) {
-            console.error('Khoảng cách giữa hai hình tròn là 0, không thể tính toán.');
-            return { x: c2.position.x, y: c2.position.y }; // Hoặc giá trị xử lý mặc định khác
+            console.error('distance was been 0. cant calculate');
+            return { x: c2.position.x, y: c2.position.y };
         }
 
         const r = c1.radius + c2.radius + 1;
@@ -94,11 +94,11 @@ export function findCorrectPositionBeforeCollision(c1: Circle, c2?: Circle, squa
         const vector = { x: c1.position.x - closestX, y: c1.position.y - closestY };
         const distance = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
 
-        // Kiểm tra distance không bằng 0
+        // check distance is equal 0
         if (distance === 0) {
             // try calculate by circle
             const c2: Circle = { position: { x: square.position.x + AppConstants.matrixSize / 2, y: square.position.y + AppConstants.matrixSize / 2 }, radius: square.width / 2 };
-            return findCorrectPositionBeforeCollision(c2, c1); // Hoặc giá trị xử lý mặc định khác
+            return findCorrectPositionBeforeCollision(c2, c1);
         }
 
         const unitVector = { x: vector.x / distance, y: vector.y / distance };
@@ -109,7 +109,7 @@ export function findCorrectPositionBeforeCollision(c1: Circle, c2?: Circle, squa
         };
 
         if (isNaN(correctPosition.x) || isNaN(correctPosition.y)) {
-            console.log('Giá trị NaN tìm thấy:', correctPosition);
+            console.log('NaN value found', correctPosition);
         }
 
         return correctPosition;
@@ -232,72 +232,3 @@ export function changeEnumDirectionToAngle(direction: Direction): number | undef
             return undefined;
     }
 }
-
-// function calculateAngle(p1: PointData, p2: PointData): number {
-//     const dx = p2.x - p1.x;
-//     const dy = p2.y - p1.y;
-//     return Math.atan2(dy, dx) * (180 / Math.PI); // Chuyển đổi từ radians sang degrees
-// }
-
-// function calculateAngleDifference(angle1: number, angle2: number): number {
-//     let diff = angle1 - angle2;
-//     while (diff < -180) diff += 360;
-//     while (diff > 180) diff -= 360;
-//     return Math.abs(diff);
-// }
-
-// function chooseBestAngle(currentAngle: number, angleToP1: number, angleToP2: number) {
-//     const diff1 = calculateAngleDifference(currentAngle, angleToP1);
-//     const diff2 = calculateAngleDifference(currentAngle, angleToP2);
-
-//     return diff1 < diff2 ? angleToP1 : angleToP2;
-// }
-
-// function findPerpendicularPoints(p1: PointData, p2: PointData): {P1: PointData, P2: PointData} {
-//     const dx = p2.x - p1.x;
-//     const dy = p2.y - p1.y;
-//     const d = Math.sqrt(dx * dx + dy * dy);
-
-//     const mx = (p1.x + p2.x) / 2;
-//     const my = (p1.y + p2.y) / 2;
-
-//     const length = Math.sqrt(dy * dy + dx * dx);
-//     const vx = dy / length;
-//     const vy = -dx / length;
-
-//     const P1 = { x: mx + d * vx, y: my + d * vy };
-//     const P2 = { x: mx - d * vx, y: my - d * vy };
-
-//     return { P1, P2 };
-// }
-
-// // Hàm hoàn chỉnh tính toán góc độ di chuyển tốt nhất
-// export function calculateBestMoveAngle(c1: Circle, c2: Circle, currentC1Angle: number): number {
-//     const { P1, P2 } = findPerpendicularPoints(c1.position, c2.position);
-//     const angleToP1 = calculateAngle(c1.position, P1);
-//     const angleToP2 = calculateAngle(c1.position, P2);
-//     return chooseBestAngle(currentC1Angle, angleToP1, angleToP2);
-// }
-
-
-// /**
-//  * Tính toán điểm di chuyển tiếp theo của hình tròn 1 sau khi va chạm với hình tròn 2.
-//  * @param c1 Hình tròn 1 (di chuyển).
-//  * @param c2 Hình tròn 2 (đứng yên).
-//  * @param angle Góc độ di chuyển ban đầu của hình tròn 1 (a1).
-//  * @returns Vị trí mới cho hình tròn 1 sau va chạm.
-//  */
-// export function calculateNextPositionAfterCollision(c1: Circle, c2: Circle, angle: number): PointData {
-
-//     const newAngle = calculateBestMoveAngle(c1, c2, angle) - 45;
-//     const newAngleRad = toRadians(newAngle);
-//     const adjustedVector: PointData = { x: Math.cos(newAngleRad), y: Math.sin(newAngleRad) };
-
-//     // Tính toán vị trí mới của c1 với khoảng cách mới là 32 pixels
-//     const newPosition: PointData = {
-//         x: c1.position.x + adjustedVector.x ,
-//         y: c1.position.y + adjustedVector.y
-//     };
-
-//     return newPosition;
-// }

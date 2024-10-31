@@ -15,14 +15,14 @@ export class Tank extends BaseObject {
     private _goldReward: number = 2;
     private _fireRadius: number = 30;
     public fireTimeCd: FireTime= { fireTimeConst: 3000, fireTimeCount: 0 };
-    private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 500, changeTimeCount: 0 };
+    private _forceChangeDirectionCd: {changeTimeConst: number, changeTimeCount: number} = { changeTimeConst: 200, changeTimeCount: 0 };
     public unitStage: UnitStage = UnitStage.MOVING;
 
     private _targetPosition: PointData;
     private _targetID: number;
 
     private _targetValue: number;
-    private _matrixValue: number = 4;
+    private _matrixValue: number;
 
     private _getMatrixMapCb: GetMatrixMapFn;
     private _setMatrixMapCb: SetMatrixMapFn;
@@ -38,8 +38,8 @@ export class Tank extends BaseObject {
         this._useEventEffect();
 
         this._enemiesType = enemyType;
-        this.image.width = AppConstants.matrixSize * 0.7;
-        this.image.height = AppConstants.matrixSize * 0.7;
+        this.image.width = AppConstants.matrixSize * 0.8;
+        this.image.height = AppConstants.matrixSize * 0.8;
 
         this.moveEngine = new BaseEngine(false);
         this._bfsMoveEngine = new BSFMoveEngine(this.getMatrixPosition.bind(this), targetValue, this._getMatrixMapCb.bind(this));
@@ -170,6 +170,7 @@ export class Tank extends BaseObject {
 
     public fire() {
         if (!this._targetID && !this._targetPosition) {
+            this._forceChangeDirectionCd.changeTimeCount = 0;
             this.unitStage = UnitStage.IDLE;
             return;
         }
@@ -255,37 +256,5 @@ export class Tank extends BaseObject {
 
         this.hpBar.position = this.image.position;
         this._bfsMoveEngine.update();
-        // if (this._isPauseMove) {
-        //     this._forceChangeDirectionCd.changeTimeCount += dt;
-        //     this.isMoving = false;
-        //     if (this._forceChangeDirectionCd.changeTimeCount >= this._forceChangeDirectionCd.changeTimeConst) {
-        //         if (this._isForceMove) {
-        //             //
-        //             this._forceChangeDirectionCd.changeTimeCount = 0;
-        //             this.isMoving = true;
-        //             this._isPauseMove = false;
-        //             this._isForceMove = false;
-        //         } else
-        //         if (this.getNextMove()) {
-        //             this._forceChangeDirectionCd.changeTimeCount = 0;
-        //             this.isMoving = true;
-        //             this._isPauseMove = false;
-        //         }
-
-
-        //     }
-
-        // }
-        // this.fireTimeCd.fireTimeCount += dt;
-        // if (this.fireStage) {
-
-        //     this.fire();
-        // }
-        // this.hpBar.position = this.image.position;
-        // this._bfsMoveEngine.update();
-        // if (this._isMoving) {
-        //     this._moveByBsf(dt);
-        // }
-
     }
 }

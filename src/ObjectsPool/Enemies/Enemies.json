@@ -3,10 +3,10 @@
   "alias": [
     {
       "name": "tank-1",
-      "HP": 500000,
+      "HP": 500,
       "speed": 100,
       "dame": 100,
-      "eneCount": 2
+      "eneCount": 20
     },
     {
       "name": "tank-2",

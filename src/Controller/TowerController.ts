@@ -330,7 +330,7 @@ export class TowerController {
                 this._getMatrixMap().find((row, idxX) => {
                     row.find((val, idxY) => {
                         if (val === AppConstants.matrixMapValue.spawnAllyPosition) {
-                            spawnPosition = { x: idxX - 1, y: idxY };
+                            spawnPosition = { x: idxX, y: idxY - 1 };
                             return true;
                         }
                     });
