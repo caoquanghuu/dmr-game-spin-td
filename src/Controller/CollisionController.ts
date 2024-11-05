@@ -98,6 +98,7 @@ export class CollisionController {
                         // handle collision of tanks
                         if (isCollision(c1, c2)) {
 
+                            // incase one of 2 units is attacking stage or standing
                             if (object1.unitStage === UnitStage.IDLE || object1.unitStage === UnitStage.ATTACKING) {
                                 object2.unitStage = UnitStage.IDLE;
                                 // recalculate position of object 2
@@ -112,6 +113,7 @@ export class CollisionController {
                                 return;
                             }
 
+                            // if both is moving. Calculate by correct bfs vector to know which unit is standing front.
                             const angle1 = object1.getBFSDirection();
                             const angle2 = object2.getBFSDirection();
                             const crossProduct = comparePosition({ position: object1.position, angle: angle1 }, { position: object2.position, angle: angle2 });

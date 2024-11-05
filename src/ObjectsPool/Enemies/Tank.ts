@@ -38,8 +38,8 @@ export class Tank extends BaseObject {
         this._useEventEffect();
 
         this._enemiesType = enemyType;
-        this.image.width = AppConstants.matrixSize * 0.8;
-        this.image.height = AppConstants.matrixSize * 0.8;
+        this.image.width = AppConstants.matrixSize * 0.7;
+        this.image.height = AppConstants.matrixSize * 0.7;
 
         this.moveEngine = new BaseEngine(false);
         this._bfsMoveEngine = new BSFMoveEngine(this.getMatrixPosition.bind(this), targetValue, this._getMatrixMapCb.bind(this));
@@ -129,23 +129,23 @@ export class Tank extends BaseObject {
         return this._bfsMoveEngine;
     }
 
-    // get nextPosition(): PointData {
-    //     return { x: (this._positionChangeDirection.x - AppConstants.matrixSize / 2) / AppConstants.matrixSize, y: (this._positionChangeDirection.y - AppConstants.matrixSize / 2) / AppConstants.matrixSize };
-    // }
-
-    set nextPositionChangeDirection(pos: PointData) {
-        this._positionChangeDirection = { x: pos.x, y: pos.y };
-    }
-
     get nextPositionChangeDirection(): PointData {
         return { x: this._positionChangeDirection.x, y: this._positionChangeDirection.y };
     }
 
+    /**
+     * method get units position and change it to grid map position
+     * @returns return point data position on grid map
+     */
     public getMatrixPosition(): PointData {
         const matrixPosition: PointData = { x: Math.round((this.position.x - AppConstants.matrixSize / 2) / AppConstants.matrixSize), y: Math.round((this.position.y - AppConstants.matrixSize / 2) / AppConstants.matrixSize) };
         return matrixPosition;
     }
 
+    /**
+     * method calculate next move vector of units base on it position and bfs move
+     * @returns return angle number
+     */
     public getBFSDirection(): number {
         const nextMove: BSFNextMove = this.bfsMoveEngine.bsfNextMove;
         if (nextMove) {
@@ -153,22 +153,31 @@ export class Tank extends BaseObject {
         }
     }
 
-    public startMove() {
+    public startMove(): void {
         this.getNextMove();
         this.isDead = false;
     }
 
-    public reset() {
+    public reset(): void {
         this._targetID = undefined;
         this._targetPosition = undefined;
         this._positionChangeDirection = { x: null, y: null };
     }
 
+    /**
+     * method to get updated position of unit using as target of bullet
+     * @returns the object position of this units which will change when units move
+     */
     public getUpdatedPosition(): PointData {
         return this.image.position;
     }
 
-    public fire() {
+    /**
+     * method fire of units will call to bullet controller to create bullet
+     * @returns void
+     */
+    private _fire(): void {
+        // change stage to idle when have no target.
         if (!this._targetID && !this._targetPosition) {
             this._forceChangeDirectionCd.changeTimeCount = 0;
             this.unitStage = UnitStage.IDLE;
@@ -182,11 +191,21 @@ export class Tank extends BaseObject {
     }
 
 
-    private _moveByBsf(dt: number) {
+    /**
+     * method move by bsf. which will have a target to reach and if it reach to target position. will recalculate next target position
+     * @param dt delta time
+     */
+    private _moveByBsf(dt: number): void {
+        // move
         this.move(dt);
+
+        // update direction
         const newDirection = calculateAngleOfVector(this.image.position, { x: this._positionChangeDirection.x, y: this._positionChangeDirection.y });
-        this.image.angle = newDirection + 90;
         this.moveEngine.direction = newDirection;
+        // rotate image
+        this.image.angle = newDirection + 90;
+
+        // check it reached to target position or not
         const c1: Circle = { position: this.position, radius: 5 };
         const c2: Circle = { position: this._positionChangeDirection, radius: 5 };
         const isReached: boolean = isCollision(c1, c2);
@@ -195,26 +214,23 @@ export class Tank extends BaseObject {
         }
     }
 
+    /**
+     * method call to calculate next move direction
+     * @returns return true if have available move, false if can't calculate move ways
+     */
     public getNextMove(): boolean {
-
         const nextMove: BSFNextMove = this._bfsMoveEngine.bsfNextMove;
         if (nextMove === undefined) {
             this.unitStage = UnitStage.IDLE;
-            // this._isPauseMove = true;
-            // this._isMoving = false;
             return false;
         }
 
         this._positionChangeDirection = { x: nextMove.path.x * AppConstants.matrixSize + AppConstants.matrixSize / 2, y: nextMove.path.y * AppConstants.matrixSize + AppConstants.matrixSize / 2 };
         this.unitStage = UnitStage.MOVING;
-        // const newDirection = calculateAngleOfVector(this.image.position, { x: this._positionChangeDirection.x, y: this._positionChangeDirection.y });
-        // this.image.angle = newDirection + 90;
-        // this.moveEngine.direction = newDirection;
-
         return true;
     }
 
-    private _useEventEffect() {
+    private _useEventEffect(): void {
         Emitter.on(AppConstants.event.removeEnemy, (info: {id: number, isEne: boolean}) => {
             if (this.targetId === info.id) {
                 this._targetPosition = null;
@@ -224,18 +240,22 @@ export class Tank extends BaseObject {
     }
 
 
-    public update(dt: number) {
+    public update(dt: number): void {
         switch (this.unitStage) {
+            // move by normal
             case UnitStage.MOVING:
                 this._moveByBsf(dt);
                 break;
+            // units will move without calculate new direction
             case UnitStage.FORCE_MOVE:
                 this.move(dt);
                 break;
+            // units will stop move and start fire
             case UnitStage.ATTACKING:
                 this.fireTimeCd.fireTimeCount += dt;
-                this.fire();
+                this._fire();
                 break;
+            // units will stop move for a while and try recalculate next move direction and change stage to move
             case UnitStage.IDLE:
                 this._forceChangeDirectionCd.changeTimeCount += dt;
                 if (this._forceChangeDirectionCd.changeTimeCount >= this._forceChangeDirectionCd.changeTimeConst) {
@@ -243,6 +263,7 @@ export class Tank extends BaseObject {
                     this._forceChangeDirectionCd.changeTimeCount = 0;
                 }
                 break;
+            // units will stop move for a while too but it will continue move without recalculate new direction
             case UnitStage.IDLE_TO_MOVE:
                 this._forceChangeDirectionCd.changeTimeCount += dt;
                 if (this._forceChangeDirectionCd.changeTimeCount >= this._forceChangeDirectionCd.changeTimeConst) {
@@ -254,7 +275,7 @@ export class Tank extends BaseObject {
                 break;
         }
 
+        // update hp bar position follow this image position
         this.hpBar.position = this.image.position;
-        this._bfsMoveEngine.update();
     }
 }
